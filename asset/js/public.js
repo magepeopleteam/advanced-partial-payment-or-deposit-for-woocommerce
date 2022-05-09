@@ -301,7 +301,7 @@
             let price = target.find('.mage_subtotal_figure').text();
             let deposit_type = target.find('[name="payment_plan"]').val();
             mpwemapp_payment_schedule(target, parseFloat(price))
-        }, 100);
+        }, 1000);
     }
 
     function seatPlan_price_calculation($this) {
@@ -310,7 +310,7 @@
             let price = target.find('.mage-price-total .price-figure').text();
             let deposit_type = target.find('[name="payment_plan"]').val();
             mpwemapp_payment_schedule(target, parseFloat(price))
-        }, 1000);
+        }, 1500);
     }
 
     function mpwemapp_payment_schedule(target, price) {
