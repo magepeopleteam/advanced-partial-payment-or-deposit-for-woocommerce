@@ -405,17 +405,17 @@ if (!function_exists('meppp_get_option')) {
     }
 }
 
-add_action('woocommerce_before_add_to_cart_button', 'mep_pp_show_payment_option');
-add_action('mep_before_add_cart_btn', 'mep_pp_show_payment_option');
-add_action('wbbm_before_add_cart_btn', 'mep_pp_show_payment_option');
-add_action('wbtm_before_add_cart_btn', 'mep_pp_show_payment_option');
-add_action('ttbm_before_add_cart_btn', 'mep_pp_show_payment_option');
+add_action('woocommerce_before_add_to_cart_button', 'mep_pp_show_payment_option', 10, 2);
+add_action('mep_before_add_cart_btn', 'mep_pp_show_payment_option', 10, 2);
+add_action('wbbm_before_add_cart_btn', 'mep_pp_show_payment_option', 10, 2);
+add_action('wbtm_before_add_cart_btn', 'mep_pp_show_payment_option', 10, 2);
+add_action('ttbm_before_add_cart_btn', 'mep_pp_show_payment_option', 10, 2);
 if (!function_exists('mep_pp_show_payment_option')) {
-    function mep_pp_show_payment_option($product_id)
+    function mep_pp_show_payment_option($product_id, $check_link_id = true)
     {
         $product_id = $product_id ? $product_id : get_the_id();
 
-        if (function_exists('mep_product_exists')) {
+        if (function_exists('mep_product_exists') && $check_link_id) {
             if (get_post_meta($product_id, 'link_mep_event', true)) {
                 $linked_event_id = get_post_meta($product_id, 'link_mep_event', true);
             } elseif(get_post_meta($product_id, 'link_wbtm_bus', true)) {
