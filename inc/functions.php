@@ -125,6 +125,7 @@ if (!function_exists('meppp_pp_deposit_to_pay')) {
         $due_amount = 0;
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
 
+
             if (function_exists('mep_product_exists')) {
                 $linked_event_id = get_post_meta($cart_item['product_id'], 'link_mep_event', true) ? get_post_meta($cart_item['product_id'], 'link_mep_event', true) : $cart_item['product_id'];
                 $product_id = mep_product_exists($linked_event_id) ? $linked_event_id : $cart_item['product_id'];
@@ -145,9 +146,11 @@ if (!function_exists('meppp_pp_deposit_to_pay')) {
                     $order_payment_plan = isset($cart_item['_pp_order_payment_terms']) ? $cart_item['_pp_order_payment_terms'] : array();
                 }
             }
+
+            $order_amount += $cart_item['line_subtotal'];
         }
 
-        $order_amount = WC()->cart->get_total('f') + $due_amount;
+        // $order_amount = WC()->cart->get_total('f') + $due_amount;
 
         $enable_checkout_zero_price = apply_filters('mepp_enable_zero_price_checkout', 'no');
 //        if (mepp_check_paypal_has() && !$has_deposit_type_minimum) {
@@ -547,7 +550,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                                            value="">
                                     <?php
                                 } elseif ($deposit_type == 'minimum_amount') { ?>
-                                    <input type="number" class="mep-pp-user-amountinput"
+                                    <input type="text" class="mep-pp-user-amountinput"
                                            data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount"
                                            value="<?php echo esc_attr($_pp_minimum_value); ?>"
                                            min="<?php echo esc_attr($_pp_minimum_value); ?>">
@@ -810,10 +813,10 @@ if (!function_exists('mep_pp_history_get')) {
                         // $pay_button = '';
                         //
                     } elseif ($pp_deposit_system != 'zero_price_checkout' && $due_payment == 0) { // Not zero price checkout
-                        $status = $x == $count ? __('Fully Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Partialy Paid', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                        $status = $x == $count ? __('Fully Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce');
 
                     } elseif ($pp_deposit_system != 'zero_price_checkout' && $due_payment > 0) { // Not zero price checkout
-                        $status = $payment_method ? __('Partialy Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : '';
+                        $status = $payment_method ? __('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : '';
                         if ($pp_deposit_system == 'payment_plan') {
 
                             if (!$payment_method && $payment_term_pay_now_appear) {
@@ -963,7 +966,7 @@ if (!function_exists('mep_pp_deposti_type_display_name')) {
                     break;
                 case 'minimum_amount':
                     $name = 'Minimum Amount';
-                    $name = $with_value ? wc_price($cart_item['_pp_deposit']) . ' ' . $name : $name;
+                    $name = $with_value ? wc_price($cart_item['_pp_deposit_value_strict']) . ' ' . $name : $name;
                     break;
                 case 'payment_plan':
                     $name = 'Payment Plan';
@@ -1247,7 +1250,7 @@ function wcppe_enable_for_event()
 // Check if Mage Bus plugins active
 function wcppe_is_mage_bus_active()
 {
-    return (is_plugin_active('bus-ticket-booking-with-seat-reservation/woocommerce-bus.php') || is_plugin_active('bus-booking-manager/bus-booking-manager-pro') ? true : false);
+    return (is_plugin_active('bus-ticket-booking-with-seat-reservation/woocommerce-bus.php') || is_plugin_active('bus-booking-manager/woocommerce-bus.php') ? true : false);
 }
 
 // Escape Html

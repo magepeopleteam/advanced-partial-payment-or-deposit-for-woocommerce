@@ -126,6 +126,8 @@ class MEP_PP_Cart
                 $product_price_total = $product->get_price() * (int)sanitize_text_field($quantity);
             }
         }
+        
+//        echo "<pre>"; print_r($product_price_total); die;
 
         // Check is zero price checkout
         $enable_checkout_zero_price = apply_filters('mepp_enable_zero_price_checkout', 'no');
@@ -145,6 +147,7 @@ class MEP_PP_Cart
         $setting_from = '';
         if ($is_exclude_from_global === 'yes') { // Product level Setting
             $deposit_type = get_post_meta($product_id, '_mep_pp_deposits_type', true) ? get_post_meta($product_id, '_mep_pp_deposits_type', true) : '';
+            $deposit_min_value_strict = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : '';
             if ($deposit_type === 'minimum_amount') {
                 $deposit_value = isset($_POST['user-deposit-amount']) ? sanitize_text_field($_POST['user-deposit-amount']) / sanitize_text_field($quantity) : 0;
             } else {
@@ -152,7 +155,7 @@ class MEP_PP_Cart
             }
             $setting_from = 'local';
         } else { // Global level Setting
-            $deposit_value = $default_deposit_value;
+            $deposit_value = $deposit_min_value_strict = $default_deposit_value;
             $deposit_type = $default_deposit_type;
             $setting_from = 'global';
             // Partial Option Page
@@ -206,15 +209,14 @@ class MEP_PP_Cart
         }
         $cart_item_data['_pp_deposit'] = $deposit_amount;
         $cart_item_data['_pp_deposit_value'] = $deposit_value;
+        $cart_item_data['_pp_deposit_value_strict'] = $deposit_min_value_strict;
         $cart_item_data['_pp_due_payment'] = $product_price_total - $deposit_amount;
         $cart_item_data['_pp_deposit_type'] = 'check_pp_deposit';
         $cart_item_data['_pp_deposit_system'] = $deposit_type;
         $cart_item_data['_pp_deposit_setting_from'] = $setting_from;
         $cart_item_data['_pp_deposit_payment_plan_name'] = isset($_POST['mep_payment_plan']) ? mep_pp_payment_plan_name(sanitize_text_field($_POST['mep_payment_plan'])) : '';
         $cart_item_data['_pp_deposit_mode'] = $deposit_mode;
-    //   echo '<pre>';
-    //   print_r($cart_item_data);
-    //   die;
+    //    echo '<pre>';print_r($cart_item_data);die;
         return $cart_item_data;
     }
 

@@ -675,39 +675,48 @@ class MEP_PP_Checkout
 
         $is_admin_will_be_notified = get_option('mepp_admin_notify_partial_payment');
 
+        $this->notify_admin_on_partial_payment($order, 'customer');
+
         if($is_admin_will_be_notified === 'yes') {
-            $this->notify_admin_on_partial_payment($order); // Notify admin on partial payment
+            $this->notify_admin_on_partial_payment($order, 'admin'); // Notify admin on partial payment
         }
 
     }
 
-    protected function notify_admin_on_partial_payment($order)
+    protected function notify_admin_on_partial_payment($order, $email_to)
     {
-        $is_admin_notify = $order->get_meta('admin_notify_on_partial_payment', true);
+        $headers = array(
+            'Content-Type: text/html; charset=UTF-8',
+            sprintf("From: %s", get_bloginfo('name')),
+        );
+        $subject = 'Partial payment notification';
+        $partial_payment_template = $email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php';
+        $email_content = wc_get_template_html($partial_payment_template, array(
+            'order' => $order,
+            'sent_to_admin' => false,
+            'plain_text' => false,
+            'email' => '',
+            'additional_text' => ''
+        ), '', WC_PP_Basic_TEMPLATE_PATH);
+        
+        if($email_to === 'admin') {
+            $is_admin_notify = $order->get_meta('admin_notify_on_partial_payment', true);
 
-        if($is_admin_notify !== 'yes') {
+            if($is_admin_notify !== 'yes') {
+                $email = get_option('admin_email');
+                wp_mail($email, $subject, $email_content, $headers);
+                $order->update_meta_data('admin_notify_on_partial_payment', 'yes');
+                $order->save();
+            }
 
-            $headers = array(
-                'Content-Type: text/html; charset=UTF-8',
-                sprintf("From: %s", get_bloginfo('name')),
-            );
-        
-            $subject = 'Partial payment notification';
-            $email = get_option('admin_email');
-        
-            $partial_payment_template = 'email/partial_payment_template.php';
-        
-            $email_content = wc_get_template_html($partial_payment_template, array(
-                'order' => $order,
-                'sent_to_admin' => false,
-                'plain_text' => false,
-                'email' => '',
-                'additional_text' => ''
-            ), '', WC_PP_Basic_TEMPLATE_PATH);
-        
-            wp_mail($email, $subject, $email_content, $headers);
-            $order->update_meta_data('admin_notify_on_partial_payment', 'yes');
-            $order->save();
+        } else {
+            $is_customer_notify = $order->get_meta('customer_notify_on_partial_payment', true);
+            if($is_customer_notify !== 'yes') {
+                $email = $order->get_billing_email();
+                wp_mail($email, $subject, $email_content, $headers);
+                $order->update_meta_data('customer_notify_on_partial_payment', 'yes');
+                $order->save();
+            }
         }
     }
 

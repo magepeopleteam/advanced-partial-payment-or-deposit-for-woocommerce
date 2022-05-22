@@ -58,7 +58,7 @@ ul.mep-pp-payment-terms label{margin: 0;}
 ul.mep-pp-payment-terms label input,
 .mep-single-plan-wrap input {
     width: 25px!important;
-    height: 25px;
+    height: 33px;
     vertical-align: top;
 }
 .mep-single-plan.plan-details table th {
@@ -151,7 +151,8 @@ ul.mep-pp-payment-terms label input,
     background: #262626;
 }
 ul.mep-pp-payment-terms .mep-pp-user-amountinput {
-    width: 50px !important;
+    width: 103px !important;
+    text-align: center;
 }
 .wcpp-deposit-types .wcpp-input-group {
     display: flex;
@@ -159,4 +160,8 @@ ul.mep-pp-payment-terms .mep-pp-user-amountinput {
 }
 .wcpp-deposit-types .wcpp-input-group label {
     margin: 0 10px 0;
+}
+.partial_wrong_input {
+    padding: 0 19px!important;
+    color: red!important;
 }

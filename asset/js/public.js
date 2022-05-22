@@ -4,7 +4,7 @@
         let parent = $('form.cart');
         parent.find('div.quantity [name="quantity"]').trigger('change');
 
-        // Initail deposit type check in setting
+        // Initial deposit type check in setting
         const deposit_type_selected = $('input[name="_pp_deposit_system"]:checked').attr('data-deposit-type');
         if (deposit_type_selected === 'payment_plan') {
             $('.mepp-payment-plan-option-frontend').show();
@@ -24,6 +24,9 @@
     $('input[name="entire_quantity"]').click(function(){
         multipurpose_price_calculation($(this));
     });
+    $('.wbbm_extra_service_table').on('input', '.extra-qty-box', function() {
+        multipurpose_price_calculation($(this));
+    })
     // Multipurpose Price Calculation END
 
     // Seat Plan Bus
@@ -36,7 +39,24 @@
         const $this = $(this);
         seatPlan_price_calculation($this);
     });
+    // Extra Service
+    $(".wbtm_extra_service_table").on('input', '.extra-qty-box', function() {
+        const $this = $(this);
+        seatPlan_price_calculation($this);
+    })
+    // Extra bag
+    $('.mage_bus_item').on('input', '.extra_bag_qty', function() {
+        const $this = $(this);
+        seatPlan_price_calculation($this);
+    })
     // Seat Plan Bus END
+
+    // Tour
+    // $('.ttbm_booking_panel').on('input', '.inputIncDec', function() {
+    //     console.log('sdkje')
+    //     tour_price_calculation($(this));
+    // })
+    // Tour END
 
     $(document).on('change', 'form.cart [name="variation_id"]', function () {
         let parent = $('form.cart');
@@ -130,36 +150,35 @@
         // On checkout page
         var pay_input = null;
         $(document).on('keyup', 'input[name="manually_pay_amount"]', function () {
+            console.log('called')
             let $this = $(this)
             let total = $this.attr('data-total');
             let pay = $this.val();
             let max = $this.attr('max');
+            let min = $this.attr('min');
             let due = total - pay;
             let currency = $(this).attr('data-currency');
             let deposit_type = $this.attr('data-deposit-type');
             let page = $(this).attr('data-page');
-
             let validate = true;
 
-            if(max) {
-                max = parseFloat(max);
-                pay = parseFloat(pay);
+            min = parseFloat(min);
+            pay = parseFloat(pay);
 
-                if(max < pay) {
-                    validate = false;
-                    $this.val('');
+            const call = async function () {
+                let res = await mepMinAmountValidation($this, deposit_type, pay);
+                if(res) {
+                    // validate = true;
+                    return res;
+                } else {
+                    return min;
                 }
             }
 
-            if(validate) {
-                pay_input = setTimeout(async function () {
+            call().then(res => {
+                $this.val(res);
 
-                    let res = pay;
-                    if (deposit_type === 'minimum_amount') {
-                        res = await mepMinAmountValidation($this, deposit_type, pay);
-                        $this.val(res);
-                    }
-    
+                if(validate) {
                     if (res) {
                         jQuery.ajax({
                             url: wcpp_php_vars.ajaxurl,
@@ -167,7 +186,6 @@
                             dataType: 'json',
                             async: true,
                             data: {
-                                //action name (must be consistent with your php callback)
                                 action: 'manually_pay_amount_input',
                                 total: total,
                                 pay: res,
@@ -180,34 +198,39 @@
 
                                     mepp_ajax_relaod();
                                 }
-    
+
                             }
                         })
                     } else {
                         $this.parents('tr').next().find('td').html(currency + due);
                         $this.parents('tr').next().find('td').append('<input type="hidden" name="manually_due_amount" value="' + due + '" />')
                     }
-                    pay_input = null;
-                }, 1000);
-            }
+                }
+            });
+
+
 
 
         });
 
-        // Minimum deposit value restric
+        // Minimum deposit value restrict
         $(document).on('keyup', 'input[name="user-deposit-amount"]', function () {
             const $this = $(this);
             let val = $this.val();
+            const min_val = $this.attr('min');
             const deposit_type = $this.attr('data-deposit-type');
 
             const call = async function () {
-                if (deposit_type == 'minimum_amount') {
-                    const res = await mepMinAmountValidation($this, deposit_type, val);
-                    $this.val(res);
+                if (deposit_type === 'minimum_amount') {
+                    let res = await mepMinAmountValidation($this, deposit_type, val);
+                    res = res ? res : min_val;
+                    return res;
                 }
             }
 
-            call();
+            call().then(r => {
+                $this.val(r);
+            });
 
         });
 
@@ -257,19 +280,18 @@
         return new Promise(function (resolve) {
             setTimeout(function () {
                 const min_val = $this.attr('min');
+                const max_val = $this.attr('max');
 
                 if (min_val) {
-                    if (parseFloat(min_val) > parseFloat(val)) {
-                        returnValue = min_val;
-                    } else {
+                    if (parseFloat(min_val) <= parseFloat(val) && parseFloat(max_val) >= parseFloat(val)) {
                         returnValue = val;
                     }
                 } else {
-                    returnValue = min_val;
+                    returnValue = false;
                 }
 
                 resolve(returnValue);
-            }, 100)
+            }, 1000)
         })
     }
 
@@ -297,25 +319,76 @@
 
     function multipurpose_price_calculation($this) {
         let target = $this.parents('.mage_search_list').find('.mage_book_now_area');
+        let parent = $this.parents('.mage_search_list');
+        let subTotal = 0;
+        let grandTotal = 0;
         setTimeout(function() {
             let price = target.find('.mage_subtotal_figure').text();
             let deposit_type = target.find('[name="payment_plan"]').val();
-            mpwemapp_payment_schedule(target, parseFloat(price))
+
+            // Extra Service
+            // parent.find('.wbbm_extra_service_table tbody tr').each(function() {
+            //     const es = $(this).find('.extra-qty-box');
+            //     const esUnitPrice = parseFloat(es.attr('data-price'));
+            //     const esQty = parseFloat(es.val());
+            //     subTotal = subTotal + (esUnitPrice * esQty > 0 ? esUnitPrice * esQty : 0);
+            // });
+            // Extra Service END
+
+            // Ext Bag Price
+            // parent.find('.mage_form_list').each(function() {
+            //     const extBag = $(this).find('.extra_bag_qty');
+            //     const extBagUnitPrice = parseFloat(extBag.attr('data-price'));
+            //     const extQty = parseFloat(extBag.val());
+            //     subTotal = subTotal + (extBagUnitPrice * extQty > 0 ? extBagUnitPrice * extQty : 0);
+            // })
+            // Ext Bag Price END
+
+            grandTotal = parseFloat(price)
+
+            mpwemapp_payment_schedule(target, parseFloat(grandTotal))
         }, 1000);
     }
 
     function seatPlan_price_calculation($this) {
         let target = $this.parents('.mage_bus_item ');
+        let bagPerPrice = 0;
+        let bagQty = 0;
+        let bagPrice = 0;
+        let extra_price = 0
+        let grand_price = 0;
+
         setTimeout(function() {
-            let price = target.find('.mage-price-total .price-figure').text();
+            let price = parseFloat(target.find('.mage-price-total .price-figure').text());
             let deposit_type = target.find('[name="payment_plan"]').val();
-            mpwemapp_payment_schedule(target, parseFloat(price))
+
+            // Extra Service
+            target.find('.wbtm_extra_service_table tbody tr').each(function() {
+                extra_price += parseFloat($(this).attr('data-total'));
+            });
+
+            // Extra bag price
+            target.find('.mage_customer_info_area input[name="extra_bag_quantity[]"]').each(function(index) {
+                bagPerPrice = parseFloat($(this).attr('data-price'));
+                bagQty += parseInt($(this).val());
+                bagPrice += parseFloat($(this).val()) * bagPerPrice;
+            });
+            grand_price = price + extra_price + bagPrice;
+
+            mpwemapp_payment_schedule(target, parseFloat(grand_price))
         }, 1500);
     }
 
+    function tour_price_calculation($this) {
+        let target = $this.parents('.ttbm_booking_panel');
+        let price = parseFloat(target.find('.tour_price').attr('data-total-price'));
+
+        mpwemapp_payment_schedule(target, price);
+    }
+
     function mpwemapp_payment_schedule(target, price) {
-        console.log(price);
         let deposit_type = target.find('[name="payment_plan"]').val();
+        target.find('[name="user-deposit-amount"]').attr('max', price)
         if (deposit_type === 'payment_plan') {
             target.find('.total_pp_price').each(function () {
                 //alert(price);
