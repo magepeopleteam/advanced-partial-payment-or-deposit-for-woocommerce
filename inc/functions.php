@@ -576,7 +576,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                             </li>
                         <?php endif; ?>
                     </ul>
-                    <?php ($deposit_type == 'payment_plan' || $deposit_type == 'percent') ? do_action('mep_payment_plan_list', $_pp_payment_plan_ids, $event_id, $deposit_type) : null; ?>
+                    <?php ($deposit_type == 'payment_plan' || $deposit_type == 'percent' || $deposit_type == 'minimum_amount') ? do_action('mep_payment_plan_list', $_pp_payment_plan_ids, $event_id, $deposit_type) : null; ?>
                 <?php } else {
                     echo '<input type="hidden" name="deposit-mode" value="check_pp_deposit">';
                 } ?>
