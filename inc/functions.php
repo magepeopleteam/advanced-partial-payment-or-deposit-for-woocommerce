@@ -29,19 +29,18 @@ add_action('mep_pricing_table_head_after_price_col', 'mep_pp_price_col_head');
 if (!function_exists('mep_pp_price_col_head')) {
     function mep_pp_price_col_head()
     {
-        ?>
+?>
         <th width="20%"><?php _e('Partial', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
-        <?php
+    <?php
     }
 }
 add_action('mep_pricing_table_empty_after_price_col', 'mep_pp_price_empty_col');
 if (!function_exists('mep_pp_price_empty_col')) {
     function mep_pp_price_empty_col()
     {
-        ?>
-        <td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_pp[]"
-                   placeholder="Ex: 10" value=""/></td>
-        <?php
+    ?>
+        <td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_pp[]" placeholder="Ex: 10" value="" /></td>
+    <?php
     }
 }
 
@@ -49,15 +48,15 @@ add_action('mep_pricing_table_data_after_price_col', 'mep_pp_price_col_data', 10
 if (!function_exists('mep_pp_price_col_data')) {
     function mep_pp_price_col_data($data, $event_id)
     {
-        ?>
-        <td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_pp[]"
-                   placeholder="Ex: 10" value="<?php echo esc_attr($data['option_price_pp']); ?>"/></td>
+    ?>
+        <td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_pp[]" placeholder="Ex: 10" value="<?php echo esc_attr($data['option_price_pp']); ?>" /></td>
         <?php
     }
 }
 
 if (!function_exists('mep_product_exists')) {
-    function mep_product_exists($id) {
+    function mep_product_exists($id)
+    {
         return is_string(get_post_status($id));
     }
 }
@@ -88,14 +87,14 @@ if (!function_exists('mep_pp_ticket_type_list_data')) {
         $deposit_type = get_post_meta($event_id, '_mep_pp_deposits_type', true) ? get_post_meta($event_id, '_mep_pp_deposits_type', true) : 'percent';
         $deposit_status = get_post_meta($event_id, '_mep_enable_pp_deposit', true) ? get_post_meta($event_id, '_mep_enable_pp_deposit', true) : 'no';
         if ($deposit_status == 'yes' && array_key_exists('option_price_pp', $field) && $deposit_type == 'ticket_type') {
-            ?>
+        ?>
             <td>
                 <span class="tkt-pric">
                     <?php echo mepp_get_option('mepp_text_translation_string_deposit', __('Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce')); ?>:
                 </span> <strong><?php echo wc_price(mep_get_price_including_tax($event_id, $saldo_price)); ?></strong>
                 <input type="hidden" name="option_price_pp[]" value="<?php echo esc_attr($saldo_price); ?>">
             </td>
-            <?php
+        <?php
             add_filter('mep_hidden_row_colspan_no', 'mep_pp_modify_hudden_col_no');
         }
     }
@@ -153,12 +152,12 @@ if (!function_exists('meppp_pp_deposit_to_pay')) {
         // $order_amount = WC()->cart->get_total('f') + $due_amount;
 
         $enable_checkout_zero_price = apply_filters('mepp_enable_zero_price_checkout', 'no');
-//        if (mepp_check_paypal_has() && !$has_deposit_type_minimum) {
-//        if (mepp_check_paypal_has()) {
-//            $value = $enable_checkout_zero_price == 'yes' ? WC()->cart->get_total('f') - $total_pp_deposit : WC()->cart->get_total('f');
-//        } else {
-//            $value = $enable_checkout_zero_price == 'yes' ? WC()->cart->get_total('f') - $total_pp_deposit : WC()->cart->get_total('f') - $total_pp_deposit;
-//        }
+        //        if (mepp_check_paypal_has() && !$has_deposit_type_minimum) {
+        //        if (mepp_check_paypal_has()) {
+        //            $value = $enable_checkout_zero_price == 'yes' ? WC()->cart->get_total('f') - $total_pp_deposit : WC()->cart->get_total('f');
+        //        } else {
+        //            $value = $enable_checkout_zero_price == 'yes' ? WC()->cart->get_total('f') - $total_pp_deposit : WC()->cart->get_total('f') - $total_pp_deposit;
+        //        }
 
         $value = $enable_checkout_zero_price == 'yes' ? WC()->cart->get_total('f') - $total_pp_deposit : WC()->cart->get_total('f');
 
@@ -177,7 +176,6 @@ if (!function_exists('meppp_available_payment_methods')) {
 
                 if ($gateway->enabled == 'yes') {
                     $enabled_gateways[] = $gateway->id;
-
                 }
             }
         }
@@ -197,21 +195,22 @@ if (!function_exists('meppp_due_to_pay')) {
         $due_value = 0; // no value
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
 
+            $linked_event_id = '';
             if (function_exists('mep_product_exists')) {
-                
-                if(get_post_meta($cart_item['product_id'], 'link_mep_event', true)) {
+
+                if (get_post_meta($cart_item['product_id'], 'link_mep_event', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_mep_event', true);
-                } elseif(get_post_meta($cart_item['product_id'], 'link_wbtm_bus', true)) {
+                } elseif (get_post_meta($cart_item['product_id'], 'link_wbtm_bus', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_wbtm_bus', true);
-                } elseif(get_post_meta($cart_item['product_id'], 'link_wc_product', true)) {
+                } elseif (get_post_meta($cart_item['product_id'], 'link_wc_product', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_wc_product', true);
-                } elseif(get_post_meta($cart_item['product_id'], 'link_ttbm_id', true)) {
+                } elseif (get_post_meta($cart_item['product_id'], 'link_ttbm_id', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_ttbm_id', true);
                 } else {
                     $product_id = $cart_item['product_id'];
                 }
 
-                $product_id = mep_product_exists($linked_event_id) ? $linked_event_id : $cart_item['product_id'];
+                $product_id = $linked_event_id && mep_product_exists($linked_event_id) ? $linked_event_id : $cart_item['product_id'];
             } else {
                 $product_id = $cart_item['product_id'];
             }
@@ -264,22 +263,23 @@ if (!function_exists('meppp_cart_have_pp_deposit_item')) {
         $cart_item_pp_deposit = [];
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
 
+            $linked_event_id = '';
             if (function_exists('mep_product_exists')) {
-                
-                if(get_post_meta($cart_item['product_id'], 'link_mep_event', true)) {
+
+                if (get_post_meta($cart_item['product_id'], 'link_mep_event', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_mep_event', true);
-                } elseif(get_post_meta($cart_item['product_id'], 'link_wbtm_bus', true)) {
+                } elseif (get_post_meta($cart_item['product_id'], 'link_wbtm_bus', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_wbtm_bus', true);
-                } elseif(get_post_meta($cart_item['product_id'], 'link_wc_product', true)) {
+                } elseif (get_post_meta($cart_item['product_id'], 'link_wc_product', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_wc_product', true);
-                } elseif(get_post_meta($cart_item['product_id'], 'link_ttbm_id', true)) {
+                } elseif (get_post_meta($cart_item['product_id'], 'link_ttbm_id', true)) {
                     $linked_event_id = get_post_meta($cart_item['product_id'], 'link_ttbm_id', true);
                 } else {
                     $product_id = $cart_item['product_id'];
                 }
 
-                
-                $product_id = mep_product_exists($linked_event_id) ? $linked_event_id : $cart_item['product_id'];
+
+                $product_id = $linked_event_id && mep_product_exists($linked_event_id) ? $linked_event_id : $cart_item['product_id'];
             } else {
                 $product_id = $cart_item['product_id'];
             }
@@ -306,9 +306,9 @@ if (!function_exists('meppp_is_product_type_pp_deposit')) {
 
         $is_deposit = false;
 
-        if($exclude_global_setting === 'yes' && $product_deposit_enable === 'yes') {
+        if ($exclude_global_setting === 'yes' && $product_deposit_enable === 'yes') {
             $is_deposit = true;
-        } elseif($exclude_global_setting === 'no' && apply_filters('global_product_type_pp_deposit', false)) {
+        } elseif ($exclude_global_setting === 'no' && apply_filters('global_product_type_pp_deposit', false)) {
             $is_deposit = true;
         } else {
             $is_deposit = false;
@@ -421,11 +421,11 @@ if (!function_exists('mep_pp_show_payment_option')) {
         if (function_exists('mep_product_exists') && $check_link_id) {
             if (get_post_meta($product_id, 'link_mep_event', true)) {
                 $linked_event_id = get_post_meta($product_id, 'link_mep_event', true);
-            } elseif(get_post_meta($product_id, 'link_wbtm_bus', true)) {
+            } elseif (get_post_meta($product_id, 'link_wbtm_bus', true)) {
                 $linked_event_id = get_post_meta($product_id, 'link_wbtm_bus', true);
-            } elseif(get_post_meta($product_id, 'link_wc_product', true)) {
+            } elseif (get_post_meta($product_id, 'link_wc_product', true)) {
                 $linked_event_id = get_post_meta($product_id, 'link_wc_product', true);
-            } elseif(get_post_meta($product_id, 'link_ttbm_id', true)) {
+            } elseif (get_post_meta($product_id, 'link_ttbm_id', true)) {
                 $linked_event_id = get_post_meta($product_id, 'link_ttbm_id', true);
             } else {
                 $linked_event_id = null;
@@ -439,10 +439,15 @@ if (!function_exists('mep_pp_show_payment_option')) {
             }
         }
 
-        if(wcppe_enable_for_event()) {
+        if (get_post_type($product_id) !== 'product') {
+            if (wcppe_enable_for_event()) {
+                mep_pp_show_payment_option_html($product_id);
+            }
+        } else {
             mep_pp_show_payment_option_html($product_id);
         }
 
+        // wcpp_test();
     }
 }
 
@@ -456,11 +461,11 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
 
             $product_price = 0;
             $product_type = get_post_type($event_id);
-            if($product_type === 'mep_events' || $product_type === 'wbtm_bus' || $product_type === 'wbbm_bus' || $product_type === 'ttbm_tour') {
+            if ($product_type === 'mep_events' || $product_type === 'wbtm_bus' || $product_type === 'wbbm_bus' || $product_type === 'ttbm_tour') {
                 // For Event product
             } else {
                 $woo_product = wc_get_product($event_id);
-                if($woo_product->is_type('variable')) {
+                if ($woo_product->is_type('variable')) {
                     $product_price = $woo_product->get_variation_price('max');
                 } else {
                     $product_price = $woo_product->get_price();
@@ -482,8 +487,8 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
             } else { // From global setting
                 $_pp_deposit_value = $_pp_minimum_value = $global_deposit_value;
                 $deposit_type = $global_deposit_type;
-                if($deposit_type === 'minimum_amount') {
-                    if(!$_pp_deposit_value) {
+                if ($deposit_type === 'minimum_amount') {
+                    if (!$_pp_deposit_value) {
                         return 0;
                     }
                 }
@@ -505,61 +510,49 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                 }
             }
 
-            if($deposit_type === 'percent' || $deposit_type === 'fixed') {
-                if(!$_pp_deposit_value) {
+            if ($deposit_type === 'percent' || $deposit_type === 'fixed') {
+                if (!$_pp_deposit_value) {
                     return 0;
                 }
             }
-            if($deposit_type === 'minimum_amount') {
-                if(!$_pp_minimum_value) {
+            if ($deposit_type === 'minimum_amount') {
+                if (!$_pp_minimum_value) {
                     return 0;
                 }
             }
 
-            ?>
+        ?>
             <div class="mep-pp-payment-btn-wraper">
                 <input type="hidden" name='currency_symbol' value="<?php echo get_woocommerce_currency_symbol(); ?>">
-                <input type="hidden" name='currency_position'
-                       value="<?php echo get_option('woocommerce_currency_pos'); ?>">
+                <input type="hidden" name='currency_position' value="<?php echo get_option('woocommerce_currency_pos'); ?>">
                 <input type="hidden" name='currency_decimal' value="<?php echo wc_get_price_decimal_separator(); ?>">
-                <input type="hidden" name='currency_thousands_separator'
-                       value="<?php echo wc_get_price_thousand_separator(); ?>">
+                <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
                 <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
-                <input type="hidden" name="payment_plan" value="<?php echo esc_attr($deposit_type); ?>"
-                       data-percent="<?php echo esc_attr($_pp_deposit_value); ?>">
+                <input type="hidden" name="payment_plan" value="<?php echo esc_attr($deposit_type); ?>" data-percent="<?php echo esc_attr($_pp_deposit_value); ?>">
                 <?php if (apply_filters('mep_pp_frontend_cart_radio_input', true)) { ?>
                     <ul class="mep-pp-payment-terms">
                         <li>
                             <label for="mep_pp_partial_payment">
-                                <input type="radio" id='mep_pp_partial_payment' name="deposit-mode"
-                                       value="check_pp_deposit" <?php if (meppp_is_product_type_pp_deposit($event_id)) {
-                                    echo 'Checked';
-                                } ?> />
+                                <input type="radio" id='mep_pp_partial_payment' name="deposit-mode" value="check_pp_deposit" <?php if (meppp_is_product_type_pp_deposit($event_id)) {
+                                                                                                                                    echo 'Checked';
+                                                                                                                                } ?> />
                                 <?php echo mepp_get_option('mepp_text_translation_string_pay_deposit', __('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce')); ?>
                                 <?php if ($deposit_type == 'manual') { ?>
-                                    <input type="number" class="mep-pp-user-amountinput"
-                                           data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount"
-                                           value="<?php echo esc_attr($_pp_deposit_value); ?>"
-                                           min="<?php echo esc_attr($_pp_deposit_value); ?>" max="">
-                                    <?php
+                                    <input type="number" class="mep-pp-user-amountinput" data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount" value="<?php echo esc_attr($_pp_deposit_value); ?>" min="<?php echo esc_attr($_pp_deposit_value); ?>" max="">
+                                <?php
                                 } elseif ($deposit_type == 'ticket_type') {
-                                    ?>
+                                ?>
                                     <span id='mep_pp_ticket_type_partial_total'></span>
-                                    <input type="hidden" class="mep-pp-user-amountinput"
-                                           data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount"
-                                           value="">
-                                    <?php
+                                    <input type="hidden" class="mep-pp-user-amountinput" data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount" value="">
+                                <?php
                                 } elseif ($deposit_type == 'minimum_amount') { ?>
-                                    <input type="text" class="mep-pp-user-amountinput"
-                                           data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount"
-                                           value="<?php echo esc_attr($_pp_minimum_value); ?>"
-                                           min="<?php echo esc_attr($_pp_minimum_value); ?>">
-                                    <?php
+                                    <input type="text" class="mep-pp-user-amountinput" data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount" value="<?php echo esc_attr($_pp_minimum_value); ?>" min="<?php echo esc_attr($_pp_minimum_value); ?>">
+                                <?php
                                 } elseif ($deposit_type == 'percent') {
                                     echo esc_attr($_pp_deposit_value) . '%';
                                 } elseif ($deposit_type == 'fixed') {
                                     echo wc_price(esc_attr($_pp_deposit_value));
-                                    esc_attr_e(' Only', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                                    _e(' Only', 'advanced-partial-payment-or-deposit-for-woocommerce');
                                 } else {
                                     echo '';
                                 }
@@ -569,8 +562,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                         <?php if ($isForcePartialPayment != 'yes') : ?>
                             <li>
                                 <label for='mep_pp_full_payment'>
-                                    <input type="radio" id='mep_pp_full_payment' name="deposit-mode"
-                                           value="no-deposit"/>
+                                    <input type="radio" id='mep_pp_full_payment' name="deposit-mode" value="no-deposit" />
                                     <?php echo mepp_get_option('mepp_text_translation_string_full_payment', __('Full Payment', 'advanced-partial-payment-or-deposit-for-woocommerce')); ?>
                                 </label>
                             </li>
@@ -581,7 +573,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                     echo '<input type="hidden" name="deposit-mode" value="check_pp_deposit">';
                 } ?>
             </div>
-            <?php
+        <?php
         } else {
             echo '<input type="hidden" name="deposit-mode" value="no-deposit">';
         }
@@ -773,79 +765,76 @@ if (!function_exists('mep_pp_history_get')) {
 
         $payment_term_pay_now_appear = true; // Only For Payment Terms
 
-        if ($count > 0):
-            ?>
+        if ($count > 0) :
+        ?>
 
-            <?php echo($title ? '<h2 class="woocommerce-column__title">' . __("Payment history", "advanced-partial-payment-or-deposit-for-woocommerce") . '</h2>' : null); ?>
-            <table class="mepp-table mep-pp-history-table woocommerce-table"
-                   style="width:100%;">
+            <?php echo ($title ? '<h2 class="woocommerce-column__title">' . __("Payment history", "advanced-partial-payment-or-deposit-for-woocommerce") . '</h2>' : null); ?>
+            <table class="mepp-table mep-pp-history-table woocommerce-table" style="width:100%;">
                 <thead>
-                <tr>
-                    <th><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                    <th><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                    <th><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                    <th><?php esc_attr_e('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                    <th><?php esc_attr_e('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                    <th><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                </tr>
+                    <tr>
+                        <th><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th><?php esc_attr_e('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th><?php esc_attr_e('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    </tr>
                 </thead>
                 <tbody>
 
-                <?php
-                $x = 1;
-                while ($pp_history->have_posts()):
-                    $pp_history->the_post();
-                    $id = get_the_ID();
-//                        $order_id           = esc_attr(get_post_meta($id, 'order_id', true));
-                    $this_order = wc_get_order($order_id);
-                    $amount = esc_attr(get_post_meta($id, 'deposite_amount', true));
-                    $due = esc_attr(get_post_meta($id, 'due_amount', true));
-                    $date = esc_attr(get_post_meta($id, 'payment_date', true));
-                    $payment_method = esc_attr(get_post_meta($id, 'payment_method', true));
+                    <?php
+                    $x = 1;
+                    while ($pp_history->have_posts()) :
+                        $pp_history->the_post();
+                        $id = get_the_ID();
+                        //                        $order_id           = esc_attr(get_post_meta($id, 'order_id', true));
+                        $this_order = wc_get_order($order_id);
+                        $amount = esc_attr(get_post_meta($id, 'deposite_amount', true));
+                        $due = esc_attr(get_post_meta($id, 'due_amount', true));
+                        $date = esc_attr(get_post_meta($id, 'payment_date', true));
+                        $payment_method = esc_attr(get_post_meta($id, 'payment_method', true));
 
-                    $pay_button = '';
-                    $status = '';
-                    if ($pp_deposit_system == 'zero_price_checkout' && $permition_for_next_payment == 'yes' && $due_payment != 0) { // Only For zero price checkout and permmited for payment and Amount Due
-                        $pay_button = sprintf('<a href="%s" class="mep_due_pay_btn">%s</a>', $this_order->get_checkout_payment_url(), __('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce'));
-                    } elseif ($pp_deposit_system == 'zero_price_checkout' && $permition_for_next_payment == 'yes' && $due_payment == 0) { // Only For zero price checkout and permmited for payment and Amount all paid
-                        $status = 'Fully Paid';
-                    } elseif ($pp_deposit_system == 'zero_price_checkout' && $permition_for_next_payment == 'no' && $payment_method == '') { // Only For zero price checkout and Not permmited for payment
-                        // $pay_button = '';
-                        //
-                    } elseif ($pp_deposit_system != 'zero_price_checkout' && $due_payment == 0) { // Not zero price checkout
-                        $status = $x == $count ? __('Fully Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce');
-
-                    } elseif ($pp_deposit_system != 'zero_price_checkout' && $due_payment > 0) { // Not zero price checkout
-                        $status = $payment_method ? __('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : '';
-                        if ($pp_deposit_system == 'payment_plan') {
-
-                            if (!$payment_method && $payment_term_pay_now_appear) {
-                                $pay_button = sprintf('<a href="%s" class="mep_due_pay_btn">%s</a>', $this_order->get_checkout_payment_url(), __('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce'));
-                                $due = $due == 0 ? $due_payment : $due;
-                                $payment_term_pay_now_appear = false;
-                            }
-
-                        } else {
-                            $pay_button = ($due > 0 && $x == $count) ? sprintf('<a href="%s" class="mep_due_pay_btn">%s</a>', $this_order->get_checkout_payment_url(), __('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce')) : '';
-                        }
-                    }
-
-                    if (!$payable) {
                         $pay_button = '';
-                    }
+                        $status = '';
+                        if ($pp_deposit_system == 'zero_price_checkout' && $permition_for_next_payment == 'yes' && $due_payment != 0) { // Only For zero price checkout and permmited for payment and Amount Due
+                            $pay_button = sprintf('<a href="%s" class="mep_due_pay_btn">%s</a>', $this_order->get_checkout_payment_url(), __('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce'));
+                        } elseif ($pp_deposit_system == 'zero_price_checkout' && $permition_for_next_payment == 'yes' && $due_payment == 0) { // Only For zero price checkout and permmited for payment and Amount all paid
+                            $status = 'Fully Paid';
+                        } elseif ($pp_deposit_system == 'zero_price_checkout' && $permition_for_next_payment == 'no' && $payment_method == '') { // Only For zero price checkout and Not permmited for payment
+                            // $pay_button = '';
+                            //
+                        } elseif ($pp_deposit_system != 'zero_price_checkout' && $due_payment == 0) { // Not zero price checkout
+                            $status = $x == $count ? __('Fully Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                        } elseif ($pp_deposit_system != 'zero_price_checkout' && $due_payment > 0) { // Not zero price checkout
+                            $status = $payment_method ? __('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') : '';
+                            if ($pp_deposit_system == 'payment_plan') {
 
-                    echo '<tr>';
-                    echo '<td>' . (esc_attr($x)) . '</td>';
-                    echo '<td>' . date(get_option('date_format'), strtotime($date)) . '</td>';
-                    echo '<td class="mep_style_ta_r">' . wc_price($amount) . '</td>';
-                    echo '<td class="mep_style_ta_r ' . (($due > 0 && $x == $count) ? "mep_current_last_due" : null) . '">' . wc_price(esc_html($due)) . $pay_button . '</td>';
-                    echo '<td class="mep_style_tt_upper">' . esc_html($payment_method) . '</td>';
-                    echo '<td>' . $status . '</td>';
-                    echo '</tr>';
-                    $x++;
-                endwhile;
-                wp_reset_postdata();
-                ?>
+                                if (!$payment_method && $payment_term_pay_now_appear) {
+                                    $pay_button = sprintf('<a href="%s" class="mep_due_pay_btn">%s</a>', $this_order->get_checkout_payment_url(), __('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce'));
+                                    $due = $due == 0 ? $due_payment : $due;
+                                    $payment_term_pay_now_appear = false;
+                                }
+                            } else {
+                                $pay_button = ($due > 0 && $x == $count) ? sprintf('<a href="%s" class="mep_due_pay_btn">%s</a>', $this_order->get_checkout_payment_url(), __('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce')) : '';
+                            }
+                        }
+
+                        if (!$payable) {
+                            $pay_button = '';
+                        }
+
+                        echo '<tr>';
+                        echo '<td>' . (esc_attr($x)) . '</td>';
+                        echo '<td>' . date(get_option('date_format'), strtotime($date)) . '</td>';
+                        echo '<td class="mep_style_ta_r">' . wc_price($amount) . '</td>';
+                        echo '<td class="mep_style_ta_r ' . (($due > 0 && $x == $count) ? "mep_current_last_due" : null) . '">' . wc_price(esc_html($due)) . $pay_button . '</td>';
+                        echo '<td class="mep_style_tt_upper">' . esc_html($payment_method) . '</td>';
+                        echo '<td>' . $status . '</td>';
+                        echo '</tr>';
+                        $x++;
+                    endwhile;
+                    wp_reset_postdata();
+                    ?>
                 </tbody>
             </table>
 
@@ -866,41 +855,40 @@ function mep_pp_partial_order_detail_get($order_id, $isTitle)
         ob_start();
         ?>
 
-        <?php echo($isTitle ? '<h2 class="woocommerce-column__title">' . __("Order Detail", "advanced-partial-payment-or-deposit-for-woocommerce") . '</h2>' : null); ?>
-        <table class="mepp-table mep-pp-order-detail-table woocommerce-table"
-               style="width:100%;text-align:left">
+        <?php echo ($isTitle ? '<h2 class="woocommerce-column__title">' . __("Order Detail", "advanced-partial-payment-or-deposit-for-woocommerce") . '</h2>' : null); ?>
+        <table class="mepp-table mep-pp-order-detail-table woocommerce-table" style="width:100%;text-align:left">
             <thead>
-            <tr>
-                <th><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th><?php esc_attr_e('Image', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th><?php esc_attr_e('Product Name', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th><?php esc_attr_e('Unit Price', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th><?php esc_attr_e('Quantity', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th><?php esc_attr_e('Total', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            </tr>
+                <tr>
+                    <th><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th><?php esc_attr_e('Image', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th><?php esc_attr_e('Product Name', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th><?php esc_attr_e('Unit Price', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th><?php esc_attr_e('Quantity', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th><?php esc_attr_e('Total', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                </tr>
             </thead>
             <tbody>
 
-            <?php
-            $x = 1;
-            foreach ($order->get_items() as $item):
-                $product = $item->get_product();
+                <?php
+                $x = 1;
+                foreach ($order->get_items() as $item) :
+                    $product = $item->get_product();
 
-                echo '<tr>';
-                echo '<td>' . (esc_attr($x)) . '</td>';
-                echo '<td><img class="wcpp-img-sm" src="' . wp_get_attachment_url($product->get_image_id()) . '" alt="Product Image"></td>';
-                echo '<td>' . $item->get_name() . '</td>';
-                echo '<td>' . wc_price($product->get_price()) . '</td>';
-                echo '<td>' . $item->get_quantity() . '</td>';
-                echo '<td>' . wc_price($product->get_price() * $item->get_quantity()) . '</td>';
-                echo '</tr>';
-                $x++;
-            endforeach;
-            ?>
+                    echo '<tr>';
+                    echo '<td>' . (esc_attr($x)) . '</td>';
+                    echo '<td><img class="wcpp-img-sm" src="' . wp_get_attachment_url($product->get_image_id()) . '" alt="Product Image"></td>';
+                    echo '<td>' . $item->get_name() . '</td>';
+                    echo '<td>' . wc_price($product->get_price()) . '</td>';
+                    echo '<td>' . $item->get_quantity() . '</td>';
+                    echo '<td>' . wc_price($product->get_price() * $item->get_quantity()) . '</td>';
+                    echo '</tr>';
+                    $x++;
+                endforeach;
+                ?>
             </tbody>
         </table>
 
-        <?php
+    <?php
 
         return ob_get_clean();
     }
@@ -966,7 +954,7 @@ if (!function_exists('mep_pp_deposti_type_display_name')) {
                     break;
                 case 'minimum_amount':
                     $name = 'Minimum Amount';
-                    $name = $with_value ? wc_price($cart_item['_pp_deposit_value_strict']) . ' ' . $name : $name;
+                    // $name = $with_value ? wc_price($cart_item['_pp_deposit_value_strict']) . ' ' . $name : $name;
                     break;
                 case 'payment_plan':
                     $name = 'Payment Plan';
@@ -1006,7 +994,6 @@ if (!function_exists('mep_get_next_payment_order_id')) {
         $payment_plan_data = new WP_Query($payment_plan_args);
 
         return $payment_plan_data->posts[0] ? $payment_plan_data->posts[0]->ID : null;
-
     }
 }
 
@@ -1060,7 +1047,7 @@ if (!function_exists('mep_payment_plan_list_callback')) {
         $variations_price = array();
         if ($product_type != 'mep_events' && $product_type != 'wbbm_bus' && $product_type != 'wbtm_bus' && $product_type != 'ttbm_tour') {
             $product = wc_get_product($product_id);
-            $total_price = $product->get_price();
+            $total_price = wc_get_price_including_tax($product);
 
             if ($product->is_type('variable')) {
                 // Product has variations
@@ -1077,41 +1064,39 @@ if (!function_exists('mep_payment_plan_list_callback')) {
                     }
                 }
 
-                $total_price = $product->get_price();
+                $total_price = wc_get_price_including_tax($product);
             } else {
-                $total_price = $product->get_price();
+                $total_price = wc_get_price_including_tax($product);
             }
         }
         $_pp_deposit_value = get_post_meta($product_id, '_mep_pp_deposits_value', true) ? get_post_meta($product_id, '_mep_pp_deposits_value', true) : 0;
         ob_start();
-        ?>
+    ?>
         <div class="mep-product-payment-plans" data-total-price="<?php echo esc_attr($total_price); ?>">
             <div class="mep-single-plan-wrap">
-                <input type="hidden" name="payment_plan" value="<?php echo esc_attr($deposit_type); ?>"
-                       data-percent="<?php echo esc_attr($_pp_deposit_value); ?>">
-                <?php if ($plan_ids && $deposit_type == 'payment_plan'):
+                <input type="hidden" name="payment_plan" value="<?php echo esc_attr($deposit_type); ?>" data-percent="<?php echo esc_attr($_pp_deposit_value); ?>">
+                <?php if ($plan_ids && $deposit_type == 'payment_plan') :
                     $i = 0;
-                    foreach ($plan_ids as $plan):
+                    foreach ($plan_ids as $plan) :
                         $data = get_term_meta($plan);
-                        ?>
+                ?>
                         <div>
                             <label>
-                                <input type="radio"
-                                       name="mep_payment_plan" <?php echo esc_html($i) == 0 ? "checked" : ""; ?>
-                                       value="<?php echo esc_attr($plan); ?>"/>
+                                <input type="radio" name="mep_payment_plan" <?php echo esc_html($i) == 0 ? "checked" : ""; ?> value="<?php echo esc_attr($plan); ?>" />
                                 <?php echo get_term($plan)->name; ?>
 
                             </label>
                             <span class="mep-pp-show-detail"><?php esc_attr_e('View Details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></span>
                             <?php mep_payment_plan_detail($data, $total_price); ?>
                         </div>
-                        <?php
+                    <?php
                         $i++;
                     endforeach;
-                elseif ($deposit_type == 'percent'):
+                elseif ($deposit_type == 'percent') :
                     ?><p>
-                    <strong><?php esc_attr_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                        <span class="payment_amount"></span></strong></p>
+                        <strong><?php esc_attr_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                            <span class="payment_amount"></span></strong>
+                    </p>
                 <?php
                 endif;
                 ?>
@@ -1141,12 +1126,11 @@ if (!function_exists('mep_payment_plan_detail')) {
                     $percent = $percent + $payments['plan_schedule_parcent'];
                 }
             }
-            ?>
+        ?>
             <div class="mep-single-plan plan-details">
                 <div>
                     <p><?php esc_attr_e('Payments Total', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                        <strong class="total_pp_price" data-init-total="<?php echo esc_attr($total); ?>"
-                                data-total-percent="<?php echo esc_attr($percent) + esc_attr($down_payment); ?>"></strong>
+                        <strong class="total_pp_price" data-init-total="<?php echo esc_attr($total); ?>" data-total-percent="<?php echo esc_attr($percent) + esc_attr($down_payment); ?>"></strong>
                     </p>
                 </div>
                 <div>
@@ -1156,29 +1140,29 @@ if (!function_exists('mep_payment_plan_detail')) {
                 </div>
                 <table>
                     <thead>
-                    <tr>
-                        <th><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
-                        <th><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
-                    </tr>
+                        <tr>
+                            <th><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                            <th><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <?php if ($payment_schdule):
-                        $date = date('Y-m-d');
-                        foreach ($payment_schdule as $plan):
-                            $date = mep_payment_plan_date($plan["plan_schedule_date_after"], $plan["plan_schedule_parcent_date_type"], $date);
-                            ?>
-                            <tr>
-                                <td><?php echo date(get_option('date_format'), strtotime($date)); ?></td>
-                                <td data-payment-plan="<?php echo esc_attr($plan["plan_schedule_parcent"]); ?>"></td>
-                            </tr>
+                        <?php if ($payment_schdule) :
+                            $date = date('Y-m-d');
+                            foreach ($payment_schdule as $plan) :
+                                $date = mep_payment_plan_date($plan["plan_schedule_date_after"], $plan["plan_schedule_parcent_date_type"], $date);
+                        ?>
+                                <tr>
+                                    <td><?php echo date(get_option('date_format'), strtotime($date)); ?></td>
+                                    <td data-payment-plan="<?php echo esc_attr($plan["plan_schedule_parcent"]); ?>"></td>
+                                </tr>
                         <?php
-                        endforeach;
-                    endif;
-                    ?>
+                            endforeach;
+                        endif;
+                        ?>
                     </tbody>
                 </table>
             </div>
-            <?php
+    <?php
 
             echo ob_get_clean();
         } else {
@@ -1407,41 +1391,42 @@ function wcpp_get_partial_order_data($query)
     ?>
     <table class="mepp-table wcpp-partial-order-table">
         <thead>
-        <tr>
-            <th><?php _e('Order', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            <th><?php _e('Order Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            <th><?php _e('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            <th><?php _e('Order Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            <th><?php _e('Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            <th><?php _e('Order Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            <th><?php _e('Action', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-        </tr>
+            <tr>
+                <th><?php _e('Order', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th><?php _e('Order Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th><?php _e('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th><?php _e('Order Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th><?php _e('Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th><?php _e('Order Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th><?php _e('Action', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+            </tr>
         </thead>
         <tbody>
-        <?php
-        if ($query) :
-            while ($query->have_posts()) :
-                $query->the_post();
-                $order_id = get_the_ID();
-                $order = wc_get_order($order_id);
+            <?php
+            if ($query) :
+                while ($query->have_posts()) :
+                    $query->the_post();
+                    $order_id = get_the_ID();
+                    $order = wc_get_order($order_id);
 
-                $woo_order_edit_page_url = get_admin_url() . 'post.php?post=' . $order_id . '&action=edit';
+                    $woo_order_edit_page_url = get_admin_url() . 'post.php?post=' . $order_id . '&action=edit';
 
-                echo '<tr>';
-                echo '<td>#' . $order_id . '</td>';
-                echo '<td>' . mepp_date($order->get_date_created()) . '</td>';
-                echo '<td>' . deposit_type_name($order->get_meta('_pp_deposit_system')) . '</td>';
-                echo '<td class="mep_style_ta_r">' . wc_price($order->get_meta('total_value')) . '</td>';
-                echo '<td class="mep_style_ta_r">' . wc_price($order->get_meta('deposit_value')) . '</td>';
-                echo '<td class="mep_style_ta_r">' . wc_price($order->get_meta('due_payment')) . '</td>';
-                echo '<td><div class="wcpp-partial-order-action-container">';
-                echo '<img class="wcpp-partial-order-action-loader" src="' . WCPP_PLUGIN_URL . 'asset/img/wcpp-loader.gif' . '" alt="loader image">';
-                echo '<button class="wcpp-btn mep-view-order" data-order-id="' . $order_id . '">' . __("View Order", "advanced-partial-payment-or-deposit-for-woocommerce") . '</button>';
-                echo '<a href="' . $woo_order_edit_page_url . '" target="_blank" class="wcpp-btn mep-edit-order" data-order-id="' . $order_id . '">' . __("Edit Order", "advanced-partial-payment-or-deposit-for-woocommerce") . '</a>';
-                echo '<button class="wcpp-btn mep-view-history" data-order-id="' . $order_id . '">' . __("View History", "advanced-partial-payment-or-deposit-for-woocommerce") . '</button>';
-                echo '</div></td>';
-                echo '</tr>';
-            endwhile; endif; ?>
+                    echo '<tr>';
+                    echo '<td>#' . $order_id . '</td>';
+                    echo '<td>' . mepp_date($order->get_date_created()) . '</td>';
+                    echo '<td>' . deposit_type_name($order->get_meta('_pp_deposit_system')) . '</td>';
+                    echo '<td class="mep_style_ta_r">' . wc_price($order->get_meta('total_value')) . '</td>';
+                    echo '<td class="mep_style_ta_r">' . wc_price($order->get_meta('deposit_value')) . '</td>';
+                    echo '<td class="mep_style_ta_r">' . wc_price($order->get_meta('due_payment')) . '</td>';
+                    echo '<td><div class="wcpp-partial-order-action-container">';
+                    echo '<img class="wcpp-partial-order-action-loader" src="' . WCPP_PLUGIN_URL . 'asset/img/wcpp-loader.gif' . '" alt="loader image">';
+                    echo '<button class="wcpp-btn mep-view-order" data-order-id="' . $order_id . '">' . __("View Order", "advanced-partial-payment-or-deposit-for-woocommerce") . '</button>';
+                    echo '<a href="' . $woo_order_edit_page_url . '" target="_blank" class="wcpp-btn mep-edit-order" data-order-id="' . $order_id . '">' . __("Edit Order", "advanced-partial-payment-or-deposit-for-woocommerce") . '</a>';
+                    echo '<button class="wcpp-btn mep-view-history" data-order-id="' . $order_id . '">' . __("View History", "advanced-partial-payment-or-deposit-for-woocommerce") . '</button>';
+                    echo '</div></td>';
+                    echo '</tr>';
+                endwhile;
+            endif; ?>
         </tbody>
     </table>
     <?php
@@ -1585,11 +1570,11 @@ function mep_pp_reminder_log_get($order_id)
     $reminder_log = new WP_Query($args);
     $count = $reminder_log->found_posts;
 
-    if ($count):
+    if ($count) :
         ob_start();
 
         if ($due_amount > 0 && $next_reminder_date) : // Reminder date and send now
-            ?>
+    ?>
             <div class="mepp_partial_inner_meta mepp_d_abs" style="right:2px;top:2px;margin:0">
                 <?php
                 echo $next_reminder_date;
@@ -1600,52 +1585,51 @@ function mep_pp_reminder_log_get($order_id)
 
         echo '<h2 class="woocommerce-column__title">' . __("Partial Payment Reminder log", "advanced-partial-payment-or-deposit-for-woocommerce") . '</h2>';
         ?>
-        <table class="mepp-table mep-pp-history-table woocommerce-table"
-               style="width:100%;text-align:left">
+        <table class="mepp-table mep-pp-history-table woocommerce-table" style="width:100%;text-align:left">
             <thead>
-            <tr>
-                <th style="text-align:left"><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th style="text-align:left"><?php esc_attr_e('Reminder Email Sent Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th style="text-align:left"><?php esc_attr_e('Payment Receive Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th style="text-align:left"><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-            </tr>
+                <tr>
+                    <th style="text-align:left"><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th style="text-align:left"><?php esc_attr_e('Reminder Email Sent Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th style="text-align:left"><?php esc_attr_e('Payment Receive Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                    <th style="text-align:left"><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                </tr>
             </thead>
             <tbody>
 
-            <?php
-            $x = 1;
-            while ($reminder_log->have_posts()):
-                $reminder_log->the_post();
-                $id = get_the_ID();
-                $order = wc_get_order($id);
+                <?php
+                $x = 1;
+                while ($reminder_log->have_posts()) :
+                    $reminder_log->the_post();
+                    $id = get_the_ID();
+                    $order = wc_get_order($id);
 
-                if ($order->get_status() == 'completed') {
-                    $payment_date = date(get_option('date_format') . ' H:i a', strtotime(get_post_meta($id, '_completed_date', true)));
-                }
+                    if ($order->get_status() == 'completed') {
+                        $payment_date = date(get_option('date_format') . ' H:i a', strtotime(get_post_meta($id, '_completed_date', true)));
+                    }
 
-                echo '<tr>';
-                echo '<td>' . (esc_attr($x)) . '</td>';
-                echo '<td><span>' . date(get_option('date_format') . ' H:i', $order->get_meta('_wc_pp_reminder_email_sent_date')) . '</span>';
+                    echo '<tr>';
+                    echo '<td>' . (esc_attr($x)) . '</td>';
+                    echo '<td><span>' . date(get_option('date_format') . ' H:i', $order->get_meta('_wc_pp_reminder_email_sent_date')) . '</span>';
 
-                if ($order->get_status() == 'pending') :
-                    echo '<div class="mepp-resend-conatiner">';
-                    echo '<img class="mepp-inner-loading" style="width: 25px;vertical-align: top;" src="' . WCPP_PLUGIN_URL . '/asset/img/wcpp-loader.gif" />';
-                    echo '<button class="mepp-next-reminder-send-now mepp-resen-btn" data-order-id="' . $id . '" data-order-type="child">' . __('Re-Send', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</button>';
-                    echo '</div>';
-                endif;
+                    if ($order->get_status() == 'pending') :
+                        echo '<div class="mepp-resend-conatiner">';
+                        echo '<img class="mepp-inner-loading" style="width: 25px;vertical-align: top;" src="' . WCPP_PLUGIN_URL . '/asset/img/wcpp-loader.gif" />';
+                        echo '<button class="mepp-next-reminder-send-now mepp-resen-btn" data-order-id="' . $id . '" data-order-type="child">' . __('Re-Send', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</button>';
+                        echo '</div>';
+                    endif;
 
-                echo '</td>';
-                echo '<td>' . (isset($payment_date) ? $payment_date : null) . '</td>';
-                echo '<td>' . ucfirst($order->get_status()) . '</td>';
-                echo '</tr>';
-                $x++;
-            endwhile;
-            ?>
+                    echo '</td>';
+                    echo '<td>' . (isset($payment_date) ? $payment_date : null) . '</td>';
+                    echo '<td>' . ucfirst($order->get_status()) . '</td>';
+                    echo '</tr>';
+                    $x++;
+                endwhile;
+                ?>
             </tbody>
         </table>
 
     <?php
-    else:
+    else :
         if ($due_amount > 0 && $next_reminder_date) :
             echo $next_reminder_date;
         endif;
@@ -1716,6 +1700,9 @@ function wcpp_deposit_type_switch_frontend()
     $payment_plan_id = isset($_POST['payment_plan_id']) ? $_POST['payment_plan_id'] : '';
     $default_deposit_value = (float)get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;
     $deposit_type = get_option('mepp_default_partial_type') ? get_option('mepp_default_partial_type') : 'percent';
+    if ($deposit_type !== 'payment_plan' && !$default_deposit_value) {
+        return 0;
+    }
 
     $cart = WC()->cart->cart_contents;
     foreach ($cart as $key => $item) {
@@ -1764,6 +1751,7 @@ function wcpp_deposit_type_switch_frontend()
     }
 
     WC()->cart->set_session(); // Finaly Update Cart
+    echo $deposit_type;
     exit();
 }
 
@@ -1827,7 +1815,7 @@ function mep_modal_html()
         </div>
 
     </div>
-    <?php
+<?php
 }
 
 /* Get the deposit amount
@@ -1864,7 +1852,7 @@ if (!function_exists('mepp_get_deposit_amount')) {
             $deposit_value = get_post_meta($product_id, '_mep_pp_deposits_value', true) ? get_post_meta($product_id, '_mep_pp_deposits_value', true) : 0;
             $minimum_value = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : 0;
             $deposit_type = get_post_meta($product_id, '_mep_pp_deposits_type', true) ? get_post_meta($product_id, '_mep_pp_deposits_type', true) : '';
-            if($deposit_type === 'minimum_amount') {
+            if ($deposit_type === 'minimum_amount') {
                 $deposit_value = $minimum_value;
             }
         } else {
@@ -1881,20 +1869,20 @@ if (!function_exists('mepp_get_deposit_amount')) {
 
         // Price
         if ($product_type == 'mep_events') {
-//        $product_price_total = $cart_item_data['line_total'];
+            //        $product_price_total = $cart_item_data['line_total'];
         } else {
             $product = wc_get_product($product_id);
-            $product_price_total = $product->get_price() * $quantity;
+            $product_price_total = wc_get_price_including_tax($product) * $quantity;
             if ($product->is_type('variable')) {
                 return $deposit_amount;
                 // Product has variations
                 $variation_id = sanitize_text_field($_POST['variation_id']);
                 $product = new WC_Product_Variation($variation_id);
-                $product_price_total = $product->get_price() * $quantity;
+                $product_price_total = wc_get_price_including_tax($product) * $quantity;
             }
         }
 
-        if($deposit_value) {
+        if ($deposit_value) {
             $deposit_value = (float) $deposit_value;
         } else {
             return 0;
@@ -1902,16 +1890,12 @@ if (!function_exists('mepp_get_deposit_amount')) {
 
         if ($deposit_type == 'percent') {
             $deposit_amount = ($deposit_value / 100) * $product_price_total;
-
         } elseif ($deposit_type == 'minimum_amount') {
             $deposit_amount = $is_global ? $deposit_value / $quantity : $minimum_value / $quantity;
-
         } elseif ($deposit_type == 'payment_plan') {
             $deposit_amount = 0;
-
         } else {
             $deposit_amount = $deposit_value / $quantity;
-
         }
 
         return $deposit_amount;
@@ -2044,4 +2028,57 @@ if (!function_exists('mep_esc_html')) {
         return wp_kses($string, $allow_attr);
     }
 }
-    
+
+function wcpp_is_deposit_enable_this_product($product_id)
+{
+    $is_enable = false;
+    $global_deposit_enable = get_option('mepp_enable_partial_by_default') ? get_option('mepp_enable_partial_by_default') : 'no';
+    $is_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
+    $exclude_from_global = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
+
+    if ($global_deposit_enable === 'yes' && $exclude_from_global === 'no') {
+        $is_enable = true;
+    }
+
+    if ($is_deposit_enable === 'yes' && $exclude_from_global === 'yes') {
+        $is_enable = true;
+    }
+
+    return $is_enable;
+}
+
+// For testing
+function wcpp_test()
+{
+    $args = array(
+        'post_type' => 'wcpp_payment',
+        'post_status' => 'wc-pending',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => '_wc_pp_payment_type',
+                'value' => 'last',
+                'compare' => '=',
+            )
+        )
+    );
+
+    //query for all partially-paid orders
+    $partiall_orders = new WP_Query($args);
+
+    while ($partiall_orders->have_posts()) :
+        $partiall_orders->the_post();
+        $order_id = $partiall_orders->post->ID;
+        $order = wc_get_order($order_id);
+
+        $parent_order_id = $order->get_parent_id();
+        $parent_order = wc_get_order($parent_order_id);
+        if($parent_order) {
+            if ($parent_order->get_status() !== 'partially-paid') {
+                continue;
+            }
+        }
+    endwhile;
+    wp_reset_postdata();
+}

@@ -6,10 +6,20 @@
 
         // Initial deposit type check in setting
         const deposit_type_selected = $('input[name="_pp_deposit_system"]:checked').attr('data-deposit-type');
-        if (deposit_type_selected === 'payment_plan') {
-            $('.mepp-payment-plan-option-frontend').show();
-        } else {
-            $('.mepp-payment-plan-option-frontend').hide();
+        // if (deposit_type_selected === 'payment_plan') {
+        //     $('.mepp-payment-plan-option-frontend').show();
+        // } else {
+        //     $('.mepp-payment-plan-option-frontend').hide();
+        // }
+
+        const cart_deposit_type = $('.wcpp-deposit-types input[name=_pp_deposit_system]:checked').val();
+        if(cart_deposit_type) {
+            if (deposit_type_selected === 'payment_plan') {
+                $('.mepp-payment-plan-option-frontend').show();
+            } else {
+                $('.mepp-payment-plan-option-frontend').hide();
+            }
+            mepRequestSwitchPaymentType(cart_deposit_type);
         }
     });
     $(document).on('change', '#mage_event_submit [name="option_qty[]"],#mage_event_submit [name="event_extra_service_qty[]"]', function () {
@@ -69,12 +79,13 @@
         let variation_id = parseInt(parent.find('[name="variation_id"]').val());
         if (parent.find('[name="variation_id"]').length > 0 && variation_id > 0) {
             let product = parent.data('product_variations');
-
-            product.forEach(function (item) {
-                if (parseInt(item.variation_id) === variation_id) {
-                    total_price = qty * parseFloat(item.display_price);
-                }
-            });
+            if (Array.isArray(product)) {
+                product.forEach(function (item) {
+                    if (parseInt(item.variation_id) === variation_id) {
+                        total_price = qty * parseFloat(item.display_price);
+                    }
+                });
+            }
         } else {
             let price = parseFloat(parent.find('.mep-product-payment-plans').data('total-price'));
             total_price = price * qty;
@@ -196,7 +207,7 @@
                                     $this.parents('tr').next().find('td').html(data.with_symbol);
                                     $this.parents('tr').next().find('td').append('<input type="hidden" name="manually_due_amount" value="' + data.amount + '" />')
 
-                                    mepp_ajax_relaod();
+                                    mepp_ajax_reload();
                                 }
 
                             }
@@ -270,7 +281,14 @@
                 payment_plan_id
             },
             success: function (data) {
-                mepp_ajax_relaod();
+                mepp_ajax_reload();
+                setTimeout(function() {
+                    if (data === 'payment_plan' && payment_type !== 'check_full') {
+                        $('.mepp-payment-plan-option-frontend').show();
+                    } else {
+                        $('.mepp-payment-plan-option-frontend').hide();
+                    }
+                },2000)
             }
         })
     }
@@ -459,7 +477,7 @@
         return price_text;
     }
 
-    function mepp_ajax_relaod() {
+    function mepp_ajax_reload() {
         jQuery('body').trigger('update_checkout'); //  for checkout page
         // For cart page
         const cart_update_btn = jQuery('button[name="update_cart"]');

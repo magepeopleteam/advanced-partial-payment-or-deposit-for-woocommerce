@@ -35,6 +35,11 @@ if (!class_exists('WCPP_Quick_View')) {
 
         public function wcpp_quick_view_for_shop_loop_item($html, $product){
             $product_id  = $product->get_id();
+            // Check partial is enable
+            if(!wcpp_is_deposit_enable_this_product($product_id)) {
+                return $html;
+            }
+            
             $mepp_text_translation_string_pay_deposit = get_option('mepp_text_translation_string_pay_deposit');
             if (! $product->is_type( 'variable' ) ) {
                 $html  		.= '<a class="button wcpp_quick_view_btn wcpp_qv_btn" data-id="'.$product_id.'">';

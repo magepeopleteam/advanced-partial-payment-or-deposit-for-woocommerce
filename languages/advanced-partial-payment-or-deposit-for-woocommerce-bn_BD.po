@@ -1,0 +1,761 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Project-Id-Version: Advanced Partial/Deposit Payment For Woocommerce\n"
+"POT-Creation-Date: 2022-02-23 22:16+0600\n"
+"PO-Revision-Date: 2022-07-19 06:06+0000\n"
+"Last-Translator: Shohan\n"
+"Language-Team: Bengali (Bangladesh)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: advanced_partial_payment.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: bn_BD\n"
+"X-Loco-Version: 2.6.2; wp-6.0.1"
+
+#: inc/functions.php:502
+msgid " Only"
+msgstr " শুধুমাত্র"
+
+#. translators: %s: human-readable time difference
+#: src/Deposits_View.php:133
+#, php-format
+msgctxt "%s = human-readable time difference"
+msgid "%s ago"
+msgstr "%s আগে"
+
+#: inc/meta.php:49 inc/meta.php:57
+msgid "10"
+msgstr "10"
+
+#: inc/functions.php:1349
+msgid "Action"
+msgstr "কর্ম"
+
+#: inc/class-welcome-page.php:60
+msgid "Admin can set when stock will be reduced."
+msgstr "অ্যাডমিন সেট করতে পারেন যখন স্টক হ্রাস করা হবে."
+
+#. Plugin Name of the plugin/theme
+msgid "Advanced Partial/Deposit Payment For Woocommerce"
+msgstr "উন্নত আংশিক/আমানত জন্য পেমেন্ট, ওয়ার্ডপ্রেস"
+
+#: advanced_partial_payment.php:68
+msgid ""
+"Advanced Partial/Deposit Payment For Woocommerce is Dependent on Woocommerce"
+msgstr ""
+"উন্নত আংশিক/আমানত জন্য পেমেন্ট, ওয়ার্ডপ্রেস উপর নির্ভরশীল ওয়ার্ডপ্রেস"
+
+#: inc/payment_history_cpt.php:12 inc/payment_history_cpt.php:13
+msgctxt "advanced-partial-payment-or-deposit-for-woocommerce"
+msgid "Payment History"
+msgstr "পেমেন্ট ইতিহাস"
+
+#: inc/class-welcome-page.php:59
+msgid "Allow customer to pay partial in cart or checkout section: "
+msgstr "অনুমতি গ্রাহক দিতে আংশিক কার্ট বা চেকআউট অধ্যায়: "
+
+#: inc/admin_settings.php:146
+msgid "Allow Regular product and Partial product in Cart"
+msgstr "অনুমতি নিয়মিত পণ্য এবং আংশিক পণ্য কার্ট"
+
+#: inc/admin_settings.php:153
+msgid "Allow Regular product and Partial product in Cart?"
+msgstr "অনুমতি নিয়মিত পণ্য এবং আংশিক পণ্য কার্ট?"
+
+#: inc/functions.php:724 inc/functions.php:1099 src/Cart.php:283
+msgid "Amount"
+msgstr "পরিমাণ"
+
+#: inc/class-welcome-page.php:32
+msgid "Basic"
+msgstr "মৌলিক"
+
+#: inc/class-welcome-page.php:52
+msgid "BUY PRO"
+msgstr "প্রো কিনতে"
+
+#: inc/class-welcome-page.php:55
+msgid "Custom amount: "
+msgstr "কাস্টম পরিমাণ: "
+
+#: inc/wcpp_payment.php:17
+msgctxt "custom post type setting"
+msgid "Edit Partial Payment"
+msgstr "সম্পাদনা আংশিক পেমেন্ট"
+
+#: inc/wcpp_payment.php:19
+msgctxt "custom post type setting"
+msgid "Order"
+msgstr "যাতে"
+
+#: src/Deposits_View.php:74
+msgid "Date"
+msgstr "আপলোড"
+
+#: inc/class_admin_menu.php:187
+msgid "Default"
+msgstr "ডিফল্ট"
+
+#: inc/class_admin_menu.php:246
+msgid "Default deposit type."
+msgstr "ডিফল্ট আমানত টাইপ."
+
+#: inc/class_admin_menu.php:251
+msgid "Default Partial Amount"
+msgstr "ডিফল্ট আংশিক পরিমাণ"
+
+#: inc/class_admin_menu.php:238
+msgid "Default Partial Type"
+msgstr "ডিফল্ট আংশিক টাইপ"
+
+#: inc/class_admin_menu.php:257
+msgid "Default partial value."
+msgstr "ডিফল্ট আংশিক মান."
+
+#: inc/functions.php:88 inc/meta.php:136 src/Cart.php:275 src/Checkout.php:277
+#: src/Checkout.php:297 src/Deposits_View.php:76 src/Order.php:131
+msgid "Deposit"
+msgstr "আমানত"
+
+#: inc/functions.php:1051
+msgid "Deposit Amount :"
+msgstr "আমানত পরিমাণ :"
+
+#: inc/class_admin_menu.php:472 inc/functions.php:1345 src/Cart.php:275
+#: src/Checkout.php:101 src/Checkout.php:297
+msgid "Deposit Type"
+msgstr "আমানত টাইপ"
+
+#: inc/meta.php:34 inc/meta.php:175
+msgid "Deposit type"
+msgstr "আমানত টাইপ"
+
+#: inc/meta.php:45
+msgid "Deposit Value"
+msgstr "আমানত মান"
+
+#: inc/meta.php:187
+msgid "Deposit Value *"
+msgstr "আমানত মান *"
+
+#: src/Order.php:158
+msgid "Deposit:"
+msgstr "আমানত:"
+
+#: src/Deposits_View.php:73
+msgid "Desposit Order"
+msgstr "Desposit অর্ডার"
+
+#: inc/class-welcome-page.php:40
+msgid "Documentation"
+msgstr "ডকুমেন্টেশন"
+
+#: inc/functions.php:725 src/Deposits_View.php:77
+msgid "Due"
+msgstr "কারণে"
+
+#: src/Order.php:139
+msgid "Due Amount"
+msgstr "কারণে পরিমাণ"
+
+#: src/Cart.php:275 src/Checkout.php:281 src/Checkout.php:297
+msgid "Due Payment"
+msgstr "পেমেন্ট কারণে"
+
+#: inc/functions.php:215 inc/functions.php:216 src/Order.php:113
+#: src/Order.php:158
+msgid "Due Payment:"
+msgstr "কারণে পেমেন্ট:"
+
+#: inc/templates/woocommerce/checkout/form-pay.php:79
+msgid "Due:"
+msgstr "কারণে:"
+
+#: inc/functions.php:1372
+msgid "Edit Order"
+msgstr "সম্পাদনা করার জন্য"
+
+#: inc/meta.php:24 inc/meta.php:166
+msgid "Enable Deposit"
+msgstr "সক্রিয় আমানত"
+
+#: inc/meta.php:25
+msgid "Enable deposits feature for this event?."
+msgstr "সক্রিয় আমানত বৈশিষ্ট্য এই ঘটনার জন্য?."
+
+#: inc/meta.php:168
+msgid "Enable deposits feature for this product."
+msgstr "সক্রিয় আমানত বৈশিষ্ট্য এই পণ্যের জন্য."
+
+#: inc/meta.php:29
+msgid "Enable deposits feature."
+msgstr "সক্রিয় আমানত বৈশিষ্ট্য."
+
+#: inc/class_admin_menu.php:225
+msgid "Enable Partial By Default"
+msgstr "সক্রিয় আংশিক ডিফল্ট দ্বারা"
+
+#: inc/meta.php:54
+msgid ""
+"Enter a minimum value. This is the Minimum Payment Amount of this Deposit "
+"Type"
+msgstr "লিখুন একটি সর্বনিম্ন মান. এই সর্বনিম্ন পেমেন্ট পরিমাণ, এই আমানত টাইপ"
+
+#: inc/meta.php:201
+msgid ""
+"Enter a minimum value. This is the Minimum Payment Amount of this Deposit "
+"Type. Only Number allow."
+msgstr ""
+"লিখুন একটি সর্বনিম্ন মান. এই সর্বনিম্ন পেমেন্ট পরিমাণ, এই আমানত টাইপ. "
+"শুধুমাত্র সংখ্যা অনুমতি দেয়."
+
+#: inc/meta.php:191
+msgid "Enter the value for deposit. only number allow."
+msgstr "প্রবেশ মূল্য আমানত জন্য. শুধুমাত্র সংখ্যা অনুমতি দেয়."
+
+#: inc/meta.php:46
+msgid ""
+"Enter the value for deposit. only number allow. If you select User Custom "
+"Amount then this value will be the minimum amount of the value."
+msgstr ""
+"প্রবেশ মূল্য আমানত জন্য. শুধুমাত্র সংখ্যা অনুমতি দেয়. আপনি নির্বাচন করা হলে,"
+" ব্যবহারকারী কাস্টম পরিমাণ তারপর এই মান হতে হবে, সর্বনিম্ন পরিমাণ, মান."
+
+#: inc/meta.php:157
+msgid "Exclude this product"
+msgstr "এই পণ্য অগ্রাহ্য"
+
+#: inc/meta.php:159
+msgid "Exclude this product from global deposit setting."
+msgstr "অগ্রাহ্য থেকে এই পণ্য গ্লোবাল আমানত সেটিং."
+
+#: inc/class_admin_menu.php:243 inc/class_admin_menu.php:476 inc/meta.php:40
+#: inc/meta.php:179
+msgid "Fixed Amount"
+msgstr "নির্দিষ্ট পরিমাণ"
+
+#. translators: 1: first name 2: last name
+#: inc/class-wcpp-payment.php:518 inc/class-wcpp-payment.php:533
+#, php-format
+msgctxt "full name"
+msgid "%1$s %2$s"
+msgstr "%1$s %2$s"
+
+#: inc/class_admin_menu.php:209 inc/functions.php:514 src/Checkout.php:107
+msgid "Full Payment"
+msgstr "সম্পূর্ণ পেমেন্ট"
+
+#: inc/functions.php:754
+msgid "Fully Paid"
+msgstr "পুরোপুরি দেওয়া"
+
+#: inc/class_admin_menu.php:183
+msgid "General"
+msgstr "সাধারণ"
+
+#: inc/class-welcome-page.php:42
+msgid "Here any label change or translation text can be added."
+msgstr "এখানে কোন লেবেল পরিবর্তন বা অনুবাদ টেক্সট যোগ করা যেতে পারে."
+
+#: inc/class-welcome-page.php:39
+msgid "Here you can enable deposit add deposit type and enter deposit amount."
+msgstr ""
+"এখানে আপনি সক্রিয় করতে পারেন আমানত যোগ আমানত টাইপ করুন এবং লিখুন, আমানত "
+"পরিমাণ."
+
+#. Plugin URI of the plugin/theme
+msgid "http://mage-people.com"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.mage-people.com/"
+msgstr ""
+
+#: inc/class_admin_menu.php:233
+msgid ""
+"If \"yes\", then deposit partial will be enabled globaly. <br> That means "
+"all the products partial enable by default."
+msgstr ""
+
+#: inc/class_admin_menu.php:270
+msgid ""
+"If value is \"checkout\" then partial option show on checkout page instead "
+"of product page."
+msgstr ""
+"যদি মান হয় \"চেকআউট\" তারপর আংশিক বিকল্প প্রদর্শন চেকআউট পৃষ্ঠায় পরিবর্তে "
+"পণ্য পৃষ্ঠা."
+
+#: inc/functions.php:813
+msgid "Image"
+msgstr "ইমেজ"
+
+#: inc/class-welcome-page.php:58
+msgid ""
+"In pro version there is a reminder system. Admin can setup when payment "
+"reminder will be sent and reminder history log will be added."
+msgstr ""
+"প্রো সংস্করণ আছে, একটি অনুস্মারক সিস্টেম. অ্যাডমিন সেটআপ করতে পারেন যখন, "
+"পেমেন্ট অনুস্মারক পাঠানো হবে এবং অনুস্মারক ইতিহাস লগ যোগ করা হবে."
+
+#: inc/class-welcome-page.php:55
+msgid ""
+"It can be enabled with minimum custom amount, customer can by paying any "
+"amount for partial payment order."
+msgstr ""
+"এটি সক্রিয় করা যাবে সর্বনিম্ন সঙ্গে কাস্টম পরিমাণ করতে পারেন গ্রাহক পরিশোধ "
+"করে কোন পরিমাণ জন্য আংশিক পেমেন্ট অর্ডার."
+
+#: inc/admin_settings.php:93 inc/class_admin_menu.php:310
+msgid "Label for text: Deposit"
+msgstr "লেবেল জন্য টেক্সট: আমানত"
+
+#: inc/admin_settings.php:125 inc/class_admin_menu.php:346
+msgid "Label for text: Deposit Type"
+msgstr "লেবেল জন্য টেক্সট: আমানত টাইপ"
+
+#: inc/admin_settings.php:101 inc/class_admin_menu.php:319
+msgid "Label for text: Due Amount"
+msgstr "লেবেল জন্য টেক্সট: কারণে পরিমাণ"
+
+#: inc/admin_settings.php:117 inc/class_admin_menu.php:337
+msgid "Label for text: Due Payment"
+msgstr "লেবেল জন্য টেক্সট: কারণে পেমেন্ট"
+
+#: inc/admin_settings.php:77 inc/class_admin_menu.php:292
+msgid "Label for text: Full Payment"
+msgstr "লেবেল লেখার জন্য: পূর্ণ পেমেন্ট"
+
+#: inc/admin_settings.php:109
+msgid "Label for text: Partially Paid"
+msgstr "লেবেল জন্য টেক্সট: আংশিকভাবে দেওয়া"
+
+#: inc/admin_settings.php:69 inc/class_admin_menu.php:283
+#: inc/class_admin_menu.php:328
+msgid "Label for text: Pay Deposit"
+msgstr "লেবেল জন্য টেক্সট: বেতন আমানত"
+
+#: inc/admin_settings.php:139 inc/class_admin_menu.php:364
+msgid "Label for text: Pay Due Payment"
+msgstr "লেবেল জন্য টেক্সট: পে কারণে পেমেন্ট"
+
+#: inc/admin_settings.php:85 inc/class_admin_menu.php:301
+msgid "Label for text: Payments Total"
+msgstr "লেবেল জন্য টেক্সট: পেমেন্ট মোট"
+
+#: inc/admin_settings.php:132 inc/class_admin_menu.php:355
+msgid "Label for text: To Pay"
+msgstr "লেবেল জন্য টেক্সট: দিতে"
+
+#. Author of the plugin/theme
+msgid "MagePeople Team"
+msgstr "MagePeople দল"
+
+#: inc/class_admin_menu.php:477
+msgid "Minimum Amount"
+msgstr "সর্বনিম্ন পরিমাণ"
+
+#: inc/meta.php:53
+msgid "Minimum Value"
+msgstr "সর্বনিম্ন মান"
+
+#: inc/meta.php:197
+msgid "Minimum Value *"
+msgstr "সর্বনিম্ন মান *"
+
+#: inc/class-welcome-page.php:53
+msgid "New deposit type will be added"
+msgstr "নতুন আমানত টাইপ যোগ করা হবে"
+
+#: inc/functions.php:1495
+msgid "Next Reminder Date"
+msgstr "পরবর্তী অনুস্মারক তারিখ"
+
+#: inc/admin_settings.php:149 inc/class_admin_menu.php:230
+msgid "No"
+msgstr "কোন"
+
+#: inc/functions.php:1418
+msgid "No data found!"
+msgstr "কোন তথ্য পাওয়া যায় নি!"
+
+#: inc/functions.php:1343
+msgid "Order"
+msgstr "যাতে"
+
+#: inc/functions.php:1346
+msgid "Order Amount"
+msgstr "অর্ডার পরিমাণ"
+
+#: inc/functions.php:1344
+msgid "Order Date"
+msgstr "যাতে আপলোড"
+
+#: inc/functions.php:807
+msgid "Order Detail"
+msgstr "অর্ডার বিস্তারিত"
+
+#: inc/functions.php:1348
+msgid "Order Due"
+msgstr "অর্ডার কারণে"
+
+#: inc/class_admin_menu.php:468
+msgid "Order No"
+msgstr "যাতে কোন"
+
+#: inc/wcpp_payment.php:58
+msgctxt "Order status"
+msgid "Partially Paid"
+msgstr "আংশিকভাবে দেওয়া"
+
+#: src/Order.php:105
+msgid "Paid:"
+msgstr "দেওয়া:"
+
+#: inc/functions.php:33
+msgid "Partial"
+msgstr "আংশিক"
+
+#: inc/class_admin_menu.php:416
+msgid "Partial Order"
+msgstr "আংশিক আদেশ"
+
+#: inc/class-welcome-page.php:43
+msgid "Partial Order: Here all partial order will be listed with history."
+msgstr "আংশিক আদেশ: এখানে সব আংশিক আদেশ করা হবে, সঙ্গে তালিকাভুক্ত ইতিহাস."
+
+#: inc/class_admin_menu.php:208 inc/meta.php:74 inc/wcpp_payment.php:16
+msgid "Partial Payment"
+msgstr "আংশিক পেমেন্ট"
+
+#: inc/class-wcpp-payment.php:622
+msgid "Partial Payment amount:"
+msgstr "আংশিক পেমেন্ট পরিমাণ:"
+
+#: src/Checkout.php:205 src/Checkout.php:457
+#, php-format
+msgid "Partial Payment for order %s"
+msgstr "আংশিক পেমেন্ট করার জন্য %s"
+
+#: inc/meta.php:14
+msgid "Partial Payment Info"
+msgstr "আংশিক পেমেন্ট তথ্য"
+
+#: inc/functions.php:1533
+msgid "Partial Payment Reminder log"
+msgstr "আংশিক পেমেন্ট অনুস্মারক লগ"
+
+#: inc/class-welcome-page.php:58
+msgid "Partial Payment Reminder: "
+msgstr "আংশিক পেমেন্ট অনুস্মারক: "
+
+#: inc/admin-order-detail.php:23 inc/wcpp_payment.php:15
+#: inc/wcpp_payment.php:20
+msgid "Partial Payments"
+msgstr "আংশিক পেমেন্ট"
+
+#: inc/class_admin_menu.php:106
+msgid "Partial Setting"
+msgstr "আংশিক সেটিং"
+
+#: inc/admin_settings.php:27
+msgid "Partial/Deposit"
+msgstr "আংশিক/আমানত"
+
+#: inc/admin_settings.php:63
+msgid "Partial/Deposit Settings"
+msgstr "আংশিক/আমানত সেটিংস"
+
+#: src/Checkout.php:962
+msgid "Partially Paid"
+msgstr "আংশিকভাবে দেওয়া"
+
+#: inc/wcpp_payment.php:64
+#, php-format
+msgid "Partially Paid <span class=\"count\">(%s)</span>"
+msgid_plural "Partially Paid <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/functions.php:754 inc/functions.php:757
+msgid "Partialy Paid"
+msgstr "Partialy দেওয়া"
+
+#: inc/functions.php:478 src/Checkout.php:114
+msgid "Pay Deposit"
+msgstr "বেতন আমানত"
+
+#: inc/functions.php:1091
+msgid "Pay Deposit:"
+msgstr "বেতন আমানত:"
+
+#: inc/functions.php:747 inc/functions.php:761 inc/functions.php:767
+msgid "Pay Now"
+msgstr "পে এখন"
+
+#: inc/class-welcome-page.php:56
+msgid ""
+"Payment can be done by monthly week, or yearly or any duration. It is mainly "
+"will work as installment payment."
+msgstr ""
+"পেমেন্ট দ্বারা সম্পন্ন করা যেতে পারে, মাসিক, সপ্তাহ, বা বাত্সরিক বা কোন "
+"সময়কাল. এটি প্রধানত হিসাবে কাজ করবে কিস্তি পেমেন্ট."
+
+#: inc/functions.php:723 inc/functions.php:1098 src/Cart.php:283
+msgid "Payment Date"
+msgstr "পেমেন্ট তারিখ"
+
+#: inc/functions.php:717
+msgid "Payment history"
+msgstr "পেমেন্ট ইতিহাস"
+
+#: inc/functions.php:726
+msgid "Payment Method"
+msgstr "পেমেন্ট পদ্ধতি"
+
+#: inc/class_admin_menu.php:478
+msgid "Payment Plan"
+msgstr "পেমেন্ট পরিকল্পনা"
+
+#: src/Checkout.php:118
+msgid "Payment plan"
+msgstr "পেমেন্ট পরিকল্পনা"
+
+#: inc/meta.php:61 inc/meta.php:264
+msgid "Payment plan(s)"
+msgstr "পেমেন্ট পরিকল্পনা(গুলি)"
+
+#: inc/class-welcome-page.php:56
+msgid "Payment Plan: "
+msgstr "পেমেন্ট পরিকল্পনা: "
+
+#: inc/functions.php:1541
+msgid "Payment Receive Date"
+msgstr "পেমেন্ট পাবেন, আপলোড"
+
+#: inc/functions.php:1085
+msgid "Payments Total"
+msgstr "পেমেন্ট মোট"
+
+#: inc/class_admin_menu.php:242 inc/class_admin_menu.php:475 inc/meta.php:39
+#: inc/meta.php:178
+msgid "Percentage of Amount"
+msgstr "শতকরা পরিমাণ"
+
+#: inc/class-welcome-page.php:25
+msgid "PRO"
+msgstr "প্রো"
+
+#: inc/class-welcome-page.php:33
+msgid "Pro version"
+msgstr "প্রো সংস্করণ"
+
+#: inc/templates/woocommerce/checkout/form-pay.php:27
+msgid "Product"
+msgstr "পণ্য"
+
+#: inc/class_admin_menu.php:267
+msgid "Product Detail"
+msgstr "পণ্যের বিস্তারিত"
+
+#: inc/functions.php:814
+msgid "Product Name"
+msgstr "পণ্যের নাম"
+
+#: inc/functions.php:816
+msgid "Quantity"
+msgstr "পরিমাণ"
+
+#: inc/functions.php:1565
+msgid "Re-Send"
+msgstr "পুনরায় পাঠান"
+
+#: inc/functions.php:1540
+msgid "Reminder Email Sent Date"
+msgstr "অনুস্মারক ইমেল পাঠানো আপলোড"
+
+#: inc/class_admin_menu.php:383
+msgid "Save"
+msgstr "সংরক্ষণ করুন"
+
+#: inc/wcpp_payment.php:18
+msgid "Search Partial Payments"
+msgstr "অনুসন্ধান আংশিক পেমেন্ট"
+
+#: inc/class_admin_menu.php:474
+msgid "Select Deposit Type"
+msgstr "নির্বাচন আমানত টাইপ"
+
+#: src/Checkout.php:120
+msgid "Select one"
+msgstr "নির্বাচন এক"
+
+#: inc/meta.php:265
+msgid "Selected payment plan(s) will be available for customers to choose from"
+msgstr ""
+"নির্বাচিত পেমেন্ট পরিকল্পনা(গুলি) জন্য উপলব্ধ করা হবে, গ্রাহকদের, থেকে পছন্দ "
+"করে নিন"
+
+#: inc/functions.php:1497
+msgid "Send Now"
+msgstr "এখন পাঠাতে"
+
+#: src/Cart.php:282
+msgid "Show detail"
+msgstr "প্রদর্শন বিস্তারিত"
+
+#: inc/class_admin_menu.php:263
+msgid "Show Partial Option"
+msgstr "শো আংশিক বিকল্প"
+
+#: inc/functions.php:722 inc/functions.php:812 inc/functions.php:1539
+msgid "Sl."
+msgstr "শ্রীলঙ্কা."
+
+#: inc/templates/woocommerce/checkout/form-pay.php:96
+msgid ""
+"Sorry, it seems that there are no available payment methods for your "
+"location. Please contact us if you require assistance or wish to make "
+"alternate arrangements."
+msgstr ""
+"দুঃখিত, এটা মনে আছে যে কোন উপলব্ধ পেমেন্ট পদ্ধতি জন্য আপনার অবস্থান. দয়া "
+"করে আমাদের সাথে যোগাযোগ যদি আপনার সহায়তার প্রয়োজন বা করতে চান, বিকল্প "
+"ব্যবস্থা."
+
+#: inc/functions.php:727 inc/functions.php:1542 src/Deposits_View.php:75
+msgid "Status"
+msgstr "অবস্থা"
+
+#: inc/class_admin_menu.php:204
+msgid "Stock reduce on"
+msgstr "স্টক কমাতে"
+
+#: inc/class_admin_menu.php:211
+msgid "Stock reduce on which payment?"
+msgstr "স্টক কমাতে যা পেমেন্ট?"
+
+#: inc/class-welcome-page.php:60
+msgid "Stock Reduce option: "
+msgstr "স্টক কমাতে বিকল্প: "
+
+#: inc/class-welcome-page.php:59
+msgid ""
+"This is mostly unique feature admin can enable option to pay any amount from "
+"cart page directly to confirm booking."
+msgstr ""
+"এই বেশিরভাগই অনন্য বৈশিষ্ট্য অ্যাডমিন সক্রিয় করতে পারেন অর্থ প্রদান করার "
+"বিকল্প কোন পরিমাণ থেকে কার্ট পাতা সরাসরি বুকিং কনফার্ম করার জন্য."
+
+#. Description of the plugin/theme
+msgid ""
+"This plugin will add Partial Payment System in the Woocommerce Plugin its "
+"also support Woocommerce Event Manager Plugin."
+msgstr ""
+"এই প্লাগইন যোগ হবে, আংশিক পেমেন্ট সিস্টেম, ওয়ার্ডপ্রেস প্লাগইন, তার সমর্থন, "
+"ওয়ার্ডপ্রেস ইভেন্ট ম্যানেজার প্লাগইন."
+
+#: inc/templates/woocommerce/checkout/form-pay.php:72 src/Order.php:109
+msgid "To Pay:"
+msgstr "দিতে:"
+
+#: inc/functions.php:817 src/Deposits_View.php:78
+msgid "Total"
+msgstr "মোট"
+
+#: inc/functions.php:1347
+msgid "Total Paid"
+msgstr "মোট প্রদত্ত"
+
+#: src/Order.php:101
+msgid "Total:"
+msgstr "মোট:"
+
+#: inc/templates/woocommerce/checkout/form-pay.php:29
+msgid "Totals"
+msgstr "সমগ্র"
+
+#: inc/class_admin_menu.php:191
+msgid "Translation"
+msgstr "অনুবাদ"
+
+#: inc/functions.php:815
+msgid "Unit Price"
+msgstr "একক মূল্য"
+
+#: inc/class_admin_menu.php:408
+msgid "Upgrade to Pro"
+msgstr "প্রো আপগ্রেড"
+
+#: inc/class_admin_menu.php:395
+msgid "Use our Premium Features Now"
+msgstr "ব্যবহার আমাদের প্রিমিয়াম বৈশিষ্ট্য এখন"
+
+#: inc/class-welcome-page.php:44
+msgid "Video Tutorial"
+msgstr "ভিডিও টিউটোরিয়াল"
+
+#: inc/functions.php:1043
+msgid "View Details"
+msgstr "বিস্তারিত দেখুন"
+
+#: inc/functions.php:1373
+msgid "View History"
+msgstr "দেখুন ইতিহাস"
+
+#: inc/functions.php:1371
+msgid "View Order"
+msgstr "আদেশ দেখুন"
+
+#: inc/functions.php:583
+msgid ""
+"We detected that your cart has Deposit products. Please remove them before "
+"being able to add this product."
+msgstr ""
+"আমরা সনাক্ত যে আপনার কার্ট হয়েছে, আমানত পণ্য. দয়া করে মুছে ফেলার আগে তাদের "
+"যুক্ত করতে সক্ষম হচ্ছে এই পণ্য."
+
+#: inc/functions.php:589
+msgid ""
+"We detected that your cart has Regular products. Please remove them before "
+"being able to add this product."
+msgstr ""
+"আমরা সনাক্ত যে আপনার কার্ট হয়েছে, নিয়মিত পণ্য. দয়া করে মুছে ফেলার আগে "
+"তাদের যুক্ত করতে সক্ষম হচ্ছে এই পণ্য."
+
+#: inc/class-welcome-page.php:17
+msgid "Welcome"
+msgstr "স্বাগতম"
+
+#: inc/class-welcome-page.php:30
+msgid "Welcome to Advanced Partial/Deposit Payment For Woocommerce"
+msgstr "স্বাগতম উন্নত আংশিক/আমানত জন্য পেমেন্ট, ওয়ার্ডপ্রেস"
+
+#: inc/class-welcome-page.php:37
+msgid ""
+"Welcome to Advanced Partial/Deposit Payment For Woocommerce Plugin Guideline"
+msgstr "স্বাগতম উন্নত আংশিক/আমানত পেমেন্ট, ওয়ার্ডপ্রেস প্লাগইন জন্য গাইডলাইন"
+
+#: inc/class-welcome-page.php:51
+msgid ""
+"Welcome to Advanced Partial/Deposit Payment For Woocommerce PRO Plugin "
+"Guideline"
+msgstr ""
+"স্বাগতম উন্নত আংশিক/আমানত জন্য পেমেন্ট প্রো ওয়ার্ডপ্রেস প্লাগইন গাইডলাইন"
+
+#: inc/class-welcome-page.php:16
+msgid "Welcome to WCPP"
+msgstr "স্বাগতম WCPP"
+
+#: inc/admin_settings.php:150 inc/class_admin_menu.php:231
+msgid "Yes"
+msgstr "হ্যাঁ"

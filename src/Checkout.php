@@ -55,7 +55,7 @@ class MEP_PP_Checkout
         }
         $default_deposit_type = get_option('mepp_default_partial_type') ? get_option('mepp_default_partial_type') : 'percent';
         $default_deposit_value = get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;
-        if(!$default_deposit_value) {
+        if( $default_deposit_type !== 'payment_plan' && !$default_deposit_value) {
             return 0;
         }
 
@@ -74,12 +74,15 @@ class MEP_PP_Checkout
         }
 
         $cart = WC()->cart->cart_contents;
-        $deposit_type = 'check_full';
+        $global_deposit_enable = get_option('mepp_enable_partial_by_default') ? get_option('mepp_enable_partial_by_default') : 'no';
+        $deposit_type = $global_deposit_enable == 'yes' ? 'check_pp_deposit' : 'check_full';
         $cart_payment_plan_id = '';
         // echo '<pre>';print_r($cart);die;
         foreach ($cart as $item) {
             if (isset($item['_pp_deposit_system'])) {
-                $deposit_type = $item['_pp_deposit_system'];
+                if(isset($item['_pp_deposit_type'])) {
+                    $deposit_type = $item['_pp_deposit_type'];
+                }
                 $cart_payment_plan_id = isset($item['_pp_deposit_payment_plan_id']) ? $item['_pp_deposit_payment_plan_id'] : '';
 
                 if(!isset($item['_pp_deposit_setting_from'])) {
@@ -112,14 +115,14 @@ class MEP_PP_Checkout
                 <?php if ($isForcePartialPayment !== 'yes') : ?>
                     <div class="wcpp-input-group">
                         <input type="radio" name="_pp_deposit_system" value="check_full"
-                               id="check_full" <?php echo $deposit_type === '' || $deposit_type === 'check_full' ? "checked" : "" ?>>
+                               id="check_full" <?php echo $deposit_type == 'check_full' ? "checked" : "" ?>>
                         <label for="check_full"><?php _e('Full Payment', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
                     </div>
                 <?php endif; ?>
                 <div class="wcpp-input-group">
                     <input type="radio" name="_pp_deposit_system" value="check_pp_deposit"
                            data-deposit-type="<?php echo $default_deposit_type; ?>"
-                           id="check_pp_deposit" <?php echo $deposit_type !== 'check_full' && $deposit_type !== '' ? "checked" : "" ?>>
+                           id="check_pp_deposit" <?php echo $deposit_type != 'check_full' ? "checked" : "" ?>>
                     <label for="check_pp_deposit"><?php _e('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
                 </div>
                 <?php if ($default_deposit_type === 'payment_plan') : ?>
@@ -331,6 +334,10 @@ class MEP_PP_Checkout
         if (apply_filters('dfwc_disable_adjust_order', false)) {
             return;
         }
+
+        // if ($order->get_status() == 'pending') {
+        //     return;
+        // }
 
         // Get order total
         $total = WC()->cart->get_total('f');

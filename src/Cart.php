@@ -118,12 +118,12 @@ class MEP_PP_Cart
             $product_price_total = $cart_item_data['line_total'];
         } else {
             $product = wc_get_product($product_id);
-            $product_price_total = $product->get_price() * (int)sanitize_text_field($quantity);
+            $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
             if ($product->is_type('variable')) {
                 // Product has variations
                 $variation_id = sanitize_text_field($_POST['variation_id']);
                 $product = new WC_Product_Variation($variation_id);
-                $product_price_total = $product->get_price() * (int)sanitize_text_field($quantity);
+                $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
             }
         }
         
@@ -161,7 +161,7 @@ class MEP_PP_Cart
             // Partial Option Page
             $partial_option_page = apply_filters('mepp_partial_option_for_page', 'product_detail');
             if ($partial_option_page === 'checkout') {
-                $cart_item_data['_pp_deposit_system'] = 'check_full';
+                $cart_item_data['_pp_deposit_system'] = '';
                 $cart_item_data['_pp_deposit_setting_from'] = $setting_from;
                 return $cart_item_data;
             }
