@@ -1,0 +1,54 @@
+2022-08-24 13:08:19 PM:: load partial option in product page
+Called from ::adjust_order
+********************************************************************
+2022-08-24 13:09:56 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:20:02 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:22:09 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:22:54 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:23:36 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:23:48 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:24:34 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:25:27 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:25:51 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:26:31 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:26:50 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:27:42 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:28:03 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-24 13:28:24 PM:: Order Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-25 07:52:33 AM:: Order #580 Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-25 07:52:33 AM:: Order #589 Canceled
+Called from ::deposit_order_cancelled
+********************************************************************
+2022-08-25 07:53:41 AM:: Order adjust
+Called from ::adjust_order
+********************************************************************

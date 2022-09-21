@@ -30,7 +30,7 @@ if (!function_exists('mep_pp_price_col_head')) {
     function mep_pp_price_col_head()
     {
 ?>
-        <th width="20%"><?php _e('Partial', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+        <th><?php _e('Partial', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
     <?php
     }
 }
@@ -186,7 +186,7 @@ if (!function_exists('meppp_available_payment_methods')) {
 
 if (!function_exists('meppp_due_to_pay')) {
     /**
-     *  Due Amount html
+     *  Amount due html
      */
     function meppp_due_to_pay()
     {
@@ -790,7 +790,7 @@ if (!function_exists('mep_pp_history_get')) {
                         //                        $order_id           = esc_attr(get_post_meta($id, 'order_id', true));
                         $this_order = wc_get_order($order_id);
                         $amount = esc_attr(get_post_meta($id, 'deposite_amount', true));
-                        $due = esc_attr(get_post_meta($id, 'due_amount', true));
+                        $due = (float) get_post_meta($id, 'due_amount', true);
                         $date = esc_attr(get_post_meta($id, 'payment_date', true));
                         $payment_method = esc_attr(get_post_meta($id, 'payment_method', true));
 
@@ -1225,7 +1225,7 @@ function mep_conditional_pay_button_my_orders_actions($actions, $order)
     return $actions;
 }
 
-// Check if partial payment enable addon for event is activate
+// Check if partial payment enable addon for event is activated
 function wcppe_enable_for_event()
 {
     return is_plugin_active('mage-partial-payment-pro/mage_partial_pro.php');
@@ -2081,4 +2081,15 @@ function wcpp_test()
         }
     endwhile;
     wp_reset_postdata();
+}
+
+// Check mage event type plugin activate
+function wcpp_is_event_type_plugin_active() {
+    $is_active = false;
+
+    if(is_plugin_active('tour-booking-manager/tour-booking-manager.php') || is_plugin_active('mage-eventpress/woocommerce-event-press.php')) {
+        $is_active = true;
+    }
+
+    return $is_active;
 }

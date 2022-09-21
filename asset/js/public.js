@@ -62,10 +62,12 @@
     // Seat Plan Bus END
 
     // Tour
-    // $('.ttbm_booking_panel').on('input', '.inputIncDec', function() {
-    //     console.log('sdkje')
-    //     tour_price_calculation($(this));
-    // })
+    $(".ttbm_booking_panel").on("input", ".inputIncDec", function () {
+      tour_price_calculation($(this));
+    });
+    $(".ttbm_booking_panel").on("blur", ".inputIncDec", function () {
+      tour_price_calculation($(this));
+    });
     // Tour END
 
     $(document).on('change', 'form.cart [name="variation_id"]', function () {
@@ -399,7 +401,10 @@
 
     function tour_price_calculation($this) {
         let target = $this.parents('.ttbm_booking_panel');
-        let price = parseFloat(target.find('.tour_price').attr('data-total-price'));
+        let price = target.find('.tour_price').attr('data-total-price');
+        if (price) {
+          price = price.replace(/\,/g, "");
+        } 
 
         mpwemapp_payment_schedule(target, price);
     }

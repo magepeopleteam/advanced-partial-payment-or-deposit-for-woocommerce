@@ -19,5 +19,6 @@ if (!function_exists('mep_pp_includes')) {
         require_once(dirname(__DIR__) . "/inc/class-welcome-page.php");
         require_once(dirname(__DIR__) . "/inc/class-wcpp-quick-view.php");
         require_once(dirname(__DIR__) . "/inc/class-wcpp-pro-settings.php");        
+        require_once(dirname(__DIR__) . "/inc/class_mep_log.php");        
     }
 }

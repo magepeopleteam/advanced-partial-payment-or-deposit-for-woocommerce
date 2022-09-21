@@ -38,6 +38,7 @@ class MEP_PP_Checkout
         add_action('woocommerce_order_status_partially-paid', [$this, 'deposit_order_partially_paid'], 10, 1);
         add_action('woocommerce_order_status_processing', [$this, 'deposit_order_processing'], 10, 1);
         add_action('woocommerce_order_status_cancelled', [$this, 'deposit_order_cancelled'], 10, 1);
+        // add_action('woocommerce_order_status_pending', [$this, 'deposit_order_cancelled'], 10, 1);
         add_filter('woocommerce_checkout_cart_item_quantity', [$this, 'display_item_pp_deposit_data'], 20, 3);
         add_filter('woocommerce_checkout_create_order_line_item', [$this, 'save_cart_item_custom_meta_as_order_item_meta'], 20, 4);
         add_filter('woocommerce_payment_complete_order_status', array($this, 'prevent_status_to_processing'), 10, 2);
@@ -335,6 +336,9 @@ class MEP_PP_Checkout
             return;
         }
 
+        // $mep_log = new Mep_log;
+        // $mep_log->log('Order adjust', debug_backtrace()[0]['function']);
+
         // if ($order->get_status() == 'pending') {
         //     return;
         // }
@@ -384,7 +388,7 @@ class MEP_PP_Checkout
 
         $deposit_amount = $total;
         $due_amount = $due_payment_value;
-        $grand_total_price = $deposit_amount + $due_amount;
+        $grand_total_price = number_format($deposit_amount + $due_amount, 2);
 
         // for admin meta data
         $order->update_meta_data('total_value', $grand_total_price, true);
@@ -401,47 +405,6 @@ class MEP_PP_Checkout
         }
 
         do_action('dfwc_adjust_order', $order, $grand_total_price);
-
-//        if (in_array('ppcp-gateway', meppp_available_payment_methods())) {
-//            $deposit_amount = $total;
-//            $due_amount = $due_payment_value;
-//            $grand_total_price = $deposit_amount + $due_amount;
-//
-//            // for admin meta data
-//            $order->update_meta_data('total_value', $grand_total_price, true);
-//            $order->update_meta_data('deposit_value', $deposit_amount, true);
-//            $order->update_meta_data('due_payment', $due_amount, true);
-//            $order->update_meta_data('order_payment_plan', $order_payment_plan, true); // Payment Plans
-//            // Set the new calculated total
-//            $order->set_total(apply_filters('dfwc_cart_total', $deposit_amount));
-//
-//            $order->update_meta_data('deposit_mode', 'yes', true);
-//            $order->update_meta_data('_pp_deposit_system', $pp_deposit_system, true);
-//            if ($pp_deposit_system == 'zero_price_checkout') {
-//                $order->update_meta_data('zero_price_checkout_allow', 'no', true);
-//            }
-//
-//            do_action('dfwc_adjust_order', $order, $grand_total_price);
-//        } else {
-//            // for admin meta data
-//            $order->update_meta_data('total_value', $total, true);
-//            $order->update_meta_data('deposit_value', $new_total, true);
-//            $order->update_meta_data('due_payment', $total - $new_total, true);
-//            $order->update_meta_data('order_payment_plan', $order_payment_plan, true); // Payment Plans
-//            // Set the new calculated total
-//            $order->set_total(apply_filters('dfwc_cart_total', $new_total));
-//
-//            $order->update_meta_data('deposit_mode', 'yes', true);
-//            $order->update_meta_data('_pp_deposit_system', $pp_deposit_system, true);
-//            if ($pp_deposit_system == 'zero_price_checkout') {
-//                $order->update_meta_data('zero_price_checkout_allow', 'no', true);
-//            }
-//
-//            do_action('dfwc_adjust_order', $order, $new_total);
-//
-//            $deposit_amount = $new_total;
-//            $due_amount = $total - $new_total;
-//        }
 
         // ********************************
         if ($due_amount) {
@@ -729,12 +692,15 @@ class MEP_PP_Checkout
 
     public function deposit_order_cancelled($order_id)
     {
+        // $mep_log = new Mep_log;
+        // $mep_log->log("Order #$order_id Canceled", debug_backtrace()[0]['function']);
+
         $args = array(
             'post_type' => 'mep_pp_history',
-            'posts_per_page' => 1,
+            'posts_per_page' => -1,
             'meta_query' => array(
                 array(
-                    'key' => 'order_id',
+                    'key' => 'parent_order_id',
                     'value' => $order_id,
                     'compare' => '=',
                 ),
@@ -742,7 +708,11 @@ class MEP_PP_Checkout
         );
         $history = new WP_Query($args);
         if ($history->post) {
-            wp_delete_post($history->post->ID);
+            while($history->have_posts()) {
+                $history->the_post();
+                wp_delete_post(get_the_ID());
+            }
+            wp_reset_postdata();
         }
     }
 

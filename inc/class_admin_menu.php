@@ -202,6 +202,9 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                data-id="translation"><?php _e('Translation', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                         <?php do_action('mepp_reminder_setting_tab'); ?>
+                        <li><a href="#" class="mepp-tab-a"
+                               data-id="license"><?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        </li>
                     </ul>
                 </div><!--end of tab-menu-->
 
@@ -412,6 +415,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
                             </table>
                         </div>
                     </div><!--end of tab three-->
+
+                    
                     <div class="mepp-tab " data-id="reminder">
                         <div class="mepp-tab-content">
                             <table>
@@ -420,6 +425,32 @@ if (!class_exists('Mepp_Admin_Menu')) {
                         </div>
                     </div><!--end of tab four-->
 
+
+                    <div class="mepp-tab " data-id="license">
+                        <div class="mepp-tab-content">
+                            <div class='mep-licensing-page'>
+                                <h3>Advanced Partial/Deposit Payment For Woocommerce Licensing</h3>
+                                <p>Thanks you for using our Advanced Partial/Deposit Payment For Woocommerce plugin. This plugin is free and no license is required. We have some Additional addon to enhace feature of this plugin functionality. If you have any addon you need to enter a valid license for that plugin below. </p>
+                                <div class="mep_licensae_info"></div>
+                                <table class='wp-list-table widefat striped posts mep-licensing-table'>
+                                    <thead>
+                                    <tr>
+                                        <th>Plugin Name</th>
+                                        <th width=5%>Order No</th>
+                                        <th width=25%>Expire on</th>
+                                        <th width=30%>License Key</th>
+                                        <th width=10%>Status</th>
+                                        <th width=10%>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php do_action('mepp_license_setting_pro'); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end of tab four-->
+                    <?php do_action('mepp_settings_page_content');  ?>
                     <input type="submit" name="mepp_setting_save"
                            value="<?php _e('Save', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>">
                 </form>

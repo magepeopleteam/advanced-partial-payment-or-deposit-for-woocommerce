@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Partial/Deposit Payment For Woocommerce
  * Plugin URI: http://mage-people.com
  * Description: This plugin will add Partial Payment System in the Woocommerce Plugin its also support Woocommerce Event Manager Plugin.
- * Version: 2.0.9
+ * Version: 2.1.0
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: advanced-partial-payment-or-deposit-for-woocommerce
@@ -98,6 +98,7 @@ function wcpp_plugin_row_meta( $links_array, $plugin_file_name ) {
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 if (wcpp_woocommerce_is_active()) {
     define('WCPP_PLUGIN_URL', plugin_dir_url(__FILE__));
+    define('WCPP_PLUGIN_DIR', plugin_dir_path(__FILE__));
     define('WC_PP_Basic_TEMPLATE_PATH', untrailingslashit(plugin_dir_path(__FILE__)) . '/inc/templates/');
     require_once(dirname(__FILE__) . "/inc/file_include.php");
 
