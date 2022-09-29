@@ -97,8 +97,10 @@ class MEP_PP_Checkout
                 }
             }
 
-            if($item['_pp_deposit_mode'] == 'no-deposit') {
-                return null;
+            if(isset($item['_pp_deposit_mode'])) {
+                if ($item['_pp_deposit_mode'] == 'no-deposit') {
+                    return null;
+                }
             }
         }
 
@@ -841,6 +843,12 @@ class MEP_PP_Checkout
     {
         // $order_id = $this->partial_confirm_notification($order_id);
         $order = wc_get_order($order_id);
+        if (!$order->get_parent_id()) {
+            if (get_post_meta($order_id, 'due_payment', true) > 0 && $order->get_status() != 'partially-paid') {
+                $order->set_status('wc-partially-paid');
+                $order->save();
+            }
+        }
 
         if (get_post_meta($order_id, 'paying_pp_due_payment', true) == '1' && $order->get_status() == 'processing') {
             $email_customer_Processing = WC()->mailer()->get_emails()['WC_Email_Customer_Processing_Order'];

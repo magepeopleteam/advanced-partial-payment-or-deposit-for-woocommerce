@@ -39,6 +39,11 @@ if (!class_exists('WCPP_Quick_View')) {
             if(!wcpp_is_deposit_enable_this_product($product_id)) {
                 return $html;
             }
+
+            // Check user and role
+            if (apply_filters('mepp_user_role_allow', 'stop') === 'stop') {
+                return $html;
+            }
             
             $mepp_text_translation_string_pay_deposit = get_option('mepp_text_translation_string_pay_deposit');
             if (! $product->is_type( 'variable' ) ) {

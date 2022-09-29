@@ -416,6 +416,11 @@ add_action('ttbm_before_add_cart_btn', 'mep_pp_show_payment_option', 10, 2);
 if (!function_exists('mep_pp_show_payment_option')) {
     function mep_pp_show_payment_option($product_id, $check_link_id = true)
     {
+        // Check user and role
+        if (apply_filters('mepp_user_role_allow', 'stop') === 'stop') {
+            return false;
+        }
+
         $product_id = $product_id ? $product_id : get_the_id();
 
         if (function_exists('mep_product_exists') && $check_link_id) {

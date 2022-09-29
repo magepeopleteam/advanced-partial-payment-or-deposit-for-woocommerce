@@ -74,7 +74,7 @@ class MEP_PP_Cart
         }
 
         // Check user and role
-        if (apply_filters('mepp_user_role_allow', $cart_item_data) === 'stop') {
+        if (apply_filters('mepp_user_role_allow', 'stop') === 'stop') {
             return $cart_item_data;
         }
 

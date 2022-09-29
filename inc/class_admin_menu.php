@@ -57,6 +57,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     if($_POST['meppp_user_roles_allow']) {
                         update_option('meppp_user_roles_allow', maybe_serialize($_POST['meppp_user_roles_allow']));
                     }
+                } else {
+                    update_option('meppp_user_roles_allow', array());
                 }
 
                 update_option('mepp_enable_partial_by_default', $_POST['mepp_enable_partial_by_default']);
