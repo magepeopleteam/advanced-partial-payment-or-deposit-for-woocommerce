@@ -216,7 +216,7 @@ if (!class_exists('WCPP_Pro_Settings')) {
                             echo '<option>' . $role . '</option>';
                         endforeach; ?>
                     </select>
-                    <span class="mepp-input-desc wcpp_text_disabled"><?php _e('Selected user roles only allow for partial payment.<br>Default: All allowed', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                    <span class="mepp-input-desc wcpp_text_disabled"><?php _e('Selected user roles only allow for partial payment.<br>Default: All role allowed', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                 </td>
             </tr>
             <?php

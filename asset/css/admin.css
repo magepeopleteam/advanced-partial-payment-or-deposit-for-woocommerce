@@ -356,6 +356,10 @@ input#_mep_enable_pp_deposit {
     color: #787878;
 }
 
+.mepp-admin-setting-page .mepp-tab-content select option:checked  {
+    background: #bdc4ff;
+}
+
 .mepp-admin-setting-page input[name="mepp_setting_save"] {
     padding: 10px 25px;
     font-weight: 700;

@@ -417,7 +417,7 @@ if (!function_exists('mep_pp_show_payment_option')) {
     function mep_pp_show_payment_option($product_id, $check_link_id = true)
     {
         // Check user and role
-        if (apply_filters('mepp_user_role_allow', 'stop') === 'stop') {
+        if (apply_filters('mepp_user_role_allow', 'go') === 'stop') {
             return false;
         }
 
@@ -483,6 +483,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
 
             $is_exclude_from_global = get_post_meta($event_id, '_mep_exclude_from_global_deposit', true);
             $is_deposit_enable = get_post_meta($event_id, '_mep_enable_pp_deposit', true);
+            // if ($is_exclude_from_global === 'yes' && $is_deposit_enable !== 'yes') return false; // Deposit disable form local setting
             if ($is_exclude_from_global === 'yes' && $is_deposit_enable === 'yes') { // From Product setting
                 $_pp_deposit_value = get_post_meta($event_id, '_mep_pp_deposits_value', true) ? get_post_meta($event_id, '_mep_pp_deposits_value', true) : 0;
                 $deposit_type = get_post_meta($event_id, '_mep_pp_deposits_type', true) ? get_post_meta($event_id, '_mep_pp_deposits_type', true) : '';

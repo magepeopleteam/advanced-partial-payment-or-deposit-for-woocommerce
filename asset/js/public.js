@@ -417,6 +417,7 @@
                 //alert(price);
                 let total_payment = parseFloat($(this).data('total-percent'));
                 let total_price = total_payment * price / 100;
+                // let total_price = parseFloat($(this).data('init-total'));
                 //alert(price);
                 $(this).html(mp_event_wo_commerce_price_format(total_price));
 

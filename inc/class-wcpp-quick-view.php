@@ -41,7 +41,7 @@ if (!class_exists('WCPP_Quick_View')) {
             }
 
             // Check user and role
-            if (apply_filters('mepp_user_role_allow', 'stop') === 'stop') {
+            if (apply_filters('mepp_user_role_allow', 'go') === 'stop') {
                 return $html;
             }
             
