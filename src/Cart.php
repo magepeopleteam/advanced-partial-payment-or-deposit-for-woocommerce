@@ -224,7 +224,7 @@ class MEP_PP_Cart
     {
 
         $cart = WC()->cart->cart_contents;
-        $deposit_type = $_POST['payment_plan'] ?? '';
+        $deposit_type = isset($_POST['payment_plan']) ? $_POST['payment_plan'] : '';
         $msg = "You can't add payment plan & other deposit type in cart. <br>Please buy them in separate order.";
 
         if ($deposit_type) {

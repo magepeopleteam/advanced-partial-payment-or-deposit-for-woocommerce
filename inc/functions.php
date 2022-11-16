@@ -1761,12 +1761,12 @@ function wcpp_deposit_type_switch_frontend()
     exit();
 }
 
-function mep_make_payment_terms($total_amount, $pament_plan_id)
+function mep_make_payment_terms($total_amount, $payment_plan_id)
 {
     $payment_terms = array();
     $deposit_amount = 0;
     $due_amount = 0;
-    $this_plan = get_term_meta($pament_plan_id);
+    $this_plan = get_term_meta($payment_plan_id);
     $this_plan_schedule = maybe_unserialize((maybe_unserialize($this_plan['mepp_plan_schedule'][0])));
     if ($this_plan_schedule) {
         $date = date('Y-m-d');

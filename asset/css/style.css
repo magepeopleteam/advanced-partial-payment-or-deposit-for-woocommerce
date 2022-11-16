@@ -64,6 +64,10 @@ ul.mep-pp-payment-terms label input,
 .mep-single-plan.plan-details table th {
     padding:5px;
     font-size:14px;
+    text-align: left;
+}
+.mep-single-plan.plan-details table tbody tr:nth-child(even) {
+    background: #f2f0f0;
 }
 .mep-single-plan.plan-details table td {
     font-size: 13px!important;
