@@ -416,8 +416,9 @@
             target.find('.total_pp_price').each(function () {
                 //alert(price);
                 let total_payment = parseFloat($(this).data('total-percent'));
-                let total_price = total_payment * price / 100;
+                // let total_price = total_payment * price / 100;
                 // let total_price = parseFloat($(this).data('init-total'));
+                let total_price = price;
                 //alert(price);
                 $(this).html(mp_event_wo_commerce_price_format(total_price));
 
