@@ -1728,7 +1728,7 @@ function wcpp_deposit_type_switch_frontend()
             $item['_pp_deposit_value'] = $default_deposit_value;
 
             if ($payment_plan_id) {
-                $payment_terms = mep_make_payment_terms($line_total, $payment_plan_id);
+                $payment_terms = mep_make_payment_terms($line_total, $payment_plan_id, $line_total);
                 $item['_pp_deposit'] = $payment_terms['deposit_amount'];
                 $item['_pp_due_payment'] = $line_total - $payment_terms['deposit_amount'];
 
@@ -1761,7 +1761,7 @@ function wcpp_deposit_type_switch_frontend()
     exit();
 }
 
-function mep_make_payment_terms($total_amount, $payment_plan_id)
+function mep_make_payment_terms($total_amount, $payment_plan_id, $new_total = 0)
 {
     $payment_terms = array();
     $deposit_amount = 0;
@@ -1777,15 +1777,17 @@ function mep_make_payment_terms($total_amount, $payment_plan_id)
             'type' => 'deposit',
             'date' => $date,
             'total' => mep_percentage_value($down_payment, $total_amount),
-            'due' => $total_amount - mep_percentage_value($down_payment, $total_amount),
+            'due' => $new_total - mep_percentage_value($down_payment, $total_amount),
         );
 
         $deposit_amount = mep_percentage_value($down_payment, $total_amount);
-        $due_amount = $total_amount - mep_percentage_value($down_payment, $total_amount);
-
+        $due_amount = $new_total - mep_percentage_value($down_payment, $total_amount);
+        $total_percent = $down_payment;
         foreach ($this_plan_schedule as $schedule) {
             $date = mep_payment_plan_date($schedule["plan_schedule_date_after"], $schedule["plan_schedule_parcent_date_type"], $date);
             $amount = mep_percentage_value($schedule["plan_schedule_parcent"], $total_amount);
+            $total_percent += $schedule["plan_schedule_parcent"];
+            
             $due_amount = $due_amount - $amount;
             $payment_terms[] = array(
                 'id' => '',
@@ -1795,6 +1797,8 @@ function mep_make_payment_terms($total_amount, $payment_plan_id)
                 'total' => $amount,
                 'due' => $due_amount,
             );
+
+            // if ($total_percent >= 100) break;
         }
     }
 
@@ -2098,4 +2102,25 @@ function wcpp_is_event_type_plugin_active() {
     }
 
     return $is_active;
+}
+
+// Get the Mep product id
+function wcpp_get_mep_product_id($product_id) {
+    if (function_exists('mep_product_exists')) {
+        if (get_post_meta($product_id, 'link_mep_event', true)) {
+            $linked_event_id = get_post_meta($product_id, 'link_mep_event', true);
+        } elseif (get_post_meta($product_id, 'link_wbtm_bus', true)) {
+            $linked_event_id = get_post_meta($product_id, 'link_wbtm_bus', true);
+        } elseif (get_post_meta($product_id, 'link_ttbm_id', true)) {
+            $linked_event_id = get_post_meta($product_id, 'link_ttbm_id', true);
+        } else {
+            $linked_event_id = null;
+        }
+
+        if ($linked_event_id) {
+            $product_id = mep_product_exists($linked_event_id) ? $linked_event_id : $product_id;
+        }
+    }
+
+    return $product_id;
 }
