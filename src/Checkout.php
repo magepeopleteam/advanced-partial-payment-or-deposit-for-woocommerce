@@ -45,6 +45,7 @@ class MEP_PP_Checkout
         add_action('wp_ajax_manually_pay_amount_input', array($this, 'manually_pay_amount_input'));
         add_action('wp_ajax_nopriv_manually_pay_amount_input', array($this, 'manually_pay_amount_input'));
 
+	    add_filter('wp_mail_content_type', array($this,'set_email_content_type'));
         do_action('dfwc_checkout', $this);
     }
 
@@ -657,10 +658,10 @@ class MEP_PP_Checkout
 
     protected function notify_admin_on_partial_payment($order, $email_to)
     {
-        $headers = array(
-            'Content-Type: text/html; charset=UTF-8',
-            sprintf("From: %s", get_bloginfo('name')),
-        );
+	    $from_name  = get_option( 'woocommerce_email_from_name' );
+	    $from_email = get_option( 'woocommerce_email_from_address' );
+	    $headers[]  = "From: $from_name <$from_email>";
+
         $subject = 'Partial payment notification';
         $partial_payment_template = $email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php';
         $email_content = wc_get_template_html($partial_payment_template, array(
@@ -673,17 +674,17 @@ class MEP_PP_Checkout
         
         if($email_to === 'admin') {
             $is_admin_notify = $order->get_meta('admin_notify_on_partial_payment', true);
-
-            if($is_admin_notify !== 'yes') {
+            if(!$is_admin_notify || $is_admin_notify != 'yes') {
                 $email = get_option('admin_email');
                 wp_mail($email, $subject, $email_content, $headers);
                 $order->update_meta_data('admin_notify_on_partial_payment', 'yes');
                 $order->save();
             }
 
-        } else {
+        } 
+        if($email_to === 'customer') {
             $is_customer_notify = $order->get_meta('customer_notify_on_partial_payment', true);
-            if($is_customer_notify !== 'yes') {
+            if(!$is_customer_notify || $is_customer_notify != 'yes') {
                 $email = $order->get_billing_email();
                 wp_mail($email, $subject, $email_content, $headers);
                 $order->update_meta_data('customer_notify_on_partial_payment', 'yes');
@@ -1050,6 +1051,11 @@ class MEP_PP_Checkout
         }
         return $has_status;
     }
+
+	public function set_email_content_type()
+	{
+		return "text/html";
+	}
 }
 
 new MEP_PP_Checkout();
