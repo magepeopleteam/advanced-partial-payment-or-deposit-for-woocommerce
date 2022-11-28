@@ -283,7 +283,7 @@ if (!function_exists('meppp_cart_have_pp_deposit_item')) {
             } else {
                 $product_id = $cart_item['product_id'];
             }
-
+            // var_dump(isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit');
             $cart_item_pp_deposit[] = (meppp_is_product_type_pp_deposit($product_id) && isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_deposit_type'] : null;
         }
 
@@ -1702,6 +1702,11 @@ add_action('wp_ajax_wcpp_deposit_type_switch_frontend', 'wcpp_deposit_type_switc
 add_action('wp_ajax_nopriv_wcpp_deposit_type_switch_frontend', 'wcpp_deposit_type_switch_frontend');
 function wcpp_deposit_type_switch_frontend()
 {
+
+	// Check user and role
+	if (apply_filters('mepp_user_role_allow', 'go') === 'stop') {
+		return 0;
+	}
     $payment_type = $_POST['payment_type'];
     $payment_plan_id = isset($_POST['payment_plan_id']) ? $_POST['payment_plan_id'] : '';
     $default_deposit_value = (float)get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;

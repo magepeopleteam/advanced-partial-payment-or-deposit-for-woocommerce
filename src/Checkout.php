@@ -51,6 +51,11 @@ class MEP_PP_Checkout
 
     public function deposit_type_selection()
     {
+	    // Check user and role
+	    if (apply_filters('mepp_user_role_allow', 'go') === 'stop') {
+		    return 0;
+	    }
+
         $default_partial_for_page = apply_filters('mepp_partial_option_for_page', 'product_detail');
         if ($default_partial_for_page === 'product_detail') {
             return 0;
