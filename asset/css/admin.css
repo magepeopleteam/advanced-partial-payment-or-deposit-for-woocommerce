@@ -301,7 +301,7 @@ input#_mep_enable_pp_deposit {
 }
 
 .mepp-admin-setting-page .mepp-tab-content {
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
 }
 

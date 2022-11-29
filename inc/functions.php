@@ -284,7 +284,9 @@ if (!function_exists('meppp_cart_have_pp_deposit_item')) {
                 $product_id = $cart_item['product_id'];
             }
             // var_dump(isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit');
-            $cart_item_pp_deposit[] = (meppp_is_product_type_pp_deposit($product_id) && isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_deposit_type'] : null;
+            // var_dump(wcpp_is_deposit_enabled($product_id));
+            // var_dump(isset($cart_item['_pp_deposit_type']));
+            $cart_item_pp_deposit[] = (wcpp_is_deposit_enabled($product_id)['is_enable'] && isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_deposit_type'] : null;
         }
 
         if (!array_filter($cart_item_pp_deposit)) {
@@ -483,8 +485,13 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
 
             $is_exclude_from_global = get_post_meta($event_id, '_mep_exclude_from_global_deposit', true);
             $is_deposit_enable = get_post_meta($event_id, '_mep_enable_pp_deposit', true);
-            // if ($is_exclude_from_global === 'yes' && $is_deposit_enable !== 'yes') return false; // Deposit disable form local setting
-            if ($is_exclude_from_global === 'yes' && $is_deposit_enable === 'yes') { // From Product setting
+            
+            $is_deposit_enabled_for_this_product = wcpp_is_deposit_enabled($event_id); // get array
+            if(!$is_deposit_enabled_for_this_product['is_enable']) return 0; // Deposit is not enabled
+
+            // Deposit Enabled
+
+            if ($is_deposit_enabled_for_this_product['setting_level'] === 'local') { // From Product setting
                 $_pp_deposit_value = get_post_meta($event_id, '_mep_pp_deposits_value', true) ? get_post_meta($event_id, '_mep_pp_deposits_value', true) : 0;
                 $deposit_type = get_post_meta($event_id, '_mep_pp_deposits_type', true) ? get_post_meta($event_id, '_mep_pp_deposits_type', true) : '';
                 $_pp_minimum_value = get_post_meta($event_id, '_mep_pp_minimum_value', true) ? get_post_meta($event_id, '_mep_pp_minimum_value', true) : 0;
@@ -2044,22 +2051,37 @@ if (!function_exists('mep_esc_html')) {
     }
 }
 
-function wcpp_is_deposit_enable_this_product($product_id)
+function wcpp_is_deposit_enabled($product_id)
 {
-    $is_enable = false;
+    $data = array(
+        'is_enable' => false,
+        'setting_level' => ''
+    );
+
+    if(!$product_id) return $data;
+
     $global_deposit_enable = get_option('mepp_enable_partial_by_default') ? get_option('mepp_enable_partial_by_default') : 'no';
-    $is_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
+    $is_deposit_enabled_localy = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
     $exclude_from_global = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
+    $deposit_type_localy = get_post_meta($product_id, '_mep_pp_deposits_type', true);
 
-    if ($global_deposit_enable === 'yes' && $exclude_from_global === 'no') {
-        $is_enable = true;
+    if( $exclude_from_global === 'yes' ) {      // Local setting
+        if($deposit_type_localy === 'minimum_amount') {
+            $value = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : 0;
+        } elseif($deposit_type_localy === 'percent' || $deposit_type_localy === 'fixed') {
+            $value = get_post_meta($product_id, '_mep_pp_deposits_value', true) ? get_post_meta($product_id, '_mep_pp_deposits_value', true) : 0;
+        } else {
+            $value = true;
+        }
+        $data['is_enable'] = $is_deposit_enabled_localy === 'yes' && $value ? true : false;
+        $data['setting_level'] = 'local';
+    } else {                                    // global setting
+        $value = get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;
+        $data['is_enable'] = ($global_deposit_enable === 'yes' && (float) $value > 0) ? true : false;
+        $data['setting_level'] = 'global';
     }
 
-    if ($is_deposit_enable === 'yes' && $exclude_from_global === 'yes') {
-        $is_enable = true;
-    }
-
-    return $is_enable;
+    return $data;
 }
 
 // For testing

@@ -155,12 +155,13 @@ if (!function_exists('mep_pp_pp_deposits_options_fileds')) {
             <div class="options_group">
                 <?php
 
+                // Exclude product deposit setting from default setting (Woo Product)
                 woocommerce_wp_checkbox(
                     array(
                         'id'          => '_mep_exclude_from_global_deposit',
                         'label'       => __('Exclude this product', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                         'value'       => get_post_meta(get_the_ID(), '_mep_exclude_from_global_deposit', true),
-                        'description' => __('Exclude this product from global deposit setting.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        'description' => __('if enabled then this product not effected by default setting from setting page.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     )
                 );
 
@@ -231,9 +232,13 @@ if (!function_exists('mep_pp_pp_deposits_product_fields_save')) {
         }
         if (!empty($field_mep_pp_deposits_value)) {
             update_post_meta($post_id, '_mep_pp_deposits_value', intval($field_mep_pp_deposits_value));
+        } else {
+            update_post_meta($post_id, '_mep_pp_deposits_value', 0);
         }
         if (!empty($field_mep_pp_minimum_value)) {
             update_post_meta($post_id, '_mep_pp_minimum_value', intval($field_mep_pp_minimum_value));
+        } else {
+            update_post_meta($post_id, '_mep_pp_minimum_value', 0);
         }
     }
 }

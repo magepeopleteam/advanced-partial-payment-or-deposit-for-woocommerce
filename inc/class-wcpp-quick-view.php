@@ -36,7 +36,7 @@ if (!class_exists('WCPP_Quick_View')) {
         public function wcpp_quick_view_for_shop_loop_item($html, $product){
             $product_id  = $product->get_id();
             // Check partial is enable
-            if(!wcpp_is_deposit_enable_this_product($product_id)) {
+            if(!wcpp_is_deposit_enabled($product_id)['is_enable']) {
                 return $html;
             }
 
