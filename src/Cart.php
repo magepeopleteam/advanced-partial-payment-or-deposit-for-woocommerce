@@ -129,13 +129,7 @@ class MEP_PP_Cart
             $deposit_setting_apply = 'global';
         }
 
-        // echo '<pre>';print_r($deposit_mode);die;
-
-        // Check Product allow deposit and payment type
-//        if ((meppp_is_product_type_pp_deposit($product_id) == false && $default_partial_enable !== 'yes') || $deposit_mode == 'check_full') {
-//            return $cart_item_data;
-//        }
-
+        // Product Price
         $product_type = get_post_type($product_id);
         $product_price_total = 0;
 
@@ -157,8 +151,7 @@ class MEP_PP_Cart
                 $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
             }
         }
-        
-//        echo "<pre>"; print_r($product_price_total); die;
+        // Product Price END
 
         // Check is zero price checkout
         $enable_checkout_zero_price = apply_filters('mepp_enable_zero_price_checkout', 'no');
@@ -195,12 +188,11 @@ class MEP_PP_Cart
                 $cart_item_data['_pp_deposit_system'] = '';
                 $cart_item_data['_pp_deposit_type'] = 'check_pp_deposit';
                 $cart_item_data['_pp_deposit_setting_from'] = $setting_from;
-                // echo '<pre>'; print_r($cart_item_data); die;
                 // return $cart_item_data;
             }
         }
 
-        // Limitation
+        // *** Limitation ***
 
         // Exception handle for deposit type
         if (!wcppe_enable_for_event()) {
@@ -209,8 +201,6 @@ class MEP_PP_Cart
                 $deposit_type = 'percent';
             }
         }
-
-//        echo '<pre>';print_r($product_price_total);
 
         // Calculate data
         if ($deposit_type == 'percent') {
@@ -241,16 +231,17 @@ class MEP_PP_Cart
             $deposit_amount = $deposit_value * sanitize_text_field($quantity);
 
         }
-        $cart_item_data['_pp_deposit'] = $deposit_amount;
-        $cart_item_data['_pp_deposit_value'] = $deposit_value;
-        $cart_item_data['_pp_deposit_value_strict'] = $deposit_min_value_strict;
-        $cart_item_data['_pp_due_payment'] = $product_price_total - $deposit_amount;
+
+        $cart_item_data['_pp_deposit'] = $deposit_amount; // Deposit value by user
+        $cart_item_data['_pp_deposit_value'] = $deposit_value; // Deposit value by setting
+        $cart_item_data['_pp_deposit_value_strict'] = $deposit_min_value_strict; // Deposit minimum value by setting
+        $cart_item_data['_pp_due_payment'] = $product_price_total - $deposit_amount; // Due amount
         $cart_item_data['_pp_deposit_type'] = 'check_pp_deposit';
-        $cart_item_data['_pp_deposit_system'] = $deposit_type;
-        $cart_item_data['_pp_deposit_setting_from'] = $setting_from;
-        $cart_item_data['_pp_deposit_payment_plan_id'] = isset($_POST['mep_payment_plan']) ? $_POST['mep_payment_plan'] : '';
-        $cart_item_data['_pp_deposit_payment_plan_name'] = isset($_POST['mep_payment_plan']) ? mep_pp_payment_plan_name(sanitize_text_field($_POST['mep_payment_plan'])) : '';
-        $cart_item_data['_pp_deposit_mode'] = $deposit_mode;
+        $cart_item_data['_pp_deposit_system'] = $deposit_type; // Deposit type e.g percent, minimum_amount, fixed
+        $cart_item_data['_pp_deposit_setting_from'] = $setting_from; // Setting honour by local or global
+        $cart_item_data['_pp_deposit_payment_plan_id'] = isset($_POST['mep_payment_plan']) ? $_POST['mep_payment_plan'] : ''; // Payment plan id
+        $cart_item_data['_pp_deposit_payment_plan_name'] = isset($_POST['mep_payment_plan']) ? mep_pp_payment_plan_name(sanitize_text_field($_POST['mep_payment_plan'])) : ''; // Payment plan title
+        $cart_item_data['_pp_deposit_mode'] = $deposit_mode; // Deposit Mode e.g check_pp_deposit, check_full
         // echo '<pre>';print_r($cart_item_data);die;
         return $cart_item_data;
     }
@@ -330,15 +321,6 @@ class MEP_PP_Cart
         }
 
         return $total - $total_due;
-
-        // Has paypal && deposit type !== 'minimum_amount'
-//        if (mepp_check_paypal_has() && !$has_deposit_type_minimum) {
-//        if (mepp_check_paypal_has()) {
-//            return $is_deposit_pass ? $total_deposit : $total;
-//        } else {
-//            return $total;
-//        }
-
     }
 
     public function display_cart_item_pp_deposit_data($name, $cart_item, $cart_item_key)

@@ -839,8 +839,8 @@ if (!function_exists('mep_pp_history_get')) {
                         echo '<tr>';
                         echo '<td>' . (esc_attr($x)) . '</td>';
                         echo '<td>' . date(get_option('date_format'), strtotime($date)) . '</td>';
-                        echo '<td class="mep_style_ta_r">' . wc_price($amount) . '</td>';
-                        echo '<td class="mep_style_ta_r ' . (($due > 0 && $x == $count) ? "mep_current_last_due" : null) . '">' . wc_price(esc_html($due)) . $pay_button . '</td>';
+                        echo '<td class="">' . wc_price($amount) . '</td>';
+                        echo '<td class=" ' . (($due > 0 && $x == $count) ? "mep_current_last_due" : null) . '">' . wc_price(esc_html($due)) . $pay_button . '</td>';
                         echo '<td class="mep_style_tt_upper">' . esc_html($payment_method) . '</td>';
                         echo '<td>' . $status . '</td>';
                         echo '</tr>';
@@ -1733,13 +1733,15 @@ function wcpp_deposit_type_switch_frontend()
             $item['_pp_deposit_system'] = $deposit_type;
             if ($deposit_type === 'percent') {
                 $deposit_amount = ($line_total * $default_deposit_value) / 100;
+            } elseif($deposit_type === 'minimum_amount') {
+                $deposit_amount = $item['_pp_deposit'];
             } else {
                 $deposit_amount = $default_deposit_value * $item['quantity'];
             }
 
             $item['_pp_deposit_value'] = $default_deposit_value;
 
-            if ($payment_plan_id) {
+            if ($payment_plan_id) { // For Payment Plan
                 $payment_terms = mep_make_payment_terms($line_total, $payment_plan_id, $line_total);
                 $item['_pp_deposit'] = $payment_terms['deposit_amount'];
                 $item['_pp_due_payment'] = $line_total - $payment_terms['deposit_amount'];
@@ -1747,7 +1749,7 @@ function wcpp_deposit_type_switch_frontend()
                 $item['_pp_order_payment_terms'] = $payment_terms['payment_terms'];
                 $item['_pp_deposit_payment_plan_name'] = mep_pp_payment_plan_name($payment_plan_id);
                 $item['_pp_deposit_payment_plan_id'] = $payment_plan_id;
-            } else {
+            } else { // Except Payment plan
                 $item['_pp_deposit'] = $deposit_amount;
 
                 $item['_pp_due_payment'] = $line_total - $item['_pp_deposit'];
