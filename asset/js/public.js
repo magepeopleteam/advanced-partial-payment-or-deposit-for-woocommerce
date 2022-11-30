@@ -174,6 +174,7 @@
             let deposit_type = $this.attr('data-deposit-type');
             let page = $(this).attr('data-page');
             let validate = true;
+            console.log(page)
 
             min = parseFloat(min);
             pay = parseFloat(pay);
