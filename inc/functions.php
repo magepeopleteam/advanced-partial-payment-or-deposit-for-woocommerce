@@ -485,9 +485,9 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
 
             $is_exclude_from_global = get_post_meta($event_id, '_mep_exclude_from_global_deposit', true);
             $is_deposit_enable = get_post_meta($event_id, '_mep_enable_pp_deposit', true);
-            
+
             $is_deposit_enabled_for_this_product = wcpp_is_deposit_enabled($event_id); // get array
-            if(!$is_deposit_enabled_for_this_product['is_enable']) return 0; // Deposit is not enabled
+            if (!$is_deposit_enabled_for_this_product['is_enable']) return 0; // Deposit is not enabled
 
             // Deposit Enabled
 
@@ -543,12 +543,10 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                 <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
                 <input type="hidden" name="payment_plan" value="<?php echo esc_attr($deposit_type); ?>" data-percent="<?php echo esc_attr($_pp_deposit_value); ?>">
                 <?php if (apply_filters('mep_pp_frontend_cart_radio_input', true)) { ?>
-                    <ul class="mep-pp-payment-terms">
+                    <ul class="mep-pp-payment-terms" style="background-color: <?php echo apply_filters('wcpp_style_setting_values', '#efe9e9', 'mepp_style_partial_option_bgc') ?>">
                         <li>
-                            <label for="mep_pp_partial_payment">
-                                <input type="radio" id='mep_pp_partial_payment' name="deposit-mode" value="check_pp_deposit" <?php if (meppp_is_product_type_pp_deposit($event_id)) {
-                                                                                                                                    echo 'Checked';
-                                                                                                                                } ?> />
+                            <label for="mep_pp_partial_payment" style="color: <?php echo apply_filters('wcpp_style_setting_values', '#000', 'mepp_style_partial_option_txtc') ?>">
+                                <input type="radio" id='mep_pp_partial_payment' name="deposit-mode" value="check_pp_deposit" <?php if (meppp_is_product_type_pp_deposit($event_id)) {echo 'Checked';} ?> />
                                 <?php echo mepp_get_option('mepp_text_translation_string_pay_deposit', __('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce')); ?>
                                 <?php if ($deposit_type == 'manual') { ?>
                                     <input type="number" class="mep-pp-user-amountinput" data-deposit-type="<?php echo $deposit_type; ?>" name="user-deposit-amount" value="<?php echo esc_attr($_pp_deposit_value); ?>" min="<?php echo esc_attr($_pp_deposit_value); ?>" max="">
@@ -574,7 +572,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
                         </li>
                         <?php if ($isForcePartialPayment != 'yes') : ?>
                             <li>
-                                <label for='mep_pp_full_payment'>
+                                <label for='mep_pp_full_payment' style="color: <?php echo apply_filters('wcpp_style_setting_values', '#000', 'mepp_style_partial_option_txtc') ?>">
                                     <input type="radio" id='mep_pp_full_payment' name="deposit-mode" value="no-deposit" />
                                     <?php echo mepp_get_option('mepp_text_translation_string_full_payment', __('Full Payment', 'advanced-partial-payment-or-deposit-for-woocommerce')); ?>
                                 </label>
@@ -1710,10 +1708,10 @@ add_action('wp_ajax_nopriv_wcpp_deposit_type_switch_frontend', 'wcpp_deposit_typ
 function wcpp_deposit_type_switch_frontend()
 {
 
-	// Check user and role
-	if (apply_filters('mepp_user_role_allow', 'go') === 'stop') {
-		return 0;
-	}
+    // Check user and role
+    if (apply_filters('mepp_user_role_allow', 'go') === 'stop') {
+        return 0;
+    }
     $payment_type = $_POST['payment_type'];
     $payment_plan_id = isset($_POST['payment_plan_id']) ? $_POST['payment_plan_id'] : '';
     $default_deposit_value = (float)get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;
@@ -1733,7 +1731,7 @@ function wcpp_deposit_type_switch_frontend()
             $item['_pp_deposit_system'] = $deposit_type;
             if ($deposit_type === 'percent') {
                 $deposit_amount = ($line_total * $default_deposit_value) / 100;
-            } elseif($deposit_type === 'minimum_amount') {
+            } elseif ($deposit_type === 'minimum_amount') {
                 $deposit_amount = $item['_pp_deposit'];
             } else {
                 $deposit_amount = $default_deposit_value * $item['quantity'];
@@ -1801,7 +1799,7 @@ function mep_make_payment_terms($total_amount, $payment_plan_id, $new_total = 0)
             $date = mep_payment_plan_date($schedule["plan_schedule_date_after"], $schedule["plan_schedule_parcent_date_type"], $date);
             $amount = mep_percentage_value($schedule["plan_schedule_parcent"], $total_amount);
             $total_percent += $schedule["plan_schedule_parcent"];
-            
+
             $due_amount = $due_amount - $amount;
             $payment_terms[] = array(
                 'id' => '',
@@ -2060,17 +2058,17 @@ function wcpp_is_deposit_enabled($product_id)
         'setting_level' => ''
     );
 
-    if(!$product_id) return $data;
+    if (!$product_id) return $data;
 
     $global_deposit_enable = get_option('mepp_enable_partial_by_default') ? get_option('mepp_enable_partial_by_default') : 'no';
     $is_deposit_enabled_localy = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
     $exclude_from_global = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
     $deposit_type_localy = get_post_meta($product_id, '_mep_pp_deposits_type', true);
 
-    if( $exclude_from_global === 'yes' ) {      // Local setting
-        if($deposit_type_localy === 'minimum_amount') {
+    if ($exclude_from_global === 'yes') {      // Local setting
+        if ($deposit_type_localy === 'minimum_amount') {
             $value = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : 0;
-        } elseif($deposit_type_localy === 'percent' || $deposit_type_localy === 'fixed') {
+        } elseif ($deposit_type_localy === 'percent' || $deposit_type_localy === 'fixed') {
             $value = get_post_meta($product_id, '_mep_pp_deposits_value', true) ? get_post_meta($product_id, '_mep_pp_deposits_value', true) : 0;
         } else {
             $value = true;
@@ -2113,7 +2111,7 @@ function wcpp_test()
 
         $parent_order_id = $order->get_parent_id();
         $parent_order = wc_get_order($parent_order_id);
-        if($parent_order) {
+        if ($parent_order) {
             if ($parent_order->get_status() !== 'partially-paid') {
                 continue;
             }
@@ -2123,10 +2121,11 @@ function wcpp_test()
 }
 
 // Check mage event type plugin activate
-function wcpp_is_event_type_plugin_active() {
+function wcpp_is_event_type_plugin_active()
+{
     $is_active = false;
 
-    if(is_plugin_active('tour-booking-manager/tour-booking-manager.php') || is_plugin_active('mage-eventpress/woocommerce-event-press.php')) {
+    if (is_plugin_active('tour-booking-manager/tour-booking-manager.php') || is_plugin_active('mage-eventpress/woocommerce-event-press.php')) {
         $is_active = true;
     }
 
@@ -2134,7 +2133,8 @@ function wcpp_is_event_type_plugin_active() {
 }
 
 // Get the Mep product id
-function wcpp_get_mep_product_id($product_id) {
+function wcpp_get_mep_product_id($product_id)
+{
     if (function_exists('mep_product_exists')) {
         if (get_post_meta($product_id, 'link_mep_event', true)) {
             $linked_event_id = get_post_meta($product_id, 'link_mep_event', true);

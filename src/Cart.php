@@ -251,7 +251,7 @@ class MEP_PP_Cart
 
         $cart = WC()->cart->cart_contents;
         $deposit_type = isset($_POST['payment_plan']) ? $_POST['payment_plan'] : '';
-        $msg = "You can't add payment plan & other deposit type in cart. <br>Please buy them in separate order.";
+        $msg = __("You can't add payment plans & another deposit type to the cart. <br>Please buy them in a separate order.", 'advanced-partial-payment-or-deposit-for-woocommerce');
 
         if ($deposit_type) {
             foreach ($cart as $item) {
@@ -264,19 +264,20 @@ class MEP_PP_Cart
 //                            wc_add_notice( __( $msg, "woocommerce" ), "error" );
 //                        }
                         $passed = false;
-                        // Display a message
-                        wc_add_notice(__($msg, "woocommerce"), "error");
                     }
 
                     if ($deposit_type !== 'payment_plan') {
                         if ($item['_pp_deposit_system'] === 'payment_plan') {
                             $passed = false;
-                            // Display a message
-                            wc_add_notice(__($msg, "woocommerce"), "error");
                         }
                     }
                 }
             }
+        }
+
+        if(!$passed) {
+            // Display a message
+            wc_add_notice(__($msg, "woocommerce"), "error");
         }
 
         return $passed;

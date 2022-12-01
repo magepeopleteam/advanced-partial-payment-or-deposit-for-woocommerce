@@ -28,8 +28,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
             do_action('wcpp_reminder_log_menu');
 
             // if pro is not active include payment plan menu
-            if (! is_plugin_active( 'mage-partial-payment-pro/mage_partial_pro.php' ) ):
-            add_submenu_page('mage-partial', 'Payment Plan', 'Payment Plan', 'manage_options', 'mage-partial-payment-plan', array($this, 'wcpp_payment_plan_page'), 4);
+            if (!is_plugin_active('mage-partial-payment-pro/mage_partial_pro.php')) :
+                add_submenu_page('mage-partial', 'Payment Plan', 'Payment Plan', 'manage_options', 'mage-partial-payment-plan', array($this, 'wcpp_payment_plan_page'), 4);
             endif;
 
             // add_submenu_page('mage-partial', 'Setting', 'Setting', 'manage_options', 'admin.php?page=wc-settings&tab=settings_tab_mage_partial', null, 4);
@@ -45,16 +45,16 @@ if (!class_exists('Mepp_Admin_Menu')) {
 
                 isset($_POST['meppp_quantity_reduce_on']) ? update_option('meppp_quantity_reduce_on', mep_esc_html($_POST['meppp_quantity_reduce_on'])) : update_option('meppp_quantity_reduce_on', 'full');
 
-                isset($_POST['meppp_shop_pay_deposit_btn']) ? update_option('meppp_shop_pay_deposit_btn', mep_esc_html($_POST['meppp_shop_pay_deposit_btn'])) : update_option('meppp_shop_pay_deposit_btn', 'off');                
-                
-                if(isset($_POST['meppp_payment_methods_allow'])) {
-                    if($_POST['meppp_payment_methods_allow']) {
+                isset($_POST['meppp_shop_pay_deposit_btn']) ? update_option('meppp_shop_pay_deposit_btn', mep_esc_html($_POST['meppp_shop_pay_deposit_btn'])) : update_option('meppp_shop_pay_deposit_btn', 'off');
+
+                if (isset($_POST['meppp_payment_methods_allow'])) {
+                    if ($_POST['meppp_payment_methods_allow']) {
                         update_option('meppp_payment_methods_allow', maybe_serialize($_POST['meppp_payment_methods_allow']));
                     }
                 }
 
-                if(isset($_POST['meppp_user_roles_allow'])) {
-                    if($_POST['meppp_user_roles_allow']) {
+                if (isset($_POST['meppp_user_roles_allow'])) {
+                    if ($_POST['meppp_user_roles_allow']) {
                         update_option('meppp_user_roles_allow', maybe_serialize($_POST['meppp_user_roles_allow']));
                     }
                 } else {
@@ -111,6 +111,27 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 if (isset($_POST['mepp_payment_plan_email_content'])) {
                     update_option('mepp_payment_plan_email_content', mep_esc_html($_POST['mepp_payment_plan_email_content']));
                 }
+
+                if (isset($_POST['mepp_style_partial_option_bgc'])) {
+                    update_option('mepp_style_partial_option_bgc', $_POST['mepp_style_partial_option_bgc']);
+                } else {
+                    update_option('mepp_style_partial_option_bgc', '');
+                }
+                if (isset($_POST['mepp_style_partial_option_txtc'])) {
+                    update_option('mepp_style_partial_option_txtc', $_POST['mepp_style_partial_option_txtc']);
+                } else {
+                    update_option('mepp_style_partial_option_txtc', '');
+                }
+                if (isset($_POST['mepp_style_custom_msg_bgc'])) {
+                    update_option('mepp_style_custom_msg_bgc', $_POST['mepp_style_custom_msg_bgc']);
+                } else {
+                    update_option('mepp_style_custom_msg_bgc', '');
+                }
+                if (isset($_POST['mepp_style_custom_msg_txtc'])) {
+                    update_option('mepp_style_custom_msg_txtc', $_POST['mepp_style_custom_msg_txtc']);
+                } else {
+                    update_option('mepp_style_custom_msg_txtc', '');
+                }
             }
 
             if (isset($_POST['mepp_setting_save'])) {
@@ -121,7 +142,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 echo '</script>';
                 */
             }
-            ?>
+?>
 
             <div class="mepp-admin-setting-page">
                 <div class="mepp-admin-page-header">
@@ -131,14 +152,14 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     <?php $this->setting_content(); ?>
                 </div>
 
-                <?php if(!wcppe_enable_for_event()) : ?>
-                <div class="mepp-admin-page-promotion">
-                    <?php $this->promotion(); ?>
-                </div>
+                <?php if (!wcppe_enable_for_event()) : ?>
+                    <div class="mepp-admin-page-promotion">
+                        <?php $this->promotion(); ?>
+                    </div>
                 <?php endif; ?>
             </div>
 
-            <?php
+        <?php
         }
 
         protected function setting_content()
@@ -154,7 +175,6 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     if ($gateway->enabled == 'yes') {
 
                         $enabled_gateways[$gateway->id] = $gateway->title;
-
                     }
                 }
             }
@@ -189,28 +209,27 @@ if (!class_exists('Mepp_Admin_Menu')) {
             $mepp_text_translation_string_to_pay = get_option('mepp_text_translation_string_to_pay');
             $mepp_text_translation_string_pay_due_payment = get_option('mepp_text_translation_string_pay_due_payment');
             $mepp_text_translation_string_pay_deposit = get_option('mepp_text_translation_string_pay_deposit');
-            ?>
+        ?>
 
             <div class="mepp-tab-container">
                 <div class="mepp-tab-menu">
                     <ul class="mepp-ul">
-                        <li><a href="#" class="mepp-tab-a active-a"
-                               data-id="general"><?php _e('General', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <li><a href="#" class="mepp-tab-a active-a" data-id="general"><?php _e('General', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
 
-                        <li><a href="#" class="mepp-tab-a"
-                               data-id="default"><?php _e('Default', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <li><a href="#" class="mepp-tab-a" data-id="default"><?php _e('Default', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
 
-                        <li><a href="#" class="mepp-tab-a"
-                               data-id="translation"><?php _e('Translation', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <?php do_action('mepp_style_setting_tab'); ?>
+
+                        <li><a href="#" class="mepp-tab-a" data-id="translation"><?php _e('Translation', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                         <?php do_action('mepp_reminder_setting_tab'); ?>
-                        <li><a href="#" class="mepp-tab-a"
-                               data-id="license"><?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <li><a href="#" class="mepp-tab-a" data-id="license"><?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                     </ul>
-                </div><!--end of tab-menu-->
+                </div>
+                <!--end of tab-menu-->
 
                 <form action="" method="POST">
 
@@ -235,8 +254,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                     </th>
                                     <td>
                                         <select name="meppp_shop_pay_deposit_btn" id="meppp_shop_pay_deposit_btn">
-                                            <option value="off" <?php echo $shop_pay_deposit_btn === 'off' ? 'selected' : '' ?>><?php echo __('Off', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>    
-                                            <option value="on" <?php echo $shop_pay_deposit_btn === 'on' ? 'selected' : '' ?>><?php echo __('On', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>    
+                                            <option value="off" <?php echo $shop_pay_deposit_btn === 'off' ? 'selected' : '' ?>><?php echo __('Off', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                            <option value="on" <?php echo $shop_pay_deposit_btn === 'on' ? 'selected' : '' ?>><?php echo __('On', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
                                         </select>
                                         <span class="mepp-input-desc"><?php _e('It enables the pay deposit button in shop product list.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
@@ -246,16 +265,15 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <label for="mepp_admin_notify_partial_payment"><?php _e('Admin will get email', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
                                     <td>
-                                        <input type="checkbox" name="mepp_admin_notify_partial_payment"
-                                               id="mepp_admin_notify_partial_payment" <?php echo $admin_notify_partial_payment === 'yes' ? 'checked' : '' ?>
-                                               value="yes">
+                                        <input type="checkbox" name="mepp_admin_notify_partial_payment" id="mepp_admin_notify_partial_payment" <?php echo $admin_notify_partial_payment === 'yes' ? 'checked' : '' ?> value="yes">
                                         <span class="mepp-checkbox-label"><?php _e('Admin will get email notification when a customer make a partial payment.', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></span>
                                     </td>
                                 </tr>
                                 <?php do_action('mepp_general_setting_pro'); ?>
                             </table>
                         </div>
-                    </div><!--end of tab one-->
+                    </div>
+                    <!--end of tab one-->
 
                     <div class="mepp-tab " data-id="default">
                         <div class="mepp-tab-content">
@@ -265,10 +283,9 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <label for="mepp_enable_partial_by_default"><?php _e('Enable Partial By Default', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
                                     <td>
-                                        <select name="mepp_enable_partial_by_default"
-                                                id="mepp_enable_partial_by_default">
-                                            <option value="no" <?php echo $enable_partial_by_default === 'no' ? 'selected' : '' ?> ><?php echo __('No', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
-                                            <option value="yes" <?php echo $enable_partial_by_default === 'yes' ? 'selected' : '' ?> ><?php echo __('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                        <select name="mepp_enable_partial_by_default" id="mepp_enable_partial_by_default">
+                                            <option value="no" <?php echo $enable_partial_by_default === 'no' ? 'selected' : '' ?>><?php echo __('No', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                            <option value="yes" <?php echo $enable_partial_by_default === 'yes' ? 'selected' : '' ?>><?php echo __('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
                                         </select>
                                         <span class="mepp-input-desc"><?php _e('If "yes", then deposit partial will be enabled globaly. <br> That means all the products partial enable by default.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
@@ -291,9 +308,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <label for="mepp_default_partial_amount"><?php _e('Default Partial Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
                                     <td>
-                                        <input type="text" name="mepp_default_partial_amount"
-                                               id="mepp_default_partial_amount"
-                                               value="<?php echo $default_partial_amount ?>">
+                                        <input type="text" name="mepp_default_partial_amount" id="mepp_default_partial_amount" value="<?php echo $default_partial_amount ?>">
                                         <span class="mepp-input-desc"><?php _e('Default partial value.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
                                 </tr>
@@ -312,7 +327,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                 <?php do_action('mepp_default_setting_pro') ?>
                             </table>
                         </div>
-                    </div><!--end of tab two-->
+                    </div>
+                    <!--end of tab two-->
 
                     <div class="mepp-tab " data-id="translation">
                         <div class="mepp-tab-content">
@@ -321,113 +337,103 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                     <th>
                                         <label for="mepp_text_translation_string_pay_deposit"><?php _e('Label for text: Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_pay_deposit"
-                                               id="mepp_text_translation_string_pay_deposit"
-                                               value="<?php echo $mepp_text_translation_string_pay_deposit ?: 'Pay Deposit'; ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_pay_deposit" id="mepp_text_translation_string_pay_deposit" value="<?php echo $mepp_text_translation_string_pay_deposit ?: 'Pay Deposit'; ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_full_payment"><?php _e('Label for text: Full Payment', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_full_payment"
-                                               id="mepp_text_translation_string_full_payment"
-                                               value="<?php echo $mepp_text_translation_string_full_payment ?: 'Full Payment' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_full_payment" id="mepp_text_translation_string_full_payment" value="<?php echo $mepp_text_translation_string_full_payment ?: 'Full Payment' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_payment_total"><?php _e('Label for text: Payments Total', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_payment_total"
-                                               id="mepp_text_translation_string_payment_total"
-                                               value="<?php echo $mepp_text_translation_string_payment_total ?: 'Payments Total' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_payment_total" id="mepp_text_translation_string_payment_total" value="<?php echo $mepp_text_translation_string_payment_total ?: 'Payments Total' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_deposit"><?php _e('Label for text: Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_deposit"
-                                               id="mepp_text_translation_string_deposit"
-                                               value="<?php echo $mepp_text_translation_string_deposit ?: 'Deposit' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_deposit" id="mepp_text_translation_string_deposit" value="<?php echo $mepp_text_translation_string_deposit ?: 'Deposit' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_due_amount"><?php _e('Label for text: Due Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_due_amount"
-                                               id="mepp_text_translation_string_due_amount"
-                                               value="<?php echo $mepp_text_translation_string_due_amount ?: 'Due Amount' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_due_amount" id="mepp_text_translation_string_due_amount" value="<?php echo $mepp_text_translation_string_due_amount ?: 'Due Amount' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_partially_paid"><?php _e('Label for text: Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_partially_paid"
-                                               id="mepp_text_translation_string_partially_paid"
-                                               value="<?php echo $mepp_text_translation_string_partially_paid ?: 'Partially Paid' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_partially_paid" id="mepp_text_translation_string_partially_paid" value="<?php echo $mepp_text_translation_string_partially_paid ?: 'Partially Paid' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_due_payment"><?php _e('Label for text: Due Payment', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_due_payment"
-                                               id="mepp_text_translation_string_due_payment"
-                                               value="<?php echo $mepp_text_translation_string_due_payment ?: 'Due Payment' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_due_payment" id="mepp_text_translation_string_due_payment" value="<?php echo $mepp_text_translation_string_due_payment ?: 'Due Payment' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_deposit_type"><?php _e('Label for text: Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_deposit_type"
-                                               id="mepp_text_translation_string_deposit_type"
-                                               value="<?php echo $mepp_text_translation_string_deposit_type ?: 'Deposit Type' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_deposit_type" id="mepp_text_translation_string_deposit_type" value="<?php echo $mepp_text_translation_string_deposit_type ?: 'Deposit Type' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_to_pay"><?php _e('Label for text: To Pay', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_to_pay"
-                                               id="mepp_text_translation_string_to_pay"
-                                               value="<?php echo $mepp_text_translation_string_to_pay ?: 'To Pay' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_to_pay" id="mepp_text_translation_string_to_pay" value="<?php echo $mepp_text_translation_string_to_pay ?: 'To Pay' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_pay_due_payment"><?php _e('Label for text: Pay Due Payment', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_pay_due_payment"
-                                               id="mepp_text_translation_string_pay_due_payment"
-                                               value="<?php echo $mepp_text_translation_string_pay_due_payment ?: 'Pay Due Payment' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_pay_due_payment" id="mepp_text_translation_string_pay_due_payment" value="<?php echo $mepp_text_translation_string_pay_due_payment ?: 'Pay Due Payment' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <label for="mepp_text_translation_string_pay_deposit"><?php _e('Label for text: Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
-                                    <td><input type="text" name="mepp_text_translation_string_pay_deposit"
-                                               id="mepp_text_translation_string_pay_deposit"
-                                               value="<?php echo $mepp_text_translation_string_pay_deposit ?: 'Pay Deposit' ?>">
+                                    <td><input type="text" name="mepp_text_translation_string_pay_deposit" id="mepp_text_translation_string_pay_deposit" value="<?php echo $mepp_text_translation_string_pay_deposit ?: 'Pay Deposit' ?>">
                                     </td>
-                                </tr>                                
+                                </tr>
                             </table>
                         </div>
-                    </div><!--end of tab three-->
+                    </div>
+                    <!--end of tab three-->
 
-                    
+
                     <div class="mepp-tab " data-id="reminder">
                         <div class="mepp-tab-content">
                             <table>
                                 <?php do_action('mepp_reminder_setting_pro'); ?>
                             </table>
                         </div>
-                    </div><!--end of tab four-->
+                    </div>
+                    <!--end of tab four-->
+
+                    <!-- Style Tab content -->
+                    <div class="mepp-tab " data-id="style">
+                        <div class="mepp-tab-content">
+                            <table>
+                                <?php do_action('mepp_style_setting_content'); ?>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Style Tab content END -->
 
 
                     <div class="mepp-tab " data-id="license">
@@ -438,14 +444,14 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                 <div class="mep_licensae_info"></div>
                                 <table class='wp-list-table widefat striped posts mep-licensing-table'>
                                     <thead>
-                                    <tr>
-                                        <th>Plugin Name</th>
-                                        <th width=5%>Order No</th>
-                                        <th width=25%>Expire on</th>
-                                        <th width=30%>License Key</th>
-                                        <th width=10%>Status</th>
-                                        <th width=10%>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Plugin Name</th>
+                                            <th width=5%>Order No</th>
+                                            <th width=25%>Expire on</th>
+                                            <th width=30%>License Key</th>
+                                            <th width=10%>Status</th>
+                                            <th width=10%>Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         <?php do_action('mepp_license_setting_pro'); ?>
@@ -453,19 +459,20 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                 </table>
                             </div>
                         </div>
-                    </div><!--end of tab four-->
+                    </div>
+                    <!--end of tab four-->
                     <?php do_action('mepp_settings_page_content');  ?>
-                    <input type="submit" name="mepp_setting_save"
-                           value="<?php _e('Save', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>">
+                    <input type="submit" name="mepp_setting_save" value="<?php _e('Save', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>">
                 </form>
-            </div><!--end of container-->
+            </div>
+            <!--end of container-->
 
-            <?php
+        <?php
         }
 
         protected function promotion()
         {
-            ?>
+        ?>
 
             <div class="mepp-promotion-container">
                 <h3 class="mepp-promotin-title"><?php _e('Use our Premium Features Now', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h3>
@@ -484,7 +491,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 <a class="mepp-upgrade-pro-btn" href="https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/" target="_blank"><?php _e('Upgrade to Pro', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
             </div>
 
-            <?php
+        <?php
         }
 
         public function partial_order_screen()
@@ -496,12 +503,12 @@ if (!class_exists('Mepp_Admin_Menu')) {
             $this->partial_order_filter(); // Data Filter
 
             // Data Output
-            ?>
+        ?>
             <div class="mepp-table-container">
                 <?php wcpp_get_partial_order_data($partial_orders) ?>
             </div>
 
-            <?php
+        <?php
             mep_modal_html();
         }
 
@@ -535,15 +542,14 @@ if (!class_exists('Mepp_Admin_Menu')) {
 
         public function partial_order_filter()
         {
-            if (! is_plugin_active( 'mage-partial-payment-pro/mage_partial_pro.php' ) ) {
+            if (!is_plugin_active('mage-partial-payment-pro/mage_partial_pro.php')) {
                 $wcpp_pro_plugin_status = 'disabled';
-                $wcpp_pro_feature_label = __(' (Pro Feature)','advanced-partial-payment-or-deposit-for-woocommerce');
-            }
-            else{
+                $wcpp_pro_feature_label = __(' (Pro Feature)', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            } else {
                 $wcpp_pro_plugin_status = '';
                 $wcpp_pro_feature_label = '';
-            }            
-            ?>
+            }
+        ?>
             <div class="mepp-filter-container">
                 <form action="">
                     <div class="mepp-form-inner">
@@ -568,22 +574,22 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 </form>
             </div>
 
-            <?php
+<?php
         }
 
-        public function wcpp_payment_plan_page(){
+        public function wcpp_payment_plan_page()
+        {
             $wcpp_pro_ad_img_url = WCPP_PLUGIN_URL . "/asset/img/wcpp_pro_discount_ad.png";
             echo '<div class="wcpp_notice_info">';
-            echo __('Please install the <strong>Advanced Partial/Deposit Payment For Woocommerce Pro</strong> plugin to get payment plan feature.','advanced-partial-payment-or-deposit-for-woocommerce');
-            echo '<a href="'.esc_url("https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/").'" class="wcpp_get_pro_btn">'.esc_html__('GET PRO','advanced-partial-payment-or-deposit-for-woocommerce').'</a>';
+            echo __('Please install the <strong>Advanced Partial/Deposit Payment For Woocommerce Pro</strong> plugin to get payment plan feature.', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            echo '<a href="' . esc_url("https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/") . '" class="wcpp_get_pro_btn">' . esc_html__('GET PRO', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>';
             echo '</div>';
             echo '<div class="wcpp_pro_ad_wrapper">';
-            echo '<a href="'.esc_url("https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/").'">';
-            echo '<img src="'.esc_url($wcpp_pro_ad_img_url).'"/>';
+            echo '<a href="' . esc_url("https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/") . '">';
+            echo '<img src="' . esc_url($wcpp_pro_ad_img_url) . '"/>';
             echo '</a>';
             echo '</div>';
-        }        
-
+        }
     }
 
     new Mepp_Admin_Menu;

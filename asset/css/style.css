@@ -57,9 +57,7 @@ ul.mep-pp-payment-terms label{margin: 0;}
 }
 ul.mep-pp-payment-terms label input,
 .mep-single-plan-wrap input {
-    width: 25px!important;
-    height: 33px;
-    vertical-align: top;
+    vertical-align: sub;
 }
 .mep-single-plan.plan-details table th {
     padding:5px;
@@ -84,7 +82,6 @@ ul.mep-pp-payment-terms label input,
     margin-bottom: 10px;
 }
 .mep-pp-payment-btn-wraper .mep-pp-payment-terms {
-    background: #efe9e9;
     margin: 10px 0;
     padding-left: 0;
 }
@@ -142,9 +139,12 @@ ul.mep-pp-payment-terms label input,
     display: none;
 }
 .mepp_custom_message_product {
-    background: #f6e8e8;
-    border-left: 5px solid green;
-    padding: 5px;
+    /* background: #f6e8e8; */
+    border-width: 0;
+    border-left-width: 5px;
+    border-color: inherit;
+    border-style: solid;
+    padding: 5px 10px;
     line-height: 1.6;
     margin-bottom: 20px;
 }
