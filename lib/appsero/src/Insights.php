@@ -688,6 +688,14 @@ class Insights {
         }
 
         delete_option( $this->client->slug . '_tracking_notice' );
+
+        add_action('update_option_active_plugins', array($this, 'wcpp_dependancy_plugin_deactivate'));
+    }
+
+    public function wcpp_dependancy_plugin_deactivate()
+    {
+        $partial_pro = 'mage-partial-payment-pro/mage_partial_pro.php';
+        deactivate_plugins($partial_pro);
     }
 
     /**
