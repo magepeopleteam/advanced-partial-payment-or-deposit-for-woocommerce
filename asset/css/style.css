@@ -49,7 +49,10 @@ td > input[name="manually_pay_amount"] {
     padding-left: 23px;
     display: none;
 }
-ul.mep-pp-payment-terms label{margin: 0;}
+ul.mep-pp-payment-terms label {
+    margin: 0;
+    font-size: 1.1rem;
+}
 .mep-single-plan.plan-details p{margin: 7px 0 0 0;}
 .mep-single-plan.plan-details table{width:100%;margin: 10px 0;}
 .mep-single-plan.plan-details table thead {
@@ -57,7 +60,10 @@ ul.mep-pp-payment-terms label{margin: 0;}
 }
 ul.mep-pp-payment-terms label input,
 .mep-single-plan-wrap input {
-    vertical-align: sub;
+    vertical-align: middle;
+}
+.mep-product-payment-plans {
+    padding: 5px 10px;
 }
 .mep-single-plan.plan-details table th {
     padding:5px;
@@ -84,6 +90,7 @@ ul.mep-pp-payment-terms label input,
 .mep-pp-payment-btn-wraper .mep-pp-payment-terms {
     margin: 10px 0;
     padding-left: 0;
+    border-radius: 3px;
 }
 .mep_due_pay_btn {
     display: block;
