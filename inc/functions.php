@@ -193,6 +193,7 @@ if (!function_exists('meppp_due_to_pay')) {
 
         // Loop over $cart items
         $due_value = 0; // no value
+        $deposit_amount = 0; // no value
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
 
             $linked_event_id = '';
@@ -223,9 +224,18 @@ if (!function_exists('meppp_due_to_pay')) {
             // }
 
             $due_value += (meppp_is_product_type_pp_deposit($product_id) && isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_due_payment'] : null;
+            $deposit_amount += (meppp_is_product_type_pp_deposit($product_id) && isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_deposit'] : null;
         }
         if (WC()->session->get('dfwc_shipping_fee')) {
             $due_value += absint(WC()->session->get('dfwc_shipping_fee'));
+        }
+        
+        // echo 'Total: '. WC()->cart->cart_contents_total .'<br>';
+        // echo 'Tax: '. WC()->cart->get_total_tax() .'<br>';
+        // echo 'Deposit Amount: '. $deposit_amount .'<br>';
+        // echo 'Due: '.$due_value.'<br>';
+        if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+            $due_value = (WC()->cart->cart_contents_total + WC()->cart->get_total_tax()) - $deposit_amount;
         }
 
         echo '<input type="hidden" name="manually_due_amount" value="' . esc_attr($due_value) . '" />';
@@ -783,12 +793,12 @@ if (!function_exists('mep_pp_history_get')) {
             <table class="mepp-table mep-pp-history-table woocommerce-table" style="width:100%;">
                 <thead>
                     <tr>
-                        <th><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                        <th><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                        <th><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                        <th><?php esc_attr_e('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                        <th><?php esc_attr_e('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                        <th><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1058,7 +1068,7 @@ if (!function_exists('mep_payment_plan_list_callback')) {
         $variations_price = array();
         if ($product_type != 'mep_events' && $product_type != 'wbbm_bus' && $product_type != 'wbtm_bus' && $product_type != 'ttbm_tour') {
             $product = wc_get_product($product_id);
-            $total_price = wc_get_price_including_tax($product);
+            // $total_price = wc_get_price_including_tax($product);
 
             if ($product->is_type('variable')) {
                 // Product has variations
@@ -1078,6 +1088,11 @@ if (!function_exists('mep_payment_plan_list_callback')) {
                 $total_price = wc_get_price_including_tax($product);
             } else {
                 $total_price = wc_get_price_including_tax($product);
+                if ('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+                    $total_price = wc_get_price_including_tax($product);
+                } else {
+                    $total_price = $product->get_price();
+                }
             }
         }
         $_pp_deposit_value = get_post_meta($product_id, '_mep_pp_deposits_value', true) ? get_post_meta($product_id, '_mep_pp_deposits_value', true) : 0;
@@ -1136,6 +1151,8 @@ if (!function_exists('mep_payment_plan_detail')) {
                 foreach ($payment_schdule as $payments) {
                     $percent = $percent + $payments['plan_schedule_parcent'];
                 }
+
+                $total = ($total * ($percent + $down_payment))/100;
             }
         ?>
             <div class="mep-single-plan plan-details">
@@ -2152,4 +2169,22 @@ function wcpp_get_mep_product_id($product_id)
     }
 
     return $product_id;
+}
+
+// Get product price from payment terms
+add_filter('wcpp_product_price_from_payment_terms', 'get_product_price_from_payment_terms', 10, 2);
+function get_product_price_from_payment_terms($prev_price, $payment_terms)
+{
+    if(!$payment_terms) return $prev_price;
+    if(!is_array($payment_terms)) return $prev_price;
+
+    $price = 0;
+
+    foreach($payment_terms as $terms) {
+        $price += $terms['total'];
+    }
+
+
+    return $price;
+
 }

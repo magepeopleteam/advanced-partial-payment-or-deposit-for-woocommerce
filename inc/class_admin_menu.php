@@ -82,6 +82,12 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     update_option('mepp_deposit_custom_message', mep_esc_html($_POST['mepp_deposit_custom_message']));
                 }
 
+                if (isset($_POST['meppp_tax_amount_added'])) {
+                    update_option('meppp_tax_amount_added', $_POST['meppp_tax_amount_added']);
+                } else {
+                    update_option('meppp_tax_amount_added', 'deposit');
+                }
+
                 update_option('mepp_text_translation_string_pay_deposit', mep_esc_html($_POST['mepp_text_translation_string_pay_deposit']));
                 update_option('mepp_text_translation_string_full_payment', mep_esc_html($_POST['mepp_text_translation_string_full_payment']));
                 update_option('mepp_text_translation_string_payment_total', mep_esc_html($_POST['mepp_text_translation_string_payment_total']));
@@ -131,6 +137,11 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     update_option('mepp_style_custom_msg_txtc', $_POST['mepp_style_custom_msg_txtc']);
                 } else {
                     update_option('mepp_style_custom_msg_txtc', '');
+                }
+                if (isset($_POST['mepp_style_history_table_bgc'])) {
+                    update_option('mepp_style_history_table_bgc', $_POST['mepp_style_history_table_bgc']);
+                } else {
+                    update_option('mepp_style_history_table_bgc', '');
                 }
             }
 

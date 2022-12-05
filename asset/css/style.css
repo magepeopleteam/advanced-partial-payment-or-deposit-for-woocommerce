@@ -112,10 +112,10 @@ ul.mep-pp-payment-terms label input,
     text-align: center;
     position: relative;
 }
-.mepp-table tbody > tr:nth-child(odd) td {
+.mepp-table tbody > tr:nth-child(even) td {
     background: #ecf5fd
 }
-.mepp-table tbody tr:nth-child(even) td {
+.mepp-table tbody tr:nth-child(odd) td {
     background: #fff
 }
 .mepp-table tr.active {
@@ -125,8 +125,9 @@ ul.mep-pp-payment-terms label input,
     background: #f26190;
 }
 .mepp-table > thead th {
-    border: 1px solid #f26190;
-    background: #f26190;
+    border-width: 1px;
+    border-color: inherit;
+    border-style: solid;
     color: #fff;
     padding: 5px 5px;
     text-align: center;

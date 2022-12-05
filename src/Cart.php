@@ -24,32 +24,36 @@ class MEP_PP_Cart
     }
 
     public function add_custom_price($cart_object)
-    {
+    {    
         foreach ($cart_object->cart_contents as $key => $value) {
-                $product_price = get_post_meta($value['product_id'], '_price', true);
-                if(isset($value['_pp_deposit_system']) && $value['_pp_deposit_system'] === 'payment_plan') {
-                    $payment_plan = get_term_meta($value['_pp_deposit_payment_plan_id']);
-                    $down_payment = (float) $payment_plan['mepp_plan_schedule_initial_pay_parcent'][0];
-                    $payment_schdule = maybe_unserialize((maybe_unserialize($payment_plan['mepp_plan_schedule'][0])));
-                    $percent = 0;
-                    if ($payment_schdule) {
-                        foreach ($payment_schdule as $payments) {
-                            $percent = $percent + $payments['plan_schedule_parcent'];
-                        }
-                        $percent += $down_payment;
+            // $product_price = get_post_meta($value['product_id'], '_price', true);
+            if(isset($value['_pp_deposit_system']) && $value['_pp_deposit_system'] === 'payment_plan' && get_post_type($value['product_id']) === 'product') {
+                $product = $value['data'];
+                $product_price = $product->get_price();
+                $product_qty = $value['quantity'];
+                $product_price_subtotal = $product_price * $product_qty;
+
+                $payment_plan = get_term_meta($value['_pp_deposit_payment_plan_id']);
+                $down_payment = (float) $payment_plan['mepp_plan_schedule_initial_pay_parcent'][0];
+                $payment_schdule = maybe_unserialize((maybe_unserialize($payment_plan['mepp_plan_schedule'][0])));
+                $percent = 0;
+                if ($payment_schdule) {
+                    foreach ($payment_schdule as $payments) {
+                        $percent = $percent + $payments['plan_schedule_parcent'];
                     }
-                    // Calculate product price according to payment plan
-                    $price = ($product_price * $percent) / 100;
-                    // echo '<pre>'; print_r(mep_make_payment_terms($product_price, $value['_pp_deposit_payment_plan_id'])); die;
-                    // echo '<pre>'; print_r($price); die;
-                    $value['data']->set_price($price);
-                    $value['_pp_due_payment'] = $price - ($product_price * $down_payment) / 100;
-                    $value['_pp_order_payment_terms'] = mep_make_payment_terms($product_price, $value['_pp_deposit_payment_plan_id'], $price)['payment_terms'];
-                    WC()->cart->cart_contents[$key] = $value;
+                    $percent += $down_payment;
                 }
+                // Calculate product price according to payment plan
+                $subtotal_price = ($product_price_subtotal * $percent) / 100;
+                $set_product_price = ($product_price * $percent) / 100;
+                // echo '<pre>'; print_r(mep_make_payment_terms($product_price_subtotal, $value['_pp_deposit_payment_plan_id'])); die;
+                $value['data']->set_price($set_product_price);
+                $value['_pp_due_payment'] = $subtotal_price - ($product_price_subtotal * $down_payment) / 100;
+                $value['_pp_order_payment_terms'] = mep_make_payment_terms($product_price_subtotal, $value['_pp_deposit_payment_plan_id'], $subtotal_price)['payment_terms'];
+                WC()->cart->cart_contents[$key] = $value;
+            }
         }
         WC()->cart->set_session(); // Finaly Update Cart
-        // echo '<pre>'; print_r($cart_object->cart_contents); die;
     }
 
     public function recalculate_cart($cart_updated)
@@ -143,12 +147,20 @@ class MEP_PP_Cart
             $product_price_total = $cart_item_data['line_total'];
         } else {
             $product = wc_get_product($product_id);
-            $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
+            if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+                $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
+            } else {
+                $product_price_total = $product->get_price() * (int)sanitize_text_field($quantity);
+            }
             if ($product->is_type('variable')) {
                 // Product has variations
                 $variation_id = sanitize_text_field($_POST['variation_id']);
                 $product = new WC_Product_Variation($variation_id);
-                $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
+                if ('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+                    $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
+                } else {
+                    $product_price_total = $product->get_price() * (int)sanitize_text_field($quantity);
+                }
             }
         }
         // Product Price END
@@ -203,7 +215,7 @@ class MEP_PP_Cart
         }
 
         // Calculate data
-        if ($deposit_type == 'percent') {
+        if ($deposit_type == 'percent') { // Percent
             if(!$deposit_value) {
                 return $cart_item_data;
             }
@@ -212,19 +224,20 @@ class MEP_PP_Cart
         } elseif ($deposit_type == 'manual' || $deposit_type == 'ticket_type') {
             $deposit_amount = isset($_POST['user-deposit-amount']) ? sanitize_text_field($_POST['user-deposit-amount']) / sanitize_text_field($quantity) : 0;
 
-        } elseif ($deposit_type == 'minimum_amount') {
+        } elseif ($deposit_type == 'minimum_amount') { // Minimum amount
             $default_value = get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;
             $deposit_amount = isset($_POST['user-deposit-amount']) ? sanitize_text_field($_POST['user-deposit-amount']) * sanitize_text_field($quantity) : $default_value;
             if(!$deposit_amount) {
                 return $cart_item_data;
             }
 
-        } elseif ($deposit_type == 'payment_plan') {
+        } elseif ($deposit_type == 'payment_plan') { // Payment plan
             $get_payment_terms = mep_make_payment_terms($product_price_total, sanitize_text_field($_POST['mep_payment_plan']), $product_price_total);
             $cart_item_data['_pp_order_payment_terms'] = $get_payment_terms['payment_terms'];
             $deposit_amount = $get_payment_terms['deposit_amount'];
+            $product_price_total = apply_filters('wcpp_product_price_from_payment_terms', $product_price_total, $get_payment_terms['payment_terms']);
 
-        } else {
+        } else { // Fixed
             if(!$deposit_value) {
                 return $cart_item_data;
             }
@@ -242,7 +255,6 @@ class MEP_PP_Cart
         $cart_item_data['_pp_deposit_payment_plan_id'] = isset($_POST['mep_payment_plan']) ? $_POST['mep_payment_plan'] : ''; // Payment plan id
         $cart_item_data['_pp_deposit_payment_plan_name'] = isset($_POST['mep_payment_plan']) ? mep_pp_payment_plan_name(sanitize_text_field($_POST['mep_payment_plan'])) : ''; // Payment plan title
         $cart_item_data['_pp_deposit_mode'] = $deposit_mode; // Deposit Mode e.g check_pp_deposit, check_full
-        // echo '<pre>';print_r($cart_item_data);die;
         return $cart_item_data;
     }
 
@@ -286,18 +298,23 @@ class MEP_PP_Cart
     /**
      * @param $cart_total
      */
-    public function cart_total_html( $cart_total ) {
-
+    public function cart_total_html( $cart_total )
+    {
         $cartTotal = WC()->cart->total;
         // Loop over $cart items
         $depositValue = 0; // no value
         $dueValue     = 0; // no value
         foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
             $vProductId = ( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : $cart_item['product_id'];
-            $dueValue += ( isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit' ) ? $cart_item['_pp_due_payment'] : null;
+            $dueValue += ( isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit' ) ? $cart_item['_pp_due_payment'] : 0;
         }
 
         $value = $cartTotal + $dueValue;
+        // Tax calculation by setting
+        // var_dump(apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added'));
+        // if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+        //     $value = $value + WC()->cart->get_total_tax();
+        // }
 
         return '<strong>' . wc_price( $value ) . '</strong>';
     }
@@ -309,6 +326,7 @@ class MEP_PP_Cart
         $is_deposit_pass = false;
         $has_deposit_type_minimum = false;
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            // echo '<pre>'; print_r($cart_item); die;
             if (isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') {
                 $total_deposit += $cart_item['_pp_deposit'];
                 $total_due += $cart_item['_pp_due_payment'];
@@ -320,6 +338,11 @@ class MEP_PP_Cart
                 $total_deposit += $cart_item['line_total'];
             }
         }
+
+        // if($is_deposit_pass && 'due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+        //     // Tax calculation from setting
+        //     $total_due = $total_due + WC()->cart->get_total_tax();
+        // }
 
         return $total - $total_due;
     }

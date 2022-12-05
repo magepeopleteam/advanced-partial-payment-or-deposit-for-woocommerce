@@ -336,6 +336,11 @@ input#_mep_enable_pp_deposit {
 
 .mepp-admin-setting-page .mepp-tab-content label {
     line-height: 1.1em;
+    display: block;
+}
+.mepp-admin-setting-page .mepp-tab-content label + span {
+    font-size: .8rem;
+    color: #848484;
 }
 
 .mepp-admin-setting-page .mepp-tab-content input[type="text"],

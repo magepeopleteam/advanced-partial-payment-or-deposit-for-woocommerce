@@ -57,8 +57,6 @@ class WC_Settings_Tab_Mage_Partial_Basic
      */
     public static function get_settings()
     {
-        echo 'Hllele'.'<br>';
-
         $settings = array(
             'section_title' => array(
                 'name' => __('Partial/Deposit Settings', 'woocommerce-settings-tab-demo'),

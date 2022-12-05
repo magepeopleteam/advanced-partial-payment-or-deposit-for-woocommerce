@@ -92,7 +92,7 @@
             let price = parseFloat(parent.find('.mep-product-payment-plans').data('total-price'));
             total_price = price * qty;
         }
-        mpwemapp_payment_schedule(parent, total_price);
+        mpwemapp_payment_schedule(parent, total_price, 'product');
     });
     $(document).on('click', 'form.cart .minus,form.cart .plus', function () {
         let parent = $(this).closest('form.cart');
@@ -410,22 +410,27 @@
         mpwemapp_payment_schedule(target, price);
     }
 
-    function mpwemapp_payment_schedule(target, price) {
+    function mpwemapp_payment_schedule(target, price, product_type = '') {
         let deposit_type = target.find('[name="payment_plan"]').val();
         target.find('[name="user-deposit-amount"]').attr('max', price)
         if (deposit_type === 'payment_plan') {
             target.find('.total_pp_price').each(function () {
+                let total_price;
                 //alert(price);
                 let total_payment = parseFloat($(this).data('total-percent'));
                 // let total_price = total_payment * price / 100;
                 // let total_price = parseFloat($(this).data('init-total'));
-                let total_price = price;
+                if(product_type === 'product') { // only for woo product
+                    total_price = (price * total_payment) / 100;
+                } else {
+                    total_price = price;
+                }
                 //alert(price);
                 $(this).html(mp_event_wo_commerce_price_format(total_price));
 
                 let current_deposit = $(this).closest('.plan-details').find('.total_deposit');
                 let down_payment = parseFloat(current_deposit.data('deposit'));
-                let down_pay = down_payment * total_price / 100;
+                let down_pay = (down_payment * price) / 100;
                 //alert(down_pay);
                 current_deposit.html(mp_event_wo_commerce_price_format(down_pay));
                 $(this).closest('.plan-details').find('[data-payment-plan]').each(function () {
@@ -438,6 +443,7 @@
         }
         if (deposit_type === 'percent') {
             let percent = parseFloat(target.find('[name="payment_plan"]').data('percent'));
+            console.log(price);
             price = price * percent / 100;
             target.find('.payment_amount').html(mp_event_wo_commerce_price_format(price));
         }
