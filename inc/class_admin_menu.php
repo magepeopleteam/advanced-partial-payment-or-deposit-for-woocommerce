@@ -76,6 +76,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
 
                 if (isset($_POST['mepp_default_payment_plan'])) {
                     update_option('mepp_default_payment_plan', maybe_serialize($_POST['mepp_default_payment_plan']));
+                } else {
+                    update_option('mepp_default_payment_plan', '');
                 }
 
                 if (isset($_POST['mepp_deposit_custom_message'])) {
