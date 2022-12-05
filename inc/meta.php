@@ -8,9 +8,9 @@ add_action('admin_init', 'mep_pp_meta_boxs');
 if (!function_exists('mep_pp_meta_boxs')) {
     function mep_pp_meta_boxs()
     {
-        if(!wcppe_enable_for_event()) return;
+        if (!wcppe_enable_for_event()) return;
 
-        if(!is_plugin_active('mage-eventpress/woocommerce-event-press.php')) {
+        if (!is_plugin_active('mage-eventpress/woocommerce-event-press.php')) {
             return;
         }
 
@@ -150,6 +150,9 @@ add_action('woocommerce_product_data_panels', 'mep_pp_pp_deposits_options_fileds
 if (!function_exists('mep_pp_pp_deposits_options_fileds')) {
     function mep_pp_pp_deposits_options_fileds()
     {
+
+        $partial_data = wcpp_partial_setting_level_data(get_the_ID());
+        $status_class = $partial_data['is_enable'] ? 'enabled' : 'disabled';
 ?>
         <div id="woo_desposits_options" class="panel woocommerce_options_panel">
             <div class="options_group">
@@ -211,6 +214,13 @@ if (!function_exists('mep_pp_pp_deposits_options_fileds')) {
 
                 ?>
             </div>
+            <div class="wcpp-status-container">
+                <h3 style="padding: 8px"><?php _e('Partial status for this product', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></h3>
+                <p><strong>Partial Payment </strong>: <span class="wcpp-status-flag <?php echo $status_class ?>"><?php echo $partial_data['is_enable'] ? 'Enabled' : 'Disabled' ?></span></p>
+                <p><strong>Deposit Type </strong>: <span><?php echo ucfirst(str_replace('_', ' ', $partial_data['deposit_type'])) ?></span></p>
+                <p><strong>Deposit value </strong>: <span style="margin-left: -10px"><?php echo is_array($partial_data['deposit_value']) ? (implode(',', $partial_data['deposit_value'])) : wc_price($partial_data['deposit_value']) ?></span></p>
+                <p><strong>Setting </strong>: <span><?php echo ucfirst($partial_data['setting_level']); ?></span></p>
+            </div>
         </div>
 <?php }
 }
@@ -253,7 +263,7 @@ if (!function_exists('mep_pp_payment_plan_woo_product_callback')) {
         if (is_null($post)) return;
         $product = wc_get_product($post->ID);
         if (!$product) return;
-        
+
         if (is_plugin_active('mage-partial-payment-pro/mage_partial_pro.php')) {
             $payment_plans = get_terms(
                 array(

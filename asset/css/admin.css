@@ -689,6 +689,43 @@ CSS by ariful
     border-radius: 3px;
 }
 
+/* Partial status */
+.wcpp-status-container {
+    background: #c5b8db;
+    color: #000;
+}
+.wcpp-status-container p strong {
+    min-width: 125px;
+    display: inline-block;
+}
+.wcpp-status-container p {margin-bottom: 5px;}
+.wcpp-status-container p span {margin-left: 10px;}
+.wcpp-status-flag {
+    position: relative;
+    display: inline-block;
+    padding: 0 12px;
+    color: #e91e63;
+    font-weight: 700;
+}
+.wcpp-status-flag.enabled {
+    color: #009688;
+}
+.wcpp-status-flag:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e91e63;
+    left: 0;
+    top: 6px;
+}
+.wcpp-status-flag.enabled:before {
+    background: #009688;
+}
+/* Partial status END */
+
 @media only screen and (max-width: 600px) {
     .mepp-promotion-container .mepp-promotional-item-container {
         display: block;

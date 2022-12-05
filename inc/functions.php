@@ -2101,6 +2101,43 @@ function wcpp_is_deposit_enabled($product_id)
     return $data;
 }
 
+function wcpp_partial_setting_level_data($product_id)
+{
+    if(!$product_id) return false;
+
+    $status_data = wcpp_is_deposit_enabled($product_id);
+
+    $data = array(
+        'is_enable' => $status_data['is_enable'],
+        'deposit_type' => '',
+        'deposit_value' => '',
+        'setting_level' => $status_data['setting_level'],
+    );
+
+    if($data['setting_level'] === 'local') {
+        $data['deposit_type'] = get_post_meta($product_id, '_mep_pp_deposits_type', true);
+        if($data['deposit_type'] === 'payment_plan') {
+            $plan_ids = get_post_meta($product_id, '_mep_pp_payment_plan', true);
+            $value = [];
+            if($plan_ids) {
+                foreach($plan_ids as $id) {
+                    $value[] = get_term($id)->name;
+                }
+            }
+        } elseif($data['deposit_type'] === 'minimum_amount') {
+            $value = get_post_meta($product_id, '_mep_pp_minimum_value', true);
+        } else {
+            $value = get_post_meta($product_id, '_mep_pp_deposits_value', true);
+        }
+        $data['deposit_value'] = $value;
+    } else {
+        $data['deposit_type'] = get_option('mepp_default_partial_type');
+        $data['deposit_value'] = get_option('mepp_default_partial_amount');
+    }
+
+    return $data;
+}
+
 // For testing
 function wcpp_test()
 {
