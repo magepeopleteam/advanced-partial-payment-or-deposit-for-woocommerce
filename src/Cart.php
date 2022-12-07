@@ -177,11 +177,11 @@ class MEP_PP_Cart
 
             return $cart_item_data;
         }
-        $is_exclude_from_global = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
+        $inherit_site_wide_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
         $is_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
 
         $setting_from = '';
-        if ($is_exclude_from_global === 'yes') { // Product level Setting
+        if ($inherit_site_wide_setting !== 'yes') { // Product level Setting
             $deposit_type = get_post_meta($product_id, '_mep_pp_deposits_type', true) ? get_post_meta($product_id, '_mep_pp_deposits_type', true) : '';
             $deposit_min_value_strict = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : '';
             if ($deposit_type === 'minimum_amount') {
@@ -195,8 +195,8 @@ class MEP_PP_Cart
             $deposit_type = $default_deposit_type;
             $setting_from = 'global';
             // Partial Option Page
-            $partial_option_page = apply_filters('mepp_partial_option_for_page', 'product_detail');
-            if ($partial_option_page === 'checkout') {
+            $checkout_mode = apply_filters('mepp_partial_option_for_page', 'product_detail');
+            if ($checkout_mode === 'checkout') {
                 $cart_item_data['_pp_deposit_system'] = '';
                 $cart_item_data['_pp_deposit_type'] = 'check_pp_deposit';
                 $cart_item_data['_pp_deposit_setting_from'] = $setting_from;
@@ -232,7 +232,10 @@ class MEP_PP_Cart
             }
 
         } elseif ($deposit_type == 'payment_plan') { // Payment plan
-            $get_payment_terms = mep_make_payment_terms($product_price_total, sanitize_text_field($_POST['mep_payment_plan']), $product_price_total);
+            $global_payment_plans = maybe_unserialize(get_option('mepp_default_payment_plan'));
+            $paymen_plan_id = isset($_POST['mep_payment_plan']) ? sanitize_text_field($_POST['mep_payment_plan']) : $global_payment_plans[0];
+            $payment_plan_name = isset($_POST['mep_payment_plan']) ? mep_pp_payment_plan_name(sanitize_text_field($_POST['mep_payment_plan'])) : mep_pp_payment_plan_name($paymen_plan_id);
+            $get_payment_terms = mep_make_payment_terms($product_price_total, $paymen_plan_id, $product_price_total);
             $cart_item_data['_pp_order_payment_terms'] = $get_payment_terms['payment_terms'];
             $deposit_amount = $get_payment_terms['deposit_amount'];
             $product_price_total = apply_filters('wcpp_product_price_from_payment_terms', $product_price_total, $get_payment_terms['payment_terms']);
@@ -252,9 +255,10 @@ class MEP_PP_Cart
         $cart_item_data['_pp_deposit_type'] = 'check_pp_deposit';
         $cart_item_data['_pp_deposit_system'] = $deposit_type; // Deposit type e.g percent, minimum_amount, fixed
         $cart_item_data['_pp_deposit_setting_from'] = $setting_from; // Setting honour by local or global
-        $cart_item_data['_pp_deposit_payment_plan_id'] = isset($_POST['mep_payment_plan']) ? $_POST['mep_payment_plan'] : ''; // Payment plan id
-        $cart_item_data['_pp_deposit_payment_plan_name'] = isset($_POST['mep_payment_plan']) ? mep_pp_payment_plan_name(sanitize_text_field($_POST['mep_payment_plan'])) : ''; // Payment plan title
+        $cart_item_data['_pp_deposit_payment_plan_id'] = isset($paymen_plan_id) ? $paymen_plan_id : ''; // Payment plan id
+        $cart_item_data['_pp_deposit_payment_plan_name'] = isset($payment_plan_name) ? $payment_plan_name : ''; // Payment plan title
         $cart_item_data['_pp_deposit_mode'] = $deposit_mode; // Deposit Mode e.g check_pp_deposit, check_full
+        // echo '<pre>'; print_r($cart_item_data); die;
         return $cart_item_data;
     }
 

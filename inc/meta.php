@@ -150,78 +150,101 @@ add_action('woocommerce_product_data_panels', 'mep_pp_pp_deposits_options_fileds
 if (!function_exists('mep_pp_pp_deposits_options_fileds')) {
     function mep_pp_pp_deposits_options_fileds()
     {
-
+        $checkout_mode = get_option('mepp_partial_enable_for_page');
         $partial_data = wcpp_partial_setting_level_data(get_the_ID());
         $status_class = $partial_data['is_enable'] ? 'enabled' : 'disabled';
 ?>
+
         <div id="woo_desposits_options" class="panel woocommerce_options_panel">
-            <div class="options_group">
+            <?php if ($checkout_mode !== 'checkout') : ?>
+                <div class="options_group">
+                    <?php
+                    // Exclude product deposit setting from default setting (Woo Product)
+                    echo '<div class="wcpp_local_setting_include_inherite">';
+                    woocommerce_wp_select(
+                        array(
+                            'id'      => '_mep_exclude_from_global_deposit',
+                            'label'   => __('Inherit site-wide setting', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'class'   => 'wc-enhanced-select',
+                            'options' => [
+                                'no' => __('No', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                                'yes'   => __('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            ],
+                            'value'   => get_post_meta(get_the_ID(), '_mep_exclude_from_global_deposit', true),
+                        )
+                    );
+                    echo '</div>';
+                    ?>
+                </div>
+                <div class="options_group">
                 <?php
-
-                // Exclude product deposit setting from default setting (Woo Product)
-                woocommerce_wp_checkbox(
-                    array(
-                        'id'          => '_mep_exclude_from_global_deposit',
-                        'label'       => __('Exclude this product', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'value'       => get_post_meta(get_the_ID(), '_mep_exclude_from_global_deposit', true),
-                        'description' => __('if enabled then this product not effected by default setting from setting page.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    )
-                );
-
-                woocommerce_wp_checkbox(
-                    array(
-                        'id'          => '_mep_enable_pp_deposit',
-                        'label'       => __('Enable Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'value'       => get_post_meta(get_the_ID(), '_mep_enable_pp_deposit', true),
-                        'description' => __('Enable deposits feature for this product.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    )
-                );
-
-                woocommerce_wp_select(
-                    array(
-                        'id'      => '_mep_pp_deposits_type',
-                        'label'   => __('Deposit type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'class'   => 'wc-enhanced-select',
-                        'options' => apply_filters('mepp_product_partial_list_option', [
-                            'percent' => __('Percentage of Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                            'fixed'   => __('Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        ]),
-                        'value'   => get_post_meta(get_the_ID(), '_mep_pp_deposits_type', true),
-                    )
-                );
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => '_mep_pp_deposits_value',
-                        'label'       => __('Deposit Value *', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'placeholder' => '',
-                        'value'       => get_post_meta(get_the_ID(), '_mep_pp_deposits_value', true),
-                        'style'       => 'width:60px;',
-                        'description' => __('Enter the value for deposit. only number allow.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    )
-                );
-                woocommerce_wp_text_input(
-                    array(
-                        'id'          => '_mep_pp_minimum_value',
-                        'label'       => __('Minimum Value *', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'placeholder' => '',
-                        'value'       => get_post_meta(get_the_ID(), '_mep_pp_minimum_value', true),
-                        'style'       => 'width:60px;',
-                        'description' => __('Enter a minimum value. This is the Minimum Payment Amount of this Deposit Type. Only Number allow.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    )
-                );
-                do_action('mep_pp_payment_plan_woo_product');
-                do_action('mep_pp_pp_deposits_options_fileds');
-
-                ?>
-            </div>
-            <div class="wcpp-status-container">
-                <h3 style="padding: 8px"><?php _e('Partial status for this product', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></h3>
-                <p><strong>Partial Payment </strong>: <span class="wcpp-status-flag <?php echo $status_class ?>"><?php echo $partial_data['is_enable'] ? 'Enabled' : 'Disabled' ?></span></p>
-                <p><strong>Deposit Type </strong>: <span><?php echo ucfirst(str_replace('_', ' ', $partial_data['deposit_type'])) ?></span></p>
-                <p><strong>Deposit value </strong>: <span style="margin-left: -10px"><?php echo is_array($partial_data['deposit_value']) ? (implode(',', $partial_data['deposit_value'])) : wc_price($partial_data['deposit_value']) ?></span></p>
-                <p><strong>Setting </strong>: <span><?php echo ucfirst($partial_data['setting_level']); ?></span></p>
-            </div>
+                    echo '<div class="wcpp_local_setting">';
+                    woocommerce_wp_checkbox(
+                        array(
+                            'id'          => '_mep_enable_pp_deposit',
+                            'label'       => __('Enable Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'value'       => get_post_meta(get_the_ID(), '_mep_enable_pp_deposit', true),
+                            'description' => __('Enable deposits feature for this product.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        )
+                    );
+                    woocommerce_wp_select(
+                        array(
+                            'id'      => '_mep_pp_deposits_type',
+                            'label'   => __('Deposit type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'class'   => 'wc-enhanced-select',
+                            'options' => apply_filters('mepp_product_partial_list_option', [
+                                'percent' => __('Percentage of Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                                'fixed'   => __('Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            ]),
+                            'value'   => get_post_meta(get_the_ID(), '_mep_pp_deposits_type', true),
+                        )
+                    );
+                    woocommerce_wp_text_input(
+                        array(
+                            'id'          => '_mep_pp_deposits_value',
+                            'label'       => __('Deposit Value *', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'placeholder' => '',
+                            'value'       => get_post_meta(get_the_ID(), '_mep_pp_deposits_value', true),
+                            'style'       => 'width:60px;',
+                            'description' => __('Enter the value for deposit. only number allow.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        )
+                    );
+                    woocommerce_wp_text_input(
+                        array(
+                            'id'          => '_mep_pp_minimum_value',
+                            'label'       => __('Minimum Value *', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'placeholder' => '',
+                            'value'       => get_post_meta(get_the_ID(), '_mep_pp_minimum_value', true),
+                            'style'       => 'width:60px;',
+                            'description' => __('Enter a minimum value. This is the Minimum Payment Amount of this Deposit Type. Only Number allow.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        )
+                    );
+                    do_action('mep_pp_payment_plan_woo_product');
+                    do_action('mep_pp_pp_deposits_options_fileds');
+                    echo '</div>';
+                    echo '</div>';
+            else :
+                echo '<h3>' . __("Checkout mode enabled", "advanced-partial-payment-or-deposit-for-woocommerce") . '</h3>';
+                printf('<h4>%s. <a href="%s">%s</a> </h4>', __('If you would like to use deposit product basis, please disable checkout mode.', 'advanced-partial-payment-or-deposit-for-woocommerce'), get_admin_url(null, '/admin.php?page=mage-partial-setting'), __('Go to plugin setting', 'advanced-partial-payment-or-deposit-for-woocommerce'));
+            endif; ?>
+                <div class="wcpp-status-container">
+                    <h3><?php _e('Partial status for this product', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></h3>
+                    <p><strong>Partial Payment </strong>: <span class="wcpp-status-flag <?php echo $status_class ?>"><?php echo $partial_data['is_enable'] ? 'Enabled' : 'Disabled' ?></span></p>
+                    <p><strong>Deposit Type </strong>: <span><?php echo ucfirst(str_replace('_', ' ', $partial_data['deposit_type'])) ?></span></p>
+                    <?php if (is_array($partial_data['deposit_value'])) : ?>
+                        <!-- For Payment Plan -->
+                        <p><strong>Deposit value </strong>: <span><?php echo (implode(',', $partial_data['deposit_value'])) ?></span></p>
+                    <?php elseif (!$partial_data['deposit_value']) : ?>
+                        <!-- Value not set yet -->
+                        <p><strong>Deposit value </strong>: <span style="color:#795548"><span class="dashicons dashicons-info"></span><?php _e('Partial value is not set so partial is now disabled for this product. Please set a value.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span></p>
+                    <?php else : ?>
+                        <!-- For others plan -->
+                        <p><strong>Deposit value </strong>: <span><?php echo wc_price($partial_data['deposit_value']) ?></span></p>
+                    <?php endif; ?>
+                    <p><strong>Setting </strong>: <span><?php echo ucfirst($partial_data['setting_level']); ?></span></p>
+                </div>
         </div>
+
 <?php }
 }
 
@@ -231,7 +254,7 @@ if (!function_exists('mep_pp_pp_deposits_product_fields_save')) {
     function mep_pp_pp_deposits_product_fields_save($post_id)
     {
         $field_mep_enable_pp_deposit = isset($_POST['_mep_enable_pp_deposit']) ? 'yes' : 'no';
-        $field_mep_exclude_from_global_deposit = isset($_POST['_mep_exclude_from_global_deposit']) ? 'yes' : 'no';
+        $field_mep_exclude_from_global_deposit = isset($_POST['_mep_exclude_from_global_deposit']) ? $_POST['_mep_exclude_from_global_deposit'] : 'no';
         $field_mep_pp_deposits_type  = sanitize_text_field($_POST['_mep_pp_deposits_type']);
         $field_mep_pp_deposits_value = sanitize_text_field($_POST['_mep_pp_deposits_value']);
         $field_mep_pp_minimum_value = sanitize_text_field($_POST['_mep_pp_minimum_value']);

@@ -155,11 +155,16 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 echo '</script>';
                 */
             }
+
+            $checkout_mode = get_option('mepp_partial_enable_for_page');
 ?>
 
             <div class="mepp-admin-setting-page">
                 <div class="mepp-admin-page-header">
                     <h3><?php echo wcpp_get_plugin_data('Name'); ?><small><?php echo wcpp_get_plugin_data('Version'); ?></small></h3>
+                    <?php if ($checkout_mode === 'checkout') : ?>
+                        <span id="wcpp_checkout_mode"><?php _e('Checkout Mode Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                    <?php endif; ?>
                 </div>
                 <div class="mepp-admin-page-content">
                     <?php $this->setting_content(); ?>
@@ -222,16 +227,16 @@ if (!class_exists('Mepp_Admin_Menu')) {
             $mepp_text_translation_string_to_pay = get_option('mepp_text_translation_string_to_pay');
             $mepp_text_translation_string_pay_due_payment = get_option('mepp_text_translation_string_pay_due_payment');
             $mepp_text_translation_string_pay_deposit = get_option('mepp_text_translation_string_pay_deposit');
+            $partial_enable_for_cart_page = get_option('mepp_partial_enable_for_cart_page');
         ?>
 
             <div class="mepp-tab-container">
                 <div class="mepp-tab-menu">
                     <ul class="mepp-ul">
-                        <li><a href="#" class="mepp-tab-a active-a" data-id="general"><?php _e('General', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
-                        </li>
+                        <li><a href="#" class="mepp-tab-a active-a" data-id="general"><?php _e('General', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
 
-                        <li><a href="#" class="mepp-tab-a" data-id="default"><?php _e('Default', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
-                        </li>
+                        <li><a href="#" class="mepp-tab-a" data-id="site-wide"><?php _e('Site-wide', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
+                        <li><a href="#" class="mepp-tab-a" data-id="checkout-mode"><?php _e('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
 
                         <?php do_action('mepp_style_setting_tab'); ?>
 
@@ -288,7 +293,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     </div>
                     <!--end of tab one-->
 
-                    <div class="mepp-tab " data-id="default">
+                    <div class="mepp-tab " data-id="site-wide">
                         <div class="mepp-tab-content">
                             <table>
                                 <tr>
@@ -325,23 +330,41 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <span class="mepp-input-desc"><?php _e('Default partial value.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>
-                                        <label for="mepp_partial_enable_for_page"><?php _e('Show Partial Option', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
-                                    </th>
-                                    <td>
-                                        <select name="mepp_partial_enable_for_page" id="mepp_partial_enable_for_page">
-                                            <option value="product_detail" <?php echo $partial_enable_for_page === 'product_detail' ? 'selected' : '' ?>><?php echo __('Product Detail', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
-                                            <?php do_action('mepp_show_partial_option_checkout') ?>
-                                        </select>
-                                        <span class="mepp-input-desc"><?php _e('If value is "checkout" then partial option show on checkout page instead of product page.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
-                                    </td>
-                                </tr>
                                 <?php do_action('mepp_default_setting_pro') ?>
                             </table>
                         </div>
                     </div>
                     <!--end of tab two-->
+
+                    <div class="mepp-tab " data-id="checkout-mode">
+                        <div class="mepp-tab-content">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <label for="mepp_partial_enable_for_page"><?php _e('Enable checkout mode', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
+                                    </th>
+                                    <td>
+                                        <select name="mepp_partial_enable_for_page" id="mepp_partial_enable_for_page">
+                                            <option value="product_detail" <?php echo $partial_enable_for_page === 'product_detail' ? 'selected' : '' ?>><?php echo __('No', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                            <?php do_action('mepp_show_partial_option_checkout') ?>
+                                        </select>
+                                        <span class="mepp-input-desc"><?php _e('If value is "checkout" then partial option show on checkout page instead of product page.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="mepp_partial_enable_for_cart_page"><?php _e('Show Partial Option in Cart page', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
+                                    </th>
+                                    <td>
+                                        <input type="checkbox" name="mepp_partial_enable_for_cart_page" id="mepp_partial_enable_for_cart_page" <?php echo $partial_enable_for_cart_page === 'yes' ? 'checked' : '' ?> value="yes">
+                                        <span class="mepp-checkbox-label"><?php _e('Enable it, If you want to show partial option in Cart page.', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></span>
+                                        <span class="mepp-input-desc"><?php _e('<strong>Note:</strong> This option will work if "Show Partial option" value is checkout.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
 
                     <div class="mepp-tab " data-id="translation">
                         <div class="mepp-tab-content">

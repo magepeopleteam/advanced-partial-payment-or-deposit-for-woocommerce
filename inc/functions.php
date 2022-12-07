@@ -1749,7 +1749,7 @@ function wcpp_deposit_type_switch_frontend()
             if ($deposit_type === 'percent') {
                 $deposit_amount = ($line_total * $default_deposit_value) / 100;
             } elseif ($deposit_type === 'minimum_amount') {
-                $deposit_amount = $item['_pp_deposit'];
+                $deposit_amount = $item['_pp_deposit'] ?: $default_deposit_value;
             } else {
                 $deposit_amount = $default_deposit_value * $item['quantity'];
             }
@@ -2070,6 +2070,7 @@ if (!function_exists('mep_esc_html')) {
 
 function wcpp_is_deposit_enabled($product_id)
 {
+    $checkout_mode = get_option('mepp_partial_enable_for_page');
     $data = array(
         'is_enable' => false,
         'setting_level' => ''
@@ -2079,10 +2080,10 @@ function wcpp_is_deposit_enabled($product_id)
 
     $global_deposit_enable = get_option('mepp_enable_partial_by_default') ? get_option('mepp_enable_partial_by_default') : 'no';
     $is_deposit_enabled_localy = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
-    $exclude_from_global = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
+    $inherit_site_wide_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
     $deposit_type_localy = get_post_meta($product_id, '_mep_pp_deposits_type', true);
 
-    if ($exclude_from_global === 'yes') {      // Local setting
+    if ($inherit_site_wide_setting !== 'yes' && $checkout_mode !== 'checkout') {      // Local setting
         if ($deposit_type_localy === 'minimum_amount') {
             $value = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : 0;
         } elseif ($deposit_type_localy === 'percent' || $deposit_type_localy === 'fixed') {
@@ -2132,7 +2133,18 @@ function wcpp_partial_setting_level_data($product_id)
         $data['deposit_value'] = $value;
     } else {
         $data['deposit_type'] = get_option('mepp_default_partial_type');
-        $data['deposit_value'] = get_option('mepp_default_partial_amount');
+        if ($data['deposit_type'] === 'payment_plan') {
+            $plan_ids = maybe_unserialize(get_option('mepp_default_payment_plan'));
+            $value = [];
+            if ($plan_ids) {
+                foreach ($plan_ids as $id) {
+                    $value[] = get_term($id)->name;
+                }
+            }
+        } else {
+            $value = get_option('mepp_default_partial_amount');
+        }
+        $data['deposit_value'] = $value;
     }
 
     return $data;

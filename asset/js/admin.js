@@ -8,6 +8,14 @@
 
         // $('.mep-view-reminder-log').trigger('click');
 
+        // Inherit site wide setting
+        let inherit_setting = $("#_mep_exclude_from_global_deposit").find(":selected").val();
+        wcpp_inherit_setting_control(inherit_setting);
+        $("#_mep_exclude_from_global_deposit").change(function() {
+            const value = $(this).find(':selected').val();
+            wcpp_inherit_setting_control(value);
+        });
+
         // Initail deposit type check in setting
         const default_deposit_type = $('select[name="mepp_default_partial_type"] option:selected').val();
         if(default_deposit_type === 'payment_plan') {
@@ -407,6 +415,17 @@
     function myFunction() {
         alert("The context menu is about to be shown");
       }
+
+    // Inherit function
+    function wcpp_inherit_setting_control(value) {
+        console.log(value);
+        const target = $(".wcpp_local_setting");
+        if (value === "yes") {
+          target.hide();
+        } else {
+          target.show();
+        }
+    }
 
 })(jQuery);
 

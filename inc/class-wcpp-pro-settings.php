@@ -60,16 +60,6 @@ if (!class_exists('WCPP_Pro_Settings')) {
                     <span class="mepp-input-desc wcpp_text_disabled"><?php _e('Default payment plan(s).', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                 </td>
             </tr>
-            <tr>
-                <th>
-                    <label for="mepp_partial_enable_for_cart_page" class="wcpp_text_disabled"><?php _e('Show Partial Option in Cart page', 'advanced-partial-payment-or-deposit-for-woocommerce') ?><span class="wcpp_pro_text"><?php _e('Pro', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span></label>
-                </th>
-                <td>
-                    <input type="checkbox" id="mepp_partial_enable_for_cart_page" disabled>
-                    <span class="mepp-checkbox-label wcpp_text_disabled"><?php _e('Enable it, If you want to show partial option in Cart page.', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></span>
-                    <span class="mepp-input-desc wcpp_text_disabled"><?php _e('<strong>Note:</strong> This option will work if "Show Partial option" value is checkout.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
-                </td>
-            </tr>
     
             <?php
         }

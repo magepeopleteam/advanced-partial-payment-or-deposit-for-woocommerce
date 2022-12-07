@@ -112,6 +112,7 @@ ul.mep-pp-payment-terms label input,
 }
 .mepp-table th {
     text-align: center;
+    border-color: #ffffff!important;
 }
 .mepp-table td {
     border: 1px solid #dfdfdf;
@@ -141,7 +142,7 @@ ul.mep-pp-payment-terms label input,
 }
 .wcpp-deposit-types .inner {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 .mepp-payment-plan-option-frontend {
     display: none;
