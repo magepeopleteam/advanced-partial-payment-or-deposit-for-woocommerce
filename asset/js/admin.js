@@ -10,10 +10,11 @@
 
         // Inherit site wide setting
         let inherit_setting = $("#_mep_exclude_from_global_deposit").find(":selected").val();
-        wcpp_inherit_setting_control(inherit_setting);
+        wcpp_inherit_setting_control($("#_mep_exclude_from_global_deposit"), inherit_setting);
         $("#_mep_exclude_from_global_deposit").change(function() {
             const value = $(this).find(':selected').val();
-            wcpp_inherit_setting_control(value);
+            console.log(value);
+            wcpp_inherit_setting_control($(this), value);
         });
 
         // Initail deposit type check in setting
@@ -417,14 +418,28 @@
       }
 
     // Inherit function
-    function wcpp_inherit_setting_control(value) {
-        console.log(value);
-        const target = $(".wcpp_local_setting");
-        if (value === "yes") {
-          target.hide();
+    function wcpp_inherit_setting_control($this, value) {
+        console.log('called');
+        const isEvent = $('body').hasClass('post-type-mep_events');
+        const isTour = $("body").hasClass("post-type-ttbm_tour");
+        console.log(isEvent, isTour);
+        if(isEvent || isTour) {
+            const selectTr = $this.parents("tr");
+            console.log(value);
+            if(value === "yes") {
+                selectTr.nextAll('tr').hide();
+            } else {
+                selectTr.nextAll('tr').show();
+            }
         } else {
-          target.show();
+            const target = $(".wcpp_local_setting");
+            if (value === "yes") {
+              target.hide();
+            } else {
+              target.show();
+            }
         }
+        
     }
 
 })(jQuery);
