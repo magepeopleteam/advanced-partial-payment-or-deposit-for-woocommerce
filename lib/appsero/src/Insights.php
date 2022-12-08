@@ -104,7 +104,7 @@ class Insights {
      *
      * @return \self
      */
-    public function notice( $text ) {
+    public function notice($text='' ) {
         $this->notice = $text;
 
         return $this;
@@ -244,21 +244,27 @@ class Insights {
             'is_local'         => $this->is_local_server(),
         );
 
-        $plugins_data = array();
-        foreach ( $all_plugins['active_plugins'] as $slug => $plugin) {
-
-            $slug = strstr( $slug, '/', true );
-            if( ! $slug )
-                continue;
-
-            $plugins_data[ $slug ] = array(
-                'name' => isset( $plugin['name'] ) ? $plugin['name'] : '',
-                'version' => isset( $plugin['version'] ) ? $plugin['version'] : '',
-            );
-        }
-
         // Add Plugins
-        if( $this->plugin_data ) {
+        if ($this->plugin_data) {
+            
+            $plugins_data = array();
+
+            foreach ($all_plugins['active_plugins'] as $slug => $plugin) {
+                $slug = strstr($slug, '/', true);
+                if (! $slug) {
+                    continue;
+                }
+
+                $plugins_data[ $slug ] = array(
+                    'name' => isset($plugin['name']) ? $plugin['name'] : '',
+                    'version' => isset($plugin['version']) ? $plugin['version'] : '',
+                );
+            }
+
+            if (array_key_exists($this->client->slug, $plugins_data)) {
+                unset($plugins_data[$this->client->slug]);
+            }
+            
             $data['plugins'] = $plugins_data;
         }
 
@@ -307,9 +313,13 @@ class Insights {
             'Number of users in your site',
             'Site language',
             'Number of active and inactive plugins',
-            'Site name and url',
+            'Site name and URL',
             'Your name and email address',
         );
+
+        if ($this->plugin_data) { 
+            array_splice($data, 4, 0, ["active plugins' name"]);
+        }
 
         return $data;
     }
@@ -356,8 +366,8 @@ class Insights {
      */
     private function is_local_server() {
 
-        $host       = $_SERVER['HTTP_HOST'];
-        $ip         = $_SERVER['SERVER_ADDR'];
+        $host       = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : 'localhost';
+        $ip         = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : '127.0.0.1';
         $is_local   = false;
 
         if( in_array( $ip,array( '127.0.0.1', '::1' ) )
@@ -688,14 +698,6 @@ class Insights {
         }
 
         delete_option( $this->client->slug . '_tracking_notice' );
-
-        add_action('update_option_active_plugins', array($this, 'wcpp_dependancy_plugin_deactivate'));
-    }
-
-    public function wcpp_dependancy_plugin_deactivate()
-    {
-        $partial_pro = 'mage-partial-payment-pro/mage_partial_pro.php';
-        deactivate_plugins($partial_pro);
     }
 
     /**
@@ -777,6 +779,10 @@ class Insights {
 
         if ( ! isset( $_POST['reason_id'] ) ) {
             wp_send_json_error();
+        }
+
+        if ( ! wp_verify_nonce( $_POST['nonce'], 'appsero-security-nonce' ) ) {
+            wp_send_json_error( 'Nonce verification failed' );
         }
 
         $data                = $this->get_tracking_data();
@@ -921,6 +927,7 @@ class Insights {
                             url: ajaxurl,
                             type: 'POST',
                             data: {
+                                nonce: '<?php echo wp_create_nonce( 'appsero-security-nonce' ); ?>',
                                 action: '<?php echo $this->client->slug; ?>_submit-uninstall-reason',
                                 reason_id: ( 0 === $radio.length ) ? 'none' : $radio.val(),
                                 reason_info: ( 0 !== $input.length ) ? $input.val().trim() : ''
