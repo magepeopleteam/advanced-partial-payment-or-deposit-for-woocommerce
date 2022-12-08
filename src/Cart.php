@@ -39,7 +39,7 @@ class MEP_PP_Cart
                 $percent = 0;
                 if ($payment_schdule) {
                     foreach ($payment_schdule as $payments) {
-                        $percent = $percent + $payments['plan_schedule_parcent'];
+                        $percent = $percent + (float) $payments['plan_schedule_parcent'];
                     }
                     $percent += $down_payment;
                 }

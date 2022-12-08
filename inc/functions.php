@@ -1862,7 +1862,7 @@ function mep_modal_html()
  * @return $deposit_amount
  * */
 if (!function_exists('mepp_get_deposit_amount')) {
-    function mepp_get_deposit_amount($product_id)
+    function mepp_get_deposit_amount($product_id, $deposit_data)
     {
         $deposit_amount = 0;
 
@@ -1878,28 +1878,9 @@ if (!function_exists('mepp_get_deposit_amount')) {
             }
         }
 
-        $is_exclude_from_global = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
-        $is_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
-
-        $default_deposit_type = get_option('mepp_default_partial_type') ? get_option('mepp_default_partial_type') : '';
-        $default_deposit_value = get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : '';
-
-        $is_global = false;
-        // Deposit value & deposit type
-        if ($is_exclude_from_global === 'yes' && $is_deposit_enable === 'yes') {
-            $deposit_value = get_post_meta($product_id, '_mep_pp_deposits_value', true) ? get_post_meta($product_id, '_mep_pp_deposits_value', true) : 0;
-            $minimum_value = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : 0;
-            $deposit_type = get_post_meta($product_id, '_mep_pp_deposits_type', true) ? get_post_meta($product_id, '_mep_pp_deposits_type', true) : '';
-            if ($deposit_type === 'minimum_amount') {
-                $deposit_value = $minimum_value;
-            }
-        } else {
-            $show_partial_page = get_option('mepp_partial_enable_for_page') ?: 'product_detail';
-            // if ($show_partial_page === 'checkout') return 0;
-            $deposit_value = $default_deposit_value;
-            $deposit_type = $default_deposit_type;
-            $is_global = true;
-        }
+        $deposit_value = $deposit_data['deposit_value'];
+        $deposit_type = $deposit_data['deposit_type'];
+        
 
         $product_type = get_post_type($product_id);
         $product_price_total = 0;
@@ -1929,14 +1910,14 @@ if (!function_exists('mepp_get_deposit_amount')) {
         if ($deposit_type == 'percent') {
             $deposit_amount = ($deposit_value / 100) * $product_price_total;
         } elseif ($deposit_type == 'minimum_amount') {
-            $deposit_amount = $is_global ? $deposit_value / $quantity : $minimum_value / $quantity;
+            $deposit_amount = $deposit_value / $quantity;
         } elseif ($deposit_type == 'payment_plan') {
-            $deposit_amount = 0;
+            return 'Payment Plan';
         } else {
             $deposit_amount = $deposit_value / $quantity;
         }
 
-        return $deposit_amount;
+        return wc_price($deposit_amount);
     }
 }
 
