@@ -233,17 +233,17 @@ if (!class_exists('Mepp_Admin_Menu')) {
             <div class="mepp-tab-container">
                 <div class="mepp-tab-menu">
                     <ul class="mepp-ul">
-                        <li><a href="#" class="mepp-tab-a active-a" data-id="general"><?php _e('General', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
+                        <li><a href="#" class="mepp-tab-a active-a" data-id="general"><i class="fas fa-home"></i> <?php _e('General', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
 
-                        <li><a href="#" class="mepp-tab-a" data-id="site-wide"><?php _e('Site-wide', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
-                        <li><a href="#" class="mepp-tab-a" data-id="checkout-mode"><?php _e('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
+                        <li><a href="#" class="mepp-tab-a" data-id="site-wide"><i class="fas fa-globe"></i> <?php _e('Site-wide', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
+                        <li><a href="#" class="mepp-tab-a" data-id="checkout-mode"><i class="fas fa-shopping-cart"></i> <?php _e('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a></li>
 
                         <?php do_action('mepp_style_setting_tab'); ?>
 
-                        <li><a href="#" class="mepp-tab-a" data-id="translation"><?php _e('Translation', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <li><a href="#" class="mepp-tab-a" data-id="translation"><i class="fas fa-language"></i> <?php _e('Translation', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                         <?php do_action('mepp_reminder_setting_tab'); ?>
-                        <li><a href="#" class="mepp-tab-a" data-id="license"><?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <li><a href="#" class="mepp-tab-a" data-id="license"><i class="far fa-id-badge"></i>  <?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                     </ul>
                 </div>
