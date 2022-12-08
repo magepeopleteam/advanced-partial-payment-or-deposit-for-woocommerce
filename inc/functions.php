@@ -2069,7 +2069,7 @@ if (!function_exists('mep_esc_html')) {
 
 function wcpp_is_deposit_enabled($product_id)
 {
-    $checkout_mode = get_option('mepp_partial_enable_for_page');
+    $checkout_mode = get_option('mepp_partial_enable_for_page', 'product_detail');
     $data = array(
         'is_enable' => false,
         'setting_level' => ''
@@ -2079,7 +2079,7 @@ function wcpp_is_deposit_enabled($product_id)
 
     $global_deposit_enable = get_option('mepp_enable_partial_by_default') ? get_option('mepp_enable_partial_by_default') : 'no';
     $is_deposit_enabled_localy = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
-    $inherit_site_wide_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
+    $inherit_site_wide_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true) ?: 'yes';
     $deposit_type_localy = get_post_meta($product_id, '_mep_pp_deposits_type', true);
 
     if ($inherit_site_wide_setting !== 'yes' && $checkout_mode !== 'checkout') {      // Local setting

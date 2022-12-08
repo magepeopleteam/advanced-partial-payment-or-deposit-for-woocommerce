@@ -213,7 +213,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
             $enable_partial_by_default = get_option('mepp_enable_partial_by_default');
             $default_partial_type = get_option('mepp_default_partial_type');
             $default_partial_amount = get_option('mepp_default_partial_amount');
-            $partial_enable_for_page = get_option('mepp_partial_enable_for_page');
+            $partial_enable_for_page = get_option('mepp_partial_enable_for_page', 'product_detail');
             $admin_notify_partial_payment = get_option('mepp_admin_notify_partial_payment');
 
             $mepp_text_translation_string_pay_deposit = get_option('mepp_text_translation_string_pay_deposit');
@@ -348,7 +348,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                             <option value="product_detail" <?php echo $partial_enable_for_page === 'product_detail' ? 'selected' : '' ?>><?php echo __('No', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
                                             <?php do_action('mepp_show_partial_option_checkout') ?>
                                         </select>
-                                        <span class="mepp-input-desc"><?php _e('If value is "checkout" then partial option show on checkout page instead of product page.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                                        <span class="mepp-input-desc"><?php _e('If value is "yes" then partial option show on checkout page instead of product page. And deposit configuration will work from site-wide settings', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
                                 </tr>
                                 <tr>
