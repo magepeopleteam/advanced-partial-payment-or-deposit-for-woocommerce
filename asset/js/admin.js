@@ -6,6 +6,12 @@
     $(document).ready(function () {
         $('#_mep_pp_deposits_type[name="_mep_pp_deposits_type"]').trigger('change');
 
+        // Init data
+        let checkout_mode = $("#mepp_partial_enable_for_page").find(":selected").val();
+
+        // Call init function
+        wcpp_init([checkout_mode]);
+
         // $('.mep-view-reminder-log').trigger('click');
 
         // Inherit site wide setting
@@ -13,7 +19,6 @@
         wcpp_inherit_setting_control($("#_mep_exclude_from_global_deposit"), inherit_setting);
         $("#_mep_exclude_from_global_deposit").change(function() {
             const value = $(this).find(':selected').val();
-            console.log(value);
             wcpp_inherit_setting_control($(this), value);
         });
 
@@ -48,6 +53,12 @@
             $(".mepp-tab").removeClass('mepp-tab-active');
             $(".mepp-tab[data-id='" + $(this).attr('data-id') + "']").addClass("mepp-tab-active");
             $(this).parent().find(".tab-a").addClass('active-a');
+        });
+
+        // Settings
+        $("#mepp_partial_enable_for_page").change(function() {
+            const $this = $(this);
+            wcpp_checkout_mode_change($this.val())
         });
 
     });
@@ -440,6 +451,24 @@
             }
         }
         
+    }
+
+    // Checkout mode changes
+    function wcpp_checkout_mode_change(value) {
+        const target = $("#mepp_partial_enable_for_cart_page");
+        const targetTr = target.parents('tr');
+        if(value === 'checkout') {
+            targetTr.show();
+        } else {
+            targetTr.hide();
+        }
+    }
+
+    // Init function call
+    function wcpp_init(data) {
+        const [checkout_mode] = data;
+
+        if (checkout_mode) wcpp_checkout_mode_change(checkout_mode);
     }
 
 })(jQuery);
