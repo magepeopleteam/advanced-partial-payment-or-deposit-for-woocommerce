@@ -472,8 +472,9 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
     function mep_pp_show_payment_option_html($event_id)
     {
         $isForcePartialPayment = apply_filters('mepp_force_partial_payment', 'no');
+        $is_deposit_enabled_for_this_product = wcpp_is_deposit_enabled($event_id); // get array
 
-        if (meppp_is_product_type_pp_deposit($event_id)) {
+        if ($is_deposit_enabled_for_this_product['is_enable']) {
             $_pp_deposit_value = get_post_meta($event_id, '_mep_pp_deposits_value', true) ? get_post_meta($event_id, '_mep_pp_deposits_value', true) : 0;
 
             $product_price = 0;
@@ -496,9 +497,7 @@ if (!function_exists('mep_pp_show_payment_option_html')) {
             $is_exclude_from_global = get_post_meta($event_id, '_mep_exclude_from_global_deposit', true);
             $is_deposit_enable = get_post_meta($event_id, '_mep_enable_pp_deposit', true);
 
-            $is_deposit_enabled_for_this_product = wcpp_is_deposit_enabled($event_id); // get array
-            if (!$is_deposit_enabled_for_this_product['is_enable']) return 0; // Deposit is not enabled
-
+            // if (!$is_deposit_enabled_for_this_product['is_enable']) return 0; // Deposit is not enabled
             // Deposit Enabled
 
             if ($is_deposit_enabled_for_this_product['setting_level'] === 'local') { // From Product setting
