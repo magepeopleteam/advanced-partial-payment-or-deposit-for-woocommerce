@@ -430,19 +430,17 @@
 
     // Inherit function
     function wcpp_inherit_setting_control($this, value) {
-        console.log('called');
         const isEvent = $('body').hasClass('post-type-mep_events');
         const isTour = $("body").hasClass("post-type-ttbm_tour");
-        console.log(isEvent, isTour);
-        if(isEvent || isTour) {
+        if(isEvent || isTour) { // Only event and tour
             const selectTr = $this.parents("tr");
-            console.log(value);
-            if(value === "yes") {
+            if(value === "yes") { // global setting
                 selectTr.nextAll('tr').hide();
-            } else {
+            } else { // local setting
                 selectTr.nextAll('tr').show();
+                $('#_mep_pp_deposits_type[name="_mep_pp_deposits_type"]').trigger('change');
             }
-        } else {
+        } else { // others
             const target = $(".wcpp_local_setting");
             if (value === "yes") {
               target.hide();
