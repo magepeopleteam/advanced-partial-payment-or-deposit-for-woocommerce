@@ -1888,7 +1888,8 @@ if (!function_exists('mepp_get_deposit_amount')) {
 
         // Price
         if ($product_type == 'mep_events') {
-            //        $product_price_total = $cart_item_data['line_total'];
+            // Mage Product
+            // $product_price_total = $cart_item_data['line_total'];
         } else {
             $product = wc_get_product($product_id);
             $product_price_total = wc_get_price_including_tax($product) * $quantity;

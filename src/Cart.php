@@ -185,7 +185,7 @@ class MEP_PP_Cart
 
 
         $setting_from = '';
-        if ($inherit_site_wide_setting !== 'yes' && $checkout_mode === 'no') { // Product level Setting
+        if ($inherit_site_wide_setting !== 'yes' && $checkout_mode === 'product_detail') { // Product level Setting
             $deposit_type = get_post_meta($product_id, '_mep_pp_deposits_type', true) ? get_post_meta($product_id, '_mep_pp_deposits_type', true) : '';
             $deposit_min_value_strict = get_post_meta($product_id, '_mep_pp_minimum_value', true) ? get_post_meta($product_id, '_mep_pp_minimum_value', true) : '';
             if ($deposit_type === 'minimum_amount') {
