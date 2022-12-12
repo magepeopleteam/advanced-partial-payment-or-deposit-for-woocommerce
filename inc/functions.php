@@ -313,14 +313,14 @@ if (!function_exists('meppp_is_product_type_pp_deposit')) {
      */
     function meppp_is_product_type_pp_deposit($product_id)
     {
-        $exclude_global_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true) ?: 'no';
+        $inherit_global_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true) ?: 'no';
         $product_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
 
         $is_deposit = false;
 
-        if ($exclude_global_setting === 'yes' && $product_deposit_enable === 'yes') {
+        if ($inherit_global_setting === 'no' && $product_deposit_enable === 'yes') {
             $is_deposit = true;
-        } elseif ($exclude_global_setting === 'no' && apply_filters('global_product_type_pp_deposit', false)) {
+        } elseif ($inherit_global_setting === 'yes' && apply_filters('global_product_type_pp_deposit', false)) {
             $is_deposit = true;
         } else {
             $is_deposit = false;

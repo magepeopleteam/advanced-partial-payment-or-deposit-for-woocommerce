@@ -177,11 +177,11 @@ class MEP_PP_Cart
 
             return $cart_item_data;
         }
-        $inherit_site_wide_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true);
+        $inherit_site_wide_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true) ?: 'yes';
         $is_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
 
         // checkout mode
-        $checkout_mode = get_option('mepp_partial_enable_for_page');
+        $checkout_mode = get_option('mepp_partial_enable_for_page') ?: 'product_detail';
 
 
         $setting_from = '';
