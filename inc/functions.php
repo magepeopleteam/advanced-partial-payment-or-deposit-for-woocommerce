@@ -313,14 +313,17 @@ if (!function_exists('meppp_is_product_type_pp_deposit')) {
      */
     function meppp_is_product_type_pp_deposit($product_id)
     {
-        $inherit_global_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true) ?: 'no';
+        $inherit_global_setting = get_post_meta($product_id, '_mep_exclude_from_global_deposit', true) ?: 'yes';
         $product_deposit_enable = get_post_meta($product_id, '_mep_enable_pp_deposit', true);
+        $checkout_mode = get_option('mepp_partial_enable_for_page', 'product_detail');
 
         $is_deposit = false;
 
-        if ($inherit_global_setting === 'no' && $product_deposit_enable === 'yes') {
+        if ($checkout_mode === 'checkout' && apply_filters('global_product_type_pp_deposit', false)) { // checkout mode enable
             $is_deposit = true;
-        } elseif ($inherit_global_setting === 'yes' && apply_filters('global_product_type_pp_deposit', false)) {
+        } elseif(($inherit_global_setting === 'no' && $product_deposit_enable === 'yes')) { // local
+            $is_deposit = true;
+        } elseif ($inherit_global_setting === 'yes' && apply_filters('global_product_type_pp_deposit', false)) { // global
             $is_deposit = true;
         } else {
             $is_deposit = false;
