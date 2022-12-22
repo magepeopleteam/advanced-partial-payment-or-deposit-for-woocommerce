@@ -252,10 +252,13 @@ class MEP_PP_Cart
 
         }
 
+        // Due
+        $due_amount = $product_price_total - $deposit_amount;
+
         $cart_item_data['_pp_deposit'] = $deposit_amount; // Deposit value by user
         $cart_item_data['_pp_deposit_value'] = $deposit_value; // Deposit value by setting
         $cart_item_data['_pp_deposit_value_strict'] = $deposit_min_value_strict; // Deposit minimum value by setting
-        $cart_item_data['_pp_due_payment'] = $product_price_total - $deposit_amount; // Due amount
+        $cart_item_data['_pp_due_payment'] = $due_amount; // Due amount
         $cart_item_data['_pp_deposit_type'] = 'check_pp_deposit';
         $cart_item_data['_pp_deposit_system'] = $deposit_type; // Deposit type e.g percent, minimum_amount, fixed
         $cart_item_data['_pp_deposit_setting_from'] = $setting_from; // Setting honour by local or global
@@ -309,20 +312,19 @@ class MEP_PP_Cart
     public function cart_total_html( $cart_total )
     {
         $cartTotal = WC()->cart->total;
-        // Loop over $cart items
-        $depositValue = 0; // no value
+        $isPartial = false;
         $dueValue     = 0; // no value
         foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
             $vProductId = ( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : $cart_item['product_id'];
             $dueValue += ( isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit' ) ? $cart_item['_pp_due_payment'] : 0;
+            $isPartial = (isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? true : false;
         }
 
-        $value = $cartTotal + $dueValue;
-        // Tax calculation by setting
-        // var_dump(apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added'));
-        // if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
-        //     $value = $value + WC()->cart->get_total_tax();
-        // }
+        if ('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_shipping_amount_added') && WC()->cart->get_shipping_total() && $isPartial) {
+            $value = $cartTotal + $dueValue + absint(WC()->cart->get_shipping_total());
+        } else {
+            $value = $cartTotal + $dueValue;
+        }
 
         return '<strong>' . wc_price( $value ) . '</strong>';
     }
@@ -331,10 +333,11 @@ class MEP_PP_Cart
     {
         $total_deposit = 0;
         $total_due = 0;
+        $isPartial = false;
         $is_deposit_pass = false;
         $has_deposit_type_minimum = false;
+        WC()->cart->get_shipping_total();
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-            // echo '<pre>'; print_r($cart_item); die;
             if (isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') {
                 $total_deposit += $cart_item['_pp_deposit'];
                 $total_due += $cart_item['_pp_due_payment'];
@@ -342,17 +345,22 @@ class MEP_PP_Cart
                 if ($cart_item['_pp_deposit_system'] === 'minimum_amount') {
                     $has_deposit_type_minimum = true;
                 }
+                $isPartial = true;
             } else {
                 $total_deposit += $cart_item['line_total'];
             }
         }
 
-        // if($is_deposit_pass && 'due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
-        //     // Tax calculation from setting
-        //     $total_due = $total_due + WC()->cart->get_total_tax();
-        // }
+        
+        if ('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_shipping_amount_added') && WC()->cart->get_shipping_total() && $isPartial) {
+            $final_total = $total - ($total_due + absint(WC()->cart->get_shipping_total()));
+        } else {
+            $final_total = $total - $total_due;
+        }
+        
+        WC()->session->set('wcpp_shipping_total', WC()->cart->get_shipping_total());
 
-        return $total - $total_due;
+        return $final_total;
     }
 
     public function display_cart_item_pp_deposit_data($name, $cart_item, $cart_item_key)

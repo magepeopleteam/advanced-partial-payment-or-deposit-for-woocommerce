@@ -90,6 +90,12 @@ if (!class_exists('Mepp_Admin_Menu')) {
                     update_option('meppp_tax_amount_added', 'deposit');
                 }
 
+                if (isset($_POST['meppp_shipping_amount_added'])) {
+                    update_option('meppp_shipping_amount_added', $_POST['meppp_shipping_amount_added']);
+                } else {
+                    update_option('meppp_shipping_amount_added', 'deposit');
+                }
+
                 update_option('mepp_text_translation_string_pay_deposit', mep_esc_html($_POST['mepp_text_translation_string_pay_deposit']));
                 update_option('mepp_text_translation_string_full_payment', mep_esc_html($_POST['mepp_text_translation_string_full_payment']));
                 update_option('mepp_text_translation_string_payment_total', mep_esc_html($_POST['mepp_text_translation_string_payment_total']));

@@ -229,11 +229,11 @@ if (!function_exists('meppp_due_to_pay')) {
         if (WC()->session->get('dfwc_shipping_fee')) {
             $due_value += absint(WC()->session->get('dfwc_shipping_fee'));
         }
+
+        if ('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_shipping_amount_added') && WC()->cart->get_shipping_total()) {
+            $due_value += absint(WC()->cart->get_shipping_total());
+        }
         
-        // echo 'Total: '. WC()->cart->cart_contents_total .'<br>';
-        // echo 'Tax: '. WC()->cart->get_total_tax() .'<br>';
-        // echo 'Deposit Amount: '. $deposit_amount .'<br>';
-        // echo 'Due: '.$due_value.'<br>';
         if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
             $due_value = (WC()->cart->cart_contents_total + WC()->cart->get_total_tax()) - $deposit_amount;
         }

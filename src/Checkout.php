@@ -364,7 +364,7 @@ class MEP_PP_Checkout
         $pp_deposit_system = '';
         $grand_total_price = 0;
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-//            echo '<pre>';print_r($cart_item);die;
+            // echo '<pre>';print_r($cart_item);die;
             $deposit_value += (isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_deposit'] : 0;
             $due_payment_value += (isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') ? $cart_item['_pp_due_payment'] : 0;
 
@@ -380,7 +380,7 @@ class MEP_PP_Checkout
                     $pp_deposit_system = $cart_item['_pp_deposit_system'];
                 }
 
-                if (isset($cart_item['_pp_deposit_system'])) {
+                if ($cart_item['_pp_deposit_system']) {
                     $is_deposit_mode = true;
                 }
             }
@@ -396,6 +396,9 @@ class MEP_PP_Checkout
 
         $deposit_amount = $total;
         $due_amount = $due_payment_value;
+        if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_shipping_amount_added') && WC()->session->get('wcpp_shipping_total')) {
+            $due_amount += absint(WC()->session->get('wcpp_shipping_total'));
+        }
         $grand_total_price = number_format($deposit_amount + $due_amount, 2);
 
         // for admin meta data
