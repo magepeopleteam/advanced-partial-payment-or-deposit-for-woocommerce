@@ -170,7 +170,7 @@ if (!function_exists('mep_pp_pp_deposits_options_fileds')) {
                                 'no' => __('No', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                                 'yes'   => __('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                             ],
-                            'value'   => get_post_meta(get_the_ID(), '_mep_exclude_from_global_deposit',) ?: 'yes',
+                            'value'   => get_post_meta(get_the_ID(), '_mep_exclude_from_global_deposit', true) ?: 'yes',
                         )
                     );
                     echo '</div>';
