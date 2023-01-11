@@ -1205,7 +1205,7 @@ if (!function_exists('mep_payment_plan_detail')) {
 if (!function_exists('mep_percentage_value')) {
     function mep_percentage_value($percent_amount, $total_amount)
     {
-        return ($total_amount * $percent_amount) / 100;
+        return ($total_amount * (float) $percent_amount) / 100;
     }
 }
 // Get payment date
