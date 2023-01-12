@@ -12,7 +12,7 @@ class MEP_PP_Checkout
         add_action('woocommerce_review_order_after_order_total', [$this, 'to_pay_html']);
         add_action('woocommerce_review_order_before_payment', [$this, 'deposit_type_selection']);
         add_action('woocommerce_checkout_create_order', [$this, 'adjust_order'], 10, 1);
-        add_action('woocommerce_before_pay_action', [$this, 'before_pay_action'], 1, 1);
+        add_action('woocommerce_before_pay_action', [$this, 'before_pay_action'], 10, 1);
         add_action('woocommerce_before_thankyou', [$this, 'due_payment_order_data'], 10, 1);
         add_filter('woocommerce_get_checkout_payment_url', array($this, 'checkout_payment_url'), 10, 2);
         add_action('woocommerce_thankyou', [$this, 'send_notification'], 20, 1);
@@ -155,6 +155,10 @@ class MEP_PP_Checkout
 
     public function before_pay_action($order)
     {
+        if (!empty($_POST['terms-field']) && empty($_POST['terms'])) {
+            return;
+        }
+
         $manually_pay_amount = isset($_POST['manually_pay_amount']) ? sanitize_text_field($_POST['manually_pay_amount']) : 0;
         // Parent Order
         $parent_order_id = $order->get_parent_id();
