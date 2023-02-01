@@ -2078,8 +2078,13 @@ function wcpp_is_deposit_enabled($product_id)
         $data['is_enable'] = $is_deposit_enabled_localy === 'yes' && $value ? true : false;
         $data['setting_level'] = 'local';
     } else {                                    // global setting
+        $global_partial_type = get_option('mepp_default_partial_type');
         $value = get_option('mepp_default_partial_amount') ? get_option('mepp_default_partial_amount') : 0;
-        $data['is_enable'] = ($global_deposit_enable === 'yes' && (float) $value > 0) ? true : false;
+        if ($global_partial_type !== 'payment_plan') {
+            $data['is_enable'] = ($global_deposit_enable === 'yes' && (float) $value > 0) ? true : false;
+        } else {
+            $data['is_enable'] = $global_deposit_enable === 'yes' ? true : false;
+        }
         $data['setting_level'] = 'global';
     }
 
