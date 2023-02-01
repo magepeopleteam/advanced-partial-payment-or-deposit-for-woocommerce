@@ -107,6 +107,10 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 update_option('mepp_text_translation_string_to_pay', mep_esc_html($_POST['mepp_text_translation_string_to_pay']));
                 update_option('mepp_text_translation_string_pay_due_payment', mep_esc_html($_POST['mepp_text_translation_string_pay_due_payment']));
                 update_option('mepp_text_translation_string_pay_deposit', mep_esc_html($_POST['mepp_text_translation_string_pay_deposit']));
+                update_option('mepp_text_translation_string_payment_date', mep_esc_html($_POST['mepp_text_translation_string_payment_date']));
+                update_option('mepp_text_translation_string_amount', mep_esc_html($_POST['mepp_text_translation_string_amount']));
+                update_option('mepp_text_translation_string_view_details', mep_esc_html($_POST['mepp_text_translation_string_view_details']));
+                update_option('mepp_text_translation_string_hide_details', mep_esc_html($_POST['mepp_text_translation_string_hide_details']));
 
                 if (isset($_POST['mepp_enable_second_payment_reminder'])) {
                     update_option('mepp_enable_second_payment_reminder', $_POST['mepp_enable_second_payment_reminder']);
@@ -249,7 +253,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                         <li><a href="#" class="mepp-tab-a" data-id="translation"><i class="fas fa-language"></i> <?php _e('Translation', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                         <?php do_action('mepp_reminder_setting_tab'); ?>
-                        <li><a href="#" class="mepp-tab-a" data-id="license"><i class="far fa-id-badge"></i>  <?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+                        <li><a href="#" class="mepp-tab-a" data-id="license"><i class="far fa-id-badge"></i> <?php _e('License', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
                         </li>
                     </ul>
                 </div>
@@ -412,7 +416,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                 </tr>
                                 <tr>
                                     <th>
-                                        <label for="mepp_text_translation_string_partially_paid"><?php _e('Label for text: Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
+                                        <label for="mepp_text_translation_string_partially_paid"><?php _e('Label for text: Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
                                     </th>
                                     <td><input type="text" name="mepp_text_translation_string_partially_paid" id="mepp_text_translation_string_partially_paid" value="<?php echo $mepp_text_translation_string_partially_paid ?: 'Partially Paid' ?>">
                                     </td>
@@ -445,13 +449,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                     <td><input type="text" name="mepp_text_translation_string_pay_due_payment" id="mepp_text_translation_string_pay_due_payment" value="<?php echo $mepp_text_translation_string_pay_due_payment ?: 'Pay Due Payment' ?>">
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>
-                                        <label for="mepp_text_translation_string_pay_deposit"><?php _e('Label for text: Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
-                                    </th>
-                                    <td><input type="text" name="mepp_text_translation_string_pay_deposit" id="mepp_text_translation_string_pay_deposit" value="<?php echo $mepp_text_translation_string_pay_deposit ?: 'Pay Deposit' ?>">
-                                    </td>
-                                </tr>
+                                <?php do_action('mepp_pro_transaltion_options') ?>
                             </table>
                         </div>
                     </div>

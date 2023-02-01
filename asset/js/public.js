@@ -114,21 +114,23 @@
     $(document).on('click', '.mep-pp-show-detail', function (e) {
         e.preventDefault();
         let $this = $(this);
+        let textShow = $this.data('text-show');
+        let textHide = $this.data('text-hide');
         let parent = $(this).closest('.mep-product-payment-plans');
         let next = $this.next('.mep-single-plan.plan-details');
         next.addClass('active');
         parent.find('.mep-single-plan.plan-details').each(function () {
             if (!$(this).hasClass('active')) {
                 $(this).slideUp(200);
-                $(this).prev('.mep-pp-show-detail').html('View Details');
+                $(this).prev('.mep-pp-show-detail').text(textShow);
             }
         }).promise().done(function () {
             if (next.is(':hidden')) {
                 next.slideDown(200).removeClass('active');
-                $this.html('Hide Details');
+                $this.text(textHide);
             } else {
                 next.slideUp(200).removeClass('active');
-                $this.html('View Details');
+                $this.text(textShow);
             }
 
         });

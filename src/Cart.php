@@ -375,8 +375,8 @@ class MEP_PP_Cart
             );
             if (isset($cart_item['_pp_order_payment_terms']) && isset($cart_item['_pp_deposit_system'])) {
                 if ($cart_item['_pp_order_payment_terms'] && $cart_item['_pp_deposit_system'] === 'payment_plan') {
-                    $name .= '<div class="mep-product-payment-plans"><button class="mepp-payment-plan-cart-btn mep-pp-show-detail">' . __("Show detail", "advanced-partial-payment-or-deposit-for-woocommerce") . '</button>';
-                    $name .= '<div class="mep-single-plan plan-details"><table><thead><tr><th>' . __("Payment Date", "advanced-partial-payment-or-deposit-for-woocommerce") . '</th><th>' . __("Amount", "advanced-partial-payment-or-deposit-for-woocommerce") . '</th></tr></thead><tbody>';
+                    $name .= '<div class="mep-product-payment-plans"><button class="mepp-payment-plan-cart-btn mep-pp-show-detail" data-text-show="'. (get_option('mepp_text_translation_string_view_details') ?: __('Show Details', 'advanced-partial-payment-or-deposit-for-woocommerce')) . '" data-text-hide="' . (get_option('mepp_text_translation_string_hide_details') ?: __('Hide Details', 'advanced-partial-payment-or-deposit-for-woocommerce')) . '">' . (get_option('mepp_text_translation_string_view_details') ?: __('Show Details', 'advanced-partial-payment-or-deposit-for-woocommerce')) . '</button>';
+                    $name .= '<div class="mep-single-plan plan-details"><table><thead><tr><th>' . (get_option('mepp_text_translation_string_payment_date') ?: __('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce')) . '</th><th>' . (get_option('mepp_text_translation_string_amount') ?: __('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce')) . '</th></tr></thead><tbody>';
                     foreach ($cart_item['_pp_order_payment_terms'] as $plan) {
                         if ($plan['type'] !== 'deposit') {
                             $name .= '<tr><td>' . $plan['date'] . '</td> <td>' . wc_price($plan['total']) . '</td></tr>';

@@ -1171,8 +1171,8 @@ if (!function_exists('mep_payment_plan_detail')) {
                 <table>
                     <thead>
                         <tr>
-                            <th><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
-                            <th><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                            <th><?php echo get_option('mepp_text_translation_string_payment_date') ?: __('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                            <th><?php echo get_option('mepp_text_translation_string_amount') ?: __('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
                         </tr>
                     </thead>
                     <tbody>

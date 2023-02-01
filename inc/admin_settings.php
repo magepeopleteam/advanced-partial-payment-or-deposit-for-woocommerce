@@ -141,6 +141,13 @@ class WC_Settings_Tab_Mage_Partial_Basic
                 'desc' => __('', 'woocommerce-settings-tab-demo'),
                 'id' => 'mepp_text_translation_string_pay_due_payment',
             ),
+            'mepp_label_payment_date' => array(
+                'name' => __('Label for text: Payment Date', 'woocommerce-settings-tab-demo'),
+                'type' => 'text',
+                'default' => 'Payment Date',
+                'desc' => __('', 'woocommerce-settings-tab-demo'),
+                'id' => 'mepp_text_translation_string_payment_date',
+            ),
             'mepp_allow_regular_and_deposit_product_in_cart' => array(
                 'name' => __( 'Allow Regular product and Partial product in Cart', 'woocommerce-settings-tab-demo' ),
                 'type' => 'select',
