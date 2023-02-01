@@ -968,23 +968,23 @@ if (!function_exists('mep_pp_deposti_type_display_name')) {
         if ($deposit_type) {
             switch ($deposit_type) {
                 case 'percent':
-                    $name = 'Percent';
+                    $name = __('Percent', 'advanced-partial-payment-or-deposit-for-woocommerce');
                     $name = $with_value ? $cart_item['_pp_deposit_value'] . ' ' . $name : $name;
                     break;
                 case 'fixed':
-                    $name = 'Fixed';
+                    $name = __('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce');
                     $name = $with_value ? wc_price($cart_item['_pp_deposit_value']) . ' ' . $name : $name;
                     break;
                 case 'minimum_amount':
-                    $name = 'Minimum Amount';
+                    $name = __('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce');
                     // $name = $with_value ? wc_price($cart_item['_pp_deposit_value_strict']) . ' ' . $name : $name;
                     break;
                 case 'payment_plan':
-                    $name = 'Payment Plan';
+                    $name = __('Payment Plan', 'advanced-partial-payment-or-deposit-for-woocommerce');
                     $name = $with_value ? $cart_item['_pp_deposit_payment_plan_name'] . ' ' . $name : $name;
                     break;
                 case 'zero_price_checkout':
-                    $name = 'Checkout with Zero Price';
+                    $name = __('Checkout with Zero Price', 'advanced-partial-payment-or-deposit-for-woocommerce');
                     $name = $with_value ? $cart_item['_pp_deposit_payment_plan_name'] . ' ' . $name : $name;
                     break;
                 default:
