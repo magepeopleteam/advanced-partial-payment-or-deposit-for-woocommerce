@@ -114,6 +114,15 @@ if (wcpp_woocommerce_is_active()) {
     add_action('admin_notices', 'mep_pp_not_active_warning');
 }
 
+add_action('init', 'wcpp_language_load');
+if (!function_exists('wcpp_language_load')) {
+    function wcpp_language_load()
+    {
+        $plugin_dir = basename(dirname(__DIR__)) . "/languages/";
+        load_plugin_textdomain('advanced-partial-payment-or-deposit-for-woocommerce', false, $plugin_dir);
+    }
+}
+
 /*************************
 Check the required plugins
 ***************************/
