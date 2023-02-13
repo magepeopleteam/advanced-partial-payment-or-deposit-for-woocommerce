@@ -120,8 +120,13 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 if (isset($_POST['mepp_day_before_second_payment_reminder'])) {
                     update_option('mepp_day_before_second_payment_reminder', mep_esc_html($_POST['mepp_day_before_second_payment_reminder']));
                 }
+                if (isset($_POST['mepp_day_before_second_payment_reminder_event_type'])) {
+                    update_option('mepp_day_before_second_payment_reminder_event_type', mep_esc_html($_POST['mepp_day_before_second_payment_reminder_event_type']));
+                }
                 if (isset($_POST['mepp_enable_payment_plan_payment_reminder'])) {
                     update_option('mepp_enable_payment_plan_payment_reminder', $_POST['mepp_enable_payment_plan_payment_reminder']);
+                } else {
+                    update_option('mepp_enable_payment_plan_payment_reminder', ''); 
                 }
                 if (isset($_POST['mepp_day_before_payment_plan_reminder'])) {
                     update_option('mepp_day_before_payment_plan_reminder', mep_esc_html($_POST['mepp_day_before_payment_plan_reminder']));
