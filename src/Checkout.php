@@ -419,7 +419,7 @@ class MEP_PP_Checkout
             $order->update_meta_data('zero_price_checkout_allow', 'no', true);
         }
 
-        do_action('dfwc_adjust_order', $order, $grand_total_price);
+        // do_action('dfwc_adjust_order', $order, $grand_total_price);
 
         // ********************************
         if ($due_amount) {
@@ -607,6 +607,10 @@ class MEP_PP_Checkout
         $order->update_meta_data('deposit_value', get_post_meta($order_id, 'total_value', true), true);
         $order->update_meta_data('due_payment', 0, true);
         $order->save();
+
+        // Trigger when desposit order completed.
+        $email_customer = WC()->mailer()->get_emails()['WC_Email_Customer_Completed_Order'];
+        $email_customer->trigger($order_id);
     }
 
     /**
