@@ -24,10 +24,28 @@ class MEP_PP_Cart
     }
 
     public function add_custom_price($cart_object)
-    {    
+    {
+        $is_found = false;
         foreach ($cart_object->cart_contents as $key => $value) {
             // $product_price = get_post_meta($value['product_id'], '_price', true);
-            if(isset($value['_pp_deposit_system']) && $value['_pp_deposit_system'] === 'payment_plan' && get_post_type($value['product_id']) === 'product') {
+            $product_id = $value['product_id'];
+            if (function_exists('mep_product_exists')) {
+                if (get_post_meta($product_id, 'link_mep_event', true)) {
+                    $linked_event_id = get_post_meta($product_id, 'link_mep_event', true);
+                } elseif (get_post_meta($product_id, 'link_wbtm_bus', true)) {
+                    $linked_event_id = get_post_meta($product_id, 'link_wbtm_bus', true);
+                } elseif (get_post_meta($product_id, 'link_ttbm_id', true)) {
+                    $linked_event_id = get_post_meta($product_id, 'link_ttbm_id', true);
+                } else {
+                    $linked_event_id = null;
+                }
+    
+                if ($linked_event_id) {
+                    $product_id = mep_product_exists($linked_event_id) ? $linked_event_id : $product_id;
+                }
+            }
+
+            if(isset($value['_pp_deposit_system']) && $value['_pp_deposit_system'] === 'payment_plan' && get_post_type($product_id) === 'product') {
                 $product = $value['data'];
                 $product_price = $product->get_price();
                 $product_qty = $value['quantity'];
@@ -51,9 +69,14 @@ class MEP_PP_Cart
                 $value['_pp_due_payment'] = $subtotal_price - ($product_price_subtotal * $down_payment) / 100;
                 $value['_pp_order_payment_terms'] = mep_make_payment_terms($product_price_subtotal, $value['_pp_deposit_payment_plan_id'], $subtotal_price)['payment_terms'];
                 WC()->cart->cart_contents[$key] = $value;
+
+                $is_found = true;
             }
         }
-        WC()->cart->set_session(); // Finaly Update Cart
+
+        if($is_found) {
+            WC()->cart->set_session(); // Finaly Update Cart
+        }
     }
 
     public function recalculate_cart($cart_updated)
@@ -137,7 +160,14 @@ class MEP_PP_Cart
         $product_type = get_post_type($product_id);
         $product_price_total = 0;
 
+        $product = wc_get_product($product_id);
         if ($product_type == 'mep_events') {
+            // $p = mep_get_price_including_tax($product_id, 10);
+            // if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
+            //     $product_price_total = $p * (int)sanitize_text_field($quantity);
+            // } else {
+            //     $product_price_total = $cart_item_data['line_total'];
+            // }
             $product_price_total = $cart_item_data['line_total'];
         } elseif ($product_type == 'wbbm_bus') {
             $product_price_total = $cart_item_data['line_total'];
@@ -146,7 +176,6 @@ class MEP_PP_Cart
         } elseif ($product_type == 'ttbm_tour') {
             $product_price_total = $cart_item_data['line_total'];
         } else {
-            $product = wc_get_product($product_id);
             if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_tax_amount_added')) {
                 $product_price_total = wc_get_price_including_tax($product) * (int)sanitize_text_field($quantity);
             } else {

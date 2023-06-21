@@ -798,7 +798,7 @@ if (!function_exists('mep_pp_history_get')) {
                         <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Sl.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                         <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                         <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                        <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Current Due', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                         <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                         <th style="background: <?php echo apply_filters('wcpp_style_setting_values', '#f26190', 'mepp_style_history_table_bgc'); ?>"><?php esc_attr_e('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                     </tr>
