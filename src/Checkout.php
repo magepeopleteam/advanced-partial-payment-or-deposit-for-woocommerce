@@ -403,7 +403,7 @@ class MEP_PP_Checkout
         if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_shipping_amount_added') && WC()->session->get('wcpp_shipping_total')) {
             $due_amount += absint(WC()->session->get('wcpp_shipping_total'));
         }
-        $grand_total_price = number_format($deposit_amount + $due_amount, 2);
+        $grand_total_price = (float)($deposit_amount + $due_amount);
 
         // for admin meta data
         $order->update_meta_data('total_value', $grand_total_price, true);
@@ -504,7 +504,7 @@ class MEP_PP_Checkout
                     $wpml_lang = $order->get_meta('wpml_language', true);
                     if ($payment['type'] === 'deposit') { // First
 
-                        $partial_payment->set_status('wc-completed');
+                        // $partial_payment->set_status('wc-completed');
                         //we need to save to generate id first
                         $partial_payment->save();
 
@@ -756,6 +756,12 @@ class MEP_PP_Checkout
             $parent_id = $order->get_parent_id();
         } else {
             $parent_id = $order_id;
+        }
+
+        // set current order status
+        if( !$order->has_status( 'failed'  ) ) {
+            $order->set_status('wc-completed');
+            $order->save();
         }
 
         $get_due_amount = get_post_meta($parent_id, 'due_payment', true);
