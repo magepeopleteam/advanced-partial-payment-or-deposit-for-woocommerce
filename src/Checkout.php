@@ -159,6 +159,10 @@ class MEP_PP_Checkout
             return;
         }
 
+        if (get_post_meta($order->get_id(), '_wc_pp_payment_type', true) === 'deposit') {
+            return;
+        }
+
         $manually_pay_amount = isset($_POST['manually_pay_amount']) ? sanitize_text_field($_POST['manually_pay_amount']) : 0;
         // Parent Order
         $parent_order_id = $order->get_parent_id();
