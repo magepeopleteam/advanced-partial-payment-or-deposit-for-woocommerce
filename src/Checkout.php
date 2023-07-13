@@ -1066,11 +1066,13 @@ class MEP_PP_Checkout
 
     public function disable_email_for_sub_order($recipient, $order)
     {
-        if (wp_get_post_parent_id($order->get_id())) {
-            return;
-        } else {
-            return $recipient;
+        if($order) {
+            if (wp_get_post_parent_id($order->get_id())) {
+                return;
+            }
         }
+        
+        return $recipient;
     }
 
     function check_order_payment($th, $order, $valid_order_statuses)
