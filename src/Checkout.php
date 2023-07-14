@@ -159,6 +159,10 @@ class MEP_PP_Checkout
             return;
         }
 
+        if (get_post_meta($order->get_id(), '_wc_pp_payment_type', true) === 'deposit') {
+            return;
+        }
+
         $manually_pay_amount = isset($_POST['manually_pay_amount']) ? sanitize_text_field($_POST['manually_pay_amount']) : 0;
         // Parent Order
         $parent_order_id = $order->get_parent_id();
@@ -403,7 +407,7 @@ class MEP_PP_Checkout
         if('due' === apply_filters('wcpp_general_setting_values', 'deposit', 'meppp_shipping_amount_added') && WC()->session->get('wcpp_shipping_total')) {
             $due_amount += absint(WC()->session->get('wcpp_shipping_total'));
         }
-        $grand_total_price = number_format($deposit_amount + $due_amount, 2);
+        $grand_total_price = (float)($deposit_amount + $due_amount);
 
         // for admin meta data
         $order->update_meta_data('total_value', $grand_total_price, true);
@@ -504,7 +508,7 @@ class MEP_PP_Checkout
                     $wpml_lang = $order->get_meta('wpml_language', true);
                     if ($payment['type'] === 'deposit') { // First
 
-                        $partial_payment->set_status('wc-completed');
+                        // $partial_payment->set_status('wc-completed');
                         //we need to save to generate id first
                         $partial_payment->save();
 
@@ -754,9 +758,44 @@ class MEP_PP_Checkout
 
         if ($order->get_parent_id()) {
             $parent_id = $order->get_parent_id();
+            // set current order status
+            if (!$order->has_status('failed')) {
+                $order->set_status('wc-completed');
+                $order->save();
+            }
         } else {
             $parent_id = $order_id;
+
+            $child_order_args = array(
+                'post_type' => 'wcpp_payment',
+                'posts_per_page' => -1,
+                'post_parent' => (int)$parent_id,
+                'post_status' => 'any',
+                'meta_query' => array(
+                    array(
+                        'key' => '_wc_pp_payment_type',
+                        'value' => 'deposit',
+                        'compare' => '=',
+                    )
+                ),
+            );
+            $child_order_res = new WP_Query($child_order_args);
+            if($child_order_res->found_posts > 0) {
+                foreach($child_order_res->posts as $child_order) {
+                    $deposit_order = wc_get_order($child_order->ID);
+
+                    // set deposit order completed
+                    if (!$deposit_order->has_status('failed')) {
+                        $deposit_order->set_status('wc-completed');
+                        $deposit_order->save();
+                    }
+                    break;
+                }
+            }
+            wp_reset_postdata();
         }
+
+        
 
         $get_due_amount = get_post_meta($parent_id, 'due_payment', true);
         $get_due_amount = $get_due_amount === '' ? 'no_data' : $get_due_amount;
@@ -1027,11 +1066,13 @@ class MEP_PP_Checkout
 
     public function disable_email_for_sub_order($recipient, $order)
     {
-        if (wp_get_post_parent_id($order->get_id())) {
-            return;
-        } else {
-            return $recipient;
+        if($order) {
+            if (wp_get_post_parent_id($order->get_id())) {
+                return;
+            }
         }
+        
+        return $recipient;
     }
 
     function check_order_payment($th, $order, $valid_order_statuses)
