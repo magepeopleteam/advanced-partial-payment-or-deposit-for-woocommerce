@@ -13,13 +13,15 @@
         // }
 
         const cart_deposit_type = $('.wcpp-deposit-types input[name=_pp_deposit_system]:checked').val();
+        let selected_payment_plan_id = '';
         if(cart_deposit_type) {
             if (deposit_type_selected === 'payment_plan') {
+                selected_payment_plan_id = $('#mepp_default_payment_plan').find(':selected').val();
                 $('.mepp-payment-plan-option-frontend').show();
             } else {
                 $('.mepp-payment-plan-option-frontend').hide();
             }
-            mepRequestSwitchPaymentType(cart_deposit_type);
+            mepRequestSwitchPaymentType(cart_deposit_type, selected_payment_plan_id);
         }
     });
     $(document).on('change', '#mage_event_submit [name="option_qty[]"],#mage_event_submit [name="event_extra_service_qty[]"]', function () {
