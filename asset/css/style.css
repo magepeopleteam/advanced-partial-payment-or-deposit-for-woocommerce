@@ -141,7 +141,7 @@ ul.mep-pp-payment-terms label input,
     text-align: center;
 }
 .wcpp-deposit-types .inner {
-    display: flex;
+    /* display: flex; */
     flex-direction: row;
 }
 .mepp-payment-plan-option-frontend {

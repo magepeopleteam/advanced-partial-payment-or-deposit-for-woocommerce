@@ -683,7 +683,7 @@ class MEP_PP_Checkout
 	    $headers[]  = "From: $from_name <$from_email>";
 
         $subject = 'Partial payment notification';
-        $partial_payment_template = $email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php';
+        $partial_payment_template = ($email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php');
         $email_content = wc_get_template_html($partial_payment_template, array(
             'order' => $order,
             'sent_to_admin' => false,
