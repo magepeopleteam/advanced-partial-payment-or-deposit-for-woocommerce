@@ -23,6 +23,7 @@ if (!class_exists('WCPP_Quick_View')) {
             add_action('wp_footer',array($this,'wcpp_quick_view_script'));
             add_action('wp_enqueue_scripts', array($this,'wcpp_load_quick_view_scripts'));
             add_action('wp_ajax_wcpp_quick_view_popup_content', array($this, 'wcpp_quick_view_popup_content')); 
+            add_action('wp_ajax_nopriv_wcpp_quick_view_popup_content', array($this, 'wcpp_quick_view_popup_content')); 
             add_shortcode('wcpp_add_to_cart_form', array($this, 'wcpp_get_cart_form'));      
         }
 

@@ -683,7 +683,7 @@ class MEP_PP_Checkout
 	    $headers[]  = "From: $from_name <$from_email>";
 
         $subject = 'Partial payment notification';
-        $partial_payment_template = $email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php';
+        $partial_payment_template = ($email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php');
         $email_content = wc_get_template_html($partial_payment_template, array(
             'order' => $order,
             'sent_to_admin' => false,
@@ -748,12 +748,13 @@ class MEP_PP_Checkout
     {
         // Get an instance of the WC_Order object (same as before)
         $order = wc_get_order($order_id);
-        $due_amount = get_post_meta($order_id, 'due_payment', true);
-
-        if ($due_amount == '0' || get_post_meta($order_id, 'paying_pp_due_payment', true) == '1') {
-            return null;
+        if(!$order->get_parent_id()) { // 1st term
+            $due_amount = get_post_meta($order_id, 'due_payment', true);
+            if ($due_amount == '0' || get_post_meta($order_id, 'deposit_mode', true) != 'yes') {
+                return null;
+            }
         }
-
+        
         $payment_method = get_post_meta($order_id, '_payment_method', true);
 
         if ($order->get_parent_id()) {
