@@ -1,3 +1,6 @@
+.mp_tab_item input::-webkit-input-placeholder {
+    color: #b6c8df;
+}
 div#mep_event_pp_meta_boxes table.form-table {
     width: 100%;
 }
