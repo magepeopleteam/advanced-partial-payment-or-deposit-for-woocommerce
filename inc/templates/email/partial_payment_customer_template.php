@@ -23,7 +23,7 @@ if(isset($order_data['total_tax'])) {
         <br>
         <?php
         echo $setting_content;
-        printf("%s has made partial payment for order #%s. Order detail has appeared below.", 'You', $order->get_id());
+        printf("Your next payment for %s is coming up in a few days. %s has made partial payment for order #%s. Order detail has appeared below.", get_bloginfo( 'name' ), 'You', $order->get_id());
         echo '<br>';
         ?>
 

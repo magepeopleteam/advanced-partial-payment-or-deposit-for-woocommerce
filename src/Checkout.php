@@ -668,11 +668,11 @@ class MEP_PP_Checkout
 
         $is_admin_will_be_notified = get_option('mepp_admin_notify_partial_payment');
 
-        $this->notify_admin_on_partial_payment($order, 'customer');
-
         if($is_admin_will_be_notified === 'yes') {
             $this->notify_admin_on_partial_payment($order, 'admin'); // Notify admin on partial payment
         }
+
+        $this->notify_admin_on_partial_payment($order, 'customer');
 
     }
 
@@ -683,7 +683,7 @@ class MEP_PP_Checkout
 	    $headers[]  = "From: $from_name <$from_email>";
 
         $subject = 'Partial payment notification';
-        $partial_payment_template = ($email_to === 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php');
+        $partial_payment_template = ($email_to == 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php');
         $email_content = wc_get_template_html($partial_payment_template, array(
             'order' => $order,
             'sent_to_admin' => false,
@@ -701,8 +701,7 @@ class MEP_PP_Checkout
                 $order->save();
             }
 
-        } 
-        if($email_to === 'customer') {
+        } else {
             $is_customer_notify = $order->get_meta('customer_notify_on_partial_payment', true);
             if(!$is_customer_notify || $is_customer_notify != 'yes') {
                 $email = $order->get_billing_email();

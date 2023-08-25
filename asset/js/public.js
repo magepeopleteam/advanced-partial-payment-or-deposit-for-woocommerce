@@ -447,7 +447,6 @@
         }
         if (deposit_type === 'percent') {
             let percent = parseFloat(target.find('[name="payment_plan"]').data('percent'));
-            console.log(price);
             price = price * percent / 100;
             target.find('.payment_amount').html(mp_event_wo_commerce_price_format(price));
         }

@@ -19,11 +19,12 @@ if(isset($order_data['total_tax'])) {
             #<?php echo $order->get_id(); ?></h2>
     </div>
     <div class="wcpp-email-content" style="padding: 30px 50px;">
-        Hi, <br>
+        <?php printf("Hi %s", $order->get_billing_first_name()); ?>, <br>
         <br>
         <?php
         echo $setting_content;
         printf("%s [customer] has made partial payment for order #%s. Order detail has appeared below.", $order->get_billing_first_name(), $order->get_id());
+        // printf("Your next payment for %s is coming up in a few days! You has made partial payment for order #%s. Order detail has appeared below.", get_bloginfo( 'name' ), $order->get_id());
         echo '<br>';
         ?>
 
