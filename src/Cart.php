@@ -138,7 +138,7 @@ class MEP_PP_Cart
 
         $deposit_mode = isset($_POST['deposit-mode']) ? $_POST['deposit-mode'] : ''; // Partial option show Product or Checkout page
         $cart_item_data['_pp_deposit_mode'] = $deposit_mode ? $deposit_mode : 'no-deposit';
-        if ($deposit_mode == 'check_full' || $deposit_mode == 'no-deposit') {
+        if ($deposit_mode == 'check_full' || $deposit_mode == 'no-deposit' || !$deposit_mode) {
             return $cart_item_data;
         }
 
