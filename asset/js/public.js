@@ -384,7 +384,7 @@
         let grand_price = 0;
 
         setTimeout(function() {
-            let price = parseFloat(target.find('.mage-price-total .price-figure').text());
+            let price = parseFloat(target.find('.mage-price-total .price-figure').attr('data-price-subtotal'));
             let deposit_type = target.find('[name="payment_plan"]').val();
 
             // Extra Service
@@ -401,7 +401,7 @@
             grand_price = price + extra_price + bagPrice;
 
             mpwemapp_payment_schedule(target, parseFloat(grand_price))
-        }, 1500);
+        }, 2000);
     }
 
     function tour_price_calculation($this) {
@@ -480,6 +480,7 @@
         let total_part = price.toString().split(".");
         total_part[0] = total_part[0].replace(/\B(?=(\d{3})+(?!\d))/g, currency_thousands_separator);
         price = total_part.join(currency_decimal);
+        price = String(price);
 
         if (currency_position === 'right') {
             price_text = price + currency_symbol;
