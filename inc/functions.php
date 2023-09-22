@@ -951,11 +951,16 @@ if (!function_exists('mep_pp_template')) {
 }
 
 // Mepp Date
-function mepp_date($date)
+function mepp_date($date, $show_time = false)
 {
-    $wp_format = get_option('date_format');
+    $wp_date_format = get_option('date_format');
+    $wp_time_format = get_option('time_format');
     if ($date) {
-        $date = date($wp_format, strtotime($date));
+        if($show_time) {
+            $date = date($wp_date_format.' '.$wp_time_format, strtotime($date));
+        } else {
+            $date = date($wp_date_format, strtotime($date));
+        }
     }
     return $date;
 }
