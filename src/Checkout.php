@@ -16,6 +16,7 @@ class MEP_PP_Checkout
         add_action('woocommerce_before_thankyou', [$this, 'due_payment_order_data'], 10, 1);
         add_filter('woocommerce_get_checkout_payment_url', array($this, 'checkout_payment_url'), 10, 2);
         add_action('woocommerce_thankyou', [$this, 'send_notification'], 20, 1);
+        add_action('mepp_sent_email_to_customer', [$this, 'sent_email_to_customer_after_order'], 10, 1);
         add_action('woocommerce_email', [$this, 'unhook_new_order_email']);
         /***  Disable suborder email to customer ****/
         add_filter('woocommerce_email_recipient_customer_completed_order', [$this, 'disable_email_for_sub_order'], 10, 2);
@@ -47,6 +48,11 @@ class MEP_PP_Checkout
 
 	    add_filter('wp_mail_content_type', array($this,'set_email_content_type'));
         do_action('dfwc_checkout', $this);
+    }
+
+    public function sent_email_to_customer_after_order($order)
+    {
+        $this->notify_admin_on_partial_payment($order, 'customer');
     }
 
     public function deposit_type_selection()
@@ -672,7 +678,7 @@ class MEP_PP_Checkout
             $this->notify_admin_on_partial_payment($order, 'admin'); // Notify admin on partial payment
         }
 
-        $this->notify_admin_on_partial_payment($order, 'customer');
+        do_action('mepp_sent_email_to_customer', $order);
 
     }
 
@@ -682,7 +688,7 @@ class MEP_PP_Checkout
 	    $from_email = get_option( 'woocommerce_email_from_address' );
 	    $headers[]  = "From: $from_name <$from_email>";
 
-        $subject = 'Partial payment notification';
+        $subject = 'Partial Payment Notification';
         $partial_payment_template = ($email_to == 'admin' ? 'email/partial_payment_template.php' : 'email/partial_payment_customer_template.php');
         $email_content = wc_get_template_html($partial_payment_template, array(
             'order' => $order,
