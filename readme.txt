@@ -1,4 +1,4 @@
-=== WooCommerce Deposit & Partial Payment Solution- WpDepositly | MagePeople ===
+=== Deposit & Partial Payment Solution for WooCommerce - WpDepositly | MagePeople ===
 Contributors: magepeopleteam, aamahin, arifulislamnayem
 Tags: deposits, woocommerce, woocommerce deposits, partial payments
 Requires at least: 5.3
