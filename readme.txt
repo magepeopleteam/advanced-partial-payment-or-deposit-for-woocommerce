@@ -1,4 +1,4 @@
-=== Advanced - Deposit & Partial Payments for WooCommerce ===
+=== WooCommerce Deposit & Partial Payment Solution- WpDepositly | MagePeople ===
 Contributors: magepeopleteam, aamahin, arifulislamnayem
 Tags: deposits, woocommerce, woocommerce deposits, partial payments
 Requires at least: 5.3
@@ -11,80 +11,59 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-Advanced - Deposit & Partial Payment for WooCommerce is a Deposit Plugin for WordPress which is based on WooCommerce. 
+Deposit & Partial Payment is a complete advance payment solution for WordPress websites dedicatedly designed to integrate with  WooCommerce smoothly. Install Now!
 
 == Description ==
-WooCommerce Deposit & Partial Payment is one the best idea for boosting sell, specially big value price items and customer like to pay using installment or down payment. Advanced - Deposit & Partial payment Plugin is best solution for this case. You can easily add deposit to confirm order in Woocommerce shop. User can pay rest of the amount from my account page any time with any payment gateway later. Advanced – Deposit & Partial Payment for WooCommerce will enable the WooCommerce system to accept a certain part of it for various reasons. It could be because the payment is big, the seller can enable payment based on percentage, based on a fixed value, or any payment term. We have a special feature that is never introduced with any seller for example customers can pay any amount of order to confirm the booking as partial payment. the seller can set up a minimum amount to pay. even the seller can enable to pay any amount on the checkout page to confirm the booking.
+The [WooCommerce Deposit & Partial Payment Plugin](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/) - WpDepositly is a complete payment solution to meet your business needs, especially for securely paying deposits before completing a purchase. Leveraging the trend of installment payments and down payments, this solution easily integrates into your Woocommerce shop, making it effortless for customers to secure orders with a deposit.
 
 
-
-###  Free Version Plugin Features:
-
-➡ Support All Payment Method available in WooCommerce.
-➡ Cross Browser Support – (Chrome, Firefox, Safari, Opera, Etc.)
-➡ Multilingual Translation Support
-➡ Partial Payment History in My account page.
-➡ Fixed/Parcent Type Deposit option.
-➡ Pay due amount from My Account Page & support all payment gateway.
-➡ Woocommerce Event Manager Plugin Supported
-➡ Payment History in My Account Page
-
-[View Live Demo](https://partial.mage-people.com/)
+### Make Yourself Comfortable With Available Demos:
+[View Live PRO Version Demo](https://partial.mage-people.com/)
 [Buy Pro Version](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/)
 [Documentation](https://docs.mage-people.com/advanced-partial-payment-or-deposit-for-woocommerce/)
 
-###  Pro Version Plugin Features:
-
-➡ Minimum Custom Amount Payment option.
-➡ Payment Term Payment Option
-➡ Zero Amount Payment Option
-➡ Custom Amount payment option to cart and checkout page.
-➡ Payment Reminder email.
 
 
-###  Fixed Amount Partial Payment or Deposit:
-This type of deposit option allows you to deposit a singular number of fixed amounts. You can set a deposit value as a fixed amount for partial payment. See an overview of this type of deposit method.
 
-[View Live Demo for Fixed type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
-
-###  Percentage base partial Payment or Deposit:
-This type of deposit option allows you to deposit a singular number or percentage of total amounts. You can set the deposit value as a percentage of amounts for partial payment. See an overview of this type of deposit method.
-
-[View Live Demo for Percentage Base partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
-
-###  User Custom amount based partial Payment or Deposit:
-This type of deposit option allows you to deposit a singular number of minimum amounts. You can set a deposit value as a minimum amount for partial payment. See an overview of this type of deposit method.
-[View Live Demo for minimal Custom Amount Partial](https://partial.mage-people.com/product/wordpress-pennant/)
-
-###  Partial Payment Based on payment Term:
-A payment plan is a custom partial payment method that you set as you want. For doing that at first you have to create your own payment plan.
-At first, you have to choose what kind of payment plan you want to do for a particular product. For example purposes, according to the screenshot we chose a 2 weeks plan and we kept 60 percent of the total price for a deposit, 
-the remaining 40 percent of the total price customers were able to pay within 2 weeks. See an overview of this type of deposit method.
-
-[View Live Demo for payment Term](https://partial.mage-people.com/product/logo-collection/)
-
-### we have few Pro version settings settings that might be interested to everyone.
-
-👉 **Allow Zero Price Checkout:** With this option, the admin can allow the customer to pay 0 and confirm the order then the rest of the money the customer can pay later.
-
-👉 **Allow Custom Amount Payment in Checkout Page:** If this option enables then customers can pay any amount from the checkout page. On the checkout page, total payment value can change.
-
-👉 **Allow Custom Amount Payment in Pay Due Amount Page:**  Check it if you want to allow users to make the custom prices on the due amount page.
-
-👉 **Stock Reduce on:** Here you can select when you want to reduce your stock quantity after full payment or partial payment.
-
-👉 **Allow Payment Method for Partial Payment:** In the payment section of WooCommerce settings, you can select the payment method, based on your active payment method you will get a chance to select the payment method there.
-
-👉 **Allow User Roles for Partial Payment:** In this section, you can select who will be able to manage the partial payment system.
-
-👉 **Enable Due Payment reminder:** Allow this if you want to send an email for the reminder to a customer of partial payment.
-
-👉 **Enable Second Payment Reminder after “X” Days:** check if you want to send an email of partial payment reminders after a particular day.
+### Customizable Partial Payment & Depositing Solution For Woocommerce
 
 
-### Here is details video how Partial payment and deposit plugin works:
-Please watch the video to know details how plugin works.
+Introducing our WooCommerce Deposit & Partial Payment- [WpDepositly](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/) plugin, a fantastic tool to increase your sales, especially for high-value items with a secure payment gateway.
+As a seller, you have the power to configure this unique feature to best suit your needs. Set a minimum amount that customers must pay to secure their booking, ensuring a baseline commitment. Additionally, you have the flexibility to enable customers to pay any amount directly on the checkout page, streamlining the booking confirmation process.
 
+
+### Available Feature That Sets Us Apart
+
+While designing the solution our data-driven and creative team focused on your business needs and features practised internationally for advance payment.
+Whether it's confirming bookings with a preferred amount or, setting a minimum payment both customers and sellers benefit from the game-changing ability to customize payments. 
+
+Your basic needs will be fulfilled with the Free Version Plugin which includes Features:
+
+### Free Version Plugin Features:
+
+
+***💳 Support for all payment methods:*** Easily accept payments using various methods available in WooCommerce.
+***🌐 Cross-browser compatibility:*** Enjoy a seamless experience across different browsers such as Chrome, Firefox, Safari, Opera, etc.
+***🌍 Multilingual translation support:*** Reach a global audience with built-in multilingual support for translations.
+***📊 Accessible partial payment history:*** View and track partial payment history conveniently on the My Account page.
+***💲 Fixed/Percentage deposit options:*** Choose between fixed or percentage-based deposit options for partial payments.
+***💸 Pay outstanding amounts:*** Settle outstanding amounts directly from the My Account page, supporting all payment gateways.
+***📅 Compatible with Woocommerce Event Manager:*** Seamlessly integrated with the Woocommerce Event Manager Plugin.
+***📜 Payment history on My Account page:*** Easily access and review payment history on the My Account page.
+
+
+Upgrading to the pro version you will get some premium features that will enhance your offering list of unique features including:
+
+### Pro Version Plugin Features:
+
+***💲 Fixed Amount Partial Payment or Deposit:*** Simplify partial payments by setting a fixed deposit amount. [Live Pro Version Demo - Fixed Type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
+***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a fixed amount or a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
+***Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
+***💰 Zero amount payment option:*** Allow customers to make zero-amount payments for specific scenarios.
+***💵 Custom amount payment option:*** Provide flexibility with a custom amount payment option on the cart and checkout pages.[live pro version demo](https://partial.mage-people.com/product/wordpress-pennant/)
+***📬 Receive payment reminder emails:***
+
+Watch The Comprehensive Video Demonstration Of Our Partial Payment And Deposit Plugin In Action:
 
 https://youtu.be/TIg2fawS6AY
 
