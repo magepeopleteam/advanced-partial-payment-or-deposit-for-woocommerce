@@ -178,3 +178,63 @@ ul.mep-pp-payment-terms .mep-pp-user-amountinput {
     padding: 0 19px!important;
     color: red!important;
 }
+.box{
+    margin-bottom: 2%;
+    /* border: 1px solid #80808085; */
+    padding: 3%;
+    background: #fafafa;
+    color: black;
+}
+
+.lable-size{
+    font-size: 18px;
+    font-weight: 800;
+}
+
+/* Style for the dropdown container */
+.mepp-payment-plan-option-frontend {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style for the dropdown label */
+  .mepp-payment-plan-option-frontend label {
+    margin-right: 10px; /* Adjust spacing between label and select */
+  }
+  
+  /* Style for the dropdown select */
+  .mepp-payment-plan-option-frontend select {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+   
+  }
+  
+  /* Style for the dropdown options */
+  .mepp-payment-plan-option-frontend option {
+    padding: 8px 15px;
+  }
+  
+  /* Style for the default "Select one" option */
+  .mepp-payment-plan-option-frontend option:first-child {
+    color: #999; /* Color for default option */
+  }
+  
+  /* Style for the selected option */
+  .mepp-payment-plan-option-frontend select:focus {
+    outline: none;
+    border-color: #007bff; /* Color for focused border */
+  }
+  
+  /* Style for the dropdown arrow */
+  .mepp-payment-plan-option-frontend::after {
+    content: '\25BC'; /* Downward arrow */
+    position: absolute;
+    top: 50%;
+    right: 5px; /* Adjust arrow position */
+    transform: translateY(-50%);
+    pointer-events: none; /* Make sure arrow doesn't interfere with clicking on select */
+  }
+  
