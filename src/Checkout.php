@@ -702,6 +702,7 @@ class MEP_PP_Checkout
             }
 
         } 
+        
         if($email_to === 'customer') {
             $is_customer_notify = $order->get_meta('customer_notify_on_partial_payment', true);
             if(!$is_customer_notify || $is_customer_notify != 'yes') {
