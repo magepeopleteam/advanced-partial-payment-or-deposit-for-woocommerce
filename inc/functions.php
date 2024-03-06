@@ -2226,3 +2226,165 @@ function get_product_price_from_payment_terms($prev_price, $payment_terms)
     return $price;
 
 }
+
+// Partial Order list shows dashboard 
+
+function custom_dashboard_widget() {
+    wp_add_dashboard_widget(
+        'custom_dashboard_widget',
+        'Partial Orders',
+        'display_partial_orders'
+    );
+
+    // Enqueue custom CSS for the widget
+    add_action('admin_head', 'custom_dashboard_widget_style');
+}
+
+// Custom CSS for the widget
+function custom_dashboard_widget_style() {
+    echo '<style>
+           #dashboard-widgets .postbox-container {
+        width: 32% !important;
+}
+          </style>';
+}
+
+add_action('wp_dashboard_setup', 'custom_dashboard_widget');
+
+
+function display_partial_orders() {
+    // Query partially paid orders
+    $args = array(
+        'post_type'      => 'shop_order',
+        'post_status'    => 'wc-partially-paid',
+        'posts_per_page' => 5, // Limit to 5 orders initially
+    );
+
+    $partial_orders = new WP_Query( $args );
+
+    if ( $partial_orders->have_posts() ) {
+        echo '<div class="wcpp_order_summary" style="margin-top: 20px;">';
+        echo '<table style="border-collapse: collapse;width:100%">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Order ID</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Date Created</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Product</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Quantity</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Price</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Partially Paid</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Due</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+
+        while ( $partial_orders->have_posts() ) {
+            $partial_orders->the_post();
+            $order = wc_get_order( $partial_orders->post->ID );
+
+            // Display order information
+            foreach ( $order->get_items() as $item ) {
+                echo '<tr>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">';
+                echo '<a href="' . admin_url( 'post.php?post=' . $order->get_id() . '&action=edit' ) . '">Order #' . $order->get_id() . '</a>';
+                echo '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . $order->get_date_created()->format( get_option( 'date_format' ) ) . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . $item->get_name() . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . $item->get_quantity() . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . wc_price( $item->get_total() ) . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . wc_price( $order->get_total() ) . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . wc_price( $order->get_meta('due_payment') ) . '</td>';
+                echo '</tr>';
+            }
+        }
+        echo '</tbody>';
+        echo '</table>';
+
+        // Add Read More button
+        echo '<button id="read-more-btn" style="margin-top: 10px;">Read More</button>';
+
+        echo '<div id="partial-orders-container"></div>';
+
+        echo '</div>';
+
+// JavaScript for Read More functionality
+echo '<script>
+        document.getElementById("read-more-btn").addEventListener("click", function() {
+            var container = document.getElementById("partial-orders-container");
+            // Check if container already populated
+            if (container.innerHTML.trim() === "") {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        container.innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "' . admin_url('admin-ajax.php') . '?action=get_all_partial_orders", true);
+                xmlhttp.send();
+            } else {
+                // If container already populated, hide the content
+                container.innerHTML = "";
+            }
+        });
+      </script>';
+        wp_reset_postdata();
+    } else {
+        echo 'No partially paid orders found.';
+    }
+}
+
+// AJAX callback function to get all partial orders
+function get_all_partial_orders_callback() {
+    $args = array(
+        'post_type'      => 'shop_order',
+        'post_status'    => 'wc-partially-paid',
+        'posts_per_page' => -1, // Retrieve all partial orders
+    );
+
+    $partial_orders = new WP_Query( $args );
+
+    if ( $partial_orders->have_posts() ) {
+        echo '<table style="border-collapse: collapse;width:100%">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Order ID</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Date Created</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Product</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Quantity</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Price</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Partially Paid</th>';
+        echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Due</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+
+        while ( $partial_orders->have_posts() ) {
+            $partial_orders->the_post();
+            $order = wc_get_order( $partial_orders->post->ID );
+
+            // Display order information
+            foreach ( $order->get_items() as $item ) {
+                echo '<tr>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">';
+                echo '<a href="' . admin_url( 'post.php?post=' . $order->get_id() . '&action=edit' ) . '">Order #' . $order->get_id() . '</a>';
+                echo '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . $order->get_date_created()->format( get_option( 'date_format' ) ) . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . $item->get_name() . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . $item->get_quantity() . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . wc_price( $item->get_total() ) . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . wc_price( $order->get_total() ) . '</td>';
+                echo '<td style="padding: 5px 8px;border: 2px solid #ddd;">' . wc_price( $order->get_meta('due_payment') ) . '</td>';
+                echo '</tr>';
+            }
+        }
+        echo '</tbody>';
+        echo '</table>';
+    } else {
+        echo 'No partially paid orders found.';
+    }
+
+    wp_die(); // Always include this
+}
+
+add_action( 'wp_ajax_get_all_partial_orders', 'get_all_partial_orders_callback' );
+add_action( 'wp_ajax_nopriv_get_all_partial_orders', 'get_all_partial_orders_callback' );
