@@ -118,8 +118,8 @@ class MEP_PP_Checkout
 
         ?>
 
-        <div class="wcpp-deposit-types">
-            <h5><?php _e('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h5>
+        <div class="wcpp-deposit-types box">
+            <h5 class="lable-size"><?php _e('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h5>
             <div class="inner">
                 <?php if ($isForcePartialPayment !== 'yes') : ?>
                     <div class="wcpp-input-group">
@@ -702,6 +702,7 @@ class MEP_PP_Checkout
             }
 
         } 
+        
         if($email_to === 'customer') {
             $is_customer_notify = $order->get_meta('customer_notify_on_partial_payment', true);
             if(!$is_customer_notify || $is_customer_notify != 'yes') {
