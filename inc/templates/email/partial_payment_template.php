@@ -22,7 +22,7 @@ if(isset($order_data['total_tax'])) {
         Hi, <br>
         <br>
         <?php
-        echo $setting_content;
+        // echo $setting_content;
         printf("%s [customer] has made partial payment for order #%s. Order detail has appeared below.", $order->get_billing_first_name(), $order->get_id());
         echo '<br>';
         ?>
@@ -72,7 +72,7 @@ if(isset($order_data['total_tax'])) {
                     <td style="padding: 5px 8px;border: 2px solid #ddd;border-top: 5px solid #c7c7c7;"><?php echo wc_price($grand_total); ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding: 5px 8px;border: 2px solid #ddd;">Paid:</td>
+                    <td colspan="2" style="padding: 5px 8px;border: 2px solid #ddd;">Partially paid:</td>
                     <td style="padding: 5px 8px;border: 2px solid #ddd;"><?php echo wc_price($order->get_total()); ?></td>
                 </tr>
                 <tr>
