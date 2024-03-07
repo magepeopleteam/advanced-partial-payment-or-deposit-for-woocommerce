@@ -2,8 +2,8 @@
 Contributors: magepeopleteam, aamahin, arifulislamnayem
 Tags: deposits, woocommerce, woocommerce deposits, partial payments
 Requires at least: 5.3
-Stable tag: 2.0.2
-Version: 2.0.0
+Stable tag: 2.2.5
+Version: 2.2.5
 Tested up to: 5.9
 WC requires at least: 3.0
 WC tested up to: 5.0
