@@ -22,7 +22,7 @@ if(isset($order_data['total_tax'])) {
         Hi <?php echo $order->get_billing_first_name() ?>,<br>
         <br>
         <?php
-        echo $setting_content;
+        // echo $setting_content;
         echo '<br>';
         printf("%s has made partial payment for order #%s. Order detail has appeared below.", 'You', $order->get_id());
         echo '<br>';
