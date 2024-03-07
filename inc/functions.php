@@ -2264,7 +2264,7 @@ function display_partial_orders() {
 
     if ( $partial_orders->have_posts() ) {
         echo '<div class="wcpp_order_summary" style="margin-top: 20px;">';
-        echo '<table style="border-collapse: collapse;width:100%">';
+       echo '<table id="initial-orders-table" style="border-collapse: collapse;width:100%">';
         echo '<thead>';
         echo '<tr>';
         echo '<th style="text-align: left;border: 2px solid #ddd;padding: 5px 8px;">Order ID</th>';
@@ -2301,22 +2301,24 @@ function display_partial_orders() {
         echo '</table>';
 
         // Add Read More button
-        echo '<button id="read-more-btn" style="margin-top: 10px;">Read More</button>';
+        echo '<button id="read-more-btn" style="margin-top: 10px;margin-bottom: 10px;">Read More</button>';
 
         echo '<div id="partial-orders-container"></div>';
 
         echo '</div>';
 
-// JavaScript for Read More functionality
-echo '<script>
+        echo '<script>
         document.getElementById("read-more-btn").addEventListener("click", function() {
             var container = document.getElementById("partial-orders-container");
+            var initialOrdersTable = document.getElementById("initial-orders-table");
             // Check if container already populated
             if (container.innerHTML.trim() === "") {
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         container.innerHTML = this.responseText;
+                        // Hide initial orders table
+                        initialOrdersTable.style.display = "none";
                     }
                 };
                 xmlhttp.open("GET", "' . admin_url('admin-ajax.php') . '?action=get_all_partial_orders", true);
@@ -2324,9 +2326,15 @@ echo '<script>
             } else {
                 // If container already populated, hide the content
                 container.innerHTML = "";
+                // Show initial orders table again
+                initialOrdersTable.style.display = "table";
             }
         });
       </script>';
+
+
+
+
         wp_reset_postdata();
     } else {
         echo 'No partially paid orders found.';
