@@ -101,11 +101,17 @@ class MEP_PP_Cart
     }
 
     public function to_pay_html()
-    {
+{
+    // Check the value of $shop_pay_deposit_details
+    $shop_pay_deposit_details = get_option('meppp_shop_pay_deposit_details', 'off');
+
+    // Check if deposit details display is enabled
+    if ($shop_pay_deposit_details === 'on') {
         if (meppp_cart_have_pp_deposit_item()) {
             meppp_display_to_pay_html();
         }
     }
+}
 
     public function add_cart_item_pp_deposit_data($cart_item_data, $product_id)
     {
@@ -397,7 +403,7 @@ class MEP_PP_Cart
         // echo '<pre>';print_r($cart_item);die;
         if (isset($cart_item['_pp_deposit']) && is_cart() && isset($cart_item['_pp_deposit_type']) && $cart_item['_pp_deposit_type'] == 'check_pp_deposit') {
             $name .= sprintf(
-                '<strong><p>' . mepp_get_option('mepp_text_translation_string_deposit', __('Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce')) . ': %s <br> ' . mepp_get_option('mepp_text_translation_string_due_payment', __('Due Payment', 'advanced-partial-payment-or-deposit-for-woocommerce')) . ': %s <br> ' . mepp_get_option('mepp_text_translation_string_deposit_type', __('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce')) . ': %s</p></strong>',
+                '<strong><p class="boxui">' . mepp_get_option('mepp_text_translation_string_deposit', __('Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce')) . ': %s <br> ' . mepp_get_option('mepp_text_translation_string_due_payment', __('Due Payment', 'advanced-partial-payment-or-deposit-for-woocommerce')) . ': %s <br> ' . mepp_get_option('mepp_text_translation_string_deposit_type', __('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce')) . ': %s</p></strong>',
                 wc_price($cart_item['_pp_deposit']),
                 wc_price($cart_item['_pp_due_payment']),
                 mep_pp_deposti_type_display_name($cart_item['_pp_deposit_system'], $cart_item, true)
