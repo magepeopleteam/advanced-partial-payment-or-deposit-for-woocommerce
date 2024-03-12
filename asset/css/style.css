@@ -237,4 +237,12 @@ ul.mep-pp-payment-terms .mep-pp-user-amountinput {
     transform: translateY(-50%);
     pointer-events: none; /* Make sure arrow doesn't interfere with clicking on select */
   }
-  
+  .boxui{
+    border: 1px solid #80808000; padding: 10px; background-color: #f2f2f2; color: black;
+}
+.boxuicheckout{
+    border: 1px solid #80808000; padding: 3px; background-color: #f2f2f2; color: black;   
+   }
+   table.woocommerce-checkout-review-order-table .product-name{
+              width: auto !important; 
+   }

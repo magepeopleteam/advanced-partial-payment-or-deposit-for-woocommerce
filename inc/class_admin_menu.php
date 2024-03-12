@@ -46,6 +46,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 isset($_POST['meppp_quantity_reduce_on']) ? update_option('meppp_quantity_reduce_on', mep_esc_html($_POST['meppp_quantity_reduce_on'])) : update_option('meppp_quantity_reduce_on', 'full');
 
                 isset($_POST['meppp_shop_pay_deposit_btn']) ? update_option('meppp_shop_pay_deposit_btn', mep_esc_html($_POST['meppp_shop_pay_deposit_btn'])) : update_option('meppp_shop_pay_deposit_btn', 'off');
+                 isset($_POST['meppp_shop_pay_deposit_details']) ? update_option('meppp_shop_pay_deposit_details', mep_esc_html($_POST['meppp_shop_pay_deposit_details'])) : update_option('meppp_shop_pay_deposit_details', 'off');
 
                 if (isset($_POST['meppp_payment_methods_allow'])) {
                     if ($_POST['meppp_payment_methods_allow']) {
@@ -73,6 +74,13 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 } else {
                     update_option('mepp_partial_enable_for_cart_page', 'no');
                 }
+                if (isset($_POST['meppp_default_selected_pay_option'])) {
+                    update_option('meppp_default_selected_pay_option', $_POST['meppp_default_selected_pay_option']);
+                } else {
+                    update_option('meppp_default_selected_pay_option', 'partial_amount');
+                }
+
+                // meppp_default_selected_pay_option
 
                 if (isset($_POST['mepp_default_payment_plan'])) {
                     update_option('mepp_default_payment_plan', maybe_serialize($_POST['mepp_default_payment_plan']));
@@ -106,6 +114,8 @@ if (!class_exists('Mepp_Admin_Menu')) {
                 update_option('mepp_text_translation_string_deposit_type', mep_esc_html($_POST['mepp_text_translation_string_deposit_type']));
                 update_option('mepp_text_translation_string_to_pay', mep_esc_html($_POST['mepp_text_translation_string_to_pay']));
                 update_option('mepp_text_translation_string_pay_due_payment', mep_esc_html($_POST['mepp_text_translation_string_pay_due_payment']));
+                update_option('mepp_text_translation_string_only', mep_esc_html($_POST['mepp_text_translation_string_only']));
+                
                 update_option('mepp_text_translation_string_pay_deposit', mep_esc_html($_POST['mepp_text_translation_string_pay_deposit']));
                 update_option('mepp_text_translation_string_payment_date', mep_esc_html($_POST['mepp_text_translation_string_payment_date']));
                 update_option('mepp_text_translation_string_amount', mep_esc_html($_POST['mepp_text_translation_string_amount']));
@@ -225,6 +235,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
             // $order_manual_pay = get_option('meppp_order_manual_pay');
             $quantity_reduce_on = get_option('meppp_quantity_reduce_on') ? get_option('meppp_quantity_reduce_on') : 'full';
             $shop_pay_deposit_btn = get_option('meppp_shop_pay_deposit_btn') ? get_option('meppp_shop_pay_deposit_btn') : 'off';
+            $shop_pay_deposit_details = get_option('meppp_shop_pay_deposit_details') ? get_option('meppp_shop_pay_deposit_details') : 'off';
             $enable_partial_by_default = get_option('mepp_enable_partial_by_default');
             $default_partial_type = get_option('mepp_default_partial_type');
             $default_partial_amount = get_option('mepp_default_partial_amount');
@@ -241,8 +252,13 @@ if (!class_exists('Mepp_Admin_Menu')) {
             $mepp_text_translation_string_deposit_type = get_option('mepp_text_translation_string_deposit_type');
             $mepp_text_translation_string_to_pay = get_option('mepp_text_translation_string_to_pay');
             $mepp_text_translation_string_pay_due_payment = get_option('mepp_text_translation_string_pay_due_payment');
+            $mepp_text_translation_string_only              = get_option('mepp_text_translation_string_only');
+            
             $mepp_text_translation_string_pay_deposit = get_option('mepp_text_translation_string_pay_deposit');
             $partial_enable_for_cart_page = get_option('mepp_partial_enable_for_cart_page');
+            
+
+            $meppp_default_selected_pay_option = get_option('meppp_default_selected_pay_option') ? get_option('meppp_default_selected_pay_option') : 'partial_amount';
         ?>
 
             <div class="mepp-tab-container">
@@ -281,6 +297,7 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <span class="mepp-input-desc"><?php _e('Stock reduce on which payment?', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <th>
                                         <label for="meppp_shop_pay_deposit_btn"><?php _e('On/Off Pay Deposit button in product list', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
@@ -293,6 +310,38 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <span class="mepp-input-desc"><?php _e('It enables the pay deposit button in shop product list.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <th>
+                                        <label for="meppp_shop_pay_deposit_details"><?php _e('On/Off Pay Deposit details in product list', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
+                                    </th>
+                                    <td>
+                                        <select name="meppp_shop_pay_deposit_details" id="meppp_shop_pay_deposit_details">
+                                            <option value="off" <?php echo $shop_pay_deposit_details === 'off' ? 'selected' : '' ?>><?php echo __('Off', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                            <option value="on" <?php echo $shop_pay_deposit_details === 'on' ? 'selected' : '' ?>><?php echo __('On', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                        </select>
+                                        <span class="mepp-input-desc"><?php _e('It enables the pay deposit details product list in cart and checkout page .', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <th>
+                                        <label for="meppp_default_selected_pay_option"><?php _e('Default Payment Option', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
+                                    </th>
+                                    <td>
+                                        <select name="meppp_default_selected_pay_option" id="meppp_default_selected_pay_option">
+                                            <option value="partial_amount" <?php echo $meppp_default_selected_pay_option === 'partial_amount' ? 'selected' : '' ?>><?php echo __('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                            <option value="full_amount" <?php echo $meppp_default_selected_pay_option === 'full_amount' ? 'selected' : '' ?>><?php echo __('Full Payment', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+                                        </select>
+                                        <span class="mepp-input-desc"><?php _e('Please select which payment option will be selected by default for a Partial Payment enabled product.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
+                                    </td>
+                                </tr>
+
+
+
+
+
                                 <tr>
                                     <th>
                                         <label for="mepp_admin_notify_partial_payment"><?php _e('Admin will get email', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
@@ -345,10 +394,37 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                         <span class="mepp-input-desc"><?php _e('Default partial value.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></span>
                                     </td>
                                 </tr>
+                                <script>
+                                    jQuery(document).ready(function($) {
+                                        // Check the initial value of Enable Partial By Default
+                                        var enablePartialByDefault = $('#mepp_enable_partial_by_default').val();
+
+                                        // Function to handle input disable/enable based on Enable Partial By Default value
+                                        function handleInput() {
+                                            var defaultPartialAmountInput = $('#mepp_default_partial_amount');
+                                            if (enablePartialByDefault === 'no') {
+                                                defaultPartialAmountInput.prop('disabled', true).val('');
+                                            } else {
+                                                defaultPartialAmountInput.prop('disabled', false);
+                                            }
+                                        }
+
+                                        // Call the function on page load
+                                        handleInput();
+
+                                        // Listen for changes in Enable Partial By Default select
+                                        $('#mepp_enable_partial_by_default').change(function() {
+                                            enablePartialByDefault = $(this).val();
+                                            handleInput();
+                                        });
+                                    });
+
+                                </script>
                                 <?php do_action('mepp_default_setting_pro') ?>
                             </table>
                         </div>
                     </div>
+                    
                     <!--end of tab two-->
 
                     <div class="mepp-tab " data-id="checkout-mode">
@@ -454,6 +530,13 @@ if (!class_exists('Mepp_Admin_Menu')) {
                                     <td><input type="text" name="mepp_text_translation_string_pay_due_payment" id="mepp_text_translation_string_pay_due_payment" value="<?php echo $mepp_text_translation_string_pay_due_payment ?: 'Pay Due Payment' ?>">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <th>
+                                        <label for="mepp_text_translation_string_only"><?php _e('Label for text: Only', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></label>
+                                    </th>
+                                    <td><input type="text" name="mepp_text_translation_string_only" id="mepp_text_translation_string_only" value="<?php echo $mepp_text_translation_string_only ?: 'Only' ?>">
+                                    </td>
+                                </tr>                                
                                 <?php do_action('mepp_pro_transaltion_options') ?>
                             </table>
                         </div>
