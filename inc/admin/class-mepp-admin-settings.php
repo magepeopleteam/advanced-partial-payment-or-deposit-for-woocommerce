@@ -67,7 +67,14 @@ class MEPP_Admin_Settings
         array($this, 'settings_tabs_mepp') // Callback function for Settings page
     );
 
-  
+    add_submenu_page(
+   'admin-mepp-deposits',    // Parent menu slug
+   'Payment Plans',         // Submenu label
+   'Payment Plans',         // Submenu label
+   'manage_options',
+   'edit-tags.php?taxonomy=mepp_payment_plan', // Taxonomy edit page URL
+   ''
+);
 
     add_submenu_page(
         'admin-mepp-deposits',    // Parent menu slug
@@ -137,11 +144,12 @@ public function settings_tabs_mepp()
     $settings_tabs = apply_filters('mepp_settings_tabs', array(
         'mepp_general' => esc_html__('General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => esc_html__('Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        // 'checkout_mode' => esc_html__('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        // 'second_payment' => esc_html__('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+         'checkout_mode' => esc_html__('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+         'second_payment' => esc_html__('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => esc_html__('Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => esc_html__('License', 'advanced-partial-payment-or-deposit-for-woocommerce')
     ));
+    
 
     ?>
 
