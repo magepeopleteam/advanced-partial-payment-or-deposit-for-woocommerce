@@ -85,28 +85,8 @@ p.form-row-last[class*="_mepp_payment_plans"] .select2 , p.form-row-last[class*=
     display: none !important;
 }
 
-.mepp.nav-tab {
-    cursor: pointer;
-    padding: 20px;
-    background: #162748;
-    color: white;
-    border: 2px solid white;
-    margin-left: 1px;
-    
-}
 
-.mepp.nav-tab:hover {
-    background: #00aa6a; /* Change background color on hover */
-}
 
-.mepp-nav-tab-active,
-.mepp-nav-tab-active:focus,
-.mepp-nav-tab-active:focus:active,
-.mepp-nav-tab-active:hover {
-    background: #00aa6a !important;
-    color: white !important;
-    position: relative;
-}
 
 .mepp-nav-tab-active:not(.nav-tab-deposits)::before {
     content: ''; /* Create a pseudo-element */

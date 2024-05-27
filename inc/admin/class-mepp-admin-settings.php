@@ -157,7 +157,7 @@ public function settings_tabs_mepp()
                     $count++;
                     $active = isset($_GET['section']) ? $key === $_GET['section'] : $count === 1;
                     ?>
-                    <a href="<?php echo $url; ?>" class="mepp nav-tab <?php echo $active ? 'mepp-nav-tab-active' : ''; ?>" data-target="<?php echo $key; ?>"><?php echo $tab_name; ?></a>
+                    <a href="<?php echo $url; ?>" class="mepp-nav-tab <?php echo $active ? 'mepp-nav-tab-active' : ''; ?>" data-target="<?php echo $key; ?>"><?php echo $tab_name; ?></a>
                     <?php
                 }
                 ?>
