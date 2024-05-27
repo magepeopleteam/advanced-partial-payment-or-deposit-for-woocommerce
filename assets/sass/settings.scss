@@ -1,0 +1,36 @@
+.advanced-partial-payment{
+    background-color: var(--mage-white);
+    margin:20px;
+    margin-left: 0;
+    border: 1px solid var(--mage-dark);
+    border-top: 0;
+    header{
+        background-color: var(--mage-primary);
+        color: var(--mage-white);
+        padding: 8px 12px;
+        h2{
+            color: var(--mage-white);
+            font-size: 1.2rem;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+    }
+    .partial-settings-area{
+        display: flex;
+        justify-content: space-between;
+        .mepp-nav-tab-wrapper{
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--mage-light);
+            padding: 25px 0 25px 25px;
+        }
+        .mepp-nav-tab-content{
+            width: 80%;
+            padding: 2% 5%;
+            overflow: hidden;
+        }
+    }
+
+}

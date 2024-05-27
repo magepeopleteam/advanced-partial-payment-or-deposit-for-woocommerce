@@ -1,24 +1,35 @@
+@charset "UTF-8";
+:root {
+  --mage-primary:#f12971;
+  --mage-secondary: #666;
+  --mage-dark: #333;
+  --mage-light: #F2F2F2;
+  --mage-white: #fff;
+  --mage-black: #000;
+}
+
 #woocommerce-coupon-data ul.wc-tabs li.deposits_tab a:before,
 #woocommerce-product-data ul.wc-tabs li.deposits_tab a:before,
 .woocommerce ul.wc-tabs li.deposits_tab a:before {
-    content: '';
-    display: inline-block;
-    width: 16px; /* Adjust width and height according to your icon size */
-    height: 16px;
-    background-image: url('https://docs.mage-people.com/advanced-partial-payment-or-deposit-for-woocommerce/wp-content/uploads/sites/9/2022/02/icon-128x128-1.gif');
-    background-size: cover; /* or contain */
-    margin-right: 10px;
-        position: relative;
-        top: 2px;
+  content: "";
+  display: inline-block;
+  width: 16px; /* Adjust width and height according to your icon size */
+  height: 16px;
+  background-image: url("https://docs.mage-people.com/advanced-partial-payment-or-deposit-for-woocommerce/wp-content/uploads/sites/9/2022/02/icon-128x128-1.gif");
+  background-size: cover; /* or contain */
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
 }
+
 /* Set width to 10% for elements in dropdown */
 #mepp_storewide_deposit_enabled,
 #mepp_storewide_deposit_enabled_details,
 #mepp_storewide_deposit_enabled_btn,
 #mepp_storewide_deposit_force_deposit,
 #mepp_storewide_deposit_amount_type,
-#mepp_storewide_deposit_amount, #mepp_default_option, 
-#mepp_reduce_stock, #mepp_partial_payments_structure,#mepp_taxes_handling,
+#mepp_storewide_deposit_amount, #mepp_default_option,
+#mepp_reduce_stock, #mepp_partial_payments_structure, #mepp_taxes_handling,
 #mepp_fees_handling, #mepp_shipping_handling,
 #mepp_coupons_handling, #mepp_checkout_mode_enabled,
 #mepp_checkout_mode_force_deposit, #mepp_checkout_mode_deposit_amount_type,
@@ -30,248 +41,251 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
 .widefat .column-order_status mark.partially-paid:after {
-    font-family: WooCommerce;
-    speak: none;
-    font-weight: 400;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    margin: 0;
-    text-indent: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  font-family: WooCommerce;
+  speak: none;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  text-indent: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
 .widefat .column-order_status mark.partially-paid:after {
-    content: "\e011";
-    color: #ffba00;
+  content: "\e011";
+  color: #ffba00;
 }
 
 .mepp_variation_checkbox {
-    float: left;
-    margin: 5px !important;
+  float: left;
+  margin: 5px !important;
 }
 
-p.form-row-last[class*="_mepp_payment_plans"] .select2 , p.form-row-last[class*="_mepp_payment_plans"] select  {
-    width:100%!important;
+p.form-row-last[class*=_mepp_payment_plans] .select2, p.form-row-last[class*=_mepp_payment_plans] select {
+  width: 100% !important;
 }
-
-
 
 .mepp_invoice_exists::after {
-    font-family: Dashicons;
-    content: "\f147";
-    margin-left: 4px;
-    color: #2aad2a;
-    vertical-align: middle;
+  font-family: Dashicons;
+  content: "\f147";
+  margin-left: 4px;
+  color: #2aad2a;
+  vertical-align: middle;
 }
 
 /*.taxonomy-mepp_payment_plan tr.term-slug-wrap, .taxonomy-mepp_payment_plan .description {*/
 /*    display: none !important;*/
 /*}*/
-
 .mepp-important {
-    color: #f00;
+  color: #f00;
 }
 
-
 .mepp-hidden {
-    display: none !important;
+  display: none !important;
 }
 
 .mepp.nav-tab {
-    cursor: pointer;
-    padding: 20px;
-    background: #162748;
-    color: white;
-    border: 2px solid white;
-    margin-left: 1px;
-    
+  cursor: pointer;
+  padding: 20px;
+  background: #162748;
+  color: white;
+  border: 2px solid white;
+  margin-left: 1px;
 }
 
 .mepp.nav-tab:hover {
-    background: #00aa6a; /* Change background color on hover */
+  background: #00aa6a; /* Change background color on hover */
 }
 
 .mepp-nav-tab-active,
 .mepp-nav-tab-active:focus,
 .mepp-nav-tab-active:focus:active,
 .mepp-nav-tab-active:hover {
-    background: #00aa6a !important;
-    color: white !important;
-    position: relative;
+  background: #00aa6a !important;
+  color: white !important;
+  position: relative;
 }
 
 .mepp-nav-tab-active:not(.nav-tab-deposits)::before {
-    content: ''; /* Create a pseudo-element */
-    position: absolute;
-    top: 50%; /* Position it at the middle vertically */
-    right: 0; /* Position it at the right side of the tab */
-    transform: translateY(-50%); /* Center vertically */
-    border: solid transparent;
-    border-width: 9px; /* Adjust the size of the arrow */
-    border-left-color: #0000ff; /* Match the background color */
-    transition: border-color 0.3s ease; /* Add a transition for border color */
+  content: ""; /* Create a pseudo-element */
+  position: absolute;
+  top: 50%; /* Position it at the middle vertically */
+  right: 0; /* Position it at the right side of the tab */
+  transform: translateY(-50%); /* Center vertically */
+  border: solid transparent;
+  border-width: 9px; /* Adjust the size of the arrow */
+  border-left-color: #0000ff; /* Match the background color */
+  transition: border-color 0.3s ease; /* Add a transition for border color */
 }
 
 .mepp-nav-tab-active:not(.nav-tab-deposits):hover::before {
-    border-left-color: #d63638; /* Match the background color */
+  border-left-color: #d63638; /* Match the background color */
 }
 
-.mepp_deposit_storewide_values{
-    background: #03a9f4 !important;
-    padding: 10px;
-    width: 43%;
+.mepp_deposit_storewide_values {
+  background: #03a9f4 !important;
+  padding: 10px;
+  width: 43%;
 }
 
 /* Style the select element within the WooCommerce form table */
 .woocommerce table.form-table select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 14px;
-    color: #555;
-    width: 100%;
-    max-width: 300px; /* Adjust the width as needed */
-    box-sizing: border-box;
-    outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #555;
+  width: 100%;
+  max-width: 300px; /* Adjust the width as needed */
+  box-sizing: border-box;
+  outline: none;
 }
 
 /* Style the dropdown arrow */
 .woocommerce table.form-table select::after {
-    content: '\25BC'; /* Unicode character for down arrow */
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    pointer-events: none; /* Ensure the arrow doesn't interfere with clicking on the select */
+  content: "▼"; /* Unicode character for down arrow */
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none; /* Ensure the arrow doesn't interfere with clicking on the select */
 }
 
 /* Hover effect */
 .woocommerce table.form-table select:hover {
-    border-color: #999;
+  border-color: #999;
 }
 
 /* Focus effect */
 .woocommerce table.form-table select:focus {
-    border-color: #333;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  border-color: #333;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 .mepp-custom-container h2,
 .mepp-custom-container h3 {
-    color: #1d2327cf;
-    color: #1d2327cf;
-    font-size: 20px !important;
-    margin: 1em 0 !important;
-    background: cadetblue;
-    padding: 20px !important;
-    /* width: 35%; */
-    font-weight: 700 !important;
+  color: rgba(29, 35, 39, 0.8117647059);
+  color: rgba(29, 35, 39, 0.8117647059);
+  font-size: 20px !important;
+  margin: 1em 0 !important;
+  background: cadetblue;
+  padding: 20px !important;
+  /* width: 35%; */
+  font-weight: 700 !important;
 }
+
 .mepp-custom-container .submit {
-    background: indigo !important;
-    padding: 10px !important;
-    margin-top: 1px !important;
-}
-label[for="mepp_storewide_deposit_enabled"] {
-    font-weight: 700 !important;
-    padding: 10px;
+  background: indigo !important;
+  padding: 10px !important;
+  margin-top: 1px !important;
 }
 
-label[for="mepp_storewide_deposit_enabled_details"] {
-    font-weight: 700 !important;
-    padding: 10px;
+label[for=mepp_storewide_deposit_enabled] {
+  font-weight: 700 !important;
+  padding: 10px;
 }
 
-label[for="mepp_storewide_deposit_enabled_btn"] {
-    font-weight: 700 !important;
-    padding: 10px;
-}
-label[for="mepp_storewide_deposit_force_deposit"] {
-    font-weight: 700 !important;
-    padding: 10px;
-}
-label[for="mepp_storewide_deposit_amount_type"] {
-    font-weight: 700 !important;
-    padding: 10px;
+label[for=mepp_storewide_deposit_enabled_details] {
+  font-weight: 700 !important;
+  padding: 10px;
 }
 
-label[for="mepp_storewide_deposit_amount"] {
-    font-weight: 700 !important;
-    padding: 10px;
-}
-label[for="mepp_storewide_deposit_payment_plans"] {
-    font-weight: 700 !important;
-    padding: 10px;
-}
-.titledesc{
-    font-weight: 700 !important;
-    padding: 10px; 
+label[for=mepp_storewide_deposit_enabled_btn] {
+  font-weight: 700 !important;
+  padding: 10px;
 }
 
-#mepp_deposit_storewide_values{
-    border: solid;
+label[for=mepp_storewide_deposit_force_deposit] {
+  font-weight: 700 !important;
+  padding: 10px;
 }
+
+label[for=mepp_storewide_deposit_amount_type] {
+  font-weight: 700 !important;
+  padding: 10px;
+}
+
+label[for=mepp_storewide_deposit_amount] {
+  font-weight: 700 !important;
+  padding: 10px;
+}
+
+label[for=mepp_storewide_deposit_payment_plans] {
+  font-weight: 700 !important;
+  padding: 10px;
+}
+
+.titledesc {
+  font-weight: 700 !important;
+  padding: 10px;
+}
+
+#mepp_deposit_storewide_values {
+  border: solid;
+}
+
 /* Custom styles for taxonomy editor */
 .taxonomy-editor-wrapper {
-    background-color: #f9f9f9;
-    padding: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
 }
 
 .taxonomy-editor-title {
-    font-size: 24px;
-    color: #333;
+  font-size: 24px;
+  color: #333;
 }
 
 .taxonomy-editor-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .taxonomy-editor-table th,
 .taxonomy-editor-table td {
-    padding: 10px;
-    border: 1px solid #ccc;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
 .taxonomy-editor-table th {
-    background-color: #f5f5f5;
-    font-weight: bold;
+  background-color: #f5f5f5;
+  font-weight: bold;
 }
 
 .taxonomy-editor-table td {
-    background-color: #fff;
+  background-color: #fff;
 }
 
-.taxonomy-editor-table input[type="number"],
+.taxonomy-editor-table input[type=number],
 .taxonomy-editor-table select {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
-.taxonomy-editor-table input[type="button"] {
-    padding: 5px 10px;
-    background-color: #0073aa;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+.taxonomy-editor-table input[type=button] {
+  padding: 5px 10px;
+  background-color: #0073aa;
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
 
-.taxonomy-editor-table input[type="button"]:hover {
-    background-color: #005689;
+.taxonomy-editor-table input[type=button]:hover {
+  background-color: #005689;
 }
 
 /* p.submit {
@@ -285,8 +299,6 @@ label[for="mepp_storewide_deposit_payment_plans"] {
     border: 2px solid white !important;
     margin-left: 1px !important;
 } */
-
-
 /*#payment_plan_details {*/
 /*    width :100%;*/
 /*    box-sizing: border-box;*/
@@ -298,325 +310,433 @@ label[for="mepp_storewide_deposit_payment_plans"] {
 /*    text-align: left;*/
 /*}*/
 .type-wc_booking .column-booking_status span.status-wc-partial-payment:before {
-    content: '\e011';
-    color: #ffba00;
+  content: "\e011";
+  color: #ffba00;
 }
 
-#pay-deposit-label  , #pay-full-amount-label {
-    margin:0;
+#pay-deposit-label, #pay-full-amount-label {
+  margin: 0;
 }
 
 #mepp-payment-plans ul {
-    list-style: none;
+  list-style: none;
 }
-#mepp-payment-plans a , #mepp-payment-plans input, #pay-deposit-label , #pay-full-amount-label {
-    cursor: pointer;
+
+#mepp-payment-plans a, #mepp-payment-plans input, #pay-deposit-label, #pay-full-amount-label {
+  cursor: pointer;
 }
 
 .switch-toggle a, .switch-light span span {
-    display: none; }
-  
-  /* We can't test for a specific feature,
-  * so we only target browsers with support for media queries.
+  display: none;
+}
+
+/* We can't test for a specific feature,
+* so we only target browsers with support for media queries.
+*/
+@media only screen {
+  /* Checkbox switch
   */
-  @media only screen {
-    /* Checkbox switch
+  /* Radio switch
+  */
+  /* Standalone Themes */
+  /* Candy Theme
+  * Based on the "Sort Switches / Toggles (PSD)" by Ormal Clarck
+  * http://www.premiumpixels.com/freebies/sort-switches-toggles-psd/
+  */
+  /* Android Theme
+  */
+  /* iOS Theme
+  */
+  .switch-light {
+    display: block;
+    height: 1.875em;
+    /* Outline the toggles when the inputs are focused
     */
-    /* Radio switch
-    */
-    /* Standalone Themes */
-    /* Candy Theme
-    * Based on the "Sort Switches / Toggles (PSD)" by Ormal Clarck
-    * http://www.premiumpixels.com/freebies/sort-switches-toggles-psd/
-    */
-    /* Android Theme
-    */
-    /* iOS Theme
-    */
-    .switch-light {
-      display: block;
-      height: 1.875em;
-      /* Outline the toggles when the inputs are focused
-    */
-      position: relative;
-      overflow: visible;
-      padding: 0;
-      margin-left: 6.25em;
-      /* Position the label over all the elements, except the slide-button (<a>)
+    position: relative;
+    overflow: visible;
+    padding: 0;
+    margin-left: 6.25em;
+    /* Position the label over all the elements, except the slide-button (<a>)
     * Clicking anywhere on the label will change the switch-state
     */
-      /* Don't hide the input from screen-readers and keyboard access
-    */ }
-      .switch-light * {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box; }
-      .switch-light a {
-        display: block;
-        -webkit-transition: all 0.2s ease-out;
-        -moz-transition: all 0.2s ease-out;
-        transition: all 0.2s ease-out; }
-      .switch-light label, .switch-light > span {
-        line-height: 1.875em;
-        vertical-align: middle; }
-      .switch-light input:focus ~ a, .switch-light input:focus + label {
-        outline: 1px dotted #888; }
-      .switch-light label {
-        position: relative;
-        z-index: 3;
-        display: block;
-        width: 100%; }
-      .switch-light input {
-        position: absolute;
-        opacity: 0;
-        z-index: 5; }
-        .switch-light input:checked ~ a {
-          right: 0%; }
-      .switch-light > span {
-        position: absolute;
-        left: -6.25em;
-        width: 100%;
-        margin: 0;
-        padding-right: 6.25em;
-        text-align: left; }
-        .switch-light > span span {
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 5;
-          display: block;
-          width: 50%;
-          margin-left: 6.25em;
-          text-align: center; }
-          .switch-light > span span:last-child {
-            left: 50%; }
-      .switch-light a {
-        position: absolute;
-        right: 50%;
-        top: 0;
-        z-index: 4;
-        display: block;
-        width: 50%;
-        height: 100%;
-        padding: 0; }
-    .switch-toggle {
-      display: block;
-      height: 1.875em;
-      /* Outline the toggles when the inputs are focused
+    /* Don't hide the input from screen-readers and keyboard access
     */
-      position: relative;
-      /* For callout panels in foundation
+  }
+  .switch-light * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  .switch-light a {
+    display: block;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+  }
+  .switch-light label, .switch-light > span {
+    line-height: 1.875em;
+    vertical-align: middle;
+  }
+  .switch-light input:focus ~ a, .switch-light input:focus + label {
+    outline: 1px dotted #888;
+  }
+  .switch-light label {
+    position: relative;
+    z-index: 3;
+    display: block;
+    width: 100%;
+  }
+  .switch-light input {
+    position: absolute;
+    opacity: 0;
+    z-index: 5;
+  }
+  .switch-light input:checked ~ a {
+    right: 0%;
+  }
+  .switch-light > span {
+    position: absolute;
+    left: -6.25em;
+    width: 100%;
+    margin: 0;
+    padding-right: 6.25em;
+    text-align: left;
+  }
+  .switch-light > span span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: block;
+    width: 50%;
+    margin-left: 6.25em;
+    text-align: center;
+  }
+  .switch-light > span span:last-child {
+    left: 50%;
+  }
+  .switch-light a {
+    position: absolute;
+    right: 50%;
+    top: 0;
+    z-index: 4;
+    display: block;
+    width: 50%;
+    height: 100%;
+    padding: 0;
+  }
+  .switch-toggle {
+    display: block;
+    height: 1.875em;
+    /* Outline the toggles when the inputs are focused
     */
-      padding: 0 !important;
-      /* Generate styles for the multiple states */ }
-      .switch-toggle * {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box; }
-      .switch-toggle a {
-        display: block;
-        -webkit-transition: all 0.2s ease-out;
-        -moz-transition: all 0.2s ease-out;
-        transition: all 0.2s ease-out; }
-      .switch-toggle label, .switch-toggle > span {
-        line-height: 1.875em;
-        vertical-align: middle; }
-      .switch-toggle input:focus ~ a, .switch-toggle input:focus + label {
-        outline: 1px dotted #888; }
-      .switch-toggle * {
-        font-size: 1em; }
-      .switch-toggle input {
-        position: absolute;
-        opacity: 0;
-        left: 0; }
-      .switch-toggle input + label {
-        position: relative;
-        top: 7px;
-        z-index: 2;
-        float: left;
-        width: 50%;
-        height: 100%;
-        margin: 0;
-        text-align: center; }
-      .switch-toggle a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 0;
-        z-index: 1;
-        width: 50%;
-        height: 100%; }
-      .switch-toggle input:last-of-type:checked ~ a {
-        left: 50%; }
-      .switch-toggle.switch-3 label, .switch-toggle.switch-3 a {
-        width: 33.3333333333%; }
-      .switch-toggle.switch-3 input:checked:nth-of-type(2) ~ a {
-        left: 33.3333333333%; }
-      .switch-toggle.switch-3 input:checked:last-of-type ~ a {
-        left: 66.6666666667%; }
-      .switch-toggle.switch-4 label, .switch-toggle.switch-4 a {
-        width: 25%; }
-      .switch-toggle.switch-4 input:checked:nth-of-type(2) ~ a {
-        left: 25%; }
-      .switch-toggle.switch-4 input:checked:nth-of-type(3) ~ a {
-        left: 50%; }
-      .switch-toggle.switch-4 input:checked:last-of-type ~ a {
-        left: 75%; }
-      .switch-toggle.switch-5 label, .switch-toggle.switch-5 a {
-        width: 20%; }
-      .switch-toggle.switch-5 input:checked:nth-of-type(2) ~ a {
-        left: 20%; }
-      .switch-toggle.switch-5 input:checked:nth-of-type(3) ~ a {
-        left: 40%; }
-      .switch-toggle.switch-5 input:checked:nth-of-type(4) ~ a {
-        left: 60%; }
-      .switch-toggle.switch-5 input:checked:last-of-type ~ a {
-        left: 80%; }
-    .switch-candy {
-      background-color: #71717a;
-      border-radius: 3px;
-      color: #fff;
-      font-weight: bold;
-      text-align: center;
-      text-shadow: 1px 1px 1px #191b1e;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.2); }
-      .switch-candy label {
-        color: #fff;
-        -webkit-transition: color 0.2s ease-out;
-        -moz-transition: color 0.2s ease-out;
-        transition: color 0.2s ease-out; }
-      .switch-candy input:checked + label {
-        color: #333;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
-      .switch-candy a {
-        border: 1px solid #333;
-        background-color: #70c66b;
-        border-radius: 3px;
-        background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
-        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.45); }
-      .switch-candy > span {
-        color: #333;
-        text-shadow: none; }
-      .switch-candy span {
-        color: #fff; }
-      .switch-candy.switch-candy-blue a {
-        background-color: #38a3d4; }
-      .switch-candy.switch-candy-yellow a {
-        background-color: #f5e560; }
-    .switch-android {
-      background-color: #464747;
-      border-radius: 1px;
-      box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
-      color: #fff;
-      /* Selected ON switch-light
-      */ }
-      .switch-android label {
-        color: #fff; }
-      .switch-android > span span {
-        opacity: 0;
-        margin-left: 7.1875em;
-        -webkit-transition: all 0.1s;
-        -moz-transition: all 0.1s;
-        transition: all 0.1s; }
-        .switch-android > span span:first-of-type {
-          opacity: 1; }
-      .switch-android > span span, .switch-android input + label {
-        font-size: 85%;
-        line-height: 2.15625em; }
-      .switch-android a {
-        background-color: #666;
-        border-radius: 1px;
-        box-shadow: inset rgba(255, 255, 255, 0.2) 0 1px 0, inset rgba(0, 0, 0, 0.3) 0 -1px 0; }
-      .switch-android.switch-light input:checked ~ a {
-        background-color: #0E88B1; }
-      .switch-android.switch-light input:checked ~ span span:first-of-type {
-        opacity: 0; }
-      .switch-android.switch-light input:checked ~ span span:last-of-type {
-        opacity: 1; }
-      .switch-android.switch-toggle, .switch-android > span span {
-        text-transform: uppercase; }
-    .switch-ios.switch-light {
-      color: #868686; }
-      .switch-ios.switch-light a {
-        left: 0;
-        width: 1.875em;
-        background-color: #fff;
-        border: 1px solid #d3d3d3;
-        border-radius: 100%;
-        -webkit-transition: all 0.3s ease-out;
-        -moz-transition: all 0.3s ease-out;
-        transition: all 0.3s ease-out;
-        box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.025), 0 1px 4px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.1); }
-      .switch-ios.switch-light > span span {
-        width: 100%;
-        left: 0;
-        opacity: 0; }
-        .switch-ios.switch-light > span span:first-of-type {
-          opacity: 1;
-          padding-left: 1.875em; }
-        .switch-ios.switch-light > span span:last-of-type {
-          padding-right: 1.875em; }
-      .switch-ios.switch-light > span:before {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 6.25em;
-        top: 0;
-        background-color: #fafafa;
-        border: 1px solid #d3d3d3;
-        border-radius: 30px;
-        -webkit-transition: all 0.5s ease-out;
-        -moz-transition: all 0.5s ease-out;
-        transition: all 0.5s ease-out;
-        box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0; }
-      .switch-ios.switch-light input:checked ~ a {
-        left: 100%;
-        margin-left: -1.875em; }
-      .switch-ios.switch-light input:checked ~ span:before {
-        border-color: #53d76a;
-        box-shadow: inset 0 0 0 30px #53d76a; }
-      .switch-ios.switch-light input:checked ~ span span:first-of-type {
-        opacity: 0; }
-      .switch-ios.switch-light input:checked ~ span span:last-of-type {
-        opacity: 1;
-        color: #fff; }
-    .switch-ios.switch-toggle {
-      background-color: #fafafa;
-      border: 1px solid #d3d3d3;
-      border-radius: 30px;
-      box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0; }
-      .switch-ios.switch-toggle a {
-        background-color: #53d76a;
-        border-radius: 25px;
-        -webkit-transition: all 0.3s ease-out;
-        -moz-transition: all 0.3s ease-out;
-        transition: all 0.3s ease-out; }
-      .switch-ios.switch-toggle label {
-        color: #868686; }
-    .switch-ios input:checked + label {
-      color: #3a3a3a; } }
-  
-  /* Bugfix for older Webkit, including mobile Webkit. Adapted from
-  * http://css-tricks.com/webkit-sibling-bug/
-  */
-  @media only screen and (-webkit-max-device-pixel-ratio: 2) and (max-device-width: 80em) {
-    .switch-light, .switch-toggle {
-      -webkit-animation: webkitSiblingBugfix infinite 1s; } }
-  
-  @-webkit-keyframes webkitSiblingBugfix {
-    from {
-      -webkit-transform: translate3d(0, 0, 0); }
-  
-    to {
-      -webkit-transform: translate3d(0, 0, 0); } }
-  
-  .basic-switch-Advanced Partial Payment and Deposit For Woocommerce {
-    margin: 10px 0;
+    position: relative;
+    /* For callout panels in foundation
+    */
+    padding: 0 !important;
+    /* Generate styles for the multiple states */
   }
-  
-  .basic-switch-Advanced Partial Payment and Deposit For Woocommerce label {
-    margin: 0 5px 0 0;
+  .switch-toggle * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
   }
+  .switch-toggle a {
+    display: block;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+  }
+  .switch-toggle label, .switch-toggle > span {
+    line-height: 1.875em;
+    vertical-align: middle;
+  }
+  .switch-toggle input:focus ~ a, .switch-toggle input:focus + label {
+    outline: 1px dotted #888;
+  }
+  .switch-toggle * {
+    font-size: 1em;
+  }
+  .switch-toggle input {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+  }
+  .switch-toggle input + label {
+    position: relative;
+    top: 7px;
+    z-index: 2;
+    float: left;
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+  }
+  .switch-toggle a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    z-index: 1;
+    width: 50%;
+    height: 100%;
+  }
+  .switch-toggle input:last-of-type:checked ~ a {
+    left: 50%;
+  }
+  .switch-toggle.switch-3 label, .switch-toggle.switch-3 a {
+    width: 33.3333333333%;
+  }
+  .switch-toggle.switch-3 input:checked:nth-of-type(2) ~ a {
+    left: 33.3333333333%;
+  }
+  .switch-toggle.switch-3 input:checked:last-of-type ~ a {
+    left: 66.6666666667%;
+  }
+  .switch-toggle.switch-4 label, .switch-toggle.switch-4 a {
+    width: 25%;
+  }
+  .switch-toggle.switch-4 input:checked:nth-of-type(2) ~ a {
+    left: 25%;
+  }
+  .switch-toggle.switch-4 input:checked:nth-of-type(3) ~ a {
+    left: 50%;
+  }
+  .switch-toggle.switch-4 input:checked:last-of-type ~ a {
+    left: 75%;
+  }
+  .switch-toggle.switch-5 label, .switch-toggle.switch-5 a {
+    width: 20%;
+  }
+  .switch-toggle.switch-5 input:checked:nth-of-type(2) ~ a {
+    left: 20%;
+  }
+  .switch-toggle.switch-5 input:checked:nth-of-type(3) ~ a {
+    left: 40%;
+  }
+  .switch-toggle.switch-5 input:checked:nth-of-type(4) ~ a {
+    left: 60%;
+  }
+  .switch-toggle.switch-5 input:checked:last-of-type ~ a {
+    left: 80%;
+  }
+  .switch-candy {
+    background-color: #71717a;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 1px 1px 1px #191b1e;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  .switch-candy label {
+    color: #fff;
+    -webkit-transition: color 0.2s ease-out;
+    -moz-transition: color 0.2s ease-out;
+    transition: color 0.2s ease-out;
+  }
+  .switch-candy input:checked + label {
+    color: #333;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  .switch-candy a {
+    border: 1px solid #333;
+    background-color: #70c66b;
+    border-radius: 3px;
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0));
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  }
+  .switch-candy > span {
+    color: #333;
+    text-shadow: none;
+  }
+  .switch-candy span {
+    color: #fff;
+  }
+  .switch-candy.switch-candy-blue a {
+    background-color: #38a3d4;
+  }
+  .switch-candy.switch-candy-yellow a {
+    background-color: #f5e560;
+  }
+  .switch-android {
+    background-color: #464747;
+    border-radius: 1px;
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
+    color: #fff;
+    /* Selected ON switch-light
+    */
+  }
+  .switch-android label {
+    color: #fff;
+  }
+  .switch-android > span span {
+    opacity: 0;
+    margin-left: 7.1875em;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;
+  }
+  .switch-android > span span:first-of-type {
+    opacity: 1;
+  }
+  .switch-android > span span, .switch-android input + label {
+    font-size: 85%;
+    line-height: 2.15625em;
+  }
+  .switch-android a {
+    background-color: #666;
+    border-radius: 1px;
+    box-shadow: inset rgba(255, 255, 255, 0.2) 0 1px 0, inset rgba(0, 0, 0, 0.3) 0 -1px 0;
+  }
+  .switch-android.switch-light input:checked ~ a {
+    background-color: #0E88B1;
+  }
+  .switch-android.switch-light input:checked ~ span span:first-of-type {
+    opacity: 0;
+  }
+  .switch-android.switch-light input:checked ~ span span:last-of-type {
+    opacity: 1;
+  }
+  .switch-android.switch-toggle, .switch-android > span span {
+    text-transform: uppercase;
+  }
+  .switch-ios.switch-light {
+    color: #868686;
+  }
+  .switch-ios.switch-light a {
+    left: 0;
+    width: 1.875em;
+    background-color: #fff;
+    border: 1px solid #d3d3d3;
+    border-radius: 100%;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.025), 0 1px 4px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.1);
+  }
+  .switch-ios.switch-light > span span {
+    width: 100%;
+    left: 0;
+    opacity: 0;
+  }
+  .switch-ios.switch-light > span span:first-of-type {
+    opacity: 1;
+    padding-left: 1.875em;
+  }
+  .switch-ios.switch-light > span span:last-of-type {
+    padding-right: 1.875em;
+  }
+  .switch-ios.switch-light > span:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 6.25em;
+    top: 0;
+    background-color: #fafafa;
+    border: 1px solid #d3d3d3;
+    border-radius: 30px;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
+  }
+  .switch-ios.switch-light input:checked ~ a {
+    left: 100%;
+    margin-left: -1.875em;
+  }
+  .switch-ios.switch-light input:checked ~ span:before {
+    border-color: #53d76a;
+    box-shadow: inset 0 0 0 30px #53d76a;
+  }
+  .switch-ios.switch-light input:checked ~ span span:first-of-type {
+    opacity: 0;
+  }
+  .switch-ios.switch-light input:checked ~ span span:last-of-type {
+    opacity: 1;
+    color: #fff;
+  }
+  .switch-ios.switch-toggle {
+    background-color: #fafafa;
+    border: 1px solid #d3d3d3;
+    border-radius: 30px;
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
+  }
+  .switch-ios.switch-toggle a {
+    background-color: #53d76a;
+    border-radius: 25px;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+  .switch-ios.switch-toggle label {
+    color: #868686;
+  }
+  .switch-ios input:checked + label {
+    color: #3a3a3a;
+  }
+}
+/* Bugfix for older Webkit, including mobile Webkit. Adapted from
+* http://css-tricks.com/webkit-sibling-bug/
+*/
+@media only screen and (-webkit-max-device-pixel-ratio: 2) and (max-device-width: 80em) {
+  .switch-light, .switch-toggle {
+    -webkit-animation: webkitSiblingBugfix infinite 1s;
+  }
+}
+@-webkit-keyframes webkitSiblingBugfix {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+}
+.basic-switch-Advanced Partial Payment and Deposit For Woocommerce {
+  margin: 10px 0;
+}
+
+.basic-switch-Advanced Partial Payment and Deposit For Woocommerce label {
+  margin: 0 5px 0 0;
+}
+
+.advanced-partial-payment {
+  background-color: var(--mage-white);
+  margin: 20px;
+  margin-left: 0;
+  border: 1px solid var(--mage-dark);
+  border-top: 0;
+}
+.advanced-partial-payment header {
+  background-color: var(--mage-primary);
+  color: var(--mage-white);
+  padding: 8px 12px;
+}
+.advanced-partial-payment header h2 {
+  color: var(--mage-white);
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+.advanced-partial-payment .partial-settings-area {
+  display: flex;
+  justify-content: space-between;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--mage-light);
+  padding: 25px 0 25px 25px;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content {
+  width: 80%;
+  padding: 2% 5%;
+  overflow: hidden;
+}
+
+/*# sourceMappingURL=admin-style.css.map */
