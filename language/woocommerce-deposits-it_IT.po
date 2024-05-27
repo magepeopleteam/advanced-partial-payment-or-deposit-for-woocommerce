@@ -1,0 +1,1472 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"Project-Id-Version: WooCommerce Deposits\n"
+"Language: it_IT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: Italian\n"
+"PO-Revision-Date: 2021-04-25 04:37+0000"
+
+#: inc/admin/class-mepp-admin-reports.php:144
+msgid "%s deposits in total"
+msgstr "%s acconti in totale"
+
+#: inc/admin/class-mepp-admin-reports.php:160
+msgid "%s partially-paid in total"
+msgstr "%s parzialmente pagati in totale"
+
+#: inc/admin/class-mepp-admin-reports.php:152
+msgid "%s remaining in total"
+msgstr "%s restanti in totale"
+
+#: inc/mepp-functions.php:555
+msgid "<strong>%s order</strong> partially paid"
+msgid_plural "<strong>%s orders</strong> partially paid"
+msgstr[0] "<strong>%s ordine</strong> parzialmente pagato"
+msgstr[1] "<strong>%s ordini</strong> parzialmente pagati"
+
+#: inc/emails/class-mepp-email-full-payment.php:27
+msgid "[{site_title}] Order fully paid ({order_number}) - {order_date}"
+msgstr ""
+"[{site_title}] - Ordine completamente pagato: ({order_number}) - {order_date}"
+
+#: inc/emails/class-mepp-email-partial-payment.php:27
+msgid "[{site_title}] Order partially paid ({order_number}) - {order_date}"
+msgstr ""
+"[{site_title}] Ordine parzialmente pagato ({order_number}) - {order_date}"
+
+#: inc/admin/views/edit-order-partial-payments.php:23
+msgid "Actions"
+msgstr "Azioni"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:76
+msgid "Add new plan"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-taxonomies.php:78
+msgid "Add or remove plans"
+msgstr "Aggiungi o rimuovi piani"
+
+#: inc/admin/class-mepp-admin-settings.php:823
+msgid "Advanced"
+msgstr "Avanzato"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:126
+msgid "After"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-taxonomies.php:73
+msgid "All plans"
+msgstr "Tutti i piani"
+
+#: inc/admin/class-mepp-admin-settings.php:328
+msgid ""
+"allow overriding \"form-pay.php\" template to display original order details "
+"during partial payment checkout"
+msgstr ""
+"consente di sovrascrivere il modello “form-pay.php” per mostrare i dettagli "
+"dell’ordine originale durante l’acquisto a pagamento parziale"
+
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:36,
+#: theme/order/wc-deposits-partial-payments-summary.php:31,
+#: theme/single-product/mepp-product-single-plan.php:54,
+#: inc/admin/views/edit-order-partial-payments.php:22
+msgid "Amount"
+msgstr "Importo"
+
+#: inc/admin/class-mepp-admin-settings.php:515
+msgid ""
+"Amount of deposit ( should not be more than 99 for percentage or more than "
+"order total for fixed"
+msgstr ""
+"Importo acconto (non deve superare il 99&#37; o il totale in caso di importo "
+"fisso)"
+
+#: inc/admin/class-mepp-admin-settings.php:501,
+#: inc/admin/views/order-recalculate-deposit-modal.php:95,
+#: inc/admin/views/order-recalculate-deposit-modal.php:45
+msgid "Amount Type"
+msgstr "Tipo di importo"
+
+#: theme/emails/admin-order-fully-paid.php:21,
+#: theme/emails/plain/admin-order-fully-paid.php:9
+msgid "An order from %s has been paid in full. Their order is as follows:"
+msgstr "Un ordine proveniente da %s è stato saldato e riportato di seguito:"
+
+#: inc/admin/class-mepp-admin-order.php:710
+msgid "Are you sure? this action is irreversible."
+msgstr "Sei sicuro? questa azione è irreversibile."
+
+#: inc/admin/class-mepp-admin-settings.php:99,
+#: inc/admin/class-mepp-admin-settings.php:776
+msgid "Automatic Updates"
+msgstr "Aggiornamenti Automatici"
+
+#: inc/class-mepp-coupons.php:100
+msgid "Automatically apply for full amount"
+msgstr ""
+
+#: inc/compatibility/pdf-invoices/partial_payment_invoice.php:146
+msgid "Balance Due"
+msgstr "Importo dovuto"
+
+#: inc/class-mepp-emails.php:93
+msgid "Below is a summary of original order"
+msgstr "Di seguito è riportato un riepilogo dell'ordine originale"
+
+#: inc/admin/class-mepp-admin-settings.php:343
+msgid "Buttons"
+msgstr "Bottoni"
+
+#: inc/mepp-functions.php:26
+msgid "Cart items"
+msgstr "Articoli carrello"
+
+#: inc/admin/class-mepp-admin-product.php:458
+msgid "Change to:"
+msgstr "Cambiare a:"
+
+#: inc/admin/class-mepp-admin-settings.php:485
+msgid ""
+"changes the way deposits work to be based on total amount at checkout button"
+msgstr ""
+"cambia il funzionamento degli acconti in base alla quantità totale al "
+"pulsante checkout"
+
+#: inc/class-mepp-coupons.php:93
+msgid ""
+"Check this box if the coupon can be used only when customer is paying full "
+"amount"
+msgstr ""
+
+#: inc/class-mepp-coupons.php:101
+msgid ""
+"Check this box if the coupon should be automatically applied in cart & "
+"checkout when customer is paying full amount"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:189
+msgid ""
+"Check this to count taxes as part of deposits for purposes of display to the "
+"customer in cart item details"
+msgstr ""
+"Seleziona questa opzione per conteggiare le tasse come parte dei versamenti "
+"al fine di mostrarle nei dettagli dell’articolo nel carrello"
+
+#: inc/admin/class-mepp-admin-settings.php:183
+msgid ""
+"Check this to count taxes as part of deposits for purposes of display to the "
+"customer in product page."
+msgstr ""
+"Seleziona questa opzione per conteggiare le tasse come parte dei versamenti "
+"al fine di mostrarle al cliente nella pagina del prodotto."
+
+#: inc/admin/class-mepp-admin-settings.php:291
+msgid "Check this to disable all deposit functionality for guests"
+msgstr ""
+"Selezionare l'opzione per disabilitare tutte le funzioni per gli ospiti"
+
+#: inc/admin/class-mepp-admin-settings.php:164
+msgid "Check this to disable all deposit functionality with one click."
+msgstr ""
+"Seleziona qui per disattivare tutte le funzionalità della gestione acconti "
+"con un click."
+
+#: inc/admin/class-mepp-admin-settings.php:669
+msgid "Check this to enable %s"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:491
+msgid ""
+"Check this to enable checkout mode, which makes deposits calculate based on "
+"total amount during checkout instead of per product"
+msgstr ""
+"Seleziona qui per abilitare la modalità Acquisto, che calcola gli acconti in "
+"base al totale durante il pagamento anziché per prodotto"
+
+#: inc/admin/class-mepp-admin-settings.php:626
+msgid ""
+"Check this to enable sending second payment reminder email automatically "
+"after X number of days of deposit payment."
+msgstr ""
+"Seleziona qui per abilitare l&#39;invio automatico della email di sollecito "
+"pagamento saldo dopo  X giorni dal pagamento acconto."
+
+#: inc/admin/class-mepp-admin-settings.php:195
+msgid "Check to display tooltip in cart totals detailing deposit breakdown)"
+msgstr ""
+"Seleziona qui per visualizzare il tooltip nei totali del carrello che "
+"descrive la suddivisione dell&#39;acconto)"
+
+#: inc/admin/class-mepp-admin-settings.php:268
+msgid "Check to make orders editable while in \"partially paid\" status"
+msgstr ""
+"Seleziona qui per rendere gli ordini modificabili mentre si trovano nello "
+"stato \"parzialmente pagato\""
+
+#: inc/admin/class-mepp-admin-settings.php:275
+msgid ""
+"Check to show a column in admin order list indicating if order has deposit"
+msgstr ""
+"Seleziona per visualizzare una colonna nell&#39;elenco degli ordini di "
+"amministrazione che indica se l'ordine ha un acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:390
+msgid "Checkout & Order strings"
+msgstr "Stringhe di Acquisto e Ordine"
+
+#: inc/admin/class-mepp-admin-settings.php:96
+msgid "Checkout Mode"
+msgstr "Modalità Acquisto"
+
+#: inc/admin/class-mepp-admin-settings.php:87
+msgid "Checkout Mode Enabled"
+msgstr "Modalità Acquisto Attivata"
+
+#: inc/admin/class-mepp-admin-product.php:103
+msgid "Checkout Mode enabled"
+msgstr "Modabiltà Acquisto attivata"
+
+#: inc/admin/class-mepp-admin-settings.php:503
+msgid "Choose amount type"
+msgstr "Scegli il tipo di importo"
+
+#: inc/admin/class-mepp-admin-settings.php:245
+msgid "Choose how to handle coupon discounts"
+msgstr "Selezionare il metodo di gestione dei buoni sconto"
+
+#: inc/admin/class-mepp-admin-settings.php:201
+msgid "Choose how to handle fees."
+msgstr "Scegli come gestire le tasse."
+
+#: inc/admin/class-mepp-admin-settings.php:233
+msgid "Choose how to handle shipping taxes."
+msgstr "Scegli come gestire le tasse di spedizione."
+
+#: inc/admin/class-mepp-admin-settings.php:222
+msgid "Choose how to handle shipping."
+msgstr "Metodo di gestione della spedizione"
+
+#: inc/admin/class-mepp-admin-settings.php:211
+msgid "Choose how to handle taxes."
+msgstr "Scegli come gestire le tasse."
+
+#: inc/admin/class-mepp-admin-settings.php:257
+msgid "Choose when to reduce stocks."
+msgstr "Scegli quando ridurre le scorte."
+
+#: inc/emails/class-mepp-email-full-payment.php:143,
+#: inc/emails/class-mepp-email-partial-payment.php:145
+msgid "Choose which format of email to send."
+msgstr "Scegli quale tipo di formato email inviare."
+
+#: inc/class-mepp-coupons.php:162
+msgid "Coupon {coupon_code} is not valid for partial payments"
+msgstr ""
+
+msgid "custom deposit message"
+msgstr "messaggio di deposito personalizzato"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:157
+msgctxt "custom post type setting"
+msgid "Edit Partial Payment"
+msgstr ""
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:159
+#, fuzzy
+#| msgid "Edit"
+msgctxt "custom post type setting"
+msgid "Order"
+msgstr "Modifica"
+
+#: inc/admin/class-mepp-admin-reports.php:80,
+#: inc/admin/views/edit-order-partial-payments.php:19
+msgid "Date"
+msgstr "Data"
+
+#: inc/admin/class-mepp-admin-settings.php:642
+msgid "Days before Second Payment is due"
+msgstr "Giorni prima della scadenza del secondo pagamento"
+
+#: inc/admin/class-mepp-admin-settings.php:633
+msgid "Days before Second Payment reminder "
+msgstr "Giorni precedenti al sollecito pagamento Saldo "
+
+#: inc/admin/class-mepp-admin-settings.php:88
+msgid "Debugging Mode Enabled"
+msgstr "Modalità debug attiva"
+
+#: inc/admin/class-mepp-admin-product.php:460
+msgid "Decrease by (fixed amount or %):"
+msgstr "Diminuire di (importo fisso o%):"
+
+#: inc/admin/class-mepp-admin-settings.php:248
+msgid "Deduct from deposit"
+msgstr "Detrai dal deposito"
+
+#: inc/admin/class-mepp-admin-settings.php:250
+msgid "Deduct from future payment(s)"
+msgstr "Detrai da pagamento/i futuro/i"
+
+#: inc/admin/class-mepp-admin-settings.php:170
+msgid "Default Selection"
+msgstr "Selezione Predefinita"
+
+#: inc/class-mepp-checkout.php:408,
+#: inc/class-mepp-orders.php:1011,
+#: inc/admin/class-mepp-admin-order.php:472,
+#: inc/admin/class-mepp-admin-order.php:948,
+#: inc/admin/class-mepp-admin-order.php:1054,
+#: inc/admin/class-mepp-admin-product.php:83,
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:56,
+#: theme/order/wc-deposits-partial-payments-summary.php:53,
+#: inc/admin/views/order-recalculate-deposit-modal.php:96,
+#: inc/admin/views/order-recalculate-deposit-modal.php:46
+msgid "Deposit"
+msgstr "Acconto"
+
+#: inc/class-mepp-cart.php:436,
+#: inc/class-mepp-orders.php:904,
+#: inc/admin/class-mepp-admin-product.php:157,
+#: inc/admin/class-mepp-admin-product.php:452,
+#: inc/admin/class-mepp-admin-product.php:656,
+#: inc/admin/class-mepp-admin-settings.php:404,
+#: inc/admin/class-mepp-admin-settings.php:406,
+#: inc/admin/class-mepp-admin-settings.php:513
+msgid "Deposit Amount"
+msgstr "Importo Acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:372
+msgid "Deposit Button Text"
+msgstr "Testo Bottone Acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:907
+msgid "Deposit Buttons Highlight Colour"
+msgstr "Colore evidenziato Bottone Acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:887
+msgid "Deposit Buttons Primary Colour"
+msgstr "Prossima Data sollecito pagamento personalizzata:"
+
+#: inc/admin/class-mepp-admin-settings.php:897
+msgid "Deposit Buttons Secondary Colour"
+msgstr "Colore Secondario Bottoni Acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:365
+msgid "Deposit choice strings"
+msgstr "Stringhe di scelta del versamento"
+
+#: inc/admin/class-mepp-admin-settings.php:448
+msgid "Deposit Message"
+msgstr "Messaggio Acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:483
+msgid "Deposit on Checkout Mode"
+msgstr "Acconto nella modalità Acquisto"
+
+#: inc/class-mepp-add-to-cart.php:484,
+#: inc/class-mepp-checkout.php:178,
+#: inc/admin/class-mepp-admin-settings.php:418,
+#: inc/admin/class-mepp-admin-settings.php:420
+msgid "Deposit Option"
+msgstr "Opzioni Acconto"
+
+#: inc/admin/class-mepp-admin-product.php:376
+msgid "Deposit Options"
+msgstr "Opzioni acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:260
+msgid "Deposit Payment"
+msgstr "Pagamento Acconto"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:25
+msgid "Deposit Payment Received"
+msgstr "Versamento Ricevuto"
+
+#: inc/admin/class-mepp-admin-product.php:560
+msgid "Deposit settings"
+msgstr "Impostazioni Acconto"
+
+#: inc/admin/class-mepp-admin-product.php:142,
+#: inc/admin/class-mepp-admin-product.php:610
+msgid "Deposit type"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-product.php:433
+msgid "Deposit Type?"
+msgstr "Tipo di deposito?"
+
+#: inc/class-mepp-coupons.php:76,
+#: inc/admin/class-mepp-admin-reports.php:28,
+#: inc/admin/class-mepp-admin-settings.php:74
+msgid "Deposits"
+msgstr "Acconti"
+
+#: inc/admin/class-mepp-admin-settings.php:280,
+#: inc/admin/class-mepp-admin-settings.php:284
+msgid "Disable deposit for selected user roles"
+msgstr "Disabilita il deposito per i ruoli utente selezionati"
+
+#: inc/admin/class-mepp-admin-settings.php:162
+msgid "Disable Deposits"
+msgstr "Disattiva Acconti"
+
+#: inc/class-mepp-coupons.php:92
+msgid "Disable for deposits"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:717
+msgid "Disallow the following gateways when there is a deposit in the cart."
+msgstr "Disattiva i seguenti gateways quando c'è un acconto nel carrello."
+
+#: inc/admin/class-mepp-admin-settings.php:732,
+#: inc/admin/class-mepp-admin-settings.php:736
+msgid "Disallowed For Deposits"
+msgstr "Disattivato per Acconti"
+
+#: inc/admin/class-mepp-admin-settings.php:741,
+#: inc/admin/class-mepp-admin-settings.php:745
+msgid "Disallowed For Partial Payments"
+msgstr "Non Consentito per Pagamenti Parziali"
+
+#: inc/admin/class-mepp-admin-settings.php:715
+msgid "Disallowed Gateways"
+msgstr "Disattiva Gateways"
+
+#: inc/admin/class-mepp-admin-settings.php:243
+msgid "Discount Coupons Handling"
+msgstr "Gestione buoni sconto"
+
+#: inc/admin/class-mepp-admin-settings.php:95,
+#: inc/admin/class-mepp-admin-settings.php:321
+msgid "Display & Text"
+msgstr "Visualizzazione e testo"
+
+#: inc/admin/class-mepp-admin-settings.php:193
+msgid "Display Deposit-breakdown Tooltip in cart"
+msgstr "Visualizza Tooltip Acconto nel carrello"
+
+#: inc/admin/class-mepp-admin-settings.php:187
+msgid "Display taxes in cart item Details"
+msgstr "Mostra tasse nei Dettagli dell’articolo nel carrello"
+
+#: inc/admin/class-mepp-admin-settings.php:181
+msgid "Display Taxes In Product page"
+msgstr "Mostra Tasse nella Pagina del prodotto"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:202
+msgid "Documentation"
+msgstr "Documentazione"
+
+#: inc/admin/class-mepp-admin-order.php:1136
+msgid "Due date:"
+msgstr "Data di scadenza:"
+
+#: inc/admin/class-mepp-admin-settings.php:635
+msgid "Duration between partial payment and second payment reminder (in days)"
+msgstr "Durata tra pagamento parziale e secondo sollecito (in giorni)"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:74
+msgid "Edit plan"
+msgstr ""
+
+#: inc/emails/class-mepp-email-full-payment.php:134,
+#: inc/emails/class-mepp-email-partial-payment.php:136
+msgid "Email Heading"
+msgstr "Intestazione Email"
+
+#: inc/admin/class-mepp-admin-order.php:883
+msgid "Email Partial Payment Reminder"
+msgstr "Email di Promemoria per il Pagamento Parziale"
+
+#: inc/emails/class-mepp-email-full-payment.php:141,
+#: inc/emails/class-mepp-email-partial-payment.php:143
+msgid "Email type"
+msgstr "Tipo di email"
+
+#: inc/admin/class-mepp-admin-settings.php:667
+msgid "Enable %s"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:489
+msgid "Enable checkout mode"
+msgstr "Abilita Acquisto"
+
+#: inc/admin/class-mepp-admin-product.php:123,
+#: inc/admin/class-mepp-admin-product.php:586
+msgid "Enable deposit"
+msgstr "Abilita acconto"
+
+#: inc/admin/class-mepp-admin-product.php:379
+msgid "Enable Deposit ?"
+msgstr "Abilitare deposito?"
+
+#: inc/admin/class-mepp-admin-settings.php:584
+msgid "Enable Future Payments"
+msgstr "Attiva Pagamenti Futuri"
+
+#: inc/admin/class-mepp-admin-settings.php:624
+msgid "Enable Second Payment Reminder after \"X\" Days"
+msgstr "Abilita Sollecito Pagamento Saldo dopo  \"X\" Giorni"
+
+#: inc/emails/class-mepp-email-full-payment.php:116,
+#: inc/emails/class-mepp-email-partial-payment.php:118
+msgid "Enable this email notification"
+msgstr "Abilita le notifiche email"
+
+#: inc/admin/class-mepp-admin-product.php:205
+msgid ""
+"Enable this to multiply the deposit by person count. (Only works when Fixed "
+"Value is active)"
+msgstr ""
+"Abilita questa impostazione per moltiplicare l&#39;acconto per numero di "
+"persone. (Funziona solo quando il valore fisso è attivo)"
+
+#: inc/admin/class-mepp-admin-product.php:124,
+#: inc/admin/class-mepp-admin-product.php:587
+msgid "Enable this to require a deposit for this item."
+msgstr "Abilita qui per richiedere un acconto per questo articolo"
+
+#: inc/admin/class-mepp-admin-product.php:575
+msgid "Enable to override deposit settings of parent"
+msgstr "Abilita per sovrascrittura impostazioni di acconto del genitore"
+
+#: inc/emails/class-mepp-email-full-payment.php:114,
+#: inc/emails/class-mepp-email-partial-payment.php:116
+msgid "Enable/Disable"
+msgstr "Attiva/Disattiva"
+
+#: inc/admin/class-mepp-admin-product.php:471
+msgid "Enter Deposit Amount (%s)"
+msgstr "Inserisci l&#39;importo dell&#39;acconto (%s)"
+
+#: inc/emails/class-mepp-email-full-payment.php:122,
+#: inc/emails/class-mepp-email-partial-payment.php:124
+msgid ""
+"Enter recipients (comma separated) for this email. Defaults to <code>"
+"%s</code>."
+msgstr ""
+"Inserisci le email dei destinatari (separati da virgola) per questa email. "
+"Predefinito: <code>%s</code>."
+
+#: inc/admin/class-mepp-admin-order.php:1283
+msgid ""
+"Error saving. A payment with this date already exist. <a href=\"%s\"> Return "
+"</a>"
+msgstr ""
+"Errore al salvataggio. Esiste già un pagamento con questa data. <a "
+"href=\"%s\"> Torna indietro </a>"
+
+#: inc/admin/class-mepp-admin-settings.php:958
+msgid ""
+"Error verifying purchase code, please try again later. If issue persist, "
+"please submit a  ticket to our <a target=\"_blank\" href=\"%s\"> support "
+"platform. </a> "
+msgstr ""
+"Errore durante la verifica del codice di acquisto, riprova più tardi. Se il "
+"problema persiste, invia un ticket alla nostra <a target=\"_blank\" "
+"href=\"%s\"> piattaforma di supporto. </a> "
+
+#: inc/admin/class-mepp-admin-reports.php:83
+msgid "Export CSV"
+msgstr "Exposta CSV"
+
+#: inc/mepp-functions.php:27
+msgid "Fees"
+msgstr "Tasse"
+
+#: inc/admin/class-mepp-admin-settings.php:199
+msgid "Fees Collection Method"
+msgstr "Metodo di riscossione delle tasse"
+
+#: inc/admin/class-mepp-admin-product.php:439,
+#: inc/admin/class-mepp-admin-settings.php:506,
+#: inc/admin/views/order-recalculate-deposit-modal.php:122,
+#: inc/admin/views/order-recalculate-deposit-modal.php:60
+msgid "Fixed"
+msgstr "Fisso"
+
+#: inc/admin/class-mepp-admin-product.php:144,
+#: inc/admin/class-mepp-admin-product.php:612
+msgid "Fixed value"
+msgstr "Valore Fisso"
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:188
+msgid "For partial payment reminders (%s)"
+msgstr "Per promemoria di pagamento parziale (%s)"
+
+#: inc/admin/class-mepp-admin-product.php:129,
+#: inc/admin/class-mepp-admin-product.php:596,
+#: inc/admin/class-mepp-admin-settings.php:495
+msgid "Force deposit"
+msgstr "Forza acconto"
+
+#: inc/admin/class-mepp-admin-product.php:397
+msgid "Force Deposit?"
+msgstr "Forzare deposito?"
+
+#: inc/class-mepp-add-to-cart.php:479,
+#: inc/class-mepp-checkout.php:173,
+#: inc/admin/class-mepp-admin-settings.php:176
+msgid "Full Amount"
+msgstr "Pagamento a Saldo"
+
+#: inc/admin/class-mepp-admin-settings.php:379
+msgid "Full Amount Button Text"
+msgstr "Testo mostrato nel bottone 'Paga Saldo'"
+
+#: inc/admin/class-mepp-admin-settings.php:454
+msgid "Full Amount Message"
+msgstr "Messaggio Saldo"
+
+#: inc/admin/class-mepp-admin-settings.php:261,
+#: inc/emails/class-mepp-email-full-payment.php:23
+msgid "Full Payment"
+msgstr "Pagamento a Saldo"
+
+#: inc/emails/class-mepp-email-full-payment.php:24
+msgid "Full payment emails are sent when an order is fully paid."
+msgstr ""
+"Le email di saldo vengono inviate quando un ordine è stato completamente "
+"pagato."
+
+#: inc/class-mepp-cart.php:204
+msgid "Future Payment"
+msgstr "Pagamento Futuro"
+
+#: inc/class-mepp-cart.php:449,
+#: inc/class-mepp-cart.php:1164,
+#: inc/class-mepp-checkout.php:354,
+#: inc/class-mepp-checkout.php:315,
+#: inc/class-mepp-orders.php:907,
+#: inc/admin/class-mepp-admin-order.php:523,
+#: inc/admin/class-mepp-admin-order.php:949,
+#: inc/admin/class-mepp-admin-order.php:1064,
+#: inc/admin/class-mepp-admin-settings.php:411,
+#: inc/admin/class-mepp-admin-settings.php:413,
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:54,
+#: theme/order/wc-deposits-partial-payments-summary.php:51
+msgid "Future Payments"
+msgstr "Pagamenti Futuri"
+
+#: inc/admin/class-mepp-admin-settings.php:97
+msgid "Future Payments & Reminders"
+msgstr "Pagamenti Futuri e Promemoria"
+
+#: inc/admin/class-mepp-admin-settings.php:579
+msgid "Future Payments Settings"
+msgstr "Impostazioni per Pagamenti Futuri"
+
+#: inc/admin/class-mepp-admin-settings.php:98
+msgid "Gateways"
+msgstr "Gateways"
+
+#: inc/admin/class-mepp-admin-settings.php:94
+msgid "General Settings"
+msgstr "Impostazioni Generali"
+
+#: inc/admin/class-mepp-admin-product.php:106
+msgid "Go to plugin settings"
+msgstr "Vai alle impostazioni del plugin"
+
+#: inc/admin/list-tables/class-wc-deposits-admin-list-table-orders.php:79
+msgid "Has Deposit"
+msgstr "Ha un deposito"
+
+#: theme/mepp-checkout-mode-slider.php:70,
+#: theme/single-product/mepp-product-single-plan.php:26
+msgid "Hide details"
+msgstr "Nascondi dettagli"
+
+#: inc/emails/class-mepp-email-full-payment.php:148,
+#: inc/emails/class-mepp-email-partial-payment.php:150
+msgid "HTML"
+msgstr "HTML"
+
+#: inc/admin/class-mepp-admin-settings.php:497
+msgid ""
+"If you check this, the customer will not be allowed to make a full payment "
+"during checkout"
+msgstr ""
+"Se selezionato, l&#39;acquirente non sarà abilitato ad effettuare il "
+"pagamento a saldo nella fase di acquisto."
+
+#: inc/admin/class-mepp-admin-product.php:130,
+#: inc/admin/class-mepp-admin-product.php:597
+msgid ""
+"If you enable this, the customer will not be allowed to make a full payment."
+msgstr ""
+"Se abiliti questa impostazione, l&#39; non sarà abilitato ad effettuare il "
+"pagamento completo."
+
+#: inc/admin/class-mepp-admin-settings.php:867
+msgid ""
+"If you would like to send out all partial payment reminders on a specific "
+"date in the future, set a date below."
+msgstr ""
+"Se desideri inviare tutti i solleciti di pagamento acconto in una data "
+"specifica in futuro, impostala di seguito."
+
+#: inc/admin/class-mepp-admin-product.php:286
+msgid ""
+"If you would like to send out second payment reminder emails to all orders "
+"containing this product on a specific date in the future, set a date below."
+msgstr ""
+"Se in futuro si desidera inviare delle email per un secondo sollecito di "
+"pagamento per tutti gli ordini contenenti il prodotto selezionato in una "
+"determinata data, impostare una data qui sotto."
+
+#: inc/admin/class-mepp-admin-taxonomies.php:140
+msgid "Immediately"
+msgstr "Immediatamente"
+
+#: inc/admin/class-mepp-admin-product.php:459
+msgid "Increase by (fixed amount or %):"
+msgstr "Aumento di (importo fisso o %):"
+
+#: inc/admin/class-mepp-admin-settings.php:783
+msgid ""
+"Insert your <a  target=\"_blank\" href=\"%s\"> purchase code </a> to receive "
+"automatic updates."
+msgstr ""
+"Inserisci il <a  target=\"_blank\" href=\"%s\"> codice di acquisto </a> per "
+"ricevere aggiornamenti automatici."
+
+#: inc/admin/class-mepp-admin-settings.php:951
+msgid "Invalid Purchase code"
+msgstr "Grazie. Codice acquisto verificato con successo."
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:73
+msgid ""
+"Kindly be reminded that your order's partial payment is still pending "
+"payment."
+msgstr ""
+"Si ricorda gentilmente che il pagamento parziale del vostro ordine è ancora "
+"in sospeso."
+
+#: inc/admin/class-mepp-admin-settings.php:266
+msgid "Make partially paid orders editable"
+msgstr "Rendere modificabili gli ordini parzialmente pagati"
+
+#: inc/admin/list-tables/class-wc-deposits-admin-list-table-orders.php:116
+msgid "Mark partially paid"
+msgstr "Contrassegna come parzialmente pagato"
+
+#: inc/admin/class-mepp-admin-settings.php:456
+msgid "Message to show when 'Full Amount' is selected on the product's page."
+msgstr ""
+"Messaggio mostrato quando è selezionato \"Saldo\" nella pagina del prodotto."
+
+#: inc/admin/class-mepp-admin-settings.php:450
+msgid "Message to show when 'Pay Deposit' is selected on the product's page."
+msgstr ""
+"Messaggio mostrato quando il \"Pagamento Acconto\" è selezionato nelle "
+"pagine prodotto."
+
+#: inc/admin/class-mepp-admin-settings.php:442
+msgid "Messages"
+msgstr "Messaggi"
+
+#: inc/emails/class-mepp-email-full-payment.php:149,
+#: inc/emails/class-mepp-email-partial-payment.php:151
+msgid "Multipart"
+msgstr "Multipart"
+
+#: inc/admin/class-mepp-admin-product.php:204
+msgid "Multiply by persons"
+msgstr "Moltiplicare per persone"
+
+#: inc/admin/class-mepp-admin-product.php:415
+msgid "Multiply By Persons?"
+msgstr "Moltiplicare per le persone?"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:77
+msgid "New plan name"
+msgstr "Nome del nuovo piano"
+
+#: inc/admin/class-mepp-admin-settings.php:869
+msgid "Next Custom Reminder Date :"
+msgstr "Prossima Data sollecito pagamento personalizzata:"
+
+#: inc/admin/class-mepp-admin-product.php:288
+msgid "Next Reminder Date :"
+msgstr "Data del successivo sollecito:"
+
+#: inc/admin/class-mepp-admin-product.php:404,
+#: inc/admin/class-mepp-admin-product.php:422
+msgid "No"
+msgstr "No"
+
+#: inc/admin/class-mepp-admin-settings.php:367,
+#: inc/admin/class-mepp-admin-settings.php:392
+msgid ""
+"No HTML allowed. Text will be translated to the user if a translation is "
+"available."
+msgstr ""
+"HTML non permesso. Il testo verrà tradotto se disponibile una traduzione."
+
+#: inc/admin/class-mepp-admin-settings.php:345
+msgid ""
+"No HTML allowed. Text will be translated to the user if a translation is "
+"available.<br/>Please note that any overflow will be hidden, since button "
+"width is theme-dependent."
+msgstr ""
+"HTML non ammesso. Il testo sarà tradotto se disponibile una traduzione. <br/>"
+"Note: eventuali overflow saranno nascosti, poiché la larghezza del pulsante "
+"dipende dal tema."
+
+#: inc/admin/list-tables/class-wc-deposits-admin-list-table-partial-payments.php:49
+msgid "No partial payments found."
+msgstr "Nessun pagamento parziale trovato."
+
+#: inc/admin/views/edit-order-partial-payments.php:10
+msgid "No payment schedule found."
+msgstr "Nessun programma di pagamento trovato."
+
+#: inc/admin/class-mepp-admin-taxonomies.php:79
+msgid "No plans found"
+msgstr "Nessun piano trovato"
+
+#: inc/admin/class-mepp-admin-order.php:1054
+msgid ""
+"Note: Deposit amount is affected by settings for fees, taxes & shipping "
+"handling"
+msgstr ""
+"Nota: l'importo dell&#39;acconto è influenzato dalle impostazioni relative a "
+"tasse, imposte e gestione della spedizione"
+
+#: inc/admin/class-mepp-admin-settings.php:644
+msgid ""
+"Number of days before second payment is due ( leave field empty for "
+"unlimited days )"
+msgstr ""
+"Numero di giorni prima della scadenza del secondo pagamento (lascia il campo "
+"vuoto per giorni illimitati)"
+
+#: inc/admin/class-mepp-admin-reports.php:267
+msgid "Number of deposits"
+msgstr "Numero degli acconti"
+
+#: theme/emails/plain/customer-order-partially-paid.php:17,
+#: theme/emails/plain/customer-order-remaining-reminder.php:16
+msgid "Order date: %s"
+msgstr "Data ordine: %s"
+
+#: inc/emails/class-mepp-email-full-payment.php:26
+msgid "Order fully paid"
+msgstr "Ordine completamente pagato"
+
+#: inc/admin/class-mepp-admin-settings.php:600
+msgid "Order fully paid status"
+msgstr ""
+
+#: theme/emails/plain/customer-order-partially-paid.php:16,
+#: theme/emails/plain/customer-order-remaining-reminder.php:15
+msgid "Order number: %s"
+msgstr "Numero ordine: %s"
+
+#: inc/emails/class-mepp-email-partial-payment.php:26
+msgid "Order partially paid"
+msgstr "Ordine parzialmente pagato"
+
+#: inc/admin/class-mepp-admin-reports.php:321
+msgid "Order Remaining in Total"
+msgstr "Ordine Rimanente del totale"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:631
+msgctxt "Order status"
+msgid "Partially Paid"
+msgstr "Parzialmente pagato"
+
+#: inc/admin/list-tables/class-wc-deposits-admin-list-table-orders.php:134
+msgid "Order status changed by bulk edit:"
+msgstr "Stato dell&#39;ordine cambiato dalla modifica collettiva:"
+
+#: inc/admin/class-mepp-admin-settings.php:602
+msgid "Order status when all partial payments are completed"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:326
+msgid "Override payment form"
+msgstr "Sovrascrivi modulo di pagamento"
+
+#: inc/admin/class-mepp-admin-product.php:574
+msgid "Override product deposits options"
+msgstr "Sovrascrivi le opzioni di acconto del prodotto"
+
+#: inc/admin/class-mepp-admin-reports.php:285
+msgid "Paid deposits"
+msgstr "Acconti pagati"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:156,
+#: inc/emails/class-mepp-email-partial-payment.php:23,
+#: inc/admin/list-tables/class-wc-deposits-admin-list-table-partial-payments.php:113
+msgid "Partial Payment"
+msgstr "Parzialmente Pagato"
+
+#: inc/class-mepp-payment.php:621
+msgid "Partial Payment amount:"
+msgstr "Importo del pagamento parziale:"
+
+#: inc/emails/class-mepp-email-partial-payment.php:24
+msgid "Partial payment emails are sent when an order is partially paid."
+msgstr ""
+"Email sollecito pagamento acconto verrà inviata quando l&#39;ordine è stato "
+"parzialmente pagato."
+
+#: inc/class-mepp-orders.php:1172,
+#: inc/mepp-functions.php:465
+msgid "Partial Payment for order %s"
+msgstr "Pagamento parziale per l'ordine %s"
+
+#: inc/compatibility/pdf-invoices/class-mepp-partial-payment-invoice.php:22,
+#: inc/compatibility/pdf-invoices/class-mepp-partial-payment-invoice.php:51
+msgid "Partial Payment Invoice"
+msgstr "Fattura del pagamento parziale"
+
+#: inc/emails/class-mepp-email-customer-partially-paid.php:27
+msgid "Partial Payment Received"
+msgstr "Pagamento Parziale Ricevuto"
+
+#: inc/admin/class-mepp-admin-product.php:234,
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:28
+msgid "Partial Payment Reminder"
+msgstr "Promemoria per Pagamento Parziale"
+
+#: inc/admin/class-mepp-admin-settings.php:674
+msgid "Partial Payment reminder"
+msgstr "Promemoria di Pagamento Parziale"
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:59
+msgid "Partial Payment Reminder #{order_number}"
+msgstr "Promemoria di Pagamento Parziale #{order_number}"
+
+#: inc/admin/class-mepp-admin-order.php:842
+msgid "Partial Payment reminder email manually sent to customer."
+msgstr ""
+"Promemoria via email per il Pagamento Parziale inviato manualmente al "
+"cliente."
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:185
+msgid "Partial payment reminder subject"
+msgstr "Oggetto del promemoria di pagamento parziale"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:155, Advanced Partial Payment and Deposit For Woocommerce.php:160,
+#: inc/admin/class-mepp-admin-order.php:1166,
+#: inc/admin/class-mepp-admin-order.php:1153
+msgid "Partial Payments"
+msgstr "Pagamenti parziali"
+
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:23
+msgid "Partial Payments Summary"
+msgstr "Riepilogo dei pagamenti parziali"
+
+#: theme/order/wc-deposits-partial-payments-summary.php:21
+msgid "Partial payments summary"
+msgstr "Riepilogo dei pagamenti parziali"
+
+#: inc/class-mepp-orders.php:834,
+#: inc/compatibility/mepp-bookings-compatibility.php:55
+msgid "Partially Paid"
+msgstr "Parzialmente Pagato"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:636,
+#: inc/compatibility/mepp-bookings-compatibility.php:35
+msgid "Partially Paid <span class=\"count\">(%s)</span>"
+msgid_plural "Partially Paid <span class=\"count\">(%s)</span>"
+msgstr[0] "Pagamento parziale di <span class=\"count\">(%s)</span>"
+msgstr[1] "Pagamento parziale di <span class=\"count\">(%s)</span>"
+
+#: inc/class-mepp-add-to-cart.php:475,
+#: inc/class-mepp-checkout.php:169,
+#: inc/admin/class-mepp-admin-settings.php:175
+msgid "Pay Deposit"
+msgstr "Selezione Predefinita"
+
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:33,
+#: theme/order/wc-deposits-partial-payments-summary.php:28,
+#: inc/admin/views/edit-order-partial-payments.php:18
+msgid "Payment"
+msgstr "Pagamento"
+
+#: theme/single-product/mepp-product-single-plan.php:53
+msgid "Payment Date"
+msgstr "Data di Pagamento"
+
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:34,
+#: theme/order/wc-deposits-partial-payments-summary.php:29
+msgid "Payment ID"
+msgstr "ID pagamento"
+
+#: inc/admin/class-mepp-admin-settings.php:426,
+#: inc/admin/class-mepp-admin-settings.php:428,
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:66,
+#: inc/emails/class-mepp-email-customer-partially-paid.php:80,
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:113
+msgid "Payment Link"
+msgstr ""
+
+#: inc/admin/views/edit-order-partial-payments.php:20
+msgid "Payment method"
+msgstr "Metodo di pagamento"
+
+#: inc/class-mepp-cart.php:464,
+#: inc/admin/class-mepp-admin-product.php:146,
+#: inc/admin/class-mepp-admin-product.php:614,
+#: inc/admin/class-mepp-admin-settings.php:508,
+#: inc/admin/class-mepp-admin-taxonomies.php:70,
+#: inc/admin/views/order-recalculate-deposit-modal.php:126,
+#: inc/admin/views/order-recalculate-deposit-modal.php:64
+msgid "Payment plan"
+msgstr "Piano di pagamento"
+
+#: inc/admin/class-mepp-admin-settings.php:661
+msgid "Payment plan Settings"
+msgstr "Impostazioni del piano di pagamento"
+
+#: inc/admin/class-mepp-admin-product.php:183,
+#: inc/admin/class-mepp-admin-product.php:635,
+#: inc/admin/class-mepp-admin-settings.php:541
+msgid "Payment plan(s)"
+msgstr "Piano/i di pagamento"
+
+#: inc/admin/class-mepp-admin-settings.php:663,
+#: inc/admin/class-mepp-admin-taxonomies.php:67,
+#: inc/admin/class-mepp-admin-taxonomies.php:69,
+#: inc/admin/class-mepp-admin-taxonomies.php:71,
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:188
+msgid "Payment plans"
+msgstr "Piani di pagamento"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:197,
+#: inc/emails/class-mepp-email-customer-partially-paid.php:216,
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:209
+msgid "Payment text"
+msgstr "Testo del pagamento"
+
+#: theme/single-product/mepp-product-single-plan.php:42
+msgid "Payments Total"
+msgstr "Totale dei Pagamenti"
+
+#: inc/compatibility/pdf-invoices/main.php:349
+msgid "PDF Invoice"
+msgstr "Fattura PDF"
+
+#: inc/class-mepp-add-to-cart.php:447
+msgid "per booking"
+msgstr "per prenotazione"
+
+#: inc/class-mepp-add-to-cart.php:462,
+#: inc/class-mepp-add-to-cart.php:449
+msgid "per item"
+msgstr "Per articolo"
+
+#: inc/class-mepp-add-to-cart.php:445
+msgid "per person"
+msgstr "Per persona"
+
+#: inc/admin/class-mepp-admin-product.php:440,
+#: inc/admin/class-mepp-admin-settings.php:507,
+#: inc/admin/class-mepp-admin-taxonomies.php:124,
+#: inc/admin/views/order-recalculate-deposit-modal.php:124,
+#: inc/admin/views/order-recalculate-deposit-modal.php:62
+msgid "Percentage"
+msgstr "Percentuale"
+
+#: inc/admin/class-mepp-admin-product.php:145,
+#: inc/admin/class-mepp-admin-product.php:613
+msgid "Percentage of price"
+msgstr "Percentuale del prezzo"
+
+#: inc/emails/class-mepp-email-full-payment.php:147,
+#: inc/emails/class-mepp-email-partial-payment.php:149
+msgid "Plain text"
+msgstr "Testo normale"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:117
+msgid "Plan schedule"
+msgstr "Programmazione del piano"
+
+#: inc/admin/class-mepp-admin-settings.php:39
+msgid ""
+"Please <a href=\"%s\"> enter your purchase code </a> to receive automatic "
+"updates"
+msgstr ""
+"<a href=\"%s\">Inserisci il tuo codice di acquisto</a> per ricevere "
+"aggiornamenti automatici"
+
+#: inc/admin/class-mepp-admin-settings.php:444
+msgid "Please check the documentation for allowed HTML tags."
+msgstr "Controllare la documentazione per i tag HTML ammessi."
+
+#: inc/admin/class-mepp-admin-settings.php:781
+msgid "Purchase code"
+msgstr "Codice acquisto"
+
+#: inc/admin/class-mepp-admin-order.php:717,
+#: inc/admin/views/order-recalculate-deposit-modal.php:24
+msgid "Recalculate Deposit"
+msgstr "Ricalcola Acconto"
+
+#: inc/emails/class-mepp-email-full-payment.php:120,
+#: inc/emails/class-mepp-email-partial-payment.php:122
+msgid "Recipient(s)"
+msgstr "Destinatario(i)"
+
+#: inc/admin/class-mepp-admin-settings.php:255
+msgid "Reduce Stocks On"
+msgstr "Riduci le scorte"
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:29
+msgid "Reminder of partially-paid order sent to the customer"
+msgstr "Promemoria di ordine parzialmente pagato inviato al cliente"
+
+#: inc/admin/class-mepp-admin-settings.php:289
+msgid "Restrict deposits for logged-in users only"
+msgstr "Limita il deposito ai soli utenti registrati"
+
+#: inc/admin/views/order-recalculate-deposit-modal.php:158
+msgid "Save"
+msgstr "Salva"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:158
+msgid "Search Partial Payments"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-taxonomies.php:72
+msgid "Search plans"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:618
+msgid ""
+"Second Payment Reminder controls  (You can always send a reminder manually "
+"from order actions ) "
+msgstr ""
+"Controlli Sollecito Pagamento Saldo (Puoi anche inviare il promemoria "
+"manualmente nelle azioni presenti nel singolo ordine) "
+
+#: inc/admin/class-mepp-admin-settings.php:616
+msgid "Second Payment Settings"
+msgstr "Impostazione Saldo"
+
+#: inc/admin/class-mepp-admin-settings.php:172
+msgid "Select the default deposit option."
+msgstr "Selezione Predefinita delle opzioni di acconto"
+
+#: inc/admin/class-mepp-admin-product.php:184,
+#: inc/admin/class-mepp-admin-product.php:636,
+#: inc/admin/class-mepp-admin-settings.php:545
+msgid "Selected payment plan(s) will be available for customers to choose from"
+msgstr ""
+"I piani di pagamento selezionati saranno disponibili come scelte offerte ai "
+"clienti"
+
+#: inc/admin/class-mepp-admin-settings.php:676
+msgid "Send a reminder email x days before partial payment due date"
+msgstr ""
+"Invia un promemoria via email x giorni prima della data di scadenza del "
+"pagamento parziale"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:165
+msgid "Set a date"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-taxonomies.php:125
+msgid "Set date"
+msgstr ""
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:201
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: inc/mepp-functions.php:29
+msgid "Shipping"
+msgstr "Spedizione"
+
+#: inc/admin/class-mepp-admin-settings.php:220
+msgid "Shipping Handling Method"
+msgstr "Metodo di gestione della spedizione"
+
+#: inc/mepp-functions.php:30
+msgid "Shipping Tax"
+msgstr "Tassa Spedizione"
+
+#: inc/admin/class-mepp-admin-settings.php:231
+msgid "Shipping Taxes Handling Method"
+msgstr "Metodo di gestione delle tasse di spedizione"
+
+#: inc/admin/class-mepp-admin-settings.php:273
+msgid "Show \"has deposit\" column in admin order list table"
+msgstr ""
+"Mostra la colonna \"ha un acconto\" nella tabella ordini nella pagina "
+"amministrazione"
+
+#: inc/admin/class-mepp-admin-settings.php:156
+msgid "Site-wide Settings"
+msgstr "Impostazioni del sito"
+
+#: inc/admin/class-mepp-admin-settings.php:205,
+#: inc/admin/class-mepp-admin-settings.php:215,
+#: inc/admin/class-mepp-admin-settings.php:226,
+#: inc/admin/class-mepp-admin-settings.php:237,
+#: inc/admin/class-mepp-admin-settings.php:249
+msgid "Split according to deposit amount"
+msgstr "Dividere secondo l'importo dell&#39;acconto"
+
+#: theme/emails/wc-deposits-email-partial-payments-summary.php:35,
+#: theme/order/wc-deposits-partial-payments-summary.php:30,
+#: inc/admin/views/edit-order-partial-payments.php:21
+msgid "Status"
+msgstr "Stato"
+
+#: inc/emails/class-mepp-email-full-payment.php:127,
+#: inc/emails/class-mepp-email-partial-payment.php:129
+msgid "Subject"
+msgstr "Soggetti"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:203
+msgid "Support"
+msgstr "Supporto"
+
+#: inc/mepp-functions.php:28
+msgid "Tax"
+msgstr "Imposta"
+
+#: inc/admin/class-mepp-admin-settings.php:209
+msgid "Taxes Collection Method"
+msgstr "Metodo di riscossione delle imposte"
+
+#: inc/admin/class-mepp-admin-settings.php:381
+msgid "Text displayed in the 'Full Amount' button."
+msgstr "Testo mostrato nel bottone 'Paga Saldo'"
+
+#: inc/admin/class-mepp-admin-settings.php:374
+msgid "Text displayed in the 'Pay Deposit' button."
+msgstr "Testo mostrato nel bottone 'Paga Acconto'"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:198,
+#: inc/emails/class-mepp-email-customer-partially-paid.php:217,
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:210
+msgid "Text to appear with payment link"
+msgstr "Testo che appare con il link di pagamento"
+
+#: inc/admin/class-mepp-admin-settings.php:316
+msgid "Text to replace "
+msgstr "Testo da sostituire "
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:135
+msgid "Thank you for your order"
+msgstr "Grazie per il tuo ordine"
+
+#: inc/emails/class-mepp-email-customer-partially-paid.php:154
+msgid "Thank you for your payment"
+msgstr "Grazie per il tuo pagamento"
+
+#: inc/admin/class-mepp-admin-settings.php:945
+msgid "Thank You. Purchase code verified successfully."
+msgstr "Grazie. Codice acquisto verificato con successo."
+
+#: inc/admin/class-mepp-admin-settings.php:663
+msgid "These settings apply only to orders with (%s)."
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:619
+msgid ""
+"These settings apply only to orders with fixed / percentage deposit (no "
+"payment plan)"
+msgstr ""
+
+#: inc/emails/class-mepp-email-full-payment.php:129,
+#: inc/emails/class-mepp-email-partial-payment.php:131
+msgid ""
+"This controls the email subject line. Leave blank to use the default subject:"
+" <code>%s</code>."
+msgstr ""
+"Controlla la riga dell&#39;oggetto dell&#39;email. Lascia vuoto per "
+"utilizzare l&#39;oggetto predefinito: <code>%s</code>."
+
+#: inc/emails/class-mepp-email-full-payment.php:136,
+#: inc/emails/class-mepp-email-partial-payment.php:138
+msgid ""
+"This controls the main heading contained within the email notification. "
+"Leave blank to use the default heading: <code>%s</code>."
+msgstr ""
+"Controlla l&#39;intestazione principale contenuta nella notifica email. "
+"Lascia vuoto per utilizzare l&#39;intestazione predefinita: <code>%s</code>."
+
+#: inc/admin/class-mepp-admin-order.php:1125
+msgid "This is a partial payment for order %s"
+msgstr "Questo è un pagamento parziale per l'ordine %s"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:28,
+#: inc/emails/class-mepp-email-customer-partially-paid.php:30
+msgid ""
+"This is an order notification sent to the customer after partial-payment, "
+"containing order details and a link to pay the remaining balance."
+msgstr ""
+"Questa è una notifica di ordine, inviata al cliente dopo il pagamento "
+"parziale, contenente i dettagli dell&#38;ordine e un link per pagare il "
+"saldo residuo."
+
+#: inc/admin/class-mepp-admin-product.php:158,
+#: inc/admin/class-mepp-admin-product.php:657
+msgid ""
+"This is the minimum deposited amount.<br/>Note: Tax will be added to the "
+"deposit amount you specify here."
+msgstr ""
+"Questo è l'importo minimo depositato. <br/> Nota: L&#39;imposta verrà "
+"aggiunta all'importo dell&#39;acconto specificato qui."
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:79
+msgid "To make payment, please visit this link: {mepp_payment_link}"
+msgstr ""
+"Per effettuare il pagamento, si prega di visitare il seguente link: "
+"{mepp_payment_link}"
+
+#: inc/class-mepp-cart.php:1159,
+#: inc/class-mepp-checkout.php:349,
+#: inc/class-mepp-checkout.php:310,
+#: inc/class-mepp-orders.php:900,
+#: inc/admin/class-mepp-admin-settings.php:397,
+#: inc/admin/class-mepp-admin-settings.php:399
+msgid "To Pay"
+msgstr "Pagare"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:146,
+#: inc/emails/class-mepp-email-customer-partially-paid.php:165
+#, fuzzy
+#| msgid ""
+#| "To pay the remaining balance, please visit this link:  {mepp_payment_link}"
+msgid "To pay the remaining balance, please visit this {mepp_payment_link}"
+msgstr ""
+"Per pagare il saldo residuo, visitare il seguente link:  {mepp_payment_link}"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:179
+msgid "Total:"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:586
+msgid ""
+"Uncheck this to prevent the customer from making any payment beyond deposit. "
+"(You'll have to manually mark the orders as completed)"
+msgstr ""
+"Deseleziona questa opzione per impedire al cliente di effettuare pagamenti "
+"superiori al versamento. (Dovrai contrassegnare manualmente gli ordini come "
+"completati)"
+
+#: inc/admin/class-mepp-admin-taxonomies.php:75
+msgid "Update plan"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-settings.php:59
+msgid "Updated successfully"
+msgstr "Aggiornamento avvenuto con successo"
+
+#: inc/admin/class-mepp-admin-settings.php:350
+msgid "Use Basic Deposit Buttons"
+msgstr "Utilizzare i pulsanti di acconto di base"
+
+#: inc/admin/class-mepp-admin-settings.php:352
+msgid ""
+"Use basic radio buttons for deposits, Check this if you are facing issues "
+"with deposits slider buttons in product page, "
+msgstr ""
+"Usa i pulsanti radio di base per gli acconti, Seleziona qui se si "
+"riscontrano problemi con i pulsanti di scorrimento degli acconti nella "
+"pagina del prodotto, "
+
+#: inc/admin/class-mepp-admin-settings.php:795
+msgid "Verify purchase code"
+msgstr "Verifica Codice di Acquisto"
+
+#: inc/admin/class-mepp-admin-order.php:1128
+msgid "View"
+msgstr "Guarda"
+
+#: theme/mepp-checkout-mode-slider.php:69,
+#: theme/mepp-checkout-mode-slider.php:72,
+#: theme/single-product/mepp-product-single-plan.php:25,
+#: theme/single-product/mepp-product-single-plan.php:28
+msgid "View details"
+msgstr "Visualizza dettagli"
+
+#: inc/admin/class-mepp-admin-settings.php:204,
+#: inc/admin/class-mepp-admin-settings.php:214,
+#: inc/admin/class-mepp-admin-settings.php:225,
+#: inc/admin/class-mepp-admin-settings.php:236
+msgid "with deposit"
+msgstr "con acconto"
+
+#: inc/admin/class-mepp-admin-settings.php:206,
+#: inc/admin/class-mepp-admin-settings.php:216,
+#: inc/admin/class-mepp-admin-settings.php:227,
+#: inc/admin/class-mepp-admin-settings.php:238
+msgid "with future payment(s)"
+msgstr "con pagamento/i futuro/i"
+
+#: Advanced Partial Payment and Deposit For Woocommerce.php:96, Advanced Partial Payment and Deposit For Woocommerce.php:139,
+#: inc/admin/class-mepp-admin-settings.php:39
+msgid "WooCommerce Deposits"
+msgstr "Acconti WooCommerce"
+
+#: inc/admin/class-mepp-admin-settings.php:91
+msgid "Woocommerce Deposits Settings"
+msgstr "Impostazione Acconti Woocommerce"
+
+#: inc/compatibility/mepp-bookings-compatibility.php:30,
+#: inc/compatibility/mepp-bookings-compatibility.php:30
+msgctxt "Advanced Partial Payment and Deposit For Woocommerce"
+msgid "Partially Paid"
+msgstr ""
+
+#: inc/admin/class-mepp-admin-product.php:403,
+#: inc/admin/class-mepp-admin-product.php:421
+msgid "Yes"
+msgstr "Si"
+
+#: theme/emails/admin-order-partially-paid.php:22,
+#: theme/emails/plain/admin-order-partially-paid.php:16
+#, fuzzy
+#| msgid ""
+#| "You have received a partially-paid order from %s. Their order is as "
+#| "follows:"
+msgid "You have received a %s order from %s. Their order is as follows:"
+msgstr ""
+"Hai ricevuto un ordine parzialmente pagato da %s e riportato di seguito:"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:140
+msgid ""
+"Your deposit has been received and your order is now being processed. Your "
+"order details are shown below for your reference:"
+msgstr ""
+"Il tuo versamento è stato ricevuto e il tuo ordine è ora in elaborazione. I "
+"dettagli dell’ordine sono mostrati di seguito come riferimento:"
+
+#: inc/emails/class-mepp-email-customer-partially-paid.php:159
+msgid ""
+"Your payment {partial_payment_number} has been received. Your order details "
+"are shown below for your reference:"
+msgstr ""
+"Il tuo pagamento {partial_payment_number} è stato ricevuto. I dettagli "
+"dell’ordine sono mostrati di seguito come riferimento:"
+
+#: inc/emails/class-mepp-email-customer-remaining-reminder.php:47
+msgid "Your {site_title} order partial payment reminder {order_date}"
+msgstr ""
+"Promemoria di pagamento del vostro ordine su {site_title} in data "
+"{order_date}"
+
+#: inc/emails/class-mepp-email-customer-deposit-paid.php:124,
+#: inc/emails/class-mepp-email-customer-partially-paid.php:143
+msgid "Your {site_title} order receipt from {order_date}"
+msgstr "Ricevuta del tuo ordine presso {site_title} in data {order_date}"
+
+#: inc/admin/class-mepp-admin-product.php:402,
+#: inc/admin/class-mepp-admin-product.php:420,
+#: inc/admin/class-mepp-admin-product.php:438,
+#: inc/admin/class-mepp-admin-product.php:457
+msgid "— No Change —"
+msgstr "— Nessuna modifica —"
