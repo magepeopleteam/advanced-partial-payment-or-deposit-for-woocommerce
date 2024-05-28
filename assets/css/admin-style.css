@@ -23,26 +23,6 @@
   top: 2px;
 }
 
-/* Set width to 10% for elements in dropdown */
-#mepp_storewide_deposit_enabled,
-#mepp_storewide_deposit_enabled_details,
-#mepp_storewide_deposit_enabled_btn,
-#mepp_storewide_deposit_force_deposit,
-#mepp_storewide_deposit_amount_type,
-#mepp_storewide_deposit_amount, #mepp_default_option,
-#mepp_reduce_stock, #mepp_partial_payments_structure, #mepp_taxes_handling,
-#mepp_fees_handling, #mepp_shipping_handling,
-#mepp_coupons_handling, #mepp_checkout_mode_enabled,
-#mepp_checkout_mode_force_deposit, #mepp_checkout_mode_deposit_amount_type,
-#mepp_checkout_mode_deposit_amount {
-  width: 20% !important;
-  background-color: #f1f1f1;
-  color: #333;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
 .widefat .column-order_status mark.partially-paid:after {
   font-family: WooCommerce;
   speak: none;
@@ -94,22 +74,6 @@ p.form-row-last[class*=_mepp_payment_plans] .select2, p.form-row-last[class*=_me
   display: none !important;
 }
 
-.mepp-nav-tab-active:not(.nav-tab-deposits)::before {
-  content: ""; /* Create a pseudo-element */
-  position: absolute;
-  top: 50%; /* Position it at the middle vertically */
-  right: 0; /* Position it at the right side of the tab */
-  transform: translateY(-50%); /* Center vertically */
-  border: solid transparent;
-  border-width: 9px; /* Adjust the size of the arrow */
-  border-left-color: #0000ff; /* Match the background color */
-  transition: border-color 0.3s ease; /* Add a transition for border color */
-}
-
-.mepp-nav-tab-active:not(.nav-tab-deposits):hover::before {
-  border-left-color: #d63638; /* Match the background color */
-}
-
 .mepp_deposit_storewide_values {
   background: #03a9f4 !important;
   padding: 10px;
@@ -152,18 +116,6 @@ p.form-row-last[class*=_mepp_payment_plans] .select2, p.form-row-last[class*=_me
 .woocommerce table.form-table select:focus {
   border-color: #333;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-.mepp-custom-container h2,
-.mepp-custom-container h3 {
-  color: rgba(29, 35, 39, 0.8117647059);
-  color: rgba(29, 35, 39, 0.8117647059);
-  font-size: 20px !important;
-  margin: 1em 0 !important;
-  background: cadetblue;
-  padding: 20px !important;
-  /* width: 35%; */
-  font-weight: 700 !important;
 }
 
 .mepp-custom-container .submit {
@@ -686,8 +638,6 @@ label[for=mepp_storewide_deposit_payment_plans] {
   background-color: var(--mage-white);
   margin: 20px;
   margin-left: 0;
-  border: 1px solid var(--mage-dark);
-  border-top: 0;
 }
 .advanced-partial-payment header {
   background-color: var(--mage-primary);
@@ -704,6 +654,8 @@ label[for=mepp_storewide_deposit_payment_plans] {
 .advanced-partial-payment .partial-settings-area {
   display: flex;
   justify-content: space-between;
+  border: 1px solid var(--mage-gray);
+  border-top: 0;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper {
   width: 20%;
@@ -712,10 +664,76 @@ label[for=mepp_storewide_deposit_payment_plans] {
   background-color: var(--mage-light);
   padding: 25px 0 25px 25px;
 }
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 15px;
+  color: var(--mage-black);
+  border: 0;
+  font-weight: normal;
+  border-left: 2px solid transparent;
+  font-size: 16px;
+  margin: 0;
+  background-color: transparent;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab i {
+  margin: 0 10px 0 0;
+  color: var(--mage-primary);
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-bottom: 1px solid var(--mage-gray);
+  width: 90%;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.nav-tab-active {
+  background-color: var(--mage-white);
+  border-left: 2px solid var(--mage-primary);
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.nav-tab-active::after {
+  width: 100%;
+}
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content {
   width: 80%;
   padding: 2% 5%;
   overflow: hidden;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container h2 {
+  background-color: var(--mage-light);
+  color: var(--mage-dark);
+  font-size: 20px;
+  margin: 0;
+  margin-top: 20px;
+  padding: 20px;
+  font-weight: bold;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table tr {
+  border: 1px solid var(--mage-gray);
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table th {
+  width: 50%;
+  vertical-align: middle;
+  text-align: left;
+  padding: 10px 20px;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td {
+  width: 50%;
+  vertical-align: middle;
+  text-align: left;
+  padding: 10px 20px;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td select, .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td input[type=text], .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td input[type=number] {
+  width: 200px;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td textarea, .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td select[multiple] {
+  width: 100%;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td fieldset input[type=number] {
+  text-align: left;
 }
 
 /*# sourceMappingURL=admin-style.css.map */

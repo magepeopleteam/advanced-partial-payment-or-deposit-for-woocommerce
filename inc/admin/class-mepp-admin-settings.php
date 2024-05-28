@@ -141,12 +141,12 @@ public function settings_tabs_mepp()
 
     <?php 
     $settings_tabs = apply_filters('mepp_settings_tabs', array(
-        'mepp_general' => esc_html__('General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'display_text' => esc_html__('Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'checkout_mode' => esc_html__('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'second_payment' => esc_html__('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'gateways' => esc_html__('Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'license' => esc_html__('License', 'advanced-partial-payment-or-deposit-for-woocommerce')
+        'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'checkout_mode' => __('<i class="fas fa-money-check-alt"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'second_payment' => __('<i class="far fa-credit-card"></i> Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce')
     ));
     
 
@@ -165,7 +165,7 @@ public function settings_tabs_mepp()
                     $count++;
                     $active = isset($_GET['section']) ? $key === $_GET['section'] : $count === 1;
                     ?>
-                    <a href="<?php echo $url; ?>" class="mepp-nav-tab <?php echo $active ? 'mepp-nav-tab-active' : ''; ?>" data-target="<?php echo $key; ?>"><?php echo $tab_name; ?></a>
+                    <a href="<?php echo $url; ?>" class="mepp nav-tab <?php echo $active ? 'mepp-nav-tab-active' : ''; ?>" data-target="<?php echo $key; ?>"><?php echo $tab_name; ?></a>
                     <?php
                 }
                 ?>
@@ -264,7 +264,7 @@ public function settings_tabs_mepp()
         $class = $active ? '' : 'hidden';
         ?>
         
-        <div id="mepp_general" class="mepp-tab-content mepp-general-tab <?php echo $class; ?>">
+        <div id="mepp_general" class="mepp-tab-content wrap mepp-custom-container <?php echo $class; ?>">
 
             <?php
             $roles_array = array();
@@ -286,7 +286,7 @@ public function settings_tabs_mepp()
                 $all_plans[$payment_plan->term_id] = $payment_plan->name;
             }
             ?>
-        <div class="mepp-custom-container">
+
             <?php $general_settings = array(
 
 
@@ -354,18 +354,18 @@ public function settings_tabs_mepp()
 
                 ),
                 'storewide_deposit_amount_type' => array(
-    'name' => esc_html__('Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-    'type' => 'select',
-    'desc_tip' => true,
-    'desc' => esc_html__('Choose amount type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-    'id' => 'mepp_storewide_deposit_amount_type',
-    'options' => array(
-        'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'payment_plan' => esc_html__('Payment plan', 'advanced-partial-payment-or-deposit-for-woocommerce') . ''
-    ),
-    'default' => 'percent'
-),
+                'name' => esc_html__('Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                'type' => 'select',
+                'desc_tip' => true,
+                'desc' => esc_html__('Choose amount type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                'id' => 'mepp_storewide_deposit_amount_type',
+                'options' => array(
+                    'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'payment_plan' => esc_html__('Payment plan', 'advanced-partial-payment-or-deposit-for-woocommerce') . ''
+                ),
+                'default' => 'percent'
+            ),
 
                 'storewide_deposit_amount' => array(
                     'name' => esc_html__('Default Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -546,7 +546,7 @@ public function settings_tabs_mepp()
 
             ?>
             <?php do_action('mepp_settings_tabs_general_tab'); ?>
-        </div>
+
         </div>
         <?php
     }
