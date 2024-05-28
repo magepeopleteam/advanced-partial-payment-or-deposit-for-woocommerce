@@ -85,25 +85,6 @@ p.form-row-last[class*="_mepp_payment_plans"] .select2 , p.form-row-last[class*=
     display: none !important;
 }
 
-
-
-
-.mepp-nav-tab-active:not(.nav-tab-deposits)::before {
-    content: ''; /* Create a pseudo-element */
-    position: absolute;
-    top: 50%; /* Position it at the middle vertically */
-    right: 0; /* Position it at the right side of the tab */
-    transform: translateY(-50%); /* Center vertically */
-    border: solid transparent;
-    border-width: 9px; /* Adjust the size of the arrow */
-    border-left-color: #0000ff; /* Match the background color */
-    transition: border-color 0.3s ease; /* Add a transition for border color */
-}
-
-.mepp-nav-tab-active:not(.nav-tab-deposits):hover::before {
-    border-left-color: #d63638; /* Match the background color */
-}
-
 .mepp_deposit_storewide_values{
     background: #03a9f4 !important;
     padding: 10px;
