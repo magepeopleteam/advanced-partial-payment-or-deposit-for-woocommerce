@@ -39,6 +39,10 @@
                 font-size: 16px;
                 margin: 0;
                 background-color: transparent;
+                i{
+                    margin: 0 10px 0 0;
+                    color: var(--mage-primary);
+                }
                 &::after{
                     content: "";
                     position: absolute;
