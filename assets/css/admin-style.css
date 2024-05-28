@@ -710,6 +710,10 @@ label[for=mepp_storewide_deposit_payment_plans] {
   margin: 0;
   background-color: transparent;
 }
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab i {
+  margin: 0 10px 0 0;
+  color: var(--mage-primary);
+}
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab::after {
   content: "";
   position: absolute;
