@@ -132,8 +132,7 @@ public function settings_tabs_mepp()
     $debug_mode_notice = get_option('mepp_debug_mode', 'no') === 'yes' ? '<span style="padding:5px 10px; color:#fff; background-color:rgba(255,63,76,0.8);">' . esc_html__('Debugging Mode Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</span>' : '';
     ?>
 
-    <div style="background-color: #162748; color: white; padding: 20px; margin-top: 7%;">
-        <h2 style="color: white; margin: 0;"><?php echo esc_html__('Deposit & Partial Payment Solution for WooCommerce ', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?><span style="font-size: 0.8em;"> - Version: 2.2.5</span></h2>
+    <div>
         <?php echo $mode_notice . $debug_mode_notice; ?>
     </div>
 
@@ -144,8 +143,8 @@ public function settings_tabs_mepp()
     $settings_tabs = apply_filters('mepp_settings_tabs', array(
         'mepp_general' => esc_html__('General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => esc_html__('Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-         'checkout_mode' => esc_html__('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-         'second_payment' => esc_html__('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'checkout_mode' => esc_html__('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'second_payment' => esc_html__('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => esc_html__('Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => esc_html__('License', 'advanced-partial-payment-or-deposit-for-woocommerce')
     ));
@@ -153,45 +152,48 @@ public function settings_tabs_mepp()
 
     ?>
 
-    <div style="display: flex; ">
-        <div class="mepp-nav-tab-wrapper" style="display: flex; background: #162748; flex-direction: column; margin-top: 20px;width: 20%;">
-            <?php
-            $count = 0;
-            foreach ($settings_tabs as $key => $tab_name) {
-                $url = admin_url('admin.php?page=admin-mepp-deposits&tab=wc-deposits&section=' . $key);
-                $count++;
-                $active = isset($_GET['section']) ? $key === $_GET['section'] : $count === 1;
-                ?>
-                <a href="<?php echo $url; ?>" class="mepp nav-tab <?php echo $active ? 'mepp-nav-tab-active' : ''; ?>" data-target="<?php echo $key; ?>"><?php echo $tab_name; ?></a>
+    <div class="advanced-partial-payment">
+        <header>
+            <h2><?php echo esc_html__('Deposit & Partial Payment Solution for WooCommerce ', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h2>
+        </header>
+        <div class="partial-settings-area">
+            <div class="mepp-nav-tab-wrapper" >
                 <?php
-            }
-            ?>
-        </div>
-
-        <div style="flex-grow: 1; padding-left: 20px;background: white;">
-            <form method="post" id="settings-form">
-
-            <?php
-            // echo tabs content
-            $count = 0;
-            foreach ($settings_tabs as $key => $tab_name) {
-                $count++;
-                $active = isset($_GET['section']) ? $key === $_GET['section'] : $count === 1;
-                if (method_exists($this, "tab_{$key}_output")) {
-                    $this->{"tab_{$key}_output"}($active);
+                $count = 0;
+                foreach ($settings_tabs as $key => $tab_name) {
+                    $url = admin_url('admin.php?page=admin-mepp-deposits&tab=wc-deposits&section=' . $key);
+                    $count++;
+                    $active = isset($_GET['section']) ? $key === $_GET['section'] : $count === 1;
+                    ?>
+                    <a href="<?php echo $url; ?>" class="mepp-nav-tab <?php echo $active ? 'mepp-nav-tab-active' : ''; ?>" data-target="<?php echo $key; ?>"><?php echo $tab_name; ?></a>
+                    <?php
                 }
-            }
-            // allow addons to add their own tab content
-            do_action('mepp_after_settings_tabs_content');
-            ?>
-            <?php wp_nonce_field('sr_mepp_nonce'); ?>
-			<div>
-        <?php submit_button(); ?>
-         <?php echo '<input type="hidden" name="auto_submit_action" value="auto_submit">'; ?>
-        </div>
+                ?>
+            </div>
 
+            <div  class="mepp-nav-tab-content">
+                <form method="post" id="settings-form">
 
-            </form>
+                <?php
+                // echo tabs content
+                $count = 0;
+                foreach ($settings_tabs as $key => $tab_name) {
+                    $count++;
+                    $active = isset($_GET['section']) ? $key === $_GET['section'] : $count === 1;
+                    if (method_exists($this, "tab_{$key}_output")) {
+                        $this->{"tab_{$key}_output"}($active);
+                    }
+                }
+                // allow addons to add their own tab content
+                do_action('mepp_after_settings_tabs_content');
+                ?>
+                <?php wp_nonce_field('sr_mepp_nonce'); ?>
+                <div>
+                <?php submit_button(); ?>
+                <?php echo '<input type="hidden" name="auto_submit_action" value="auto_submit">'; ?>
+                </div>
+                </form>
+            </div>
         </div>
         <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -227,34 +229,28 @@ public function settings_tabs_mepp()
         }
             });
 
-                 document.addEventListener('DOMContentLoaded', function() {
-    // Check if the hidden input is present
-    var autoSubmitInput = document.querySelector('input[name="auto_submit_action"]');
-    
-    // Check if the form has already been submitted by looking for a flag in session storage
-    var formSubmitted = sessionStorage.getItem('form_submitted');
+                document.addEventListener('DOMContentLoaded', function() {
+                // Check if the hidden input is present
+                var autoSubmitInput = document.querySelector('input[name="auto_submit_action"]');
+                
+                // Check if the form has already been submitted by looking for a flag in session storage
+                var formSubmitted = sessionStorage.getItem('form_submitted');
 
-    if (autoSubmitInput !== null && formSubmitted !== 'true') {
-        // Simulate click event on the submit button
-        var submitButton = document.querySelector('.submit input[type="submit"]');
-        if (submitButton) {
-            // Trigger the form submission programmatically
-            submitButton.click();
-            // Set the flag in session storage to prevent repeated submission
-            sessionStorage.setItem('form_submitted', 'true');
-        }
-    } else {
-        // If the form has already been submitted, remove the flag from session storage
-        sessionStorage.removeItem('form_submitted');
-    }
-});
-
-
-
-            
+                if (autoSubmitInput !== null && formSubmitted !== 'true') {
+                    // Simulate click event on the submit button
+                    var submitButton = document.querySelector('.submit input[type="submit"]');
+                    if (submitButton) {
+                        // Trigger the form submission programmatically
+                        submitButton.click();
+                        // Set the flag in session storage to prevent repeated submission
+                        sessionStorage.setItem('form_submitted', 'true');
+                    }
+                } else {
+                    // If the form has already been submitted, remove the flag from session storage
+                    sessionStorage.removeItem('form_submitted');
+                }
+            });
         </script>
-
-
     </div>
     <?php
 }
