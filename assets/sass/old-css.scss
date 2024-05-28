@@ -11,25 +11,7 @@
         position: relative;
         top: 2px;
 }
-/* Set width to 10% for elements in dropdown */
-#mepp_storewide_deposit_enabled,
-#mepp_storewide_deposit_enabled_details,
-#mepp_storewide_deposit_enabled_btn,
-#mepp_storewide_deposit_force_deposit,
-#mepp_storewide_deposit_amount_type,
-#mepp_storewide_deposit_amount, #mepp_default_option, 
-#mepp_reduce_stock, #mepp_partial_payments_structure,#mepp_taxes_handling,
-#mepp_fees_handling, #mepp_shipping_handling,
-#mepp_coupons_handling, #mepp_checkout_mode_enabled,
-#mepp_checkout_mode_force_deposit, #mepp_checkout_mode_deposit_amount_type,
-#mepp_checkout_mode_deposit_amount {
-  width: 20% !important;
-  background-color: #f1f1f1;
-  color: #333;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+
 .widefat .column-order_status mark.partially-paid:after {
     font-family: WooCommerce;
     speak: none;
@@ -85,25 +67,6 @@ p.form-row-last[class*="_mepp_payment_plans"] .select2 , p.form-row-last[class*=
     display: none !important;
 }
 
-
-
-
-.mepp-nav-tab-active:not(.nav-tab-deposits)::before {
-    content: ''; /* Create a pseudo-element */
-    position: absolute;
-    top: 50%; /* Position it at the middle vertically */
-    right: 0; /* Position it at the right side of the tab */
-    transform: translateY(-50%); /* Center vertically */
-    border: solid transparent;
-    border-width: 9px; /* Adjust the size of the arrow */
-    border-left-color: #0000ff; /* Match the background color */
-    transition: border-color 0.3s ease; /* Add a transition for border color */
-}
-
-.mepp-nav-tab-active:not(.nav-tab-deposits):hover::before {
-    border-left-color: #d63638; /* Match the background color */
-}
-
 .mepp_deposit_storewide_values{
     background: #03a9f4 !important;
     padding: 10px;
@@ -148,17 +111,6 @@ p.form-row-last[class*="_mepp_payment_plans"] .select2 , p.form-row-last[class*=
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-.mepp-custom-container h2,
-.mepp-custom-container h3 {
-    color: #1d2327cf;
-    color: #1d2327cf;
-    font-size: 20px !important;
-    margin: 1em 0 !important;
-    background: cadetblue;
-    padding: 20px !important;
-    /* width: 35%; */
-    font-weight: 700 !important;
-}
 .mepp-custom-container .submit {
     background: indigo !important;
     padding: 10px !important;
