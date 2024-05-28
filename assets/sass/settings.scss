@@ -64,6 +64,44 @@
             width: 80%;
             padding: 2% 5%;
             overflow: hidden;
+            .mepp-custom-container{
+                h2{
+                    background-color: var(--mage-light);
+                    color: var(--mage-dark);
+                    font-size: 20px;
+                    margin:0;
+                    margin-top: 20px;
+                    padding: 20px;
+                    font-weight: bold;
+                }
+                .form-table{
+                    tr{
+                        border: 1px solid var(--mage-gray);
+                    }
+                    th{
+                        width: 50%;
+                        vertical-align: middle;
+                        text-align: left;
+                        padding:10px 20px;
+                    }
+                    td{
+                        width: 50%;
+                        vertical-align: middle;
+                        text-align: left;
+                        padding:10px 20px;
+                        select,input[type=text],input[type=number]{
+                            width: 200px;
+                        }
+                        textarea{
+                            width: 100%;
+                        }
+                        fieldset input[type=number]{
+                            text-align: left;
+                        }
+                    }
+                    
+                }
+            }
         }
     }
 
