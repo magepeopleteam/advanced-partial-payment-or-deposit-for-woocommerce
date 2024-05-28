@@ -686,7 +686,7 @@ label[for=mepp_storewide_deposit_payment_plans] {
 .advanced-partial-payment .partial-settings-area {
   display: flex;
   justify-content: space-between;
-  border: 1px solid var(--mage-dark);
+  border: 1px solid var(--mage-gray);
   border-top: 0;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper {
