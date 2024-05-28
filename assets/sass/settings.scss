@@ -92,7 +92,7 @@
                         select,input[type=text],input[type=number]{
                             width: 200px;
                         }
-                        textarea{
+                        textarea,select[multiple]{
                             width: 100%;
                         }
                         fieldset input[type=number]{
