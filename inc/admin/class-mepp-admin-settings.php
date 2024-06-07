@@ -67,14 +67,7 @@ class MEPP_Admin_Settings
         array($this, 'settings_tabs_mepp') // Callback function for Settings page
     );
 
-    add_submenu_page(
-   'admin-mepp-deposits',    // Parent menu slug
-   'Payment Plans',         // Submenu label
-   'Payment Plans',         // Submenu label
-   'manage_options',
-   'edit-tags.php?taxonomy=mepp_payment_plan', // Taxonomy edit page URL
-   ''
-);
+
 
     add_submenu_page(
         'admin-mepp-deposits',    // Parent menu slug
@@ -143,8 +136,7 @@ public function settings_tabs_mepp()
     $settings_tabs = apply_filters('mepp_settings_tabs', array(
         'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'checkout_mode' => __('<i class="fas fa-money-check-alt"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'second_payment' => __('<i class="far fa-credit-card"></i> Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+      
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce')
     ));
@@ -400,9 +392,11 @@ public function settings_tabs_mepp()
                 ),
                 'deposits_disable' => array(
                     'name' => esc_html__('Disable Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'type' => 'title',
                     'type' => 'checkbox',
                     'desc' => esc_html__('Check this to disable all deposit functionality with one click.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     'id' => 'mepp_site_wide_disable',
+                    
                 ),
 
 
