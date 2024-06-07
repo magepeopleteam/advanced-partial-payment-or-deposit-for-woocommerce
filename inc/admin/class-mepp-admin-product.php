@@ -94,13 +94,13 @@ class MEPP_Admin_Product
             ?>
             <div id="deposits_tab_data" class="panel woocommerce_options_panel">
 
-<h3><?php echo esc_html__('Checkout Mode enabled', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h3>
-<p><?php echo esc_html__('If you would like to collect deposit on product basis, please disable Checkout mode.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?>
-    <a href="<?php echo esc_url(get_admin_url(null, '/admin.php?page=admin-mepp-deposits&tab=wc-deposits')); ?>"><?php echo esc_html__('Go to plugin settings', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
-</p>
-<?php do_action('mepp_admin_product_editor_tab_checkout_mode', $product); ?>
+        <h3><?php echo esc_html__('Checkout Mode enabled', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h3>
+        <p><?php echo esc_html__('If you would like to collect deposit on product basis, please disable Checkout mode.', 'advanced-partial-payment-or-deposit-for-woocommerce') ?>
+            <a href="<?php echo esc_url(get_admin_url(null, '/admin.php?page=admin-mepp-deposits&tab=wc-deposits')); ?>"><?php echo esc_html__('Go to plugin settings', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></a>
+        </p>
+        <?php do_action('mepp_admin_product_editor_tab_checkout_mode', $product); ?>
 
-</div>
+        </div>
 
             <?php
             return;
@@ -157,7 +157,8 @@ class MEPP_Admin_Product
                         'options' => array(
                             'fixed' => esc_html__('Fixed value', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                             'percent' => esc_html__('Percentage of price', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                            'payment_plan' => esc_html__('Payment plan', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                            'payment_plan' => esc_html__('Payment plan', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'minimum_amount' => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce')
 
                         )
                     ));
