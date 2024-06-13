@@ -220,28 +220,6 @@ public function settings_tabs_mepp()
             tabs[activeTabIndex].classList.add('mepp-nav-tab-active');
         }
             });
-
-                document.addEventListener('DOMContentLoaded', function() {
-                // Check if the hidden input is present
-                var autoSubmitInput = document.querySelector('input[name="auto_submit_action"]');
-                
-                // Check if the form has already been submitted by looking for a flag in session storage
-                var formSubmitted = sessionStorage.getItem('form_submitted');
-
-                if (autoSubmitInput !== null && formSubmitted !== 'true') {
-                    // Simulate click event on the submit button
-                    var submitButton = document.querySelector('.submit input[type="submit"]');
-                    if (submitButton) {
-                        // Trigger the form submission programmatically
-                        submitButton.click();
-                        // Set the flag in session storage to prevent repeated submission
-                        sessionStorage.setItem('form_submitted', 'true');
-                    }
-                } else {
-                    // If the form has already been submitted, remove the flag from session storage
-                    sessionStorage.removeItem('form_submitted');
-                }
-            });
         </script>
     </div>
     <?php
