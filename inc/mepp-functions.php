@@ -158,7 +158,7 @@ function add_minimum_amount_to_order_item_meta($item_id, $cart_item) {
         wc_add_order_item_meta($item_id, esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'), sanitize_text_field($cart_item['minimum_amount']));
     }
 }
-add_action('woocommerce_add_order_item_meta', 'add_minimum_amount_to_order_item_meta', 10, 2);
+add_action('woocommerce_new_order_item', 'add_minimum_amount_to_order_item_meta', 10, 2);
 
 
 
