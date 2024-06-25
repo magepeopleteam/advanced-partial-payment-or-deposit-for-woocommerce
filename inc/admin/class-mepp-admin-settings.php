@@ -1230,7 +1230,7 @@ public function settings_tabs_mepp()
 
 
 
-            $settings['mepp_remaining_payable'] = isset($_POST['mepp_remaining_payable']) ? 'yes' : 'no';
+            $settings['mepp_remaining_payable'] = isset($_POST['mepp_remaining_payable']) ? 'yes' : 'yes';
             $settings['mepp_enable_second_payment_reminder'] = isset($_POST['mepp_enable_second_payment_reminder']) ? 'yes' : 'no';
             $settings['mepp_second_payment_due_after'] = isset($_POST['mepp_second_payment_due_after']) ? $_POST['mepp_second_payment_due_after'] : '';
             $settings['mepp_second_payment_reminder_duration'] = isset($_POST['mepp_second_payment_reminder_duration']) ? $_POST['mepp_second_payment_reminder_duration'] : '0';
