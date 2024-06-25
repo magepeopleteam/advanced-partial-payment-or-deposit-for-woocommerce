@@ -154,7 +154,7 @@ class MEPP_Admin_Product
                     <?php woocommerce_wp_select(array(
                         'id' => '_mepp_amount_type',
                         'label' => esc_html__('Deposit type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'options' => add_filter('tab_options', array(
+                        'options' => apply_filters('mepp_amount_type_options', array(
                             'fixed' => esc_html__('Fixed value', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                             'percent' => esc_html__('Percentage of price', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                             'minimum_amount' => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce')

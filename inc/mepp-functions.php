@@ -388,6 +388,13 @@ add_action('woocommerce_order_status_changed', 'update_order_after_partial_payme
  * Display Payment History on View Order Page
  */
 function display_payment_history_on_view_order($order_id) {
+
+    $selected_deposit_type = isset($_POST['_mepp_amount_type']) ? sanitize_text_field($_POST['_mepp_amount_type']) : '';
+    
+    if ($selected_deposit_type !== 'minimum_amount') {
+        return; // Exit the function without displaying payment history
+    }
+    
     $order = wc_get_order($order_id);
     $items = $order->get_items();
     $count = 1;
@@ -459,10 +466,18 @@ function display_payment_history_on_view_order($order_id) {
 }
 add_action('woocommerce_view_order', 'display_payment_history_on_view_order', 10, 1);
 
+
+
 /**
  * Display Payment History on Admin Order Page
  */
 function display_payment_history_on_admin_order($order_id) {
+
+    $selected_deposit_type = isset($_POST['_mepp_amount_type']) ? sanitize_text_field($_POST['_mepp_amount_type']) : '';
+    
+    if ($selected_deposit_type !== 'minimum_amount') {
+        return; // Exit the function without displaying payment history
+    }
     $order = wc_get_order($order_id);
     $items = $order->get_items();
     $count = 1;
