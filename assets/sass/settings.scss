@@ -1,0 +1,108 @@
+.advanced-partial-payment{
+    background-color: var(--mage-white);
+    margin:20px;
+    margin-left: 0;
+    
+    header{
+        background-color: var(--mage-primary);
+        color: var(--mage-white);
+        padding: 8px 12px;
+        h2{
+            color: var(--mage-white);
+            font-size: 1.2rem;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+    }
+    .partial-settings-area{
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid var(--mage-gray);
+        border-top: 0;
+        .mepp-nav-tab-wrapper{
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--mage-light);
+            padding: 25px 0 25px 25px;
+            a.mepp.nav-tab{
+                position: relative;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                padding: 15px;
+                color: var(--mage-black);
+                border: 0;
+                font-weight: normal;
+                border-left: 2px solid transparent;
+                font-size: 16px;
+                margin: 0;
+                background-color: transparent;
+                i{
+                    margin: 0 10px 0 0;
+                    color: var(--mage-primary);
+                }
+                &::after{
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    border-bottom: 1px solid var(--mage-gray);
+                    width: 90%;
+                }
+                &.nav-tab-active{
+                    background-color: var(--mage-white);
+                    border-left: 2px solid var(--mage-primary);
+                    &::after{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .mepp-nav-tab-content{
+            width: 80%;
+            padding: 2% 5%;
+            overflow: hidden;
+            .mepp-custom-container{
+                h2{
+                    background-color: var(--mage-light);
+                    color: var(--mage-dark);
+                    font-size: 20px;
+                    margin:0;
+                    margin-top: 20px;
+                    padding: 20px;
+                    font-weight: bold;
+                }
+                .form-table{
+                    tr{
+                        border: 1px solid var(--mage-gray);
+                    }
+                    th{
+                        width: 50%;
+                        vertical-align: middle;
+                        text-align: left;
+                        padding:10px 20px;
+                    }
+                    td{
+                        width: 50%;
+                        vertical-align: middle;
+                        text-align: left;
+                        padding:10px 20px;
+                        select,input[type=text],input[type=number]{
+                            width: 200px;
+                        }
+                        textarea,select[multiple]{
+                            width: 100%;
+                        }
+                        fieldset input[type=number]{
+                            text-align: left;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+
+}

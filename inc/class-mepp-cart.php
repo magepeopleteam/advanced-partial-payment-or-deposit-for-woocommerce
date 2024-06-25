@@ -32,9 +32,10 @@ class MEPP_Cart
             add_action('woocommerce_cart_totals_after_order_total', array($this, 'cart_totals_after_order_total'));
             add_filter('woocommerce_get_item_data', array($this, 'get_item_data'), 10, 2);
             add_action('woocommerce_add_to_cart', array($this, 'is_sold_individually'), 10, 6);
+   
         }
-
-        //have to set very low priority to make sure all other plugins make calculations first
+         
+             //have to set very low priority to make sure all other plugins make calculations first
 
         add_filter('woocommerce_cart_needs_payment', array($this, 'cart_needs_payment'), 10);
         add_action('woocommerce_after_calculate_totals', array($this, 'calculate_deposit_totals'), 1999);
@@ -46,7 +47,7 @@ class MEPP_Cart
         
        
     }
-
+    
     function cart_loaded_from_session()
     {
         wc_doing_it_wrong('calculated_total', 'This function is no longer used during calculations, refer to function "calculate_deposit_totals"', '4.0.0');

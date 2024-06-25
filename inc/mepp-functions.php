@@ -7,6 +7,561 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
+function send_partially_paid_order_email_notification($order_id) {
+    $order = wc_get_order($order_id);
+    
+    // Initialize variables to track if minimum amount paid and remaining amount are present
+    $minimum_amount_present = false;
+    $remaining_amount_present = false;
+    
+    // Loop through order items to check if either minimum amount or remaining amount is present
+    foreach ($order->get_items() as $item_id => $item) {
+        $minimum_amount_paid = floatval(wc_get_order_item_meta($item_id, 'Minimum Amount', true));
+        $product = $item->get_product();
+        $price = floatval($product->get_price());
+        $quantity = intval($item->get_quantity());
+        $remaining_amount = ($price * $quantity) - $minimum_amount_paid;
+        
+        if ($minimum_amount_paid > 0) {
+            $minimum_amount_present = true;
+        }
+        
+        if ($remaining_amount > 0) {
+            $remaining_amount_present = true;
+        }
+    }
+    
+    // Check if both minimum amount paid and remaining amount are present
+    if ($minimum_amount_present && $remaining_amount_present) {
+        // Initialize email content with default WooCommerce heading
+        $email_content = '<h2 style="margin-bottom: 20px;">' . esc_html__('Thank you for your order', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</h2>';
+        
+        // Get customer's name
+        $customer_name = sanitize_text_field($order->get_billing_first_name());
+        
+        // Add personalized greeting
+        $email_content .= '<p>' . sprintf(esc_html__('Hi %s,', 'advanced-partial-payment-or-deposit-for-woocommerce'), $customer_name) . '</p>';
+        $email_content .= '<p>' . sprintf(esc_html__('Just letting you know, we have received your partial order #%s and it is now being processed.', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html($order_id)) . '</p>';
+        
+        // Add payment method information
+        if ($order->get_payment_method() === 'cod') {
+            $email_content .= '<p>' . esc_html__('Pay with cash upon delivery.', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</p>';
+        }
+        
+        // Add order details in h1 tag
+        $email_content .= '<h1>' . sprintf(esc_html__('Order #%s - %s', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html($order_id), esc_html($order->get_date_created()->format('F j, Y'))) . '</h1>';
+        
+        // Start table for product details
+        $email_content .= '<table style="width:100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 20px;">';
+        $email_content .= '<thead><tr style="background-color: #f2f2f2;">';
+        $email_content .= '<th style="padding: 10px; text-align: left;">' . esc_html__('Product', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th>';
+        $email_content .= '<th style="padding: 10px; text-align: center;">' . esc_html__('Quantity', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th>';
+        $email_content .= '<th style="padding: 10px; text-align: center;">' . esc_html__('Price', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th>';
+        $email_content .= '<th style="padding: 10px; text-align: center;">' . esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th>';
+        $email_content .= '<th style="padding: 10px; text-align: center;">' . esc_html__('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th>';
+        $email_content .= '</tr></thead><tbody>';
+        
+        // Loop through order items to include product details in the table
+        foreach ($order->get_items() as $item_id => $item) {
+            $product_name = sanitize_text_field($item->get_name());
+            $quantity = intval($item->get_quantity());
+            $product = $item->get_product();
+            $price = floatval($product->get_price());
+            $minimum_amount_paid = floatval(wc_get_order_item_meta($item_id, 'Minimum Amount', true));
+            $remaining_amount = ($price * $quantity) - $minimum_amount_paid;
+            
+            // Add row for each product
+            $email_content .= '<tr>';
+            $email_content .= '<td style="padding: 10px; text-align: left;">' . esc_html($product_name) . '</td>';
+            $email_content .= '<td style="padding: 10px; text-align: center;">' . esc_html($quantity) . '</td>';
+            $email_content .= '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($price)) . '</td>';
+            $email_content .= '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($minimum_amount_paid)) . '</td>';
+            $email_content .= '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($remaining_amount)) . '</td>';
+            $email_content .= '</tr>';
+        }
+        
+        // Close the table for product details
+        $email_content .= '</tbody></table>';
+        
+        // Get payment history
+        ob_start();
+        display_payment_history_on_thankyou($order_id);
+        $payment_history = ob_get_clean();
+        
+        // Include payment history in the email content
+        $email_content .= $payment_history;
+        
+        // Send email to admin
+        $admin_email = sanitize_email(get_option('admin_email'));
+        $admin_subject = esc_html__('Partially Paid Order Notification', 'advanced-partial-payment-or-deposit-for-woocommerce');
+        $admin_headers = array('Content-Type: text/html; charset=UTF-8');
+        if (is_email($admin_email)) {
+            wp_mail($admin_email, $admin_subject, $email_content, $admin_headers);
+        }
+        
+        // Send email to customer
+        $customer_email = sanitize_email($order->get_billing_email());
+        $customer_subject = esc_html__('Partially Paid Order Notification', 'advanced-partial-payment-or-deposit-for-woocommerce');
+        $customer_headers = array('Content-Type: text/html; charset=UTF-8');
+        if (is_email($customer_email)) {
+            wp_mail($customer_email, $customer_subject, $email_content, $customer_headers);
+        }
+    }
+}
+add_action('woocommerce_order_status_partially-paid', 'send_partially_paid_order_email_notification', 10, 1);
+
+/**
+ * Add custom field to cart item data.
+ */
+function add_minimum_amount_to_cart_item_data($cart_item_data, $product_id, $variation_id, $quantity) {
+    $minimum_amount = isset($_POST['custom-deposit-amount']) ? sanitize_text_field($_POST['custom-deposit-amount']) : '';
+
+    if (!empty($minimum_amount)) {
+        $cart_item_data['minimum_amount'] = $minimum_amount;
+    }
+
+    return $cart_item_data;
+}
+add_filter('woocommerce_add_cart_item_data', 'add_minimum_amount_to_cart_item_data', 10, 4);
+
+/**
+ * Display custom field value on the cart and checkout pages.
+ */
+function display_minimum_amount_on_cart($item_data, $cart_item) {
+    if (isset($cart_item['minimum_amount'])) {
+        $item_data[] = array(
+            'key'   => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+            'value' => wp_kses_post(wc_price($cart_item['minimum_amount'])),
+        );
+
+        // Calculate remaining amount for future payments
+        $product = wc_get_product($cart_item['product_id']);
+        $product_price = floatval($product->get_price());
+        $deposit_amount = floatval($cart_item['minimum_amount']);
+        $remaining_amount = ($product_price * intval($cart_item['quantity'])) - $deposit_amount;
+
+        $item_data[] = array(
+            'key'   => esc_html__('Future payments', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+            'value' => wp_kses_post(wc_price($remaining_amount)),
+        );
+    }
+
+    return $item_data;
+}
+add_filter('woocommerce_get_item_data', 'display_minimum_amount_on_cart', 10, 2);
+
+/**
+ * Add custom field to order item meta.
+ */
+function add_minimum_amount_to_order_item_meta($item_id, $cart_item) {
+    if (isset($cart_item['minimum_amount'])) {
+        wc_add_order_item_meta($item_id, esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'), sanitize_text_field($cart_item['minimum_amount']));
+    }
+}
+add_action('woocommerce_add_order_item_meta', 'add_minimum_amount_to_order_item_meta', 10, 2);
+
+
+
+/**
+ * Adjust order total at checkout to be the deposit amount.
+ */
+function adjust_order_total_for_deposit($cart_total) {
+    $cart = WC()->cart;
+    $deposit_amount = 0;
+
+    // Loop through cart items to calculate deposit amount
+    foreach ($cart->get_cart() as $cart_item) {
+        if (isset($cart_item['minimum_amount'])) {
+            $deposit_amount += floatval($cart_item['minimum_amount']);
+        }
+    }
+
+    if ($deposit_amount > 0) {
+        $cart_total = $deposit_amount;
+    }
+
+    return $cart_total;
+}
+add_filter('woocommerce_calculated_total', 'adjust_order_total_for_deposit', 10, 1);
+
+/**
+ * Display minimum deposit amount and remaining amount in cart totals.
+ */
+function display_minimum_deposit_and_remaining_amount_in_cart_totals() {
+    $cart = WC()->cart;
+    $deposit_amount = 0;
+    $remaining_amount = 0;
+
+    // Loop through cart items to calculate deposit amount and remaining amount
+    foreach ($cart->get_cart() as $cart_item) {
+        if (isset($cart_item['minimum_amount'])) {
+            $deposit_amount += floatval($cart_item['minimum_amount']);
+            
+            // Calculate remaining amount for future payments
+            $product = wc_get_product($cart_item['product_id']);
+            $product_price = floatval($product->get_price());
+            $remaining_amount += ($product_price * intval($cart_item['quantity'])) - floatval($cart_item['minimum_amount']);
+        }
+    }
+
+    if ($deposit_amount > 0) {
+        ?>
+        <tr class="deposit-amount">
+            <th><?php esc_html_e('To Pay', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+            <td data-title="<?php esc_html_e('To Pay', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"><?php echo wp_kses_post(wc_price($deposit_amount)); ?></td>
+        </tr>
+        <tr class="remaining-amount">
+            <th><?php esc_html_e('Future payments', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+            <td data-title="<?php esc_html_e('Future payments', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"><?php echo wp_kses_post(wc_price($remaining_amount)); ?></td>
+        </tr>
+        <?php
+    }
+}
+add_action('woocommerce_cart_totals_before_order_total', 'display_minimum_deposit_and_remaining_amount_in_cart_totals');
+add_action('woocommerce_review_order_before_order_total', 'display_minimum_deposit_and_remaining_amount_in_cart_totals');
+
+/**
+ * Display Payment History on Thank You Page
+ */
+function display_payment_history_on_thankyou($order_id) {
+    
+    $order = wc_get_order($order_id);
+    if (!$order) return;
+    
+    // Retrieve deposit type
+    $items = $order->get_items();
+    $count = 1;
+    
+    $minimum_amount_total = 0; // Initialize total minimum amount paid
+    $remaining_amount_total = 0; // Initialize total remaining amount
+    
+    // Calculate total minimum amount paid and remaining amount
+    foreach ($items as $item) {
+        $minimum_amount_paid = floatval(wc_get_order_item_meta($item->get_id(), 'Minimum Amount', true));
+        $product = $item->get_product();
+        $product_price = floatval($product->get_price());
+        $quantity = intval($item->get_quantity());
+        $remaining_amount = ($product_price * $quantity) - $minimum_amount_paid;
+        
+        $additional_payments = floatval($order->get_meta('_additional_payments', true));
+        $remaining_amount -= $additional_payments;
+
+        $minimum_amount_total += $minimum_amount_paid;
+        $remaining_amount_total += max(0, $remaining_amount); // Ensure remaining amount is not negative
+    }
+
+    // Display payment history only if either minimum amount or remaining amount is greater than zero
+    if ($minimum_amount_total > 0 || $remaining_amount_total > 0) {
+        echo '<h2>' . esc_html__('Payment History', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</h2>';
+        echo '<table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 20px;"><thead><tr style="background-color: #f12971;color: white;"><th style="padding: 10px;">' . esc_html__('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Amount Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th></tr></thead><tbody>';
+
+        foreach ($items as $item) {
+            $minimum_amount_paid = floatval(wc_get_order_item_meta($item->get_id(), 'Minimum Amount', true));
+            $product = $item->get_product();
+            $product_price = floatval($product->get_price());
+            $quantity = intval($item->get_quantity());
+            $remaining_amount = ($product_price * $quantity) - $minimum_amount_paid;
+
+            $additional_payments = floatval($order->get_meta('_additional_payments', true));
+            $remaining_amount -= $additional_payments;
+
+            echo '<tr style="border: 1px solid #ccc;">';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_date_created()->date('Y-m-d')) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_payment_method_title()) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($minimum_amount_paid)) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price(($product_price * $quantity) - $minimum_amount_paid)) . '<br><a href="' . esc_url(wc_get_checkout_url() . 'order-pay/' . $order_id . '/?pay_for_order=true&key=' . $order->get_order_key() . '&payment=partial_payment&remaining_amount=' . $remaining_amount . '&item_id=' . $item->get_id()) . '" class="button pay-now-button">' . esc_html__('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a></td>';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html__('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</td>';
+            echo '</tr>';
+
+            // Display additional payment details if any
+            if ($additional_payments > 0) {
+                echo '<tr style="border: 1px solid #ccc;">';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_date_created()->date('Y-m-d')) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_payment_method_title()) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($additional_payments)) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price(0)) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html__('Completed', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</td>';
+                echo '</tr>';
+            }
+
+            $count++;
+        }
+
+        echo '</tbody></table>';
+
+        // Hide Pay Now button if remaining amount is zero
+        if ($remaining_amount_total <= 0) {
+            echo '<style>.pay-now-button { display: none; }</style>';
+        }
+    }
+}
+add_action('woocommerce_thankyou', 'display_payment_history_on_thankyou', 10, 1);
+
+
+
+/**
+ * Display Remaining Amount on Order Pay Page
+ */
+function display_remaining_amount_on_order_pay_page($order) {
+    if (isset($_GET['remaining_amount'])) {
+        $remaining_amount = floatval(sanitize_text_field($_GET['remaining_amount']));
+
+        if ($remaining_amount > 0) {
+            echo '<tr class="remaining-amount">';
+                echo '<th>' . esc_html__('Remaining Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th>';
+                echo '<td data-title="' . esc_html__('Remaining Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') . '">' . wp_kses_post(wc_price($remaining_amount)) . '</td>';
+            echo '</tr>';
+        }
+    }
+}
+add_action('woocommerce_review_order_before_order_total', 'display_remaining_amount_on_order_pay_page');
+
+/**
+ * Adjust Order Total for Remaining Amount
+ */
+function adjust_order_total_for_remaining_amount($total, $order) {
+    if (isset($_GET['remaining_amount'])) {
+        $remaining_amount = floatval(sanitize_text_field($_GET['remaining_amount']));
+
+        if ($remaining_amount > 0) {
+            // Update the order total to reflect the remaining amount
+            $total = $remaining_amount;
+        }
+    }
+
+    return $total;
+}
+add_filter('woocommerce_order_amount_total', 'adjust_order_total_for_remaining_amount', 10, 2);
+
+/**
+ * Change Order Status to "Partially Paid" After Order Placement
+ */
+function change_order_status_to_partially_paid($order_id) {
+    $order = wc_get_order($order_id);
+
+    if ($order) {
+        $order->update_status('partially-paid');
+    }
+}
+add_action('woocommerce_thankyou', 'change_order_status_to_partially_paid', 15, 1);
+
+
+
+/**
+ * Update order after partial payment
+ */
+function update_order_after_partial_payment($order_id) {
+    $order = wc_get_order($order_id);
+    if (!$order) return;
+
+    $remaining_amount = isset($_GET['remaining_amount']) ? floatval(sanitize_text_field($_GET['remaining_amount'])) : 0;
+    $item_id = isset($_GET['item_id']) ? intval(sanitize_text_field($_GET['item_id'])) : 0; // Retrieve item ID
+    if ($remaining_amount > 0) {
+        $order->add_meta_data('_additional_payments', $remaining_amount, true);
+        $order->add_order_note(sprintf(__('An additional payment of %s has been received for item ID %s.', 'advanced-partial-payment-or-deposit-for-woocommerce'), wc_price($remaining_amount), $item_id)); // Include item ID in the note
+
+        // Update order total
+        $total = $order->get_total() - $remaining_amount;
+        $order->set_total($total);
+
+        // Check if the remaining amount covers the order total or more
+        if ($total <= 0) {
+            $order->update_status('completed');
+        } else {
+            $order->update_status('partially-paid');
+        }
+
+        $order->save();
+    }
+
+    // Check if the order is fully paid and update status to completed
+    if ($order->get_total() <= 0 && $order->get_status() === 'partially-paid') {
+        $order->update_status('completed');
+        $original_total = $order->get_subtotal();
+        $order->set_total($original_total);
+        $order->save();
+    }
+}
+add_action('woocommerce_order_status_changed', 'update_order_after_partial_payment', 20, 1);
+
+/**
+ * Display Payment History on View Order Page
+ */
+function display_payment_history_on_view_order($order_id) {
+
+    $selected_deposit_type = isset($_POST['_mepp_amount_type']) ? sanitize_text_field($_POST['_mepp_amount_type']) : '';
+    
+    if ($selected_deposit_type !== 'minimum_amount') {
+        return; // Exit the function without displaying payment history
+    }
+    
+    $order = wc_get_order($order_id);
+    $items = $order->get_items();
+    $count = 1;
+    
+    $minimum_amount_total = 0; // Initialize total minimum amount paid
+    $remaining_amount_total = 0; // Initialize total remaining amount
+    
+    // Calculate total minimum amount paid and remaining amount
+    foreach ($items as $item) {
+        $minimum_amount_paid = floatval(wc_get_order_item_meta($item->get_id(), 'Minimum Amount', true));
+        $product = $item->get_product();
+        $product_price = floatval($product->get_price());
+        $quantity = intval($item->get_quantity());
+        $remaining_amount = ($product_price * $quantity) - $minimum_amount_paid;
+        
+        $additional_payments = floatval($order->get_meta('_additional_payments', true));
+        $remaining_amount -= $additional_payments;
+
+        $minimum_amount_total += $minimum_amount_paid;
+        $remaining_amount_total += max(0, $remaining_amount); // Ensure remaining amount is not negative
+    }
+
+    // Display payment history only if either minimum amount or remaining amount is greater than zero
+        if ($minimum_amount_total > 0 || $remaining_amount_total > 0) {
+        echo '<h2>' . esc_html__('Payment History', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</h2>';
+        echo '<table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 20px;"><thead><tr style="background-color: #f12971;color: white;"><th style="padding: 10px;">' . esc_html__('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Amount Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th></tr></thead><tbody>';
+
+        foreach ($items as $item) {
+            $minimum_amount_paid = floatval(wc_get_order_item_meta($item->get_id(), 'Minimum Amount', true));
+            $product = $item->get_product();
+            $product_price = floatval($product->get_price());
+            $quantity = intval($item->get_quantity());
+            $remaining_amount = ($product_price * $quantity) - $minimum_amount_paid;
+
+            $additional_payments = floatval($order->get_meta('_additional_payments', true));
+            $remaining_amount -= $additional_payments;
+
+            echo '<tr style="border: 1px solid #ccc;">';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_date_created()->date('Y-m-d')) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_payment_method_title()) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($minimum_amount_paid)) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($remaining_amount)) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html__('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</td>';
+            echo '</tr>';
+
+            // Display "Pay Now" button if remaining amount is not zero
+            if ($remaining_amount > 0) {
+                echo '<tr style="border: 1px solid #ccc;">';
+                echo '<td colspan="6" style="padding: 10px; text-align: center;"><a href="' . esc_url(wc_get_checkout_url() . 'order-pay/' . $order_id . '/?pay_for_order=true&key=' . $order->get_order_key() . '&payment=partial_payment&remaining_amount=' . $remaining_amount . '&item_id=' . $item->get_id()) . '" class="button pay-now-button">' . esc_html__('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a></td>';
+                echo '</tr>';
+            }
+
+            // Display additional payment details if any
+            if ($additional_payments > 0) {
+                echo '<tr style="border: 1px solid #ccc;">';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_date_created()->date('Y-m-d')) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_payment_method_title()) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($additional_payments)) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">0.00</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html__('Completed', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</td>';
+                echo '</tr>';
+            }
+
+            $count++;
+        }
+
+        echo '</tbody></table>';
+    }
+}
+add_action('woocommerce_view_order', 'display_payment_history_on_view_order', 10, 1);
+
+
+
+/**
+ * Display Payment History on Admin Order Page
+ */
+function display_payment_history_on_admin_order($order_id) {
+
+    $selected_deposit_type = isset($_POST['_mepp_amount_type']) ? sanitize_text_field($_POST['_mepp_amount_type']) : '';
+    
+    if ($selected_deposit_type !== 'minimum_amount') {
+        return; // Exit the function without displaying payment history
+    }
+    $order = wc_get_order($order_id);
+    $items = $order->get_items();
+    $count = 1;
+    
+    $minimum_amount_total = 0; // Initialize total minimum amount paid
+    $remaining_amount_total = 0; // Initialize total remaining amount
+    
+    // Calculate total minimum amount paid and remaining amount
+    foreach ($items as $item) {
+        $minimum_amount_paid = floatval(wc_get_order_item_meta($item->get_id(), 'Minimum Amount', true));
+        $product = $item->get_product();
+        $product_price = floatval($product->get_price());
+        $quantity = intval($item->get_quantity());
+        $remaining_amount = ($product_price * $quantity) - $minimum_amount_paid;
+        
+        $additional_payments = floatval($order->get_meta('_additional_payments', true));
+        $remaining_amount -= $additional_payments;
+
+        $minimum_amount_total += $minimum_amount_paid;
+        $remaining_amount_total += max(0, $remaining_amount); // Ensure remaining amount is not negative
+    }
+
+    // Display payment history only if either minimum amount or remaining amount is greater than zero
+        if ($minimum_amount_total > 0 || $remaining_amount_total > 0) {
+            echo '<div id="payment-history" class="order_data_column">';
+        echo '<h2>' . esc_html__('Payment History', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</h2>';
+        echo '<table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc; margin-bottom: 20px;"><thead><tr style="background-color: #f12971;color: white;"><th style="padding: 10px;">' . esc_html__('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Payment Method', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Amount Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Due', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th><th style="padding: 10px;">' . esc_html__('Status', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</th></tr></thead><tbody>';
+
+        foreach ($items as $item) {
+            $minimum_amount_paid = floatval(wc_get_order_item_meta($item->get_id(), 'Minimum Amount', true));
+            $product = $item->get_product();
+            $product_price = floatval($product->get_price());
+            $quantity = intval($item->get_quantity());
+            $remaining_amount = ($product_price * $quantity) - $minimum_amount_paid;
+
+            $additional_payments = floatval($order->get_meta('_additional_payments', true));
+            $remaining_amount -= $additional_payments;
+
+            echo '<tr style="border: 1px solid #ccc;">';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_date_created()->date('Y-m-d')) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_payment_method_title()) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($minimum_amount_paid)) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($remaining_amount)) . '</td>';
+            echo '<td style="padding: 10px; text-align: center;">' . esc_html__('Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</td>';
+            echo '</tr>';
+
+            // Display "Pay Now" button if remaining amount is not zero
+            if ($remaining_amount > 0) {
+                echo '<tr style="border: 1px solid #ccc;">';
+                echo '<td colspan="6" style="padding: 10px; text-align: center;"><a href="' . esc_url(wc_get_checkout_url() . 'order-pay/' . $order_id . '/?pay_for_order=true&key=' . $order->get_order_key() . '&payment=partial_payment&remaining_amount=' . $remaining_amount . '&item_id=' . $item->get_id()) . '" class="button pay-now-button">' . esc_html__('Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a></td>';
+                echo '</tr>';
+            }
+
+            // Display additional payment details if any
+            if ($additional_payments > 0) {
+                echo '<tr style="border: 1px solid #ccc;">';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_date_created()->date('Y-m-d')) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html($order->get_payment_method_title()) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . wp_kses_post(wc_price($additional_payments)) . '</td>';
+                echo '<td style="padding: 10px; text-align: center;">0.00</td>';
+                echo '<td style="padding: 10px; text-align: center;">' . esc_html__('Completed', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</td>';
+                echo '</tr>';
+            }
+
+            $count++;
+        }
+
+        echo '</tbody></table>';
+        echo '</div>';
+    // Add JavaScript to move payment history to desired location
+    echo '<script>
+        jQuery(document).ready(function($) {
+            $("#payment-history").insertAfter("#woocommerce-order-items");
+        });
+    </script>';
+    }
+}
+add_action('woocommerce_admin_order_data_after_order_details', 'display_payment_history_on_admin_order', 10, 1);
+
+
+
+
+
+
 /**
  * Set a transient on plugin activation to trigger the redirect.
  */
