@@ -54,71 +54,67 @@ function mepp_woocommerce_is_active()
     return $woocommerce_active;
 }
 
-
-
 if (mepp_woocommerce_is_active()) :
-    require_once('inc/mepp-functions.php');
+    require_once( plugin_dir_path( __FILE__ ) . '/inc/mepp-functions.php' );
 
 
     /**
-     *  Main MEPP_Advance_Deposits class
-     *
-     */
-    class MEPP_Advance_Deposits
-    {
-    public $cart; // Instance of MEPP_Cart
-    public $coupons; // Instance of MEPP_Coupons
-    public $add_to_cart; // Instance of MEPP_Add_To_Cart
-    public $orders; // Instance of MEPP_Orders
-    public $taxonomies; // Instance of MEPP_Taxonomies
-    public $reminders; // Instance of MEPP_Reminders
-    public $emails; // Instance of MEPP_Emails
-    public $checkout; // Instance of MEPP_Checkout
-    public $compatibility; // All compatibility classes are loaded in this var
-    public $admin_product; // Instance of MEPP_Admin_Product
-    public $admin_order; // Instance of MEPP_Admin_Order
-    public $admin_list_table_orders; // Instance of MEPP_Admin_List_Table_Orders
-    public $admin_list_table_partial_payments; // Instance of MEPP_Admin_List_Table_Partial_Payments
-    public $admin_settings; // Instance of MEPP_Admin_Settings
-    public $admin_reports; // Instance of MEPP_Admin_Reports
-
-    // Properties for notices and version disabled state
-    public $admin_notices = []; // Stores notices before output function
-    public $wc_version_disabled = false; // Stores version disabled state
-
-        /**
-         *  Returns the global instance
+         *  Main MEPP_Advance_Deposits class
          *
-         * @param array $GLOBALS ...
-         * @return mixed
          */
-        public static function & get_singleton()
-        {
-            if (!isset($GLOBALS['mepp'])) $GLOBALS['mepp'] = new MEPP_Advance_Deposits();
-            return $GLOBALS['mepp'];
-        }
+        class MEPP_Advance_Deposits {
+                public $cart; // Instance of MEPP_Cart
+                public $coupons; // Instance of MEPP_Coupons
+                public $add_to_cart; // Instance of MEPP_Add_To_Cart
+                public $orders; // Instance of MEPP_Orders
+                public $taxonomies; // Instance of MEPP_Taxonomies
+                public $reminders; // Instance of MEPP_Reminders
+                public $emails; // Instance of MEPP_Emails
+                public $checkout; // Instance of MEPP_Checkout
+                public $compatibility; // All compatibility classes are loaded in this var
+                public $admin_product; // Instance of MEPP_Admin_Product
+                public $admin_order; // Instance of MEPP_Admin_Order
+                public $admin_list_table_orders; // Instance of MEPP_Admin_List_Table_Orders
+                public $admin_list_table_partial_payments; // Instance of MEPP_Admin_List_Table_Partial_Payments
+                public $admin_settings; // Instance of MEPP_Admin_Settings
+                public $admin_reports; // Instance of MEPP_Admin_Reports
 
-             /**
-         *  Enqueues front-end styles
-         *
-         * @return void
-         */
-        public function enqueue_styles()
-    {
-    if ($this->wc_version_disabled) return;
-    if (!$this->is_disabled()) {
-        wp_enqueue_style('toggle-switch', plugins_url('assets/css/admin-style.css', __FILE__), array(), MEPP_VERSION, 'screen');
-        wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
+                // Properties for notices and version disabled state
+                public $admin_notices = []; // Stores notices before output function
+                public $wc_version_disabled = false; // Stores version disabled state
 
-        if (is_cart() || is_checkout()) {
-            $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-            wp_register_script('jquery-tiptip', WC()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array('jquery'), WC_VERSION, true);
-            wp_enqueue_script('wc-deposits-cart', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery'), MEPP_VERSION, true);
-            wp_enqueue_script('jquery-tiptip');
-            wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
+            /**
+             *  Returns the global instance
+             *
+             * @param array $GLOBALS ...
+             * @return mixed
+             */
+            public static function & get_singleton()
+            {
+                if (!isset($GLOBALS['mepp'])) $GLOBALS['mepp'] = new MEPP_Advance_Deposits();
+                return $GLOBALS['mepp'];
+            }
+
+                /**
+             *  Enqueues front-end styles
+             *
+             * @return void
+             */
+            public function enqueue_styles(){
+                if ($this->wc_version_disabled) return;
+                if (!$this->is_disabled()) {
+                wp_enqueue_style('toggle-switch', plugins_url('assets/css/admin-style.css', __FILE__), array(), MEPP_VERSION, 'screen');
+                wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
+
+                if (is_cart() || is_checkout()) {
+                    $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+                    wp_register_script('jquery-tiptip', WC()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array('jquery'), WC_VERSION, true);
+                    wp_enqueue_script('wc-deposits-cart', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery'), MEPP_VERSION, true);
+                    wp_enqueue_script('jquery-tiptip');
+                    wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
+                }
+            }
         }
-    }
-    }
 
          /**
          *  Display all buffered admin notices
@@ -126,8 +122,8 @@ if (mepp_woocommerce_is_active()) :
          * @return void
          */
         public function show_admin_notices() {
-    if (is_array($this->admin_notices) && !empty($this->admin_notices)) {
-        try {
+            if (is_array($this->admin_notices) && !empty($this->admin_notices)) {
+          try {
             foreach ($this->admin_notices as $notice) {
                 $dismissible = isset($notice['dismissible']) && $notice['dismissible'] ? 'is-dismissible' : '';
                 ?>
@@ -136,11 +132,11 @@ if (mepp_woocommerce_is_active()) :
                 </div>
                 <?php
             }
-        } catch (Exception $e) {
-            // Silence any exceptions
+            } catch (Exception $e) {
+                // Silence any exceptions
+            }
+            }
         }
-    }
-}
 
         /**
          *  Constructor
@@ -150,11 +146,11 @@ if (mepp_woocommerce_is_active()) :
         private function __construct()
         {
             // Check if WooCommerce is not active
-        if (!mepp_woocommerce_is_active()) {
-        add_action('admin_notices', array($this, 'woocommerce_not_active_notice'));
-        return;
-        }
-			// Redirect to plugin settings page after WooCommerce logic
+                if (!mepp_woocommerce_is_active()) {
+                add_action('admin_notices', array($this, 'woocommerce_not_active_notice'));
+                return;
+                }
+                    // Redirect to plugin settings page after WooCommerce logic
     
 			
             define('MEPP_VERSION', '1.3.3');
@@ -167,15 +163,15 @@ if (mepp_woocommerce_is_active()) :
             $this->compatibility = new stdClass();
 
             if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-    if (is_admin()) {
-        // translators: %1$s is a placeholder for the plugin name, %2$s is a placeholder for the required PHP version
-        $message = sprintf(esc_html__('%1$s Requires PHP version %2$s or higher.', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'), '5.6');
-        add_action('admin_notices', function() use ($message) {
-            echo '<div class="error"><p>' . esc_html($message) . '</p></div>';
-        });
-    }
-    return;
-}
+            if (is_admin()) {
+                // translators: %1$s is a placeholder for the plugin name, %2$s is a placeholder for the required PHP version
+                $message = sprintf(esc_html__('%1$s Requires PHP version %2$s or higher.', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'), '5.6');
+                add_action('admin_notices', function() use ($message) {
+                    echo '<div class="error"><p>' . esc_html($message) . '</p></div>';
+                });
+            }
+            return;
+            }
             add_action('init', array($this, 'load_plugin_textdomain'), 0);
             add_action('init', array($this, 'register_order_status'));          
             if (!did_action('woocommerce_init')) {
@@ -239,37 +235,37 @@ if (mepp_woocommerce_is_active()) :
                 return $content;
             }
 
-   /**
- * Display additional links in plugin row located in plugins page
- *
- * @param array $links
- * @param string $file
- * @return array
- */
-function plugin_row_meta($links, $file)
-{
-    if ($file === 'advanced-partial-payment-or-deposit-for-woocommerce/advanced-partial-payment-or-deposit-for-woocommerce.php') {
+        /**
+         * Display additional links in plugin row located in plugins page
+         *
+         * @param array $links
+         * @param string $file
+         * @return array
+         */
+        function plugin_row_meta($links, $file)
+        {
+            if ($file === 'advanced-partial-payment-or-deposit-for-woocommerce/advanced-partial-payment-or-deposit-for-woocommerce.php') {
 
-        $row_meta = array(
-            'settings' => '<a href="' . esc_url(admin_url('/admin.php?page=admin-mepp-deposits&tab=settings_tabs_mepp&section=mepp_general')) . '"> ' . esc_html__('Settings', 'text-domain') . '</a>',
-            'documentation' => '<a target="_blank" href="' . esc_url('#') . '"> ' . esc_html__('Documentation', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>',
-            'support' => '<a target="_blank" href="' . esc_url('#') . '"> ' . esc_html__('Support', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>',
-        );
+                $row_meta = array(
+                    'settings' => '<a href="' . esc_url(admin_url('/admin.php?page=admin-mepp-deposits&tab=settings_tabs_mepp&section=mepp_general')) . '"> ' . esc_html__('Settings', 'text-domain') . '</a>',
+                    'documentation' => '<a target="_blank" href="' . esc_url('#') . '"> ' . esc_html__('Documentation', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>',
+                    'support' => '<a target="_blank" href="' . esc_url('#') . '"> ' . esc_html__('Support', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>',
+                );
 
-        // translators: %s is a placeholder for the plugin name
-        $row_meta['view-details'] = sprintf(
-            '<a href="%s" class="thickbox open-plugin-details-modal" aria-label="%s" data-title="%s">%s</a>',
-            esc_url(network_admin_url('plugin-install.php?tab=plugin-information&plugin=' . urlencode('advanced-partial-payment-or-deposit-for-woocommerce') . '&TB_iframe=true&width=600&height=550')),
-            sprintf(esc_html__('More information about %s', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce')),
-            esc_attr__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-            esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce')
-        );
+                // translators: %s is a placeholder for the plugin name
+                $row_meta['view-details'] = sprintf(
+                    '<a href="%s" class="thickbox open-plugin-details-modal" aria-label="%s" data-title="%s">%s</a>',
+                    esc_url(network_admin_url('plugin-install.php?tab=plugin-information&plugin=' . urlencode('advanced-partial-payment-or-deposit-for-woocommerce') . '&TB_iframe=true&width=600&height=550')),
+                    sprintf(esc_html__('More information about %s', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce')),
+                    esc_attr__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                );
 
-        $links = array_merge($links, $row_meta);
-    }
+                $links = array_merge($links, $row_meta);
+            }
 
-    return $links;
-}
+            return $links;
+        }
 
 
         /**
@@ -470,9 +466,8 @@ function plugin_row_meta($links, $file)
          * @since 1.3
          *
          */
-                    public function register_order_status()
-            {
-                register_post_status('wc-partially-paid', array(
+            public function register_order_status(){
+                    register_post_status('wc-partially-paid', array(
                     'label' => _x('Partially Paid', 'Order status', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     'public' => true,
                     'exclude_from_search' => false,
@@ -483,6 +478,7 @@ function plugin_row_meta($links, $file)
                         'Partially Paid <span class="count">(%s)</span>', 'advanced-partial-payment-or-deposit-for-woocommerce')
                 ));
             }
+
         /**
          *  plugin activation hook , schedule action 'mepp_job_scheduler'
          * @return void
@@ -517,9 +513,8 @@ function plugin_row_meta($links, $file)
         }
 
     }
-
-    // Install the singleton instance
-    MEPP_Advance_Deposits::get_singleton();
+// Install the singleton instance
+MEPP_Advance_Deposits::get_singleton();
 	
     register_activation_hook(__FILE__, array('\MagePeople\MEPP\MEPP_Advance_Deposits', 'plugin_activated'));
     register_deactivation_hook(__FILE__, array('\MagePeople\MEPP\MEPP_Advance_Deposits', 'plugin_deactivated'));
