@@ -331,7 +331,7 @@ function adjust_order_total_for_remaining_amount($total, $order) {
 
     return $total;
 }
-add_filter('woocommerce_order_amount_total', 'adjust_order_total_for_remaining_amount', 10, 2);
+add_filter('woocommerce_order_get_total', 'adjust_order_total_for_remaining_amount', 10, 2);
 
 /**
  * Change Order Status to "Partially Paid" After Order Placement
