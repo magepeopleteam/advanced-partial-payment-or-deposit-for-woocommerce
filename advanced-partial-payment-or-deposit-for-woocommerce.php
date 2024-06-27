@@ -56,6 +56,7 @@ function mepp_woocommerce_is_active()
 
 if (mepp_woocommerce_is_active()) :
     require_once( plugin_dir_path( __FILE__ ) . '/inc/mepp-functions.php' );
+    require_once( plugin_dir_path( __FILE__ ) . '/inc/mepp-migration.php' );
 
 
     /**
