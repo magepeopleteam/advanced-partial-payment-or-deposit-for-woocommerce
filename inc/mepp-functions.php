@@ -8,6 +8,30 @@ if (!defined('ABSPATH')) {
 }
 
 
+// Check if the Pro plugin is active
+function check_pro_plugin_and_prompt_update() {
+    $pro_plugin = 'mage-partial-payment-pro/mage_partial_pro.php';
+    $plugin_name = 'Advanced Partial/Deposit Payment For Woocommerce PRO';
+    
+    if (is_plugin_active($pro_plugin)) {
+        // Display the update notice
+        add_action('admin_notices', function() use ($plugin_name) {
+            $class = 'notice notice-warning';
+            $update_url = '#'; // Replace with your custom update URL
+            $message = sprintf(
+                __('Please update your "%s" plugin to the latest version for better performance and new features. <a href="%s" style="font-size: 16px;">Install Update</a>', 'text-domain'),
+                $plugin_name,
+                esc_url($update_url)
+            );
+            printf('<div class="%1$s">%2$s</div>', esc_attr($class), $message);
+        });
+    }
+}
+
+// Hook the function to admin_init
+add_action('admin_init', 'check_pro_plugin_and_prompt_update');
+
+
 
 
 function send_partially_paid_order_email_notification($order_id) {
