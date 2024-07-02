@@ -13,7 +13,7 @@ function check_pro_plugin_and_prompt_update() {
     $pro_plugin = 'mage-partial-payment-pro/mage_partial_pro.php';
     $plugin_name = 'Advanced Partial/Deposit Payment For Woocommerce PRO';
     
-    if (is_plugin_active($pro_plugin)) {
+    if (function_exists('wcpp_deactivate_depends_on_dependancy')) {
         // Display the update notice
         add_action('admin_notices', function() use ($plugin_name) {
             $class = 'notice notice-warning';
