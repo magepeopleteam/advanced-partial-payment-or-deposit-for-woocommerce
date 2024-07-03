@@ -63,7 +63,7 @@ class MEPP_Admin_Reports extends WC_Admin_Report{
 		
 		$this->calculate_current_range( $current_range );
 		
-		include( WC()->plugin_path() . '/inc/admin/views/html-report-by-date.php' );
+		include( WC()->plugin_path() . '/includes/admin/views/html-report-by-date.php' );
 	}
 	
 	public function get_export_button(){
