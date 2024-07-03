@@ -459,7 +459,7 @@ function mepp_second_payment_reminder()
                 '' => esc_html__('— No Change —', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                 'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                 'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                'payment_plan' => esc_html__('Payment Plan', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                // 'payment_plan' => esc_html__('Payment Plan', 'advanced-partial-payment-or-deposit-for-woocommerce')
             );
             foreach ($options as $key => $value) {
                 echo '<option value="' . esc_attr($key) . '">' . esc_html($value) . '</option>';
