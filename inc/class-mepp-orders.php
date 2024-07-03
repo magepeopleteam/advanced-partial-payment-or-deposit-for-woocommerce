@@ -1446,32 +1446,30 @@ class MEPP_Orders
 
 
     function partial_payment_number($number, $order)
-    {
-        if (is_order_received_page() && did_action('woocommerce_before_thankyou') && !did_action('woocommerce_thankyou')) return $number;
+{
+    if (is_order_received_page() && did_action('woocommerce_before_thankyou') && !did_action('woocommerce_thankyou')) return $number;
 
-
-        if ($order && $order->get_type() === 'mepp_payment') {
-            $parent = wc_get_order($order->get_parent_id());
-            if ($parent) {
-                $payment_schedule = $parent->get_meta('_mepp_payment_schedule', true);
-                $count = 0;
-                $suffix = '-';
-                if (!empty($payment_schedule) && is_array($payment_schedule)) {
-                    foreach ($payment_schedule as $payment) {
-                        $count++;
-                        if ($payment['id'] == $order->get_id()) {
-                            $suffix .= $count;
-                            break;
-                        }
+    if ($order && $order->get_type() === 'mepp_payment') {
+        $parent = wc_get_order($order->get_parent_id());
+        if ($parent) {
+            $payment_schedule = $parent->get_meta('_mepp_payment_schedule', true);
+            $count = 0;
+            $suffix = '-';
+            if (!empty($payment_schedule) && is_array($payment_schedule)) {
+                foreach ($payment_schedule as $payment) {
+                    $count++;
+                    if (isset($payment['id']) && $payment['id'] == $order->get_id()) {
+                        $suffix .= $count;
+                        break;
                     }
                 }
-
-
-                $number = $parent->get_order_number() . $suffix;
             }
+
+            $number = $parent->get_order_number() . $suffix;
         }
-        return $number;
     }
+    return $number;
+}
 
     static function get_order_balance_details($order)
     {
