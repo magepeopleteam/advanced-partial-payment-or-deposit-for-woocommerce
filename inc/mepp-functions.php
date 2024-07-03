@@ -7,6 +7,29 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
+// Check if the Pro plugin is active
+function mepp_check_pro_plugin_and_prompt_update() {
+    $pro_plugin = 'mage-partial-payment-pro/mage_partial_pro.php';
+    $plugin_name = 'Advanced Partial/Deposit Payment For Woocommerce PRO';
+    
+    if (function_exists('wcpp_deactivate_depends_on_dependancy')) {
+        // Display the update notice
+        add_action('admin_notices', function() use ($plugin_name) {
+            $class = 'notice notice-warning';
+            $update_url = '#'; // Replace with your custom update URL
+            $message = sprintf(
+                __('Please update your "%s" plugin to the latest version for better performance and new features. <a href="%s" style="font-size: 16px;">Install Update</a>', 'text-domain'),
+                $plugin_name,
+                esc_url($update_url)
+            );
+            printf('<div class="%1$s">%2$s</div>', esc_attr($class), $message);
+        });
+    }
+}
+
+// Hook the function to admin_init
+add_action('admin_init', 'mepp_check_pro_plugin_and_prompt_update');
+
 /**
  * Set a transient on plugin activation to trigger the redirect.
  */
@@ -38,9 +61,9 @@ add_action('admin_init', 'mepp_redirect_to_settings_page');
 
 
 // Add "Pay Deposit" button next to "Add to Cart" button on product list.
-add_action('woocommerce_after_shop_loop_item', 'add_pay_deposit_button', 9);
+add_action('woocommerce_after_shop_loop_item', 'mepp_add_pay_deposit_button', 9);
 
-function add_pay_deposit_button() {
+function mepp_add_pay_deposit_button() {
     global $product;
 
     // Check if mepp_storewide_deposit_enabled_btn is set to yes
@@ -53,9 +76,9 @@ function add_pay_deposit_button() {
 }
 
 // Hook into the action that handles completion of the second payment
-add_action('woocommerce_order_status_completed', 'update_main_order_status_on_second_payment_completion', 10, 1);
+add_action('woocommerce_order_status_completed', 'mepp_update_main_order_status_on_second_payment_completion', 10, 1);
 
-function update_main_order_status_on_second_payment_completion($order_id) {
+function mepp_update_main_order_status_on_second_payment_completion($order_id) {
     $order = wc_get_order($order_id);
 
     // Check if it's a child order (second payment)
@@ -88,20 +111,20 @@ function update_main_order_status_on_second_payment_completion($order_id) {
 /**
  * Add partially paid status option to event plugin's filter
  */
-function add_partially_paid_status_option($name) {
+function mepp_add_partially_paid_status_option($name) {
     $new_name = array(
         'partially-paid'  => esc_html__( 'Partially Paid', 'tour-booking-manager' ),
      );
      return array_merge($name, $new_name);
 }
-add_filter('mep_event_seat_status_name_partial', 'add_partially_paid_status_option');
+add_filter('mep_event_seat_status_name_partial', 'mepp_add_partially_paid_status_option');
 
-add_action('init', 'register_mepp_payment_post_type', 6);
+add_action('init', 'mepp_register_mepp_payment_post_type', 6);
 /**
          * Register mepp_payment custom order type
          * @return void
          */
-        function register_mepp_payment_post_type()
+        function mepp_register_mepp_payment_post_type()
         {
 
             if (!function_exists('wc_register_order_type')) return;
@@ -175,7 +198,7 @@ add_action('init', 'register_mepp_payment_post_type', 6);
  * Checks installed WC version against minimum version required
  * @return void
  */
-function check_version_disable()
+function mepp_check_version_disable()
 {
     if (function_exists('WC') && version_compare(WC()->version, '3.7.0', '<')) {
 
@@ -190,7 +213,7 @@ function check_version_disable()
         }
     }
 }     
-add_action('init','check_version_disable', 0);
+add_action('init','mepp_check_version_disable', 0);
 /**
  * @return mixed
  */
