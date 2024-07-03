@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 
 
 // Check if the Pro plugin is active
-function check_pro_plugin_and_prompt_update() {
+function mepp_check_pro_plugin_and_prompt_update() {
     $pro_plugin = 'mage-partial-payment-pro/mage_partial_pro.php';
     $plugin_name = 'Advanced Partial/Deposit Payment For Woocommerce PRO';
     
@@ -29,12 +29,12 @@ function check_pro_plugin_and_prompt_update() {
 }
 
 // Hook the function to admin_init
-add_action('admin_init', 'check_pro_plugin_and_prompt_update');
+add_action('admin_init', 'mepp_check_pro_plugin_and_prompt_update');
 
 
 
 
-function send_partially_paid_order_email_notification($order_id) {
+function mepp_send_partially_paid_order_email_notification($order_id) {
     $order = wc_get_order($order_id);
     
     // Initialize variables to track if minimum amount paid and remaining amount are present
@@ -135,12 +135,12 @@ function send_partially_paid_order_email_notification($order_id) {
         }
     }
 }
-add_action('woocommerce_order_status_partially-paid', 'send_partially_paid_order_email_notification', 10, 1);
+add_action('woocommerce_order_status_partially-paid', 'mepp_send_partially_paid_order_email_notification', 10, 1);
 
 /**
  * Add custom field to cart item data.
  */
-function add_minimum_amount_to_cart_item_data($cart_item_data, $product_id, $variation_id, $quantity) {
+function mepp_add_minimum_amount_to_cart_item_data($cart_item_data, $product_id, $variation_id, $quantity) {
     $minimum_amount = isset($_POST['custom-deposit-amount']) ? sanitize_text_field($_POST['custom-deposit-amount']) : '';
 
     if (!empty($minimum_amount)) {
@@ -149,12 +149,12 @@ function add_minimum_amount_to_cart_item_data($cart_item_data, $product_id, $var
 
     return $cart_item_data;
 }
-add_filter('woocommerce_add_cart_item_data', 'add_minimum_amount_to_cart_item_data', 10, 4);
+add_filter('woocommerce_add_cart_item_data', 'mepp_add_minimum_amount_to_cart_item_data', 10, 4);
 
 /**
  * Display custom field value on the cart and checkout pages.
  */
-function display_minimum_amount_on_cart($item_data, $cart_item) {
+function mepp_display_minimum_amount_on_cart($item_data, $cart_item) {
     if (isset($cart_item['minimum_amount'])) {
         $item_data[] = array(
             'key'   => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -175,24 +175,24 @@ function display_minimum_amount_on_cart($item_data, $cart_item) {
 
     return $item_data;
 }
-add_filter('woocommerce_get_item_data', 'display_minimum_amount_on_cart', 10, 2);
+add_filter('woocommerce_get_item_data', 'mepp_display_minimum_amount_on_cart', 10, 2);
 
 /**
  * Add custom field to order item meta.
  */
-function add_minimum_amount_to_order_item_meta($item_id, $cart_item) {
+function mepp_add_minimum_amount_to_order_item_meta($item_id, $cart_item) {
     if (isset($cart_item['minimum_amount'])) {
         wc_add_order_item_meta($item_id, esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'), sanitize_text_field($cart_item['minimum_amount']));
     }
 }
-add_action('woocommerce_new_order_item', 'add_minimum_amount_to_order_item_meta', 10, 2);
+add_action('woocommerce_new_order_item', 'mepp_add_minimum_amount_to_order_item_meta', 10, 2);
 
 
 
 /**
  * Adjust order total at checkout to be the deposit amount.
  */
-function adjust_order_total_for_deposit($cart_total) {
+function mepp_adjust_order_total_for_deposit($cart_total) {
     $cart = WC()->cart;
     $deposit_amount = 0;
 
@@ -209,12 +209,12 @@ function adjust_order_total_for_deposit($cart_total) {
 
     return $cart_total;
 }
-add_filter('woocommerce_calculated_total', 'adjust_order_total_for_deposit', 10, 1);
+add_filter('woocommerce_calculated_total', 'mepp_adjust_order_total_for_deposit', 10, 1);
 
 /**
  * Display minimum deposit amount and remaining amount in cart totals.
  */
-function display_minimum_deposit_and_remaining_amount_in_cart_totals() {
+function mepp_display_minimum_deposit_and_remaining_amount_in_cart_totals() {
     $cart = WC()->cart;
     $deposit_amount = 0;
     $remaining_amount = 0;
@@ -244,13 +244,13 @@ function display_minimum_deposit_and_remaining_amount_in_cart_totals() {
         <?php
     }
 }
-add_action('woocommerce_cart_totals_before_order_total', 'display_minimum_deposit_and_remaining_amount_in_cart_totals');
-add_action('woocommerce_review_order_before_order_total', 'display_minimum_deposit_and_remaining_amount_in_cart_totals');
+add_action('woocommerce_cart_totals_before_order_total', 'mepp_display_minimum_deposit_and_remaining_amount_in_cart_totals');
+add_action('woocommerce_review_order_before_order_total', 'mepp_display_minimum_deposit_and_remaining_amount_in_cart_totals');
 
 /**
  * Display Payment History on Thank You Page
  */
-function display_payment_history_on_thankyou($order_id) {
+function mepp_display_payment_history_on_thankyou($order_id) {
     
     $order = wc_get_order($order_id);
     if (!$order) return;
@@ -322,14 +322,14 @@ function display_payment_history_on_thankyou($order_id) {
         }
     }
 }
-add_action('woocommerce_thankyou', 'display_payment_history_on_thankyou', 10, 1);
+add_action('woocommerce_thankyou', 'mepp_display_payment_history_on_thankyou', 10, 1);
 
 
 
 /**
  * Display Remaining Amount on Order Pay Page
  */
-function display_remaining_amount_on_order_pay_page($order) {
+function mepp_display_remaining_amount_on_order_pay_page($order) {
     if (isset($_GET['remaining_amount'])) {
         $remaining_amount = floatval(sanitize_text_field($_GET['remaining_amount']));
 
@@ -341,12 +341,12 @@ function display_remaining_amount_on_order_pay_page($order) {
         }
     }
 }
-add_action('woocommerce_review_order_before_order_total', 'display_remaining_amount_on_order_pay_page');
+add_action('woocommerce_review_order_before_order_total', 'mepp_display_remaining_amount_on_order_pay_page');
 
 /**
  * Adjust Order Total for Remaining Amount
  */
-function adjust_order_total_for_remaining_amount($total, $order) {
+function mepp_adjust_order_total_for_remaining_amount($total, $order) {
     if (isset($_GET['remaining_amount'])) {
         $remaining_amount = floatval(sanitize_text_field($_GET['remaining_amount']));
 
@@ -358,26 +358,26 @@ function adjust_order_total_for_remaining_amount($total, $order) {
 
     return $total;
 }
-add_filter('woocommerce_order_get_total', 'adjust_order_total_for_remaining_amount', 10, 2);
+add_filter('woocommerce_order_get_total', 'mepp_adjust_order_total_for_remaining_amount', 10, 2);
 
 /**
  * Change Order Status to "Partially Paid" After Order Placement
  */
-function change_order_status_to_partially_paid($order_id) {
+function mepp_change_order_status_to_partially_paid($order_id) {
     $order = wc_get_order($order_id);
 
     if ($order) {
         $order->update_status('partially-paid');
     }
 }
-add_action('woocommerce_thankyou', 'change_order_status_to_partially_paid', 15, 1);
+add_action('woocommerce_thankyou', 'mepp_change_order_status_to_partially_paid', 15, 1);
 
 
 
 /**
  * Update order after partial payment
  */
-function update_order_after_partial_payment($order_id) {
+function mepp_update_order_after_partial_payment($order_id) {
     $order = wc_get_order($order_id);
     if (!$order) return;
 
@@ -409,12 +409,12 @@ function update_order_after_partial_payment($order_id) {
         $order->save();
     }
 }
-add_action('woocommerce_order_status_changed', 'update_order_after_partial_payment', 20, 1);
+add_action('woocommerce_order_status_changed', 'mepp_update_order_after_partial_payment', 20, 1);
 
 /**
  * Display Payment History on View Order Page
  */
-function display_payment_history_on_view_order($order_id) {
+function mepp_display_payment_history_on_view_order($order_id) {
 
     $selected_deposit_type = isset($_POST['_mepp_amount_type']) ? sanitize_text_field($_POST['_mepp_amount_type']) : '';
     
@@ -491,14 +491,14 @@ function display_payment_history_on_view_order($order_id) {
         echo '</tbody></table>';
     }
 }
-add_action('woocommerce_view_order', 'display_payment_history_on_view_order', 10, 1);
+add_action('woocommerce_view_order', 'mepp_display_payment_history_on_view_order', 10, 1);
 
 
 
 /**
  * Display Payment History on Admin Order Page
  */
-function display_payment_history_on_admin_order($order_id) {
+function mepp_display_payment_history_on_admin_order($order_id) {
 
     $selected_deposit_type = isset($_POST['_mepp_amount_type']) ? sanitize_text_field($_POST['_mepp_amount_type']) : '';
     
@@ -582,7 +582,7 @@ function display_payment_history_on_admin_order($order_id) {
     </script>';
     }
 }
-add_action('woocommerce_admin_order_data_after_order_details', 'display_payment_history_on_admin_order', 10, 1);
+add_action('woocommerce_admin_order_data_after_order_details', 'mepp_display_payment_history_on_admin_order', 10, 1);
 
 
 
@@ -620,9 +620,9 @@ add_action('admin_init', 'mepp_redirect_to_settings_page');
 
 
 // Add "Pay Deposit" button next to "Add to Cart" button on product list.
-add_action('woocommerce_after_shop_loop_item', 'add_pay_deposit_button', 9);
+add_action('woocommerce_after_shop_loop_item', 'mepp_add_pay_deposit_button', 9);
 
-function add_pay_deposit_button() {
+function mepp_add_pay_deposit_button() {
     global $product;
 
     // Check if mepp_storewide_deposit_enabled_btn is set to yes
@@ -635,9 +635,9 @@ function add_pay_deposit_button() {
 }
 
 // Hook into the action that handles completion of the second payment
-add_action('woocommerce_order_status_completed', 'update_main_order_status_on_second_payment_completion', 10, 1);
+add_action('woocommerce_order_status_completed', 'mepp_update_main_order_status_on_second_payment_completion', 10, 1);
 
-function update_main_order_status_on_second_payment_completion($order_id) {
+function mepp_update_main_order_status_on_second_payment_completion($order_id) {
     $order = wc_get_order($order_id);
 
     // Check if it's a child order (second payment)
@@ -670,20 +670,20 @@ function update_main_order_status_on_second_payment_completion($order_id) {
 /**
  * Add partially paid status option to event plugin's filter
  */
-function add_partially_paid_status_option($name) {
+function mepp_add_partially_paid_status_option($name) {
     $new_name = array(
         'partially-paid'  => esc_html__( 'Partially Paid', 'tour-booking-manager' ),
      );
      return array_merge($name, $new_name);
 }
-add_filter('mep_event_seat_status_name_partial', 'add_partially_paid_status_option');
+add_filter('mep_event_seat_status_name_partial', 'mepp_add_partially_paid_status_option');
 
-add_action('init', 'register_mepp_payment_post_type', 6);
+add_action('init', 'mepp_register_mepp_payment_post_type', 6);
 /**
          * Register mepp_payment custom order type
          * @return void
          */
-        function register_mepp_payment_post_type()
+        function mepp_register_mepp_payment_post_type()
         {
 
             if (!function_exists('wc_register_order_type')) return;
@@ -757,7 +757,7 @@ add_action('init', 'register_mepp_payment_post_type', 6);
  * Checks installed WC version against minimum version required
  * @return void
  */
-function check_version_disable()
+function mepp_check_version_disable()
 {
     if (function_exists('WC') && version_compare(WC()->version, '3.7.0', '<')) {
 
@@ -772,7 +772,7 @@ function check_version_disable()
         }
     }
 }     
-add_action('init','check_version_disable', 0);
+add_action('init','mepp_check_version_disable', 0);
 /**
  * @return mixed
  */
