@@ -3,7 +3,7 @@
  * Plugin Name: Deposit & Partial Payment Solution for WooCommerce - WpDepositly | MagePeople
  * Plugin URI: http://mage-people.com
  * Description: This plugin will add Partial Payment System in the Woocommerce Plugin its also support Woocommerce Event Manager Plugin.
- * Version: 2.2.5
+ * Version: 3.0.0
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: advanced-partial-payment-or-deposit-for-woocommerce
@@ -58,6 +58,7 @@ function mepp_woocommerce_is_active()
 
 if (mepp_woocommerce_is_active()) :
     require_once('inc/mepp-functions.php');
+    require_once( plugin_dir_path( __FILE__ ) . '/inc/mepp-migration.php' );
 
 
     /**
@@ -194,50 +195,8 @@ if (mepp_woocommerce_is_active()) :
                 add_action('init', 'MagePeople\MEPP\MEPP_Advance_Deposits::plugin_activated', 100); //plugin activated is not called with automatic updates anymore.
 
             }
-            add_filter('the_content', array($this,'mepp_modify_cart_content'), 9999); 
-            add_filter('the_content', array($this,'mepp_modify_checkout_content'), 9999);
+          
                     }
-            // Function to modify cart content on the cart page
-            function mepp_modify_cart_content($content) {
-                // Check if we are on the cart page
-                if (is_cart()) {
-                    // Add styles to hide specific classes on the cart page
-                    $content .= '<style>
-                        .wc-block-components-sidebar-layout,
-                        .wc-block-cart,
-                        .wp-block-woocommerce-filled-cart-block,
-                        .wp-block-woocommerce-cart {
-                            display: none !important;
-                        }
-                        .woocommerce-cart.alignwide.is-loading {
-                            display: block !important; /* Display the WooCommerce cart */
-                        }
-                    </style>';
-                    $content .= do_shortcode('[woocommerce_cart]');
-                }
-                return $content;
-            }
-
-            // Function to modify checkout content on the checkout page
-            function mepp_modify_checkout_content($content) {
-                // Check if we are on the checkout page
-                if (is_checkout()) {
-                    // Add styles to hide specific classes on the checkout page
-                    $content .= '<style>
-                        .wc-block-components-sidebar-layout,
-                        .wc-block-cart,
-                        .wp-block-woocommerce-filled-cart-block,
-                        .wp-block-woocommerce-cart {
-                            display: none !important;
-                        }
-                        .woocommerce-cart.alignwide.is-loading {
-                            display: block !important; /* Display the WooCommerce cart */
-                        }
-                    </style>';
-                    $content .= do_shortcode('[woocommerce_checkout]');
-                }
-                return $content;
-            }
 
    /**
  * Display additional links in plugin row located in plugins page

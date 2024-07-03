@@ -67,14 +67,7 @@ class MEPP_Admin_Settings
         array($this, 'settings_tabs_mepp') // Callback function for Settings page
     );
 
-    add_submenu_page(
-   'admin-mepp-deposits',    // Parent menu slug
-   'Payment Plans',         // Submenu label
-   'Payment Plans',         // Submenu label
-   'manage_options',
-   'edit-tags.php?taxonomy=mepp_payment_plan', // Taxonomy edit page URL
-   ''
-);
+
 
     add_submenu_page(
         'admin-mepp-deposits',    // Parent menu slug
@@ -143,8 +136,8 @@ public function settings_tabs_mepp()
     $settings_tabs = apply_filters('mepp_settings_tabs', array(
         'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'checkout_mode' => __('<i class="fas fa-money-check-alt"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'second_payment' => __('<i class="far fa-credit-card"></i> Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        // 'checkout_mode' => __('<i class="fas fa-money-check-alt"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        // 'second_payment' => __('<i class="far fa-credit-card"></i> Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce')
     ));
@@ -1258,7 +1251,7 @@ public function settings_tabs_mepp()
 
 
 
-            $settings['mepp_remaining_payable'] = isset($_POST['mepp_remaining_payable']) ? 'yes' : 'no';
+            $settings['mepp_remaining_payable'] = isset($_POST['mepp_remaining_payable']) ? 'yes' : 'yes';
             $settings['mepp_enable_second_payment_reminder'] = isset($_POST['mepp_enable_second_payment_reminder']) ? 'yes' : 'no';
             $settings['mepp_second_payment_due_after'] = isset($_POST['mepp_second_payment_due_after']) ? $_POST['mepp_second_payment_due_after'] : '';
             $settings['mepp_second_payment_reminder_duration'] = isset($_POST['mepp_second_payment_reminder_duration']) ? $_POST['mepp_second_payment_reminder_duration'] : '0';
