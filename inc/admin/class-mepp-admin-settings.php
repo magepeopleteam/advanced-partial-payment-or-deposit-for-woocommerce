@@ -136,8 +136,6 @@ public function settings_tabs_mepp()
     $settings_tabs = apply_filters('mepp_settings_tabs', array(
         'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        // 'checkout_mode' => __('<i class="fas fa-money-check-alt"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        // 'second_payment' => __('<i class="far fa-credit-card"></i> Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce')
     ));
@@ -346,19 +344,18 @@ public function settings_tabs_mepp()
                     'default' => 'no'
 
                 ),
-                'storewide_deposit_amount_type' => array(
-                'name' => esc_html__('Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                'type' => 'select',
-                'desc_tip' => true,
-                'desc' => esc_html__('Choose amount type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                'id' => 'mepp_storewide_deposit_amount_type',
-                'options' => array(
-                    'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'payment_plan' => esc_html__('Payment plan', 'advanced-partial-payment-or-deposit-for-woocommerce') . ''
-                ),
-                'default' => 'percent'
-            ),
+             'storewide_deposit_amount_type' => array(
+    'name' => esc_html__('Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+    'type' => 'select',
+    'desc_tip' => true,
+    'desc' => esc_html__('Choose amount type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+    'id' => 'mepp_storewide_deposit_amount_type',
+    'options' => apply_filters('mepp_settings_dropdown_options', array(
+        'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+    )),
+    'default' => 'percent'
+),
 
                 'storewide_deposit_amount' => array(
                     'name' => esc_html__('Default Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
