@@ -29,19 +29,34 @@ $show_pay_now_button = false;
     <tbody>
         <?php foreach ($schedule as $timestamp => $payment) :
 
-            $title = isset($payment['title']) ? $payment['title'] : (is_numeric($timestamp) ? date_i18n(wc_date_format(), $timestamp) : '-');
-            $title = apply_filters('mepp_partial_payment_title', $title, $payment);
+$title = '';
 
-            if (!isset($payment['id']) || empty($payment['id'])) continue;
-            $payment_order = wc_get_order($payment['id']);
+if(isset($payment['title'])){
 
-            if (!$payment_order) continue;
-            $payment_id = $payment_order->get_order_number();
-            $status = wc_get_order_status_name($payment_order->get_status());
-            $amount = $payment_order->get_total();
-            $price_args = array('currency' => $payment_order->get_currency());
+    $title  = $payment['title'];
+} else {
+    if(isset($payment['timestamp'])){
+        $timestamp = $payment['timestamp'];
+    }
 
-            $link = '';
+    if (!is_numeric($timestamp)) {
+        $title = '-';
+    } else {
+        $title = date_i18n(wc_date_format(), $timestamp);
+    }
+}
+
+$title = apply_filters('wc_deposits_partial_payment_title',$title,$payment);
+
+$payment_order = false;
+if(isset($payment['id']) && !empty($payment['id'])) $payment_order = wc_get_order($payment['id']);
+
+if(!$payment_order) continue;
+$payment_id = $payment_order ? $payment_order->get_order_number(): '-';
+$status = $payment_order ? wc_get_order_status_name($payment_order->get_status()) : '-';
+$amount = $payment_order ? $payment_order->get_total() : $payment['total'];
+$price_args = array('currency' => $payment_order->get_currency());
+$link = '';
             // New conditional check to show the "Pay Now" button only if the status indicates pending payment
             if ($payment_order->get_status() === 'pending') {
                 $show_pay_now_button = true;
