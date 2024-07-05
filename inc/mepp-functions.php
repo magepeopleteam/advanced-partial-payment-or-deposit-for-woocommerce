@@ -7,6 +7,14 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
+if (!function_exists('mepp_get_option')) {
+    function mepp_get_option($meta_key, $default = null)
+    {
+        return get_option($meta_key) ? get_option($meta_key) : esc_html__($default);
+    }
+}
+
+
 // Check if the Pro plugin is active
 function mepp_check_pro_plugin_and_prompt_update() {
     $pro_plugin = 'mage-partial-payment-pro/mage_partial_pro.php';
@@ -18,11 +26,11 @@ function mepp_check_pro_plugin_and_prompt_update() {
             $class = 'notice notice-warning';
             $update_url = '#'; // Replace with your custom update URL
             $message = sprintf(
-                __('Please update your "%s" plugin to the latest version for better performance and new features. <a href="%s" style="font-size: 16px;">Install Update</a>', 'text-domain'),
+                __('Than you very much for updated the <strong>Deposit & Partial Payment Solution for WooCommerce - WpDepositly</strong> to the 3.0.0 version. We added a massive update in this version and its required the <strong>Advanced Partial/Deposit Payment For WooCommerce PRO</strong> version 3.0.0 but you have installed the old version which is not working with this version. Please go to plugin list page to update the <strong>Advanced Partial/Deposit Payment For WooCommerce PRO</strong> version to the latest version. If you do not see the update notification please log on to <a href="https://mage-people.com/my-account/" target="_blank">Mage-People.com</a> site in the My Account Page you will get the Latest version of the <strong>Advanced Partial/Deposit Payment For WooCommerce PRO.</strong>', 'text-domain'),
                 $plugin_name,
                 esc_url($update_url)
             );
-            printf('<div class="%1$s">%2$s</div>', esc_attr($class), $message);
+            printf('<div style="padding:10px;font-size:15px;line-height:25px"class="%1$s">%2$s</div>', esc_attr($class), $message);
         });
     }
 }
