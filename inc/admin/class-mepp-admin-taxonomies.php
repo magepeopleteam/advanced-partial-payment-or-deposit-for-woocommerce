@@ -77,13 +77,15 @@ class  MEPP_Taxonomies
         }
     }
 
-    /**
-     * Registers mepp_payment_plan taxonomy for products
-     */
-    function register_payment_plan_taxonomy()
-    {
-
-        register_taxonomy(MEPP_PAYMENT_PLAN_TAXONOMY,
+  /**
+ * Registers mepp_payment_plan taxonomy for products if PRO functions exist
+ */
+function register_payment_plan_taxonomy()
+{
+    // Check if PRO functions exist
+    if (function_exists('sr_partial_patment_menu_pro') || function_exists('checkout_mood_pro') || function_exists('second_payment_pro') || function_exists('custom_mepp_amount_type_options') || function_exists('mepp_settings_dropdown_options_pro')) {
+        register_taxonomy(
+            MEPP_PAYMENT_PLAN_TAXONOMY,
             array('product'),
             array(
                 'label' => esc_html__('Payment plans', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -113,9 +115,11 @@ class  MEPP_Taxonomies
                 'query_var' => is_admin(),
                 'rewrite' => false,
                 'public' => false
-            ));
-
+            )
+        );
     }
+}
+
 
     /**
      * adds payment plan fields to mepp_payment_plan taxonomy editor page
