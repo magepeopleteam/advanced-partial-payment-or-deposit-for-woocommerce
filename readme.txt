@@ -2,11 +2,10 @@
 Contributors: magepeopleteam, aamahin
 Tags: deposits, woocommerce, woocommerce deposits, partial payments
 Requires at least: 5.3
-Stable tag: 2.2.5
-Version: 3.0.0
-Tested up to: 6.4
+Stable tag: 3.0.0
+Tested up to: 6.5.5
 WC requires at least: 3.0
-WC tested up to: 5.0
+WC tested up to: 9.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -51,11 +50,6 @@ Your basic needs will be fulfilled with the Free Version Plugin which includes F
 ***📅 Compatible with Woocommerce Event Manager:*** Seamlessly integrated with the Woocommerce Event Manager Plugin.
 ***📜 Payment history on My Account page:*** Easily access and review payment history on the My Account page.
 
-***🌍 WPML and PDF Invoices & Packing Slips for WooCommerce  supported.
-***    Restrict deposits for logged-in users only.
-***    Calculation & Structure (Fees Collection Method,Discount Coupons Handling).
-***    Display & Text (Hide Deposit UI when forced,Override payment form,Display Taxes In Product page,Display taxes in cart item Details,Display Deposit-breakdown Tooltip in cart) And Buttons deign settings.
-
 
 Upgrading to the pro version you will get some premium features that will enhance your offering list of unique features including:
 
@@ -64,11 +58,9 @@ Upgrading to the pro version you will get some premium features that will enhanc
 ***💲 Fixed Amount Partial Payment or Deposit:*** Simplify partial payments by setting a fixed deposit amount. [Live Pro Version Demo - Fixed Type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
 ***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a fixed amount or a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
 ***Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
+***💰 Zero amount payment option:*** Allow customers to make zero-amount payments for specific scenarios.
 ***💵 Custom amount payment option:*** Provide flexibility with a custom amount payment option on the cart and checkout pages.[live pro version demo](https://partial.mage-people.com/product/wordpress-pennant/)
 ***📬 Receive payment reminder emails:***
-
-***    Deposit on Checkout Mode (user can able to input deposit ).
-***    Future Payments & Reminders (user can do Custom Remainder Email Settings)
 
 Watch The Comprehensive Video Demonstration Of Our Partial Payment And Deposit Plugin In Action:
 
@@ -162,14 +154,9 @@ Bug fixed*
 06 April 2022
 
 = 3.0.0 =
-New Feature Added
-***	   WPML and PDF Invoices & Packing Slips for WooCommerce  supported.
-***    Restrict deposits for logged-in users only.
-***    Calculation & Structure (Fees Collection Method,Discount Coupons Handling).
-***    Display & Text (Hide Deposit UI when forced,Override payment form,Display Taxes In Product page,Display taxes in cart item Details,Display Deposit-breakdown Tooltip in cart) And Buttons deign settings.
+WPML and PDF Invoices & Packing Slips for WooCommerce  supported.
+Restrict deposits for logged-in users only.
+Calculation & Structure (Fees Collection Method,Discount Coupons Handling).
+Display & Text (Hide Deposit UI when forced,Override payment form,Display Taxes In Product page,Display taxes in cart item Details,Display Deposit-breakdown Tooltip in cart) And Buttons deign settings.
 
-PRO
-***    Deposit on Checkout Mode (user can able to input deposit ).
-***    Future Payments & Reminders (user can do Custom Remainder Email Settings)
-
-07 July 2024
+03 July 2024
