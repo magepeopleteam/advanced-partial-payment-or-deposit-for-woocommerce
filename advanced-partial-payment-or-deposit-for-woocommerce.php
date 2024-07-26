@@ -191,69 +191,8 @@ if (mepp_woocommerce_is_active()) :
                 add_action('init', 'MagePeople\MEPP\MEPP_Advance_Deposits::plugin_activated', 100); //plugin activated is not called with automatic updates anymore.
 
             }
-            add_filter('the_content', array($this,'mepp_modify_cart_content'), 9999); 
-            add_filter('the_content', array($this,'mepp_modify_checkout_content'), 9999);
-                    }
-
-                    // Function to modify cart content on the cart page
-            function mepp_modify_cart_content($content) {
-                // Check if we are on the cart page
-                if (is_cart()) {
-                    // Add styles to hide specific classes on the cart page
-                    $style = '<style>
-                        .wc-block-components-sidebar-layout,
-                        .wc-block-cart,
-                        .wp-block-woocommerce-filled-cart-block,
-                        .wp-block-woocommerce-cart {
-                            display: none !important;
-                        }
-                        .woocommerce-cart.alignwide.is-loading {
-                            display: block !important; /* Display the WooCommerce cart */
-                        }
-                    </style>';
-
-                    // Check if the cart shortcode is not already present
-                    if (!has_shortcode($content, 'woocommerce_cart')) {
-                        $content .= $style;
-                        $content .= do_shortcode('[woocommerce_cart]');
-                    } else {
-                        // Only add the styles if the shortcode is already present
-                        $content .= $style;
-                    }
-                }
-                return $content;
-            }
-
-            // Function to modify checkout content on the checkout page
-            function mepp_modify_checkout_content($content) {
-                // Check if we are on the checkout page
-                if (is_checkout()) {
-                    // Add styles to hide specific classes on the checkout page
-                    $style = '<style>
-                        .wc-block-components-sidebar-layout,
-                        .wc-block-cart,
-                        .wp-block-woocommerce-filled-cart-block,
-                        .wp-block-woocommerce-cart {
-                            display: none !important;
-                        }
-                        .woocommerce-cart.alignwide.is-loading {
-                            display: block !important; /* Display the WooCommerce cart */
-                        }
-                    </style>';
-
-                    // Check if the checkout shortcode is not already present
-                    if (!has_shortcode($content, 'woocommerce_checkout')) {
-                        $content .= $style;
-                        $content .= do_shortcode('[woocommerce_checkout]');
-                    } else {
-                        // Only add the styles if the shortcode is already present
-                        $content .= $style;
-                    }
-                }
-                return $content;
-            }
-
-            
+          
+                    }          
 
         /**
          * Display additional links in plugin row located in plugins page

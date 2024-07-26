@@ -260,50 +260,46 @@ class MEPP_Admin_Product
  /**
  * @brief second payment reminder metabox callback
  */
-function mepp_second_payment_reminder()
-{
-    global $post;
-    if (is_null($post)) return;
-    $product = wc_get_product($post->ID);
+function mepp_second_payment_reminder() {
+    // Check if the Pro version is active
+    if (defined('MEPP_PRO_VERSION_ACTIVE') && MEPP_PRO_VERSION_ACTIVE) {
+        global $post;
+        if (is_null($post)) return;
+        $product = wc_get_product($post->ID);
 
-    if (!$product) return;
+        if (!$product) return;
 
-    $reminder_date = $product->get_meta('_mepp_pbr_reminder_date');
-    ob_start();
-    ?>
+        $reminder_date = $product->get_meta('_mepp_pbr_reminder_date');
+        ?>
 
-    <script>
-        jQuery(function ($) {
-            'use strict';
+        <script>
+            jQuery(function ($) {
+                'use strict';
 
-            $("#reminder_datepicker").datepicker({
+                $("#reminder_datepicker").datepicker({
+                    dateFormat: "dd-mm-yy",
+                    minDate: new Date()
+                });
+                <?php if (!empty($reminder_date)) { ?>
+                var reminder_date = "<?php echo esc_js($reminder_date); ?>";
+                var parts = reminder_date.split("-");
 
-                dateFormat: "dd-mm-yy",
-                minDate: new Date()
-            })
-            <?php
-            if(!empty($reminder_date)){
-            ?>
-            var reminder_date = "<?php echo esc_js($reminder_date); ?>";
-            var parts = reminder_date.split("-");
-
-
-            reminder_date = new Date(parts[2], parts[1] - 1, parts[0]);
-            <?php
-            echo '  $("#reminder_datepicker").datepicker("setDate",reminder_date);';
-            }
-            ?>
-        });
-
-
-    </script>
-    <p>
-        <b><?php echo esc_html__('If you would like to send out second payment reminder emails to all orders containing this product on a specific date in the future, set a date below.', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></b>
-    </p>
-    <p> <?php echo esc_html__('Next Reminder Date :', 'advanced-partial-payment-or-deposit-for-woocommerce') ?> <input type="text" name="mepp_reminder_datepicker" id="reminder_datepicker"></p>
-    <?php
-    echo esc_html(ob_get_clean());
+                reminder_date = new Date(parts[2], parts[1] - 1, parts[0]);
+                $("#reminder_datepicker").datepicker("setDate", reminder_date);
+                <?php } ?>
+            });
+        </script>
+        <p>
+            <b><?php echo esc_html__('If you would like to send out second payment reminder emails to all orders containing this product on a specific date in the future, set a date below.', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></b>
+        </p>
+        <p> 
+            <?php echo esc_html__('Next Reminder Date :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?> 
+            <input type="text" name="mepp_reminder_datepicker" id="reminder_datepicker">
+        </p>
+        <?php
+    }
 }
+
 
 
     function process_reminder_datepicker_values($post_id)
