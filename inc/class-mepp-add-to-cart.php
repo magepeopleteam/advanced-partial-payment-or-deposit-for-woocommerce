@@ -519,8 +519,9 @@ public function enqueue_inline_styles()
         }
 
         $products_deposit_higher = array('variable', 'booking', 'accommodation-booking', 'appointment'); //product types where the deposit could be higher than registered price
+        $amount = isset($amount) ? $amount : 0;
         if (apply_filters('mepp_product_disable_if_deposit_higher_than_price', true) && $amount_type !== 'payment_plan' && !in_array($product_type, $products_deposit_higher) && $amount >= $price) {
-            //debug information
+            // Debug information
             return $html;
         }
 
