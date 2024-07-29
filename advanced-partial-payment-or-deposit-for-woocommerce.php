@@ -18,7 +18,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
 /**
  * Check if WooCommerce is active
  */
@@ -282,17 +281,15 @@ if (mepp_woocommerce_is_active()) :
                 $this->checkout = new MEPP_Checkout();
                 $this->coupons = new MEPP_Coupons();
 
-
                 if (!mepp_checkout_mode()) {
                     require_once('inc/class-mepp-add-to-cart.php');
                     $this->add_to_cart = new MEPP_Add_To_Cart();
 
                 }
-
-
             }
 
             require_once('inc/admin/class-mepp-admin-taxonomies.php');
+            require_once('inc/admin/class-pro-ads.php');
             require_once('inc/class-mepp-payment.php');
             require_once('inc/class-mepp-orders.php');
             $this->orders = new MEPP_Orders();

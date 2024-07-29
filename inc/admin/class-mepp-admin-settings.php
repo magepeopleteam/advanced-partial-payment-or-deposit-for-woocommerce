@@ -42,48 +42,8 @@ class MEPP_Admin_Settings
         // reminder datepicker
         add_action('woocommerce_admin_field_reminder_datepicker', array($this, 'reminder_datepicker'));
 
-        add_action('admin_init', array($this, 'pro_advertise'));
-
-
     }
 
-    public function pro_advertise(){
-        if( ! defined('MEPP_PRO_VERSION_ACTIVE')){
-            add_filter( 'mepp_settings_tabs', [$this,'pro_advertise_menu']) ; 
-        }
-    }
-
-    public function pro_advertise_menu($menu){
-        $ads_menu = array(
-            'checkout_mode_ads' => __('<i class="fas fa-money-check-alt"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-            'future_payment_ads' => __('<i class="far fa-credit-card"></i> Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        );
-        return array_merge($menu, $ads_menu);
-    }
-
-    public function tab_checkout_mode_ads_output($active){
-        $class = $active ? '' : 'hidden';
-        ?>
-            <div id="checkout_mode_ads" class="mepp-tab-content wrap mepp-custom-container <?php echo $class; ?>"> 
-                <div class="pro-ads">
-                <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
-                    <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/checkout-ads.png" alt="" >
-                </div>
-            </div>
-        <?php
-    }
-
-    public function tab_future_payment_ads_output($active){
-        $class = $active ? '' : 'hidden';
-        ?>
-            <div id="future_payment_ads" class="mepp-tab-content wrap mepp-custom-container <?php echo $class; ?>">
-                <div class="pro-ads">
-                    <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
-                    <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/future-payment-ads.png" alt="" class="pro-ads">
-                </div>
-            </div>
-        <?php
-    }
 
     public function sr_partial_patment_menu(): void {
     add_menu_page(
@@ -1315,6 +1275,32 @@ foreach ($payment_plans as $payment_plan) {
         }
 
 
+    }
+
+    // ads menu tab content method
+
+    public function tab_checkout_mode_ads_output($active){
+        $class = $active ? '' : 'hidden';
+        ?>
+            <div id="checkout_mode_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>"> 
+                <div class="pro-ads">
+                <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                    <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/checkout-ads.png" alt="" >
+                </div>
+            </div>
+        <?php
+    }
+
+    public function tab_future_payment_ads_output($active){
+        $class = $active ? '' : 'hidden';
+        ?>
+            <div id="future_payment_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>">
+                <div class="pro-ads">
+                    <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                    <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/future-payment-ads.png" alt="" class="pro-ads">
+                </div>
+            </div>
+        <?php
     }
 
 }
