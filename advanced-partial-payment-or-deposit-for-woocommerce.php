@@ -151,9 +151,8 @@ if (mepp_woocommerce_is_active()) :
                 return;
                 }
                     // Redirect to plugin settings page after WooCommerce logic
-    
-			
-            define('MEPP_VERSION', '1.3.3');
+            define('MEPP_ADVANCE_DEPOSITS_ACTIVE', true);
+            define('MEPP_VERSION', '3.0.1');
             define('MEPP_TEMPLATE_PATH', untrailingslashit(plugin_dir_path(__FILE__)) . '/theme/');
             define('MEPP_PLUGIN_PATH', plugin_dir_path(__FILE__));
             define('MEPP_PLUGIN_URL', untrailingslashit(plugins_url(basename(plugin_dir_path(__FILE__)), basename(__FILE__))));
