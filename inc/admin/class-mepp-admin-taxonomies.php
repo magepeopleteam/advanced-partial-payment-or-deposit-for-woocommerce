@@ -83,7 +83,7 @@ class  MEPP_Taxonomies
 function register_payment_plan_taxonomy()
 {
     // Check if PRO functions exist
-    if (function_exists('sr_partial_patment_menu_pro') || function_exists('checkout_mood_pro') || function_exists('second_payment_pro') || function_exists('custom_mepp_amount_type_options') || function_exists('mepp_settings_dropdown_options_pro')) {
+    if (defined('MEPP_PRO_VERSION_ACTIVE')){
         register_taxonomy(
             MEPP_PAYMENT_PLAN_TAXONOMY,
             array('product'),
