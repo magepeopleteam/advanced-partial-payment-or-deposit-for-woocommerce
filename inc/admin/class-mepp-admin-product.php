@@ -257,7 +257,7 @@ class MEPP_Admin_Product
     }
 
 
- /**
+/**
  * @brief second payment reminder metabox callback
  */
 function mepp_second_payment_reminder() {
@@ -299,7 +299,6 @@ function mepp_second_payment_reminder() {
         <?php
     }
 }
-
 
 
     function process_reminder_datepicker_values($post_id)
