@@ -7,12 +7,17 @@
         background-color: var(--mage-primary);
         color: var(--mage-white);
         padding: 8px 12px;
+        display: flex;
+        justify-content: space-between;
         h2{
             color: var(--mage-white);
             font-size: 1.2rem;
             margin: 0;
             padding: 0;
             line-height: 1.4;
+            .version{
+                font-size: 10px;
+            }
         }
     }
     .partial-settings-area{

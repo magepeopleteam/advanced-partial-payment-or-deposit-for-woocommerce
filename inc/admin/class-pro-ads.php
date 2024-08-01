@@ -12,6 +12,8 @@ if( ! defined('ABSPATH') ) exit;
 
 class MEPP_Pro_Ads{
     
+    public static $link = 'https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/';
+
     public function __construct()
     {
         add_action('admin_init', array($this, 'show_pro_advertise'));
@@ -31,6 +33,18 @@ class MEPP_Pro_Ads{
         return array_merge($menu, $ads_menu);
     }
 
+    public static function get_pro_purchage_link(){
+        return self::$link;
+    }
+
+    public static function get_pro_purchage_button(){
+        $link = MEPP_Pro_Ads::get_pro_purchage_link();
+        $button = '<a href="'.$link.'" class="button button-primary" target="_blank">'.__('Buy Pro','advanced-partial-payment-or-deposit-for-woocommerce').'</a>';
+        
+        if( ! defined('MEPP_PRO_VERSION_ACTIVE')){
+            echo $button;
+        }
+    }
 
 }
 
