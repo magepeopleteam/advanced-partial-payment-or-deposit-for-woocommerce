@@ -42,7 +42,6 @@ class MEPP_Admin_Settings
         // reminder datepicker
         add_action('woocommerce_admin_field_reminder_datepicker', array($this, 'reminder_datepicker'));
 
-
     }
 
 
@@ -137,7 +136,7 @@ public function settings_tabs_mepp()
         'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce')
+        'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     ));
     
 
@@ -1273,6 +1272,32 @@ public function settings_tabs_mepp()
         }
 
 
+    }
+
+    // ads menu tab content method
+
+    public function tab_checkout_mode_ads_output($active){
+        $class = $active ? '' : 'hidden';
+        ?>
+            <div id="checkout_mode_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>"> 
+                <div class="pro-ads">
+                <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                    <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/checkout-ads.png" alt="" >
+                </div>
+            </div>
+        <?php
+    }
+
+    public function tab_future_payment_ads_output($active){
+        $class = $active ? '' : 'hidden';
+        ?>
+            <div id="future_payment_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>">
+                <div class="pro-ads">
+                    <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                    <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/future-payment-ads.png" alt="" class="pro-ads">
+                </div>
+            </div>
+        <?php
     }
 
 }

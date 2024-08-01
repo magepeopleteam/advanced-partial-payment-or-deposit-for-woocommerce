@@ -18,7 +18,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
 /**
  * Check if WooCommerce is active
  */
@@ -152,9 +151,8 @@ if (mepp_woocommerce_is_active()) :
                 return;
                 }
                     // Redirect to plugin settings page after WooCommerce logic
-    
-			
-            define('MEPP_VERSION', '1.3.3');
+            define('MEPP_ADVANCE_DEPOSITS_ACTIVE', true);
+            define('MEPP_VERSION', '3.0.1');
             define('MEPP_TEMPLATE_PATH', untrailingslashit(plugin_dir_path(__FILE__)) . '/theme/');
             define('MEPP_PLUGIN_PATH', plugin_dir_path(__FILE__));
             define('MEPP_PLUGIN_URL', untrailingslashit(plugins_url(basename(plugin_dir_path(__FILE__)), basename(__FILE__))));
@@ -343,17 +341,15 @@ if (mepp_woocommerce_is_active()) :
                 $this->checkout = new MEPP_Checkout();
                 $this->coupons = new MEPP_Coupons();
 
-
                 if (!mepp_checkout_mode()) {
                     require_once('inc/class-mepp-add-to-cart.php');
                     $this->add_to_cart = new MEPP_Add_To_Cart();
 
                 }
-
-
             }
 
             require_once('inc/admin/class-mepp-admin-taxonomies.php');
+            require_once('inc/admin/class-pro-ads.php');
             require_once('inc/class-mepp-payment.php');
             require_once('inc/class-mepp-orders.php');
             $this->orders = new MEPP_Orders();

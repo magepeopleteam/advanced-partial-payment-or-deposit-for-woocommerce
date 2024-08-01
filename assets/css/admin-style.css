@@ -735,5 +735,33 @@ label[for=mepp_storewide_deposit_payment_plans] {
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td fieldset input[type=number] {
   text-align: left;
 }
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads {
+  position: relative;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads .button {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  padding: 5px 50px;
+  font-size: 30px;
+  font-weight: bold;
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads:hover .button {
+  display: block;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.664);
+  z-index: 1;
+}
 
 /*# sourceMappingURL=admin-style.css.map */
