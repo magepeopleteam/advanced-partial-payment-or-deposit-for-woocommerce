@@ -144,7 +144,10 @@ public function settings_tabs_mepp()
 
     <div class="advanced-partial-payment">
         <header>
-            <h2><?php echo esc_html__('Deposit & Partial Payment Solution for WooCommerce ', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h2>
+            <h2><?php echo esc_html__('Deposit & Partial Payment Solution for WooCommerce ', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?> <span class="version"><?php echo __(' V','advanced-partial-payment-or-deposit-for-woocommerce') . esc_html(MEPP_VERSION); ?></span></h2>
+            <?php
+                MEPP_Pro_Ads::get_pro_purchage_button();
+            ?>
         </header>
         <div class="partial-settings-area">
             <div class="mepp-nav-tab-wrapper" >
@@ -1281,7 +1284,7 @@ public function settings_tabs_mepp()
         ?>
             <div id="checkout_mode_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>"> 
                 <div class="pro-ads">
-                <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_pro_purchage_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
                     <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/checkout-ads.png" alt="" >
                 </div>
             </div>
@@ -1293,7 +1296,7 @@ public function settings_tabs_mepp()
         ?>
             <div id="future_payment_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>">
                 <div class="pro-ads">
-                    <a target="_blank" href="<?php echo esc_attr('https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/') ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                    <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_pro_purchage_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
                     <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/future-payment-ads.png" alt="" class="pro-ads">
                 </div>
             </div>
