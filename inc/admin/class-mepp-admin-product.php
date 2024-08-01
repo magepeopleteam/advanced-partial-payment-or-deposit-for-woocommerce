@@ -157,7 +157,7 @@ class MEPP_Admin_Product
                         'options' => apply_filters('mepp_amount_type_options', array(
                             'fixed' => esc_html__('Fixed value', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                             'percent' => esc_html__('Percentage of price', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                            'minimum_amount' => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                            
 
                         ))
                     ));
@@ -187,9 +187,23 @@ class MEPP_Admin_Product
                     );
 
                     $all_plans = array();
-                    foreach ($payment_plans as $payment_plan) {
-                        $all_plans[$payment_plan->term_id] = $payment_plan->name;
-                    }
+                   foreach ($payment_plans as $payment_plan) {
+    if (is_object($payment_plan)) {
+        $all_plans[$payment_plan->term_id] = $payment_plan->name;
+    } elseif (is_array($payment_plan)) {
+        // Assuming term_id and name are keys in the array
+        if (isset($payment_plan['term_id']) && isset($payment_plan['name'])) {
+            $all_plans[$payment_plan['term_id']] = $payment_plan['name'];
+        } else {
+            // Handle the case where expected keys are missing
+            error_log('Missing term_id or name in payment_plan array');
+        }
+    } else {
+        // Handle unexpected data types
+        error_log('Unexpected data type for payment_plan');
+    }
+}
+
 
                     woocommerce_wp_select(array(
                         'id' => "_mepp_payment_plans",
