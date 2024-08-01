@@ -120,38 +120,8 @@ A. No! Upgradation is easy it will just add extra feature with free version.
 
 
 == Changelog ==
-
-= 1.0.0 =
-*Initial Release*
-10 Nov 2021
-
-= 1.0.2 =
-*Bug fixed*
-29 Nov 2021
-
-= 1.0.3 =
-PHP Warning fixed
-Bug fixed*
-30 Nov 2021
-
-= 1.0.5 =
-Bug fixed*
-20 Dec 2021
-
-= 2.0.0 =
-New Feature Added
-Bug fixed*
-23 Feb 2022
-
-= 2.0.2 =
-New Feature Added
-Bug fixed*
-15 March 2022
-
-= 2.0.4 =
-New Feature Added
-Bug fixed*
-06 April 2022
+= 3.0.1 =
+ads for pro features in settings tab 
 
 = 3.0.0 =
 WPML and PDF Invoices & Packing Slips for WooCommerce  supported.
@@ -160,3 +130,35 @@ Calculation & Structure (Fees Collection Method,Discount Coupons Handling).
 Display & Text (Hide Deposit UI when forced,Override payment form,Display Taxes In Product page,Display taxes in cart item Details,Display Deposit-breakdown Tooltip in cart) And Buttons deign settings.
 
 03 July 2024
+
+= 2.0.4 =
+New Feature Added
+Bug fixed*
+06 April 2022
+
+= 2.0.2 =
+New Feature Added
+Bug fixed*
+15 March 2022
+
+= 2.0.0 =
+New Feature Added
+Bug fixed*
+23 Feb 2022
+
+= 1.0.5 =
+Bug fixed*
+20 Dec 2021
+
+= 1.0.3 =
+PHP Warning fixed
+Bug fixed*
+30 Nov 2021
+
+= 1.0.2 =
+*Bug fixed*
+29 Nov 2021
+
+= 1.0.0 =
+*Initial Release*
+10 Nov 2021
