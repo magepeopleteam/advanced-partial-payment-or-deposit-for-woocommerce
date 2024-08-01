@@ -450,7 +450,7 @@ if (mepp_woocommerce_is_active()) :
         public function enqueue_admin_scripts_and_styles()
         {
             wp_enqueue_script('jquery');
-            wp_enqueue_style('wc-deposits-admin-style', plugins_url('assets/css/admin-style.css', __FILE__), MEPP_VERSION);
+            wp_enqueue_style('wc-deposits-admin-style', plugins_url('assets/css/admin-style.css', __FILE__), '',MEPP_VERSION,'all');
         }
 
        
