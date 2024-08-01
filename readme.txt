@@ -3,14 +3,14 @@ Contributors: magepeopleteam, aamahin
 Tags: deposits, woocommerce, woocommerce deposits, partial payments
 Requires at least: 5.3
 Stable tag: 3.0.0
-Tested up to: 6.5.5
+Tested up to: 6.6
 WC requires at least: 3.0
 WC tested up to: 9.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-Deposit & Partial Payment is a complete advance payment solution for WordPress websites dedicatedly designed to integrate with  WooCommerce smoothly. Install Now!
+WooCommerce Deposit & Partial Payment - WpDepositly Plugin  is a complete payment solution for paying deposits before completing a purchase.
 
 == Description ==
 The [WooCommerce Deposit & Partial Payment Plugin](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/) - WpDepositly is a complete payment solution to meet your business needs, especially for securely paying deposits before completing a purchase. Leveraging the trend of installment payments and down payments, this solution easily integrates into your Woocommerce shop, making it effortless for customers to secure orders with a deposit.

@@ -421,7 +421,7 @@ class MEPP_Orders
                     $parent->set_payment_method('bacs');
                 }
 
-                $parent->set_status('wc-completed');
+                $parent->set_status('on-hold');
                 $parent->save();
             }
         }
@@ -431,7 +431,7 @@ class MEPP_Orders
     {
 
         if ($order->get_type() === 'mepp_payment') {
-            $status = 'wc-completed';
+            $status = 'on-hold';
         }
         return $status;
     }
@@ -810,7 +810,7 @@ class MEPP_Orders
         }
 
         // if partial payment status is changed from on-hold to completed
-        if ($order->get_type() === 'mepp_payment' && $order->get_meta('_mepp_payment_type') === 'deposit' && $old_status === 'partially-paid' && $new_status === 'completed') {
+        if ($order->get_type() === 'wcdp_payment' && $order->get_meta('_wc_deposits_payment_type') === 'deposit' && $old_status === 'on-hold' && $new_status === 'completed') {
 
             $parent = wc_get_order($order->get_parent_id());
             $valid_statuses = mepp_valid_parent_statuses_for_partial_payment();
