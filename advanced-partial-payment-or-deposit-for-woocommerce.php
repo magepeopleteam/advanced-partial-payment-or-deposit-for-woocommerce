@@ -67,7 +67,6 @@ if (mepp_woocommerce_is_active()) :
                 public $coupons; // Instance of MEPP_Coupons
                 public $add_to_cart; // Instance of MEPP_Add_To_Cart
                 public $orders; // Instance of MEPP_Orders
-                public $taxonomies; // Instance of MEPP_Taxonomies
                 public $reminders; // Instance of MEPP_Reminders
                 public $emails; // Instance of MEPP_Emails
                 public $checkout; // Instance of MEPP_Checkout
@@ -78,7 +77,6 @@ if (mepp_woocommerce_is_active()) :
                 public $admin_list_table_partial_payments; // Instance of MEPP_Admin_List_Table_Partial_Payments
                 public $admin_settings; // Instance of MEPP_Admin_Settings
                 public $admin_reports; // Instance of MEPP_Admin_Reports
-
                 // Properties for notices and version disabled state
                 public $admin_notices = []; // Stores notices before output function
                 public $wc_version_disabled = false; // Stores version disabled state
@@ -157,7 +155,7 @@ if (mepp_woocommerce_is_active()) :
             define('MEPP_PLUGIN_PATH', plugin_dir_path(__FILE__));
             define('MEPP_PLUGIN_URL', untrailingslashit(plugins_url(basename(plugin_dir_path(__FILE__)), basename(__FILE__))));
             define('MEPP_MAIN_FILE', __FILE__);
-            define('MEPP_PAYMENT_PLAN_TAXONOMY', 'mepp_payment_plan');
+            
 
             $this->compatibility = new stdClass();
 
@@ -348,12 +346,11 @@ if (mepp_woocommerce_is_active()) :
                 }
             }
 
-            require_once('inc/admin/class-mepp-admin-taxonomies.php');
+            
             require_once('inc/admin/class-pro-ads.php');
             require_once('inc/class-mepp-payment.php');
             require_once('inc/class-mepp-orders.php');
             $this->orders = new MEPP_Orders();
-            $this->taxonomies = new MEPP_Taxonomies();
 
 
             /**
