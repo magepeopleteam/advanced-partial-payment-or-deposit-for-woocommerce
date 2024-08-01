@@ -235,29 +235,26 @@ public function settings_tabs_mepp()
         
         <div id="mepp_general" class="mepp-tab-content wrap mepp-custom-container <?php echo $class; ?>">
 
-        <?php
-$roles_array = array();
-$user_roles = array_reverse(get_editable_roles());
-foreach ($user_roles as $key => $user_role) {
-    $roles_array[$key] = $user_role['name'];
-}
+            <?php
+            $roles_array = array();
+            $user_roles = array_reverse(get_editable_roles());
+            foreach ($user_roles as $key => $user_role) {
 
-$manage_plans_link = sprintf(wp_kses(__(' <a  target="_blank" href="%s"> Manage Payment Plans</a>', 'advanced-partial-payment-or-deposit-for-woocommerce'), array('a' => array('href' => array(), 'target' => array()))), admin_url('/edit-tags.php?taxonomy=mepp_payment_plan&post_type=product'));
+                $roles_array[$key] = $user_role['name'];
+            }
+            $manage_plans_link = sprintf(wp_kses(__(' <a  target="_blank" href="%s"> Manage Payment Plans</a>', 'advanced-partial-payment-or-deposit-for-woocommerce'), array('a' => array('href' => array(), 'target' => array()))), admin_url('/edit-tags.php?taxonomy=mepp_payment_plan&post_type=product'));
 
-// Payment plans
-$payment_plans = get_terms(array(
-    'taxonomy' => MEPP_PAYMENT_PLAN_TAXONOMY,
-    'hide_empty' => false
-));
-
-$all_plans = array();
-foreach ($payment_plans as $payment_plan) {
-    if (is_object($payment_plan)) {
-        $all_plans[$payment_plan->term_id] = $payment_plan->name;
-    }
-}
-?>
-
+            //payment plans
+            $payment_plans = get_terms(array(
+                    'taxonomy' => MEPP_PAYMENT_PLAN_TAXONOMY,
+                    'hide_empty' => false
+                )
+            );
+            $all_plans = array();
+            foreach ($payment_plans as $payment_plan) {
+                $all_plans[$payment_plan->term_id] = $payment_plan->name;
+            }
+            ?>
 
             <?php $general_settings = array(
 

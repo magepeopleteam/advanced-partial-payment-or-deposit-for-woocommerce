@@ -9,6 +9,9 @@ if (!$order = wc_get_order($order_id)) {
 
 // Initialize the variable to false
 $show_pay_now_button = false;
+
+// Check if _mepp_payment_schedule is set to 'yes'
+$payment_schedule_enabled = get_post_meta($order_id, '_mepp_payment_schedule', true) === 'yes';
 ?> 
 
 <h2 class="woocommerce-column__title" style="background-color: #f2f2f2; padding: 10px;"><?php echo esc_html__('Partial payments summary', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></h2>
@@ -125,9 +128,13 @@ $link = '';
             $('.pay-now-btn').click(function() {
                 var orderId = $(this).data('order-id');
                 if (orderId) {
-                    window.location.href = '<?php echo esc_url(wc_get_checkout_url()); ?>' + '?order-pay=' + orderId;
+                    window.location.href = '<?php echo esc_url(wc_get_checkout_url()); ?>' + '?order-pay=' + orderId + '&custom_action=pay_now';
                 }
             });
         });
     })(jQuery);
 </script>
+
+<?php
+
+?>
