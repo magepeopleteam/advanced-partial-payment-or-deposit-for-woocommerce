@@ -188,7 +188,10 @@ class MEPP_Admin_Product
 
                     $all_plans = array();
                     foreach ($payment_plans as $payment_plan) {
-                        $all_plans[$payment_plan->term_id] = $payment_plan->name;
+                        if(isset($payment_plan->term_id)){
+                            $all_plans[$payment_plan->term_id] = $payment_plan->name;
+                        }
+                        
                     }
 
                     woocommerce_wp_select(array(
