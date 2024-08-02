@@ -533,7 +533,7 @@ function mepp_second_payment_reminder() {
 
             //payment plans
             $payment_plans = get_terms(array(
-                    'taxonomy' => MEPP_PAYMENT_PLAN_TAXONOMY,
+                    'taxonomy' => defined('MEPP_PAYMENT_PLAN_TAXONOMY') ? MEPP_PAYMENT_PLAN_TAXONOMY: '',
                     'hide_empty' => false
                 )
             );
