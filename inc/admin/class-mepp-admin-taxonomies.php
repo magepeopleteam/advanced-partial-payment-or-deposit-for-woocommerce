@@ -10,7 +10,7 @@ class  MEPP_Taxonomies
     function __construct()
     {
 
-        add_action('init', array($this, 'register_payment_plan_taxonomy'), 10);
+        add_action('plugins_loaded', array($this, 'register_payment_plan_taxonomy'), 10);
         add_action('mepp_payment_plan_edit_form_fields', array($this, 'payment_plan_form_fields'), 20);
         add_action('mepp_payment_plan_edit_form', array($this, 'payment_plan_table'), 10, 1);
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'), 10, 2);
