@@ -251,7 +251,10 @@ public function settings_tabs_mepp()
             );
             $all_plans = array();
             foreach ($payment_plans as $payment_plan) {
-                $all_plans[$payment_plan->term_id] = $payment_plan->name;
+                if(isset($payment_plan->term_id)){
+                    $all_plans[$payment_plan->term_id] = $payment_plan->name;
+                }
+                
             }
             ?>
 
