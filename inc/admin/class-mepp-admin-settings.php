@@ -139,15 +139,12 @@ public function settings_tabs_mepp()
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     ));
     
-
     ?>
 
     <div class="advanced-partial-payment">
         <header>
-            <h2><?php echo esc_html__('Deposit & Partial Payment Solution for WooCommerce ', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?> <span class="version"><?php echo __(' V','advanced-partial-payment-or-deposit-for-woocommerce') . esc_html(MEPP_VERSION); ?></span></h2>
-            <?php
-                MEPP_Pro_Ads::get_pro_purchage_button();
-            ?>
+            <h2><?php echo esc_html__('Deposit & Partial Payment Solution for WooCommerce ', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?> <span><?php echo __(' V','advanced-partial-payment-or-deposit-for-woocommerce').esc_html(MEPP_VERSION); ?></span> </h2>
+            <?php MEPP_Pro_Ads::get_purchase_button(); ?>
         </header>
         <div class="partial-settings-area">
             <div class="mepp-nav-tab-wrapper" >
@@ -254,7 +251,10 @@ public function settings_tabs_mepp()
             );
             $all_plans = array();
             foreach ($payment_plans as $payment_plan) {
-                $all_plans[$payment_plan->term_id] = $payment_plan->name;
+                if(isset($payment_plan->term_id)){
+                    $all_plans[$payment_plan->term_id] = $payment_plan->name;
+                }
+                
             }
             ?>
 
@@ -1284,7 +1284,7 @@ public function settings_tabs_mepp()
         ?>
             <div id="checkout_mode_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>"> 
                 <div class="pro-ads">
-                <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_pro_purchage_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
                     <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/checkout-ads.png" alt="" >
                 </div>
             </div>
@@ -1296,7 +1296,7 @@ public function settings_tabs_mepp()
         ?>
             <div id="future_payment_ads" class="mepp-tab-content mepp-custom-container <?php echo $class; ?>">
                 <div class="pro-ads">
-                    <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_pro_purchage_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                    <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
                     <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/future-payment-ads.png" alt="" class="pro-ads">
                 </div>
             </div>

@@ -653,8 +653,8 @@ label[for=mepp_storewide_deposit_payment_plans] {
   padding: 0;
   line-height: 1.4;
 }
-.advanced-partial-payment header h2 .version {
-  font-size: 10px;
+.advanced-partial-payment header h2 span {
+  font-size: 14px;
 }
 .advanced-partial-payment .partial-settings-area {
   display: flex;
