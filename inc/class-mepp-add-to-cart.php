@@ -114,19 +114,7 @@ public function enqueue_inline_styles()
     $highlight = isset($colors['highlight']) && !empty($colors['highlight']) ? $colors['highlight'] : (isset($fallback_colors['highlight']) ? $fallback_colors['highlight'] : '#FF0000');
     $gend = mepp_adjust_colour($gstart, 15);
 
-    $style = "
-        .wc-deposits-options-form input.input-radio:enabled ~ label {  color: {$secondary}; font-family: monospace;}
-        .wc-deposits-options-form div a.wc-deposits-switcher {
-          background-color: {$gstart};
-          background: -moz-gradient(center top, {$gstart} 0%, {$gend} 100%);
-          background: -moz-linear-gradient(center top, {$gstart} 0%, {$gend} 100%);
-          background: -webkit-gradient(linear, left top, left bottom, from({$gstart}), to({$gend}));
-          background: -webkit-linear-gradient({$gstart}, {$gend});
-          background: -o-linear-gradient({$gstart}, {$gend});
-          background: linear-gradient({$gstart}, {$gend});
-        }
-        .wc-deposits-options-form .amount { color: {$highlight}; }";
-    wp_add_inline_style('wc-deposits-frontend-styles', $style);
+    
 }
 
 
