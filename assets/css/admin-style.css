@@ -452,27 +452,25 @@ label[for=mepp_storewide_deposit_payment_plans] {
     left: 80%;
   }
   .switch-candy {
-    background-color: #71717a;
-    color: #fff;
+    background-color: #f2f2f2;
+    color: #333;
     font-weight: bold;
     text-align: center;
-    text-shadow: 1px 1px 1px #191b1e;
   }
   .switch-candy label {
-    color: #fff;
+    color: #333;
     -webkit-transition: color 0.2s ease-out;
     -moz-transition: color 0.2s ease-out;
     transition: color 0.2s ease-out;
   }
   .switch-candy input:checked + label {
-    color: #333;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    color: #fff;
   }
   .switch-candy a {
-    background-color: #70c66b;
+    background-color: #17a510;
+    border: 1px solid #17a510;
   }
   .switch-candy > span {
-    color: #333;
     text-shadow: none;
   }
   .switch-candy span {
