@@ -10,7 +10,6 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
 
 ?>
 <div data-ajax-refresh="<?php echo $ajax_refresh; ?>" data-product_id="<?php echo $product->get_id(); ?>" class='magepeople_mepp_single_deposit_form <?php echo $basic_buttons ? 'basic-wc-deposits-options-form' : 'wc-deposits-options-form'; ?>'>
-    <hr class='separator'/>
     <?php
     if ($storewide_deposit_enabled_details !== 'no') {
         if (!$has_payment_plans && $product->get_type() !== 'grouped') {
