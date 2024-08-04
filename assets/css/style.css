@@ -6,9 +6,7 @@
   overflow: hidden;
   height: 50px;
 }
-.wc-deposits-options-form hr.separator {
-  margin: 4px;
-}
+
 .wc-deposits-options-form .input-radio {
     display :none;
 }
