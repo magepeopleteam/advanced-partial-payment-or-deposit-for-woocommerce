@@ -121,7 +121,7 @@
                         transform: translate(-50%,-50%);
                     }
                     
-                    &:hover{
+                    &:hover,&:focus{
                         .button{
                             display: block;
                         }
