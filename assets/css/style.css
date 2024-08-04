@@ -5,11 +5,8 @@
 .wc-deposits-options-form .deposit-options {
   overflow: hidden;
   height: 50px;
-  margin-top: 2%;
 }
-.wc-deposits-options-form hr.separator {
-  margin: 4px;
-}
+
 .wc-deposits-options-form .input-radio {
     display :none;
 }
@@ -17,18 +14,12 @@
 @media only screen {
   .wc-deposits-options-form input.input-radio:enabled ~ label {
     margin:0;
-    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0px;
-    /* box-shadow: rgba(0, 0, 0, 0.0745098) 0px -1px 0px 0px inset,
-                rgba(255, 255, 255, 0.298039) 0px 1px 0px 0px inset,
-                rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px; */
+
   }
 
   .wc-deposits-options-form input.input-radio:disabled ~ label {
     color: #797979;
     background-color: #555;
-    box-shadow: rgba(0, 0, 0, 0.0745098) 0px -1px 0px 0px inset,
-                rgba(255, 255, 255, 0.298039) 0px 1px 0px 0px inset,
-                rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px;
   }
 }
 
@@ -182,3 +173,16 @@
 .payment-plan-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+.wc-deposits-options-form .deposit-option {
+     display: block;
+     color: #475569;
+     background-color: #f2f2f2;
+     padding: 20px; 
+     margin: 4px 0;
+     border: 1px solid #939393;
+    }
+    #deposit-amount{
+        color:#17a510;
+        font-weight: 700;
+    }

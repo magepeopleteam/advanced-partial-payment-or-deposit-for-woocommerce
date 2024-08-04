@@ -10,7 +10,6 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
 
 ?>
 <div data-ajax-refresh="<?php echo $ajax_refresh; ?>" data-product_id="<?php echo $product->get_id(); ?>" class='magepeople_mepp_single_deposit_form <?php echo $basic_buttons ? 'basic-wc-deposits-options-form' : 'wc-deposits-options-form'; ?>'>
-    <hr class='separator'/>
     <?php
     if ($storewide_deposit_enabled_details !== 'no') {
         if (!$has_payment_plans && $product->get_type() !== 'grouped') {
@@ -19,7 +18,7 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
                 $minimum_amount = $product->get_meta('_mepp_deposit_amount', true);
                 if (!empty($minimum_amount)) : ?>
                     <div class="deposit-option">
-                        <label for="deposit-amount"><?php esc_html_e('Minimum Deposit Amount:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
+                        <h2 for="deposit-amount"><?php esc_html_e('Minimum Deposit Amount:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h2>
                         <span id="deposit-amount"><?php echo wc_price($minimum_amount); ?></span>
                     </div>
                     <div class="deposit-option">
@@ -28,9 +27,9 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
                     </div>
                 <?php endif;
             } else { ?>
-                <label class='deposit-option'>
-                    <?php esc_html_e($deposit_option_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                    <br>
+                <h6 class='deposit-option'>
+                    <!-- <?php esc_html_e($deposit_option_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    <br> -->
                     <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     <?php if ($product->get_type() === 'variable' && $deposit_info['type'] === 'percent') { ?>
                         <span id='deposit-amount'><?php echo $deposit_amount . '%'; ?></span>
@@ -38,7 +37,7 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
                         <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                     <?php } ?>
                     <span id='deposit-suffix'><?php echo $suffix; ?></span>
-                </label>
+                </h6>
             <?php }
         }
     }
