@@ -14,6 +14,81 @@ if (!function_exists('mepp_get_option')) {
     }
 }
 
+add_action('wp_footer', 'remove_duplicate_order_review_data');
+function remove_duplicate_order_review_data() {
+    if (is_checkout() && isset($_GET['pay_for_order'])) {
+        ?>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                const orderReview = document.querySelectorAll('#order_review');
+                if (orderReview.length > 1) {
+                    for (let i = 1; i < orderReview.length; i++) {
+                        orderReview[i].remove();
+                    }
+                }
+            });
+        </script>
+        <?php
+    }
+}
+
+add_filter('the_content', 'mepp_modify_cart_checkout_content', 20);
+
+function mepp_modify_cart_checkout_content($content) {
+    // Check if we are on the cart page
+    if (is_cart()) {
+        // Add styles to hide specific classes on the cart page
+        $style = '<style>
+            .wc-block-components-sidebar-layout,
+            .wc-block-cart,
+            .wp-block-woocommerce-filled-cart-block,
+            .wp-block-woocommerce-cart {
+                display: none !important;
+            }
+            .woocommerce-cart.alignwide.is-loading {
+                display: block !important; /* Display the WooCommerce cart */
+            }
+        </style>';
+
+        // Check if the cart shortcode is not already present
+        if (strpos($content, '[woocommerce_cart]') === false) {
+            // Ensure the styles and shortcode are appended correctly
+            return $style . do_shortcode('[woocommerce_cart]');
+        } else {
+            return $style . $content;
+        }
+    }
+
+    // Check if we are on the checkout page
+    if (is_checkout()) {
+        // Add styles to hide specific classes on the checkout page
+        $style = '<style>
+            .wc-block-components-sidebar-layout,
+            .wc-block-cart,
+            .wp-block-woocommerce-filled-cart-block,
+            .wp-block-woocommerce-cart {
+                display: none !important;
+            }
+            .woocommerce-cart.alignwide.is-loading {
+                display: block !important; /* Display the WooCommerce cart */
+            }
+        </style>';
+
+        // Check if the checkout shortcode is not already present
+        if (strpos($content, '[woocommerce_checkout]') === false) {
+            // Ensure the styles and shortcode are appended correctly
+            return $style . do_shortcode('[woocommerce_checkout]');
+        } else {
+            return $style . $content;
+        }
+    }
+
+    return $content;
+}
+
+
+            
+
 add_action('wp_loaded', 'handle_pay_now_action');
 
 function handle_pay_now_action() {
