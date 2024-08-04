@@ -176,7 +176,9 @@ function mepp_add_pay_deposit_button() {
 
     // Check if deposits are enabled for the product and mepp_storewide_deposit_enabled_btn is yes
     if (mepp_is_product_deposit_enabled($product->get_id()) && $storewide_deposit_btn_enabled === 'yes') {
-        echo '<a href="' . esc_url(get_permalink($product->get_id())) . '" class="button pay-deposit-button">' . __('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>';
+        echo '<div style="text-align:center">';
+        echo '<a href="' . esc_url(get_permalink($product->get_id())) . '" class="wp-block-button__link wp-element-button wc-block-components-product-button__button add_to_cart_button ajax_add_to_cart product_type_simple has-font-size has-small-font-size has-text-align-center wc-interactive pay-deposit-button">' . __('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>';
+        echo '</div>';
     }
 }
 
