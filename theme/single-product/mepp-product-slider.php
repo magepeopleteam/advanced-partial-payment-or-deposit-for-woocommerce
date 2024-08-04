@@ -27,7 +27,7 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
                     </div>
                 <?php endif;
             } else { ?>
-                <h4 class='deposit-option'>
+                <h6 class='deposit-option'>
                     <!-- <?php esc_html_e($deposit_option_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     <br> -->
                     <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
@@ -37,7 +37,7 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
                         <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                     <?php } ?>
                     <span id='deposit-suffix'><?php echo $suffix; ?></span>
-                </h4>
+                </h6>
             <?php }
         }
     }
