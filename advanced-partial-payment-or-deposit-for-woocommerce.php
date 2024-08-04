@@ -189,9 +189,10 @@ if (mepp_woocommerce_is_active()) :
                 add_action('init', 'MagePeople\MEPP\MEPP_Advance_Deposits::plugin_activated', 100); //plugin activated is not called with automatic updates anymore.
 
             }
-         
+           
                     }
-            
+
+               
 
         /**
          * Display additional links in plugin row located in plugins page
