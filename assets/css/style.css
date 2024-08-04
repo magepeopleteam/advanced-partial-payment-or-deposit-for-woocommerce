@@ -179,3 +179,16 @@
 .payment-plan-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+.wc-deposits-options-form .deposit-option {
+     display: block;
+     color: #475569;
+     font-weight: 700;
+     border: 1px solid #f2f2f2;
+     background-color: #f2f2f2;
+     padding: 20px; 
+     margin: 10px 0;
+     text-align: center;
+     border: 1px solid #475569;
+    }
+

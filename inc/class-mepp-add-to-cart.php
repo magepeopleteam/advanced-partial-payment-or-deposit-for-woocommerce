@@ -125,8 +125,7 @@ public function enqueue_inline_styles()
           background: -o-linear-gradient({$gstart}, {$gend});
           background: linear-gradient({$gstart}, {$gend});
         }
-        .wc-deposits-options-form .amount { color: {$highlight}; }
-        .wc-deposits-options-form .deposit-option { display: block;color: #475569;font-weight: 700;border: 1px solid #f2f2f2;background-color: #f2f2f2;padding: 2%; }";
+        .wc-deposits-options-form .amount { color: {$highlight}; }";
     wp_add_inline_style('wc-deposits-frontend-styles', $style);
 }
 
