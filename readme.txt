@@ -2,15 +2,15 @@
 Contributors: magepeopleteam, aamahin
 Tags: deposits, woocommerce, woocommerce deposits, partial payments
 Requires at least: 5.3
-Stable tag: 3.0.0
+Stable tag: trunk
 Tested up to: 6.6
 WC requires at least: 3.0
-WC tested up to: 9.0
+WC tested up to: 8.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-WooCommerce Deposit & Partial Payment - WpDepositly Plugin  is a complete payment solution for paying deposits before completing a purchase.
+WooCommerce Deposit & Partial Payment - WpDepositly Plugin  is a complete payment solution for paying deposits before completing a purchase. 
 
 == Description ==
 The [WooCommerce Deposit & Partial Payment Plugin](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/) - WpDepositly is a complete payment solution to meet your business needs, especially for securely paying deposits before completing a purchase. Leveraging the trend of installment payments and down payments, this solution easily integrates into your Woocommerce shop, making it effortless for customers to secure orders with a deposit.
@@ -47,7 +47,7 @@ Your basic needs will be fulfilled with the Free Version Plugin which includes F
 ***📊 Accessible partial payment history:*** View and track partial payment history conveniently on the My Account page.
 ***💲 Fixed/Percentage deposit options:*** Choose between fixed or percentage-based deposit options for partial payments.
 ***💸 Pay outstanding amounts:*** Settle outstanding amounts directly from the My Account page, supporting all payment gateways.
-***📅 Compatible with Woocommerce Event Manager:*** Seamlessly integrated with the Woocommerce Event Manager Plugin.
+***📅 Compatible with WooCommerce Event Manager:*** Seamlessly integrated with the Woocommerce Event Manager Plugin.
 ***📜 Payment history on My Account page:*** Easily access and review payment history on the My Account page.
 
 
@@ -59,7 +59,6 @@ Upgrading to the pro version you will get some premium features that will enhanc
 ***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a fixed amount or a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
 ***Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
 ***💰 Zero amount payment option:*** Allow customers to make zero-amount payments for specific scenarios.
-***💵 Custom amount payment option:*** Provide flexibility with a custom amount payment option on the cart and checkout pages.[live pro version demo](https://partial.mage-people.com/product/wordpress-pennant/)
 ***📬 Receive payment reminder emails:***
 
 Watch The Comprehensive Video Demonstration Of Our Partial Payment And Deposit Plugin In Action:
@@ -86,7 +85,7 @@ After successfully installed and activate you can see a new tab name Deposit in 
 
 
 ### Note:
-We do best support for our plugin, we have fully confidence that our plugin working very well for any theme. in case you face any problem with our plugin or any customization needed please email us: magepeopleteam@gmail.com
+We do best support for our plugin, we have fully confidence that our plugin working very well for any theme. in case you face any problem with our plugin or any customization needed please email us: support@mage-people.com
 our support team will back to you shortly.
 
 
@@ -120,8 +119,38 @@ A. No! Upgradation is easy it will just add extra feature with free version.
 
 
 == Changelog ==
-= 3.0.1 =
-ads for pro features in settings tab 
+
+= 1.0.0 =
+*Initial Release*
+10 Nov 2021
+
+= 1.0.2 =
+*Bug fixed*
+29 Nov 2021
+
+= 1.0.3 =
+PHP Warning fixed
+Bug fixed*
+30 Nov 2021
+
+= 1.0.5 =
+Bug fixed*
+20 Dec 2021
+
+= 2.0.0 =
+New Feature Added
+Bug fixed*
+23 Feb 2022
+
+= 2.0.2 =
+New Feature Added
+Bug fixed*
+15 March 2022
+
+= 2.0.4 =
+New Feature Added
+Bug fixed*
+06 April 2022
 
 = 3.0.0 =
 WPML and PDF Invoices & Packing Slips for WooCommerce  supported.
@@ -130,35 +159,3 @@ Calculation & Structure (Fees Collection Method,Discount Coupons Handling).
 Display & Text (Hide Deposit UI when forced,Override payment form,Display Taxes In Product page,Display taxes in cart item Details,Display Deposit-breakdown Tooltip in cart) And Buttons deign settings.
 
 03 July 2024
-
-= 2.0.4 =
-New Feature Added
-Bug fixed*
-06 April 2022
-
-= 2.0.2 =
-New Feature Added
-Bug fixed*
-15 March 2022
-
-= 2.0.0 =
-New Feature Added
-Bug fixed*
-23 Feb 2022
-
-= 1.0.5 =
-Bug fixed*
-20 Dec 2021
-
-= 1.0.3 =
-PHP Warning fixed
-Bug fixed*
-30 Nov 2021
-
-= 1.0.2 =
-*Bug fixed*
-29 Nov 2021
-
-= 1.0.0 =
-*Initial Release*
-10 Nov 2021
