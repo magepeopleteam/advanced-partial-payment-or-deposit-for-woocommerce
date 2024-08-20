@@ -1,0 +1,20 @@
+{
+  "name": "advanced-partial-payment-or-deposit-for-woocommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "sass --watch assets/sass/main.scss assets/css/admin-style.css",
+    "build": "sass --watch --style compressed assets/sass/main.scss assets/css/admin-style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magepeopleteam/advanced-partial-payment-or-deposit-for-woocommerce.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/magepeopleteam/advanced-partial-payment-or-deposit-for-woocommerce/issues"
+  },
+  "homepage": "https://github.com/magepeopleteam/advanced-partial-payment-or-deposit-for-woocommerce#readme"
+}

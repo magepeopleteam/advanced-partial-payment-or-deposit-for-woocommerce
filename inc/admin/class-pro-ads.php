@@ -39,7 +39,10 @@ class MEPP_Pro_Ads{
 
     public function payment_plans_ads(){
         ?>
-        <div id="payment-plan-ads"> 
+        <div class="wrap"> 
+            <h2>
+                <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+            </h2>
             <div class="pro-ads">
                 <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
                 <img src="<?php echo MEPP_PLUGIN_URL; ?>/assets/images/payment-plans.png" alt="" >
