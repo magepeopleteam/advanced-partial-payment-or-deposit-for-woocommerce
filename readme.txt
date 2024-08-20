@@ -114,12 +114,16 @@ Extract the zip file and just drop the contents in the wp-content/plugins/ direc
 A. Yes! Advanced - Deposit & Partial Payment for WooCommerce is free.
 
 
-= Q.If I upgrade pro version from baic version of Deposit & Partial Payment for WooCommerce, will I loose previous Date =
+= Q.If I upgrade pro version from basic version of Deposit & Partial Payment for WooCommerce, will I loose previous Date =
 A. No! Upgradation is easy it will just add extra feature with free version.
 
 
 
 == Changelog ==
+= 3.0.3 =
+partial payment form add details
+in admin order section by default has column for partial 
+
 = 3.0.1 =
 ads for pro features in settings tab 
 
