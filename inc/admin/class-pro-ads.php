@@ -17,7 +17,6 @@ class MEPP_Pro_Ads{
     public function __construct()
     {
         add_action('init', array($this, 'show_pro_advertise'));
-         
     }
 
     public function show_pro_advertise(){
@@ -30,7 +29,7 @@ class MEPP_Pro_Ads{
         add_submenu_page(
             'admin-mepp-deposits',       // Parent slug (the slug of the top-level menu)
             'Payment plans',      // Page title
-            'Payment plans',         // Sub-menu title
+            'Payment plans (pro)',         // Sub-menu title
             'manage_options',       // Capability required to view this submenu
             'payment-plans',      // Submenu slug (unique ID)
             [$this,'payment_plans_ads'] // Callback function to display the submenu page content
@@ -39,7 +38,7 @@ class MEPP_Pro_Ads{
 
     public function payment_plans_ads(){
         ?>
-        <div class="wrap"> 
+        <div class="wrap" style="max-width: 850px;"> 
             <h2>
                 <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
             </h2>
@@ -60,13 +59,13 @@ class MEPP_Pro_Ads{
 
 
     public static function get_purchase_link(){
-        return 'https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/';
+        return  self::$link;
     }
 
     public static function get_purchase_button(){
         if( ! defined('MEPP_PRO_VERSION_ACTIVE')):
         ?>
-        <a target="_blank" href="<?php echo esc_attr(MEPP_Pro_Ads::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+        <a target="_blank" href="<?php echo esc_attr(self::get_purchase_link()) ?>" class="button button-primary"><?php _e('Buy pro','advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
         <?php
         endif;
     }
