@@ -81,7 +81,7 @@ class  MEPP_Taxonomies
      * Registers mepp_payment_plan taxonomy for products
      */
     function register_payment_plan_taxonomy()
-{
+    {
     // Check if PRO functions exist
     if (defined('MEPP_PRO_VERSION_ACTIVE')){
         register_taxonomy(
