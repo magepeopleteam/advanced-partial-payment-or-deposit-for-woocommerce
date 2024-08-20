@@ -731,10 +731,12 @@ label[for=mepp_storewide_deposit_payment_plans] {
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td fieldset input[type=number] {
   text-align: left;
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads {
+
+.pro-ads {
   position: relative;
+  width: auto;
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads .button {
+.pro-ads .button {
   display: none;
   position: absolute;
   top: 50%;
@@ -746,10 +748,10 @@ label[for=mepp_storewide_deposit_payment_plans] {
   border-radius: 10px;
   transform: translate(-50%, -50%);
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads:hover .button, .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads:focus .button {
+.pro-ads:hover .button, .pro-ads:focus .button {
   display: block;
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads:hover::before, .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .pro-ads:focus::before {
+.pro-ads:hover::before, .pro-ads:focus::before {
   content: "";
   position: absolute;
   top: 0;
