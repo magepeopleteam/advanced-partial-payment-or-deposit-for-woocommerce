@@ -414,6 +414,7 @@ public function settings_tabs_mepp()
                     'type' => 'checkbox',
                     'desc' => esc_html__('Check to show a column in admin order list indicating if order has deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     'id' => 'mepp_order_list_table_show_has_deposit',
+                    'default' => 'yes',
                 ),
 
                 'disable_deposit_for_user_roles' => array(
@@ -550,7 +551,7 @@ public function settings_tabs_mepp()
                     'type' => 'checkbox',
                     'desc' => esc_html__('allow overriding "form-pay.php" template to display original order details during partial payment checkout', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     'id' => 'mepp_override_payment_form',
-                    'default' => 'no',
+                    'default' => 'yes',
                 ),
                 'deposits_tax' => array(
                     'name' => esc_html__('Display Taxes In Product page', 'advanced-partial-payment-or-deposit-for-woocommerce'),
