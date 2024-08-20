@@ -28,8 +28,8 @@ class MEPP_Pro_Ads{
     public function add_menu_payment_plan(){
         add_submenu_page(
             'admin-mepp-deposits',       // Parent slug (the slug of the top-level menu)
-            'Payment plans',      // Page title
-            'Payment plans (pro)',         // Sub-menu title
+            'Payment Plans',      // Page title
+            'Payment Plans <span class="pro-nav">PRO</span>',         // Sub-menu title
             'manage_options',       // Capability required to view this submenu
             'payment-plans',      // Submenu slug (unique ID)
             [$this,'payment_plans_ads'] // Callback function to display the submenu page content
