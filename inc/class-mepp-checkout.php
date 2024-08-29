@@ -29,8 +29,6 @@ class MEPP_Checkout
             add_action('woocommerce_checkout_update_order_review', array($this, 'update_order_review'), 10, 1);
             add_action('woocommerce_review_order_after_order_total', array($this, 'checkout_deposit_button'), 50);
         }
-        add_action('woocommerce_checkout_order_processed', array($this, 'custom_change_default_order_status'), 10, 3);
-        add_action('wp_footer', array($this, 'modify_order_statuses_inline_script'));
         add_action('woocommerce_checkout_create_order_line_item', array($this, 'checkout_create_order_line_item'), 10, 4);
         add_action('woocommerce_deposits_after_create_order', array($this, 'checkout_update_order_meta'), 10);
         add_action('woocommerce_review_order_after_order_total', array($this, 'review_order_after_order_total'));
@@ -105,36 +103,7 @@ class MEPP_Checkout
 
     }
     
-            function custom_change_default_order_status($order_id, $posted_data, $order) {
-                // Change the default order status to 'processing' for new orders
-                $order->update_status('processing');
-            }
-
-            function modify_order_statuses_inline_script() {
-                ?>
-                <script>
-                jQuery(document).ready(function(){
-                    // Find the cell containing "Processing" and replace it with "Partially Paid"
-                    jQuery('.woocommerce-table tbody td:contains("Processing")').text('Partially Paid');
-
-                    // Find the cell containing "On hold" and replace it with "Completed"
-                    jQuery('.woocommerce-table tbody td:contains("On hold")').text('Completed');
-                });
-                </script>
-                <?php
-            }
-
-            // Modify order status in the admin panel
-            function custom_modify_order_status_admin_panel($order_id, $old_status, $new_status) {
-                // Check if the new status is 'processing'
-                if ($new_status === 'processing') {
-                    // Update the order status to 'Partially Paid' for partial payment
-                    $order = wc_get_order($order_id);
-                    if ($order && $order->get_total() > $order->get_total_paid()) {
-                        $order->update_status('partially-paid');
-                    }
-                }
-            }
+            
 
 
     /**
