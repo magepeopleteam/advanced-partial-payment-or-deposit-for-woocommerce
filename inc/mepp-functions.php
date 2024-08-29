@@ -8,44 +8,6 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Update Order Status to "Completed" if the final payment has been made
- */
-function update_order_status_to_completed_if_final_payment_done($order_id) {
-    $order = wc_get_order($order_id);
-
-    if ($order) {
-        // Retrieve the payment schedule from the order meta
-        $payment_schedule = get_post_meta($order_id, '_mepp_payment_schedule', true);
-
-        if (!empty($payment_schedule) && is_array($payment_schedule)) {
-            // Get the current status
-            $current_status = $order->get_status();
-
-            // Check if the current status is "partially-paid"
-            if ($current_status === 'partially-paid') {
-                // Get the last payment in the schedule
-                $last_payment = end($payment_schedule);
-
-                // Check if the last payment has been made
-                $is_last_payment_done = false;
-                if (isset($last_payment['timestamp'])) {
-                    $current_time = current_time('timestamp');
-                    if ($current_time >= $last_payment['timestamp']) {
-                        $is_last_payment_done = true;
-                    }
-                }
-
-                // If the last payment has been made, update the status to "completed"
-                if ($is_last_payment_done) {
-                    $order->update_status('completed', 'Order status updated to completed because the final payment has been made.');
-                }
-            }
-        }
-    }
-}
-add_action('woocommerce_order_status_partially-paid', 'update_order_status_to_completed_if_final_payment_done', 15, 1);
-
-/**
  * Update Order Status to "Partially Paid" if the Order is "On Hold"
  */
 function update_order_status_to_partially_paid($order_id) {
@@ -58,7 +20,7 @@ function update_order_status_to_partially_paid($order_id) {
         // Check if the order status is "on-hold"
         if ($current_status === 'on-hold') {
             // Update the status to "partially-paid"
-            $order->update_status('completed', 'Order status updated to completed because it was on-hold.');
+            $order->update_status('partially-paid', 'Order status updated to completed because it was on-hold.');
         }
     }
 }
