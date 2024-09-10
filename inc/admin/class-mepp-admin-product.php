@@ -225,7 +225,74 @@ class MEPP_Admin_Product
                     </div>
                 <?php endif; ?>
             </div>
+            <div class="options_group" id="options_group">
+    <?php
+    // Retrieve global settings
+    $deposit_enabled_global = get_option('mepp_storewide_deposit_enabled', 'no'); 
+    $deposit_type_global = get_option('mepp_storewide_deposit_amount_type', 'fixed'); 
+    $deposit_amount_global = get_option('mepp_storewide_deposit_amount', 0); 
 
+    // Sanitize global settings
+    $deposit_enabled_global = sanitize_text_field($deposit_enabled_global);
+    $deposit_type_global = sanitize_text_field($deposit_type_global);
+    $deposit_amount_global = floatval($deposit_amount_global); 
+
+    // Determine global deposit status and color
+    $deposit_status_global = ($deposit_enabled_global === 'yes') ? 'Enabled' : 'Disabled';
+    $status_color_global = ($deposit_enabled_global === 'yes') ? 'green' : 'red'; 
+
+    // Get the current product ID
+    $product_id = get_the_ID();
+
+    // Fetch product-specific metadata
+    $inherit_storewide_settings = get_post_meta($product_id, '_mepp_inherit_storewide_settings', true);
+    $enable_deposit_local = get_post_meta($product_id, '_mepp_enable_deposit', true);
+    $deposit_type_local = get_post_meta($product_id, '_mepp_amount_type', true);
+    $deposit_amount_local = get_post_meta($product_id, '_mepp_deposit_amount', true);
+
+    // Determine the local deposit status and color
+    $deposit_status_local = ($enable_deposit_local === 'yes') ? 'Enabled' : 'Disabled';
+    $status_color_local = ($deposit_status_local === 'Enabled') ? 'green' : 'red';
+
+    // Decide which settings to display (Global or Local)
+    if ($inherit_storewide_settings === 'no' && $enable_deposit_local === 'yes') {
+        // Display Local Settings
+        $status_color = $status_color_local;
+        $deposit_status = $deposit_status_local;
+        $setting_label = 'Local';
+        $deposit_type = $deposit_type_local;
+        $deposit_amount = $deposit_amount_local;
+    } else {
+        // Display Global Settings
+        $status_color = $status_color_global;
+        $deposit_status = $deposit_status_global;
+        $setting_label = 'Global';
+        $deposit_type = ($deposit_enabled_global === 'yes') ? $deposit_type_global : '';
+        $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
+    }
+    ?>
+
+    <!-- Display the settings -->
+    <div style="padding: 15px; margin-top: 20px; border-radius: 5px; background-color: #99999917; width: 40%; margin: 10px auto; color: #000; font-size: 20px;">
+        <h3>Partial status for this product</h3>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1; font-weight: bold;">Partial Payment:</div>
+            <div style="flex: 1; color: <?php echo esc_attr($status_color); ?>;"><?php echo esc_html($deposit_status); ?></div>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1; font-weight: bold;">Setting:</div>
+            <div style="flex: 1;"><?php echo esc_html($setting_label); ?></div>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1; font-weight: bold;">Deposit Type:</div>
+            <div style="flex: 1;"><?php echo esc_html($deposit_type); ?></div>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1; font-weight: bold;">Deposit Value:</div>
+            <div style="flex: 1;"><?php echo esc_html($deposit_amount); ?></div>
+        </div>
+    </div>
+</div>                  
 
             <?php do_action('mepp_admin_product_editor_tab', $product); ?>
         </div>
