@@ -769,4 +769,143 @@ label[for=mepp_storewide_deposit_payment_plans] {
   z-index: 1;
 }
 
+/* Shahnur */
+.product-status {
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(153, 153, 153, 0.1), rgba(255, 255, 255, 0.1));
+  width: 40%;
+  color: #333;
+  font-size: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1) inset;
+  transition: all 0.4s ease-in-out;
+  animation: slideIn 0.7s ease-out, shadowPulse 3s infinite alternate;
+  animation-delay: 0.3s;
+  margin-left: 1%;
+}
+
+/* Title Style */
+.product-status h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  animation: bounceIn 1s ease-in-out;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.product-status h3::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #333;
+  margin: 8px auto 0;
+  animation: expand 1s ease-in-out forwards;
+}
+
+/* Row Styles */
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.status-row:last-child {
+  border-bottom: none;
+}
+
+.status-row:hover {
+  background-color: rgba(153, 153, 153, 0.3);
+  transform: translateX(10px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.status-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  background-color: #333;
+  border-radius: 50%;
+  transform: translateY(-50%) scale(0);
+  transition: transform 0.3s ease;
+}
+
+.status-row:hover::before {
+  transform: translateY(-50%) scale(1.5);
+}
+
+/* Label and Value Styles */
+.status-label {
+  flex: 1;
+  font-weight: bold;
+  opacity: 0.8;
+  transition: color 0.3s ease;
+}
+
+.status-value {
+  flex: 1;
+  font-weight: 800;
+  opacity: 0.9;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.status-row:hover .status-value {
+  color: #ff6f61;
+  transform: translateX(5px);
+}
+
+/* Keyframe Animations */
+@keyframes slideIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes shadowPulse {
+  0% {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1) inset;
+  }
+  100% {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 6px 12px rgba(0, 0, 0, 0.2) inset;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+      transform: scale(0.8);
+      opacity: 0;
+  }
+  50% {
+      transform: scale(1.1);
+      opacity: 1;
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+@keyframes expand {
+  0% {
+      width: 0;
+  }
+  100% {
+      width: 60px;
+  }
+}
 /*# sourceMappingURL=admin-style.css.map */
