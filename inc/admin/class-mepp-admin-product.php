@@ -282,7 +282,7 @@ class MEPP_Admin_Product
                 <div class="status-label"><?php _e('Deposit Type:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
                 <div class="status-value"><?php echo esc_html($deposit_type); ?></div>
             </div>
-            <?php if ($deposit_amount): ?>
+            <?php if ($deposit_amount && !$has_payment_plan): ?>
                 <div class="status-row">
                     <div class="status-label"><?php _e('Deposit Value:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
                     <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
