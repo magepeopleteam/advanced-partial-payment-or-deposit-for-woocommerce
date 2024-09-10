@@ -225,12 +225,13 @@ class MEPP_Admin_Product
                     </div>
                 <?php endif; ?>
             </div>
-            <div class="options_group" id="options_group">
+<div class="options_group" id="options_group">
     <?php
     // Retrieve global settings
     $deposit_enabled_global = get_option('mepp_storewide_deposit_enabled', 'no'); 
     $deposit_type_global = get_option('mepp_storewide_deposit_amount_type', 'fixed'); 
     $deposit_amount_global = get_option('mepp_storewide_deposit_amount', 0); 
+    $deposit_force_global = get_option('mepp_storewide_deposit_force_deposit', 'no'); // Check for global force deposit
 
     // Sanitize global settings
     $deposit_enabled_global = sanitize_text_field($deposit_enabled_global);
@@ -249,6 +250,7 @@ class MEPP_Admin_Product
     $enable_deposit_local = get_post_meta($product_id, '_mepp_enable_deposit', true);
     $deposit_type_local = get_post_meta($product_id, '_mepp_amount_type', true);
     $deposit_amount_local = get_post_meta($product_id, '_mepp_deposit_amount', true);
+    $deposit_force_local = get_post_meta($product_id, '_mepp_force_deposit', true); // Check for local force deposit
 
     // Determine the local deposit status and color
     $deposit_status_local = ($enable_deposit_local === 'yes') ? 'Enabled' : 'Disabled';
@@ -270,29 +272,57 @@ class MEPP_Admin_Product
         $deposit_type = ($deposit_enabled_global === 'yes') ? $deposit_type_global : '';
         $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
     }
+
+    // Fetch the payment plan meta data for the product
+    $payment_plan_local = get_post_meta($product_id, '_mepp_amount_type', true);
+    $payment_plan_global = get_option('mepp_storewide_deposit_amount_type', true); // Default to 'fixed'
+    $has_payment_plan = ($payment_plan_local === 'payment_plan' || $payment_plan_global === 'payment_plan'); // Check for payment plan
+    
     ?>
 
-    <!-- Display the settings -->
-    <div style="padding: 15px; margin-top: 20px; border-radius: 5px; background-color: #99999917; width: 40%; margin: 10px auto; color: #000; font-size: 20px;">
-        <h3>Partial status for this product</h3>
-        <div style="display: flex; justify-content: space-between;">
-            <div style="flex: 1; font-weight: bold;">Partial Payment:</div>
-            <div style="flex: 1; color: <?php echo esc_attr($status_color); ?>;"><?php echo esc_html($deposit_status); ?></div>
+    <div class="product-status">
+        <h3>Partial Status for This Product</h3>
+        <div class="status-row">
+            <div class="status-label">Partial Payment:</div>
+            <div class="status-value" style="color: <?php echo esc_attr($status_color); ?>;"><?php echo esc_html($deposit_status); ?></div>
         </div>
-        <div style="display: flex; justify-content: space-between;">
-            <div style="flex: 1; font-weight: bold;">Setting:</div>
-            <div style="flex: 1;"><?php echo esc_html($setting_label); ?></div>
+        <div class="status-row">
+            <div class="status-label">Setting:</div>
+            <div class="status-value"><?php echo esc_html($setting_label); ?></div>
         </div>
-        <div style="display: flex; justify-content: space-between;">
-            <div style="flex: 1; font-weight: bold;">Deposit Type:</div>
-            <div style="flex: 1;"><?php echo esc_html($deposit_type); ?></div>
+        <div class="status-row">
+            <div class="status-label">Deposit Type:</div>
+            <div class="status-value"><?php echo esc_html($deposit_type); ?></div>
         </div>
-        <div style="display: flex; justify-content: space-between;">
-            <div style="flex: 1; font-weight: bold;">Deposit Value:</div>
-            <div style="flex: 1;"><?php echo esc_html($deposit_amount); ?></div>
+        <?php if ($deposit_amount && !$has_payment_plan): // Show if there's a deposit amount and no payment plan ?>
+        <div class="status-row">
+            <div class="status-label">Deposit Value:</div>
+            <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
         </div>
+        <?php elseif ($deposit_amount): // Show if there's a deposit amount regardless of payment plan ?>
+        <div class="status-row">
+            <div class="status-label">Deposit Value:</div>
+            <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
+        </div>
+        <?php endif; ?>
+
+        <!-- New section for Force Deposit -->
+        <?php if ($deposit_force_global === 'yes'): // Show global force deposit ?>
+        <div class="status-row" style="color: green;">
+            <div class="status-label">Global Force Deposit:</div>
+            <div class="status-value">Enabled</div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($deposit_force_local === 'yes'): // Show local force deposit ?>
+        <div class="status-row" style="color: green;">
+            <div class="status-label">Local Force Deposit:</div>
+            <div class="status-value">Enabled</div>
+        </div>
+        <?php endif; ?>
     </div>
-</div>                  
+
+</div>
 
             <?php do_action('mepp_admin_product_editor_tab', $product); ?>
         </div>
