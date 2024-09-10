@@ -284,7 +284,7 @@ class MEPP_Admin_Product
         <h3>Partial Status for This Product</h3>
         <div class="status-row">
             <div class="status-label">Partial Payment:</div>
-            <div class="status-value" style="color: <?php echo esc_attr($status_color); ?>;"><?php echo esc_html($deposit_status); ?></div>
+            <div class="status-value enable" style="color: <?php echo esc_attr($status_color); ?>;"><?php echo esc_html($deposit_status); ?></div>
         </div>
         <div class="status-row">
             <div class="status-label">Setting:</div>
