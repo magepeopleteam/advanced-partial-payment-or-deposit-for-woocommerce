@@ -225,7 +225,104 @@ class MEPP_Admin_Product
                     </div>
                 <?php endif; ?>
             </div>
+<div class="options_group" id="options_group">
+    <?php
+    // Retrieve global settings
+    $deposit_enabled_global = get_option('mepp_storewide_deposit_enabled', 'no'); 
+    $deposit_type_global = get_option('mepp_storewide_deposit_amount_type', 'fixed'); 
+    $deposit_amount_global = get_option('mepp_storewide_deposit_amount', 0); 
+    $deposit_force_global = get_option('mepp_storewide_deposit_force_deposit', 'no'); // Check for global force deposit
 
+    // Sanitize global settings
+    $deposit_enabled_global = sanitize_text_field($deposit_enabled_global);
+    $deposit_type_global = sanitize_text_field($deposit_type_global);
+    $deposit_amount_global = floatval($deposit_amount_global); 
+
+    // Determine global deposit status and color
+    $deposit_status_global = ($deposit_enabled_global === 'yes') ? 'Enabled' : 'Disabled';
+    $status_color_global = ($deposit_enabled_global === 'yes') ? 'green' : 'red'; 
+
+    // Get the current product ID
+    $product_id = get_the_ID();
+
+    // Fetch product-specific metadata
+    $inherit_storewide_settings = get_post_meta($product_id, '_mepp_inherit_storewide_settings', true);
+    $enable_deposit_local = get_post_meta($product_id, '_mepp_enable_deposit', true);
+    $deposit_type_local = get_post_meta($product_id, '_mepp_amount_type', true);
+    $deposit_amount_local = get_post_meta($product_id, '_mepp_deposit_amount', true);
+    $deposit_force_local = get_post_meta($product_id, '_mepp_force_deposit', true); // Check for local force deposit
+
+    // Determine the local deposit status and color
+    $deposit_status_local = ($enable_deposit_local === 'yes') ? 'Enabled' : 'Disabled';
+    $status_color_local = ($deposit_status_local === 'Enabled') ? 'green' : 'red';
+
+    // Decide which settings to display (Global or Local)
+    if ($inherit_storewide_settings === 'no' && $enable_deposit_local === 'yes') {
+        // Display Local Settings
+        $status_color = $status_color_local;
+        $deposit_status = $deposit_status_local;
+        $setting_label = 'Local';
+        $deposit_type = $deposit_type_local;
+        $deposit_amount = $deposit_amount_local;
+    } else {
+        // Display Global Settings
+        $status_color = $status_color_global;
+        $deposit_status = $deposit_status_global;
+        $setting_label = 'Global';
+        $deposit_type = ($deposit_enabled_global === 'yes') ? $deposit_type_global : '';
+        $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
+    }
+
+    // Fetch the payment plan meta data for the product
+    $payment_plan_local = get_post_meta($product_id, '_mepp_amount_type', true);
+    $payment_plan_global = get_option('mepp_storewide_deposit_amount_type', true); // Default to 'fixed'
+    $has_payment_plan = ($payment_plan_local === 'payment_plan' || $payment_plan_global === 'payment_plan'); // Check for payment plan
+    
+    ?>
+
+    <div class="product-status">
+        <h3>Partial Status for This Product</h3>
+        <div class="status-row">
+            <div class="status-label">Partial Payment:</div>
+            <div class="status-value" style="color: <?php echo esc_attr($status_color); ?>;"><?php echo esc_html($deposit_status); ?></div>
+        </div>
+        <div class="status-row">
+            <div class="status-label">Setting:</div>
+            <div class="status-value"><?php echo esc_html($setting_label); ?></div>
+        </div>
+        <div class="status-row">
+            <div class="status-label">Deposit Type:</div>
+            <div class="status-value"><?php echo esc_html($deposit_type); ?></div>
+        </div>
+        <?php if ($deposit_amount && !$has_payment_plan): // Show if there's a deposit amount and no payment plan ?>
+        <div class="status-row">
+            <div class="status-label">Deposit Value:</div>
+            <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
+        </div>
+        <?php elseif ($deposit_amount): // Show if there's a deposit amount regardless of payment plan ?>
+        <div class="status-row">
+            <div class="status-label">Deposit Value:</div>
+            <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
+        </div>
+        <?php endif; ?>
+
+        <!-- New section for Force Deposit -->
+        <?php if ($deposit_force_global === 'yes'): // Show global force deposit ?>
+        <div class="status-row" style="color: green;">
+            <div class="status-label">Global Force Deposit:</div>
+            <div class="status-value">Enabled</div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($deposit_force_local === 'yes'): // Show local force deposit ?>
+        <div class="status-row" style="color: green;">
+            <div class="status-label">Local Force Deposit:</div>
+            <div class="status-value">Enabled</div>
+        </div>
+        <?php endif; ?>
+    </div>
+
+</div>
 
             <?php do_action('mepp_admin_product_editor_tab', $product); ?>
         </div>
