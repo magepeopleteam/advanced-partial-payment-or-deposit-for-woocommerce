@@ -42,19 +42,24 @@ $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_
         }
     }
     ?>
-<div class="<?php echo $hide ? 'mepp_hidden ' : '' ?><?php echo $basic_buttons ? 'basic-switch-woocommerce-deposits' : 'deposit-options switch-toggle switch-candy switch-woocommerce-deposits'; ?>" style="padding: 20px;  width: 100%;">
-    <input id='<?php echo $product->get_id(); ?>-pay-deposit' class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
-           type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit'>
-    <label class="pay-deposit-label" for='<?php echo $product->get_id(); ?>-pay-deposit'>
-        <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-    </label>
-    <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
-           <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
-    <label class="pay-full-amount-label" for='<?php echo $product->get_id(); ?>-pay-full-amount'>
-        <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-    </label>
-    <a class='wc-deposits-switcher'></a>
-</div>
+    <div class="<?php echo $hide ? 'mepp_hidden ' : '' ?><?php echo $basic_buttons ? 'basic-switch-woocommerce-deposits' : 'deposit-options switch-toggle switch-candy switch-woocommerce-deposits'; ?>">
+        <div class="basic-style">
+            <input id='<?php echo $product->get_id(); ?>-pay-deposit' class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
+                type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit'>
+            <label class="pay-deposit-label" for='<?php echo $product->get_id(); ?>-pay-deposit'>
+                <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+            </label>
+        </div>
+
+        <div class="basic-style">
+            <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
+                <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
+            <label class="pay-full-amount-label" for='<?php echo $product->get_id(); ?>-pay-full-amount'>
+                <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+            </label>
+        </div>
+        <a class='wc-deposits-switcher'></a>
+    </div>
 
     <span class='deposit-message wc-deposits-notice'></span>
     <?php
