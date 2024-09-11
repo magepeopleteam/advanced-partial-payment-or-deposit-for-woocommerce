@@ -186,3 +186,14 @@
         color:#17a510;
         font-weight: 700;
     }
+
+    .basic-style{
+    width: 50%;
+    border: 1px solid #e5e5e5;
+    background-color: #fbfbfb;
+    padding: 10px;
+    margin-top: -1px;
+    }
+.basic-switch-woocommerce-deposits{
+    margin: 10px 0;
+}
