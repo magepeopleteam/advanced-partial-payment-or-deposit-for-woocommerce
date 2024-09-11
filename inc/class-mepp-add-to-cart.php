@@ -274,6 +274,7 @@ public function enqueue_inline_styles()
         $tax_handling = get_option('mepp_taxes_handling','split');
         $tax = 0;
         $has_payment_plans = false;
+        $payment_plans = array();
 
         if ($tax_display && $tax_handling === 'deposit') {
             $tax = wc_get_price_including_tax($product, array('price' => $price)) - wc_get_price_excluding_tax($product, array('price' => $price));
@@ -330,7 +331,7 @@ public function enqueue_inline_styles()
                 if (empty($available_plans_meta)) return $html;
 
                 $has_payment_plans = true;
-                $payment_plans = array();
+                
                 //payment plans
                 $available_plans = get_terms(array(
                         'taxonomy' => MEPP_PAYMENT_PLAN_TAXONOMY,
@@ -563,7 +564,8 @@ public function enqueue_inline_styles()
             'full_text' => $full_text,
             'deposit_option_text' => $deposit_option_text,
             'default_checked' => $default_checked,
-            'has_payment_plans' => false
+            'has_payment_plans' => false,
+            'payment_plans' => $payment_plans
         );
         if ($has_payment_plans) {
             $local_args['has_payment_plans'] = $has_payment_plans;
@@ -574,14 +576,143 @@ public function enqueue_inline_styles()
         }
         $args = ($args) ? wp_parse_args($args, $local_args) : $local_args;
         $args = apply_filters('mepp_product_slider_args', $args, $product_id);
-
+        
         ob_start();
-        wc_get_template('single-product/mepp-product-slider.php', $args, '', MEPP_TEMPLATE_PATH);
+        //wc_get_template('single-product/mepp-product-slider.php', $args, '', MEPP_TEMPLATE_PATH);
+
+        if($basic_buttons){
+            $this->basic_style($args);
+        }
+        else{
+            $this->toggle_style($args);
+        }
+
         $html = ob_get_clean();
 
         return $html;
     }
 
+    public function deposit_amount_string($args){
+        $has_payment_plans = $args['has_payment_plans'];
+        $product = $args['product'];
+        $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_details', 'yes');
+        $deposit_info = $args['deposit_info'];
+        $deposit_amount = $args['deposit_amount'];
+        $suffix = $args['suffix'];
+        if ($storewide_deposit_enabled_details !== 'no') {
+            if (!$has_payment_plans && $product->get_type() !== 'grouped') {
+                ?>
+                <h6 class='deposit-option'>
+                    <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
+                        <span id='deposit-amount'><?php echo wc_price($deposit_amount) . '%'; ?></span>
+                    <?php } else { ?>
+                        <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
+                    <?php } ?>
+                    <span id='deposit-suffix'><?php echo $suffix; ?></span>
+                </h6>
+                <?php
+            }
+        }
+    }
+
+    public function basic_style($args){
+        do_action('mepp_enqueue_product_scripts');
+        if ($args['force_deposit'] === 'yes') $args['default_checked'] = 'deposit';
+        $hide = get_option('mepp_hide_ui_when_forced', 'no') === 'yes';
+        $ajax_refresh = $args['ajax_refresh'];
+        $product = $args['product'];
+        $basic_buttons = $args['basic_buttons'];
+        $default_checked = $args['default_checked'];
+        $deposit_text = $args['deposit_text'];
+        $full_text = $args['full_text'];
+        ?>
+        <div data-ajax-refresh="<?php echo $ajax_refresh; ?>" data-product_id="<?php echo $product->get_id(); ?>" class='magepeople_mepp_single_deposit_form basic-wc-deposits-options-form' >
+        <div class="<?php echo $hide ? 'mepp_hidden ' : '' ?><?php echo $basic_buttons ? 'basic-switch-woocommerce-deposits' : 'deposit-options switch-toggle switch-candy switch-woocommerce-deposits'; ?>">
+            <label class="pay-deposit-label basic-style" for='<?php echo $product->get_id(); ?>-pay-deposit'>
+                <input id='<?php echo $product->get_id(); ?>-pay-deposit' class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
+                    type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit'>
+                    <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    <?php $this->deposit_amount_string($args); ?>
+                </label>
+            <label class="pay-full-amount-label basic-style" for='<?php echo $product->get_id(); ?>-pay-full-amount'>
+                <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
+                    <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
+                    <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+            </label>
+            <a class='wc-deposits-switcher'></a>
+        </div>
+
+        <span class='deposit-message wc-deposits-notice'></span>
+        <?php $this->payment_plan($args); ?>
+    </div>
+    <?php
+    }
+
+    public function toggle_style($args){
+        do_action('mepp_enqueue_product_scripts');
+        if ($args['force_deposit'] === 'yes') $args['default_checked'] = 'deposit';
+        $hide = get_option('mepp_hide_ui_when_forced', 'no') === 'yes';
+        
+        $ajax_refresh = $args['ajax_refresh'];
+        
+        $product = $args['product'];
+        
+        $basic_buttons = $args['basic_buttons'];
+        $default_checked = $args['default_checked'];
+        $deposit_text = $args['deposit_text'];
+        $full_text = $args['full_text'];
+        
+        ?>
+        <?php $this->deposit_amount_string($args); ?>
+        <div data-ajax-refresh="<?php echo $ajax_refresh; ?>" data-product_id="<?php echo $product->get_id(); ?>" class='magepeople_mepp_single_deposit_form wc-deposits-options-form' >
+            <div class="<?php echo $hide ? 'mepp_hidden ' : '' ?><?php echo $basic_buttons ? 'basic-switch-woocommerce-deposits' : 'deposit-options switch-toggle switch-candy switch-woocommerce-deposits'; ?>">
+                    <input id='<?php echo $product->get_id(); ?>-pay-deposit' class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
+                        type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit'>
+                    <label class="pay-deposit-label" for='<?php echo $product->get_id(); ?>-pay-deposit'>    
+                        <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    </label>
+                    <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
+                        <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
+                    <label class="pay-full-amount-label" for='<?php echo $product->get_id(); ?>-pay-full-amount'>    
+                        <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                </label>
+                <a class='wc-deposits-switcher'></a>
+            </div>
+        <span class='deposit-message wc-deposits-notice'></span>
+        <?php $this->payment_plan($args); ?>
+    </div>
+    <?php
+    }
+
+    public function payment_plan($args){
+        $has_payment_plans = $args['has_payment_plans'];
+        $payment_plans = $args['payment_plans'];
+        $deposit_text = $args['deposit_text'];
+        $product = $args['product'];
+        if ($has_payment_plans) {
+            ?>
+            <div class="mepp-payment-plans">
+                <fieldset>
+                    <ul>
+                        <?php
+                        $count = 0;
+                        foreach ($payment_plans as $plan_id => $payment_plan) {
+                            wc_get_template('single-product/mepp-product-single-plan.php',
+                                array('count' => $count,
+                                    'plan_id' => $plan_id,
+                                    'deposit_text' => $deposit_text,
+                                    'payment_plan' => $payment_plan,
+                                    'product' => $product),
+                                '', MEPP_TEMPLATE_PATH);
+                            $count++;
+                        } ?>
+                    </ul>
+                </fieldset>
+            </div>
+            <?php
+        }
+    }
 
     /**
      * @brief deposit calculation and display
