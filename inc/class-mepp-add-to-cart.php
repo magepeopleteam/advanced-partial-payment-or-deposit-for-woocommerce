@@ -602,7 +602,7 @@ public function enqueue_inline_styles()
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
                 ?>
-                <h6 class='deposit-option'>
+                <div class='deposit-option'>
                     <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
                         <span id='deposit-amount'><?php echo wc_price($deposit_amount) . '%'; ?></span>
@@ -610,7 +610,7 @@ public function enqueue_inline_styles()
                         <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                     <?php } ?>
                     <span id='deposit-suffix'><?php echo $suffix; ?></span>
-                </h6>
+                </div>
                 <?php
             }
         }
@@ -633,14 +633,15 @@ public function enqueue_inline_styles()
                 <input id='<?php echo $product->get_id(); ?>-pay-deposit' class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
                     type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit'>
                     <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    <span class="radio-btn"></span>
                     <?php $this->deposit_amount_string($args); ?>
                 </label>
             <label class="pay-full-amount-label basic-style" for='<?php echo $product->get_id(); ?>-pay-full-amount'>
                 <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
                     <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
                     <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-            </label>
-            <a class='wc-deposits-switcher'></a>
+                    <span class="radio-btn"></span>
+                </label>
         </div>
 
         <span class='deposit-message wc-deposits-notice'></span>
