@@ -305,19 +305,4 @@ jQuery(document).ready(function($) {
 
 });
 
-jQuery(document).ready(function($) {
-    // Hide deposit-option initially if pay-full-amount is checked
-    if ($('#<?php echo $product->get_id(); ?>-pay-full-amount').is(':checked')) {
-        $('.deposit-option').hide();
-    }
-
-    // Toggle deposit-option visibility on radio button change
-    $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
-        if ($(this).val() === 'full') {
-            $('.deposit-option').hide();
-        } else {
-            $('.deposit-option').show();
-        }
-    });
-});
 
