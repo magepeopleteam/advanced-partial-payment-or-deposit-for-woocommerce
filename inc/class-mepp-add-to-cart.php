@@ -661,7 +661,6 @@ public function enqueue_inline_styles()
         $default_checked = $args['default_checked'];
         $deposit_text = $args['deposit_text'];
         $full_text = $args['full_text'];
-        
         ?>
         <?php $this->deposit_amount_string($args); ?>
         <div data-ajax-refresh="<?php echo $ajax_refresh; ?>" data-product_id="<?php echo $product->get_id(); ?>" class='magepeople_mepp_single_deposit_form wc-deposits-options-form' >
@@ -673,10 +672,10 @@ public function enqueue_inline_styles()
                 <label for="<?php echo $product->get_id(); ?>-pay-deposit"><?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
                 <label for="<?php echo $product->get_id(); ?>-pay-full-amount"><?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
                 <div class="switch-wrapper">
-                <div class="switch">
-                    <div><?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                    <div><?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                </div>
+                    <div class="switch">
+                        <div><?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                        <div><?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                    </div>
                 </div>
             </div>
         <span class='deposit-message wc-deposits-notice'></span>
