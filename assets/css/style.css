@@ -167,7 +167,7 @@
 }
 .mepp-payment-plans ul li{
     padding: 10px;
-    border-bottom: 1px dotted #ccc;
+    border-bottom: 1px dotted #e5e5e5;
 }
 .mepp-payment-plans ul li label{
     cursor: pointer;
@@ -179,6 +179,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
 }
 
 .payment-plan-table {
@@ -187,7 +188,7 @@
 }
 
 .payment-plan-table th, .payment-plan-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #fbfbfb;
     padding: 8px;
     text-align: left;
 }
