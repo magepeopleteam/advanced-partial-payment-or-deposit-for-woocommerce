@@ -1,8 +1,16 @@
 .wc-deposits-options-form {
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
-.wc-deposits-options-form .deposit-options {
+.magepeople_mepp_single_deposit_form label{
+    display: block;
+}
+
+.deposit-option{
+    margin: 5px 0;
+}
+
+.wc-deposits-options-form  .deposit-option{
   overflow: hidden;
   height: 50px;
 }
@@ -183,6 +191,65 @@
      border: 1px solid #939393;
     }
     #deposit-amount{
-        color:#17a510;
         font-weight: 700;
+    }
+
+    .basic-style{
+        width: 58%;
+        border: 1px solid #e5e5e5;
+        background-color: #fbfbfb;
+        padding: 10px;
+        margin: 0;
+        margin-top: -1px;
+        cursor: pointer;
+        position: relative;
+        padding-left: 50px;
+        font-size: 16px;
+        min-height: 66px
+    }
+
+    .basic-style input[type='radio'] {
+        display: none; /* Hide the radio button */
+    }
+
+    .basic-style .radio-btn {
+        position: absolute;
+        left: 15px;
+        top: 25px;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ccc; /* Border of the radio button */
+        border-radius: 50%; /* Make it round */
+        background-color: #fff; /* Background color */
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .basic-style input[type='radio']:checked + .radio-btn {
+        background-color: #ffbe00; /* Background color when checked */
+        border-color: #ffbe00; /* Border color when checked */
+    }
+
+    .basic-style input[type='radio']:checked + .radio-btn::after {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #fff; /* Dot color */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .basic-switch-woocommerce-deposits{
+        margin: 10px 0;
+    }
+
+    .basic-switch-woocommerce-deposits .deposit-option{
+        margin: 0;
+        margin-left:0px;
+        font-size: 14px;
+        color: #4fa8c4;
     }
