@@ -368,3 +368,9 @@ tr.checkout-deposit-buttons td label.basic-style .radio-btn {
     left: 5px;
     top: 50%;
 }
+
+/* *******checkout paymetn plan******* */
+#mepp-payment-plans ul{
+    margin: 0;
+    padding: 5px;
+}

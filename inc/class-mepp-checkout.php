@@ -344,56 +344,55 @@ class MEPP_Checkout
         $payment_plans = $args['payment_plans'];
         ?>
             <div id="mepp-payment-plans">
-                <fieldset>
-                    <ul>
-                        <?php
+                <h4><?php _e('Payment Plan','advanced-partial-payment-or-deposit-for-woocommerce') ?></h4>
+                <ul>
+                    <?php
 
-                        foreach ($payment_plans as $plan_id => $payment_plan) {
-                            //if no plan selected , set first plan as selected
-                            if (empty($selected_plan)) $selected_plan = $plan_id;
-                            ?>
-                            <li>
+                    foreach ($payment_plans as $plan_id => $payment_plan) {
+                        //if no plan selected , set first plan as selected
+                        if (empty($selected_plan)) $selected_plan = $plan_id;
+                        ?>
+                        <li>
 
-                                <strong>
-                                    <input data-id="<?php echo $plan_id; ?>" <?php checked($selected_plan, $plan_id); ?>
-                                           type="radio" class="option-input radio" value="<?php echo $plan_id; ?>"
-                                           name="mepp-selected-plan"/>
-                                    <?php echo $payment_plan['name']; ?>
-                                    <?php
-                                    if ($selected_plan == $plan_id) {
-                                        //display plan details
-                                        $display_plan  = WC()->cart->deposit_info['payment_schedule'];
-                                        ?>
-                                        <span> <a data-expanded="no"
-                                                  data-view-text="<?php echo esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
-                                                  data-hide-text="<?php echo esc_html__('Hide details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
-                                                  data-id="<?php echo $plan_id; ?>"
-                                                  class="mepp-view-plan-details"><?php echo esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
-                                        </span>
-                                        <div style="display:none" class="mepp-single-plan"
-                                             id="plan-details-<?php echo $plan_id; ?>">
-
-                                            <?php
-                                            $payment_timestamp = current_time('timestamp');
-                                            foreach ($display_plan as $payment_timestamp => $plan_line) {
-                                                if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
-                                                echo '<span>' . wc_price($plan_line['total']) . ' ' . date_i18n(get_option('date_format'), $payment_timestamp) . '</span><br/>';
-                                            }
-
-
-                                            ?>
-                                        </div>
-                                        <?php
-
-                                    }
+                            <strong>
+                                <input data-id="<?php echo $plan_id; ?>" <?php checked($selected_plan, $plan_id); ?>
+                                        type="radio" class="option-input radio" value="<?php echo $plan_id; ?>"
+                                        name="mepp-selected-plan"/>
+                                <?php echo $payment_plan['name']; ?>
+                                <?php
+                                if ($selected_plan == $plan_id) {
+                                    //display plan details
+                                    $display_plan  = WC()->cart->deposit_info['payment_schedule'];
                                     ?>
+                                    <span> <a data-expanded="no"
+                                                data-view-text="<?php echo esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
+                                                data-hide-text="<?php echo esc_html__('Hide details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
+                                                data-id="<?php echo $plan_id; ?>"
+                                                class="mepp-view-plan-details"><?php echo esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a>
+                                    </span>
+                                    <div style="display:none" class="mepp-single-plan"
+                                            id="plan-details-<?php echo $plan_id; ?>">
+
+                                        <?php
+                                        $payment_timestamp = current_time('timestamp');
+                                        foreach ($display_plan as $payment_timestamp => $plan_line) {
+                                            if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
+                                            echo '<span>' . wc_price($plan_line['total']) . ' ' . date_i18n(get_option('date_format'), $payment_timestamp) . '</span><br/>';
+                                        }
 
 
-                                </strong>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </fieldset>
+                                        ?>
+                                    </div>
+                                    <?php
+
+                                }
+                                ?>
+
+
+                            </strong>
+                        </li>
+                    <?php } ?>
+                </ul>
             </div>
         <?php
     }
