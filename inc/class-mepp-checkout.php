@@ -244,8 +244,6 @@ class MEPP_Checkout
             'payment_plans' => $payment_plans,
             'selected_plan' => $selected_plan,
         );
-
-       // wc_get_template('mepp-checkout-mode-slider.php', $args, '', MEPP_TEMPLATE_PATH);
        ?>
         <tr  class="checkout-deposit-buttons">
             <td colspan="2">
