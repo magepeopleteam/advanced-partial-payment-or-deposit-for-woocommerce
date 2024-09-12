@@ -710,7 +710,7 @@ public function enqueue_inline_styles()
             ?>
             
             <div class="mepp-payment-plans">
-            <h2><?php esc_html_e('Payement Plan','advanced-partial-payment-or-deposit-for-woocommerce')?></h2>
+            <h4><?php esc_html_e('Payement Plan','advanced-partial-payment-or-deposit-for-woocommerce')?></h4>
                 <fieldset>
                     <ul>
                         <?php

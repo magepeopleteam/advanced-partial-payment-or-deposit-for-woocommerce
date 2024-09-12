@@ -352,3 +352,19 @@
 .toggle-switch-woocommerce-deposits input:nth-of-type(2):checked~.switch-wrapper .switch div:nth-of-type(2) {
   opacity: 1;
 }
+/*********************checkout mod*****************/
+tr.checkout-deposit-buttons{
+    padding: 5px;
+}
+tr.checkout-deposit-buttons td{
+    padding:15px 5px;
+}
+
+tr.checkout-deposit-buttons td label.basic-style{
+    padding-left:30px;
+}
+
+tr.checkout-deposit-buttons td label.basic-style .radio-btn {
+    left: 5px;
+    top: 50%;
+}
