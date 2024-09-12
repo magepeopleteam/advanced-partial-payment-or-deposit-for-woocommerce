@@ -212,10 +212,9 @@ public function enqueue_inline_styles()
     function get_deposit_container($product_id, $price = false, $args = array())
     {
         //todo :  fix display price including tax option for fixed & percentage , it is currently always displaying amount including tax
-        $basic_buttons = get_option('mepp_use_basic_radio_buttons', true) === 'yes';
         $ajax_refresh =  apply_filters('mepp_product_disable_deposit_ajax_refresh',false,$product_id) ? 'no':'yes';
         ob_start(); ?>
-        <div  data-product_id="<?php echo $product_id; ?>" style="height:20px; width:100%;"  data-ajax-refresh="<?php echo $ajax_refresh; ?>" class='magepeople_mepp_single_deposit_form <?php echo $basic_buttons ? 'basic-wc-deposits-options-form' : 'wc-deposits-options-form'; ?>'></div>
+        <div  data-product_id="<?php echo $product_id; ?>" style="height:20px; width:100%;"  data-ajax-refresh="<?php echo $ajax_refresh; ?>" class='magepeople_mepp_single_deposit_form'></div>
         <?php
         $html = ob_get_clean(); // always return empty div
 
@@ -559,13 +558,13 @@ public function enqueue_inline_styles()
             'tax_display' => $tax_display,
             'suffix' => $suffix,
             'force_deposit' => $force_deposit ? 'yes' : 'no',
-            'basic_buttons' => $basic_buttons,
             'deposit_text' => $deposit_text,
             'full_text' => $full_text,
             'deposit_option_text' => $deposit_option_text,
             'default_checked' => $default_checked,
             'has_payment_plans' => false,
-            'payment_plans' => $payment_plans
+            'payment_plans' => $payment_plans,
+            'has_payment_plan' => ''
         );
         if ($has_payment_plans) {
             $local_args['has_payment_plans'] = $has_payment_plans;
@@ -580,16 +579,21 @@ public function enqueue_inline_styles()
         ob_start();
         //wc_get_template('single-product/mepp-product-slider.php', $args, '', MEPP_TEMPLATE_PATH);
 
+        $this->get_deposit_template($args);
+
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
+    public function get_deposit_template($args){
+        $basic_buttons = get_option('mepp_use_basic_radio_buttons', true) === 'yes';
         if($basic_buttons){
             $this->basic_style($args);
         }
         else{
             $this->toggle_style($args);
         }
-
-        $html = ob_get_clean();
-
-        return $html;
     }
 
     public function deposit_amount_string($args){
@@ -622,7 +626,6 @@ public function enqueue_inline_styles()
         $hide = get_option('mepp_hide_ui_when_forced', 'no') === 'yes';
         $ajax_refresh = $args['ajax_refresh'];
         $product = $args['product'];
-        $basic_buttons = $args['basic_buttons'];
         $default_checked = $args['default_checked'];
         $deposit_text = $args['deposit_text'];
         $full_text = $args['full_text'];
@@ -653,12 +656,8 @@ public function enqueue_inline_styles()
         do_action('mepp_enqueue_product_scripts');
         if ($args['force_deposit'] === 'yes') $args['default_checked'] = 'deposit';
         $hide = get_option('mepp_hide_ui_when_forced', 'no') === 'yes';
-        
-        $ajax_refresh = $args['ajax_refresh'];
-        
+        $ajax_refresh = $args['ajax_refresh']; 
         $product = $args['product'];
-        
-        $basic_buttons = $args['basic_buttons'];
         $default_checked = $args['default_checked'];
         $deposit_text = $args['deposit_text'];
         $full_text = $args['full_text'];
