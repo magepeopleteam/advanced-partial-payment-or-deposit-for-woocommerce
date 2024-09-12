@@ -223,7 +223,7 @@
         position: relative;
         padding-left: 50px;
         font-size: 16px;
-        min-height: 66px
+        min-height: 60px
     }
 
     .basic-style input[type='radio'] {
@@ -271,3 +271,84 @@
         font-size: 14px;
         color: #4fa8c4;
     }
+
+
+/*=================deposit button switch candy============== */
+:root {
+  --switches-bg-color: goldenrod;
+  --switches-label-color: white ;
+  --switch-bg-color: white;
+  --switch-text-color: goldenrod ;
+}
+.toggle-switch-woocommerce-deposits {
+  width:auto;
+  position: relative;
+  display: flex;
+  padding: 0;
+  position: relative;
+  background: var(--switches-bg-color);
+  line-height: 3rem;
+  border-radius: 3rem;
+  margin-left: 0;
+}
+
+.toggle-switch-woocommerce-deposits input {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+}
+
+.toggle-switch-woocommerce-deposits label {
+  width: 50%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  cursor: pointer;
+  color: var(--switches-label-color);
+}
+
+.switch-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  padding: 0.15rem;
+  z-index: 3;
+  transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+
+}
+
+.switch {
+  border-radius: 3rem;
+  background: var(--switch-bg-color);
+  height: 100%;
+}
+
+.switch div {
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  display: block;
+  color: var(--switch-text-color) ;
+  transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s;
+  will-change: opacity;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.toggle-switch-woocommerce-deposits input:nth-of-type(1):checked~.switch-wrapper {
+  transform: translateX(0%);
+}
+
+.toggle-switch-woocommerce-deposits input:nth-of-type(2):checked~.switch-wrapper {
+  transform: translateX(100%);
+}
+
+.toggle-switch-woocommerce-deposits input:nth-of-type(1):checked~.switch-wrapper .switch div:nth-of-type(1) {
+  opacity: 1;
+}
+
+.toggle-switch-woocommerce-deposits input:nth-of-type(2):checked~.switch-wrapper .switch div:nth-of-type(2) {
+  opacity: 1;
+}
