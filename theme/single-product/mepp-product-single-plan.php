@@ -5,20 +5,24 @@ if (!defined('ABSPATH')) {
 
 ?>
 <li>
-    <input data-id="<?php echo $plan_id; ?>" <?php echo $count === 0 ? 'checked' : ''; ?>
-           type="radio" class="option-input" value="<?php echo $plan_id; ?>"
-           name="<?php echo $product->get_id(); ?>-selected-plan"/>
-    <label><?php echo $payment_plan['name']; ?></label>
+    <div class="plan-items">
+        <div class="items">
+            <label>
+                <input data-id="<?php echo $plan_id; ?>" <?php echo $count === 0 ? 'checked' : ''; ?>
+                type="radio" class="option-input" value="<?php echo $plan_id; ?>"
+                name="<?php echo $product->get_id(); ?>-selected-plan"/>
+                <?php echo $payment_plan['name']; ?>
+            </label>
+        </div>
 
 
-    <span> <a data-expanded="no"
-              data-view-text="<?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
-              data-hide-text="<?php esc_html_e('Hide details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
-              data-id="<?php echo $plan_id; ?>"
-              class="mepp-view-plan-details"><?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a></span>
-
-    <div style="display:none" class="mepp-single-plan plan-details-<?php echo $plan_id; ?>"
-    >
+        <span class="view-details"> <a data-expanded="no"
+                data-view-text="<?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
+                data-hide-text="<?php esc_html_e('Hide details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
+                data-id="<?php echo $plan_id; ?>"
+                class="mepp-view-plan-details"><?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a></span>
+    </div>
+    <div style="display:none" class="mepp-single-plan plan-details-<?php echo $plan_id; ?>">
 
 
         <div>

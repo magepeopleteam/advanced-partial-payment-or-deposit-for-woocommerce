@@ -154,7 +154,7 @@
     border-radius:5px;
 }
 .mepp-payment-plans {
-    padding:10px;
+    padding:0;
 }
 .mepp-payment-plans a {
     cursor : pointer;
@@ -162,7 +162,25 @@
 }
 .mepp-payment-plans ul {
     list-style:none!important;
+    margin: 0;
+    padding: 0;
 }
+.mepp-payment-plans ul li{
+    padding: 10px;
+    border-bottom: 1px dotted #ccc;
+}
+.mepp-payment-plans ul li label{
+    cursor: pointer;
+}
+.mepp-payment-plans ul li .view-details{
+    font-size: 12px;
+}
+.mepp-payment-plans ul li .plan-items,.mepp-payment-plans ul li .plan-items .items{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .payment-plan-table {
     width: 100%;
     border-collapse: collapse;
@@ -193,9 +211,8 @@
     #deposit-amount{
         font-weight: 700;
     }
-
+/* ***************basic style button*********** */
     .basic-style{
-        width: 58%;
         border: 1px solid #e5e5e5;
         background-color: #fbfbfb;
         padding: 10px;
