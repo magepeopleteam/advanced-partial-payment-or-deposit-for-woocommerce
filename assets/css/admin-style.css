@@ -276,14 +276,12 @@ label[for=mepp_storewide_deposit_payment_plans] {
   margin-left: 0;
 }
 
-/* input (radio) for toggling. hidden - use labels for clicking on */
 .toggle-switch-woocommerce-deposits input {
   visibility: hidden;
   position: absolute;
   top: 0;
 }
 
-/* labels for the input (radio) boxes - something to click on */
 .toggle-switch-woocommerce-deposits label {
   width: 50%;
   padding: 0;
@@ -293,9 +291,6 @@ label[for=mepp_storewide_deposit_payment_plans] {
   color: var(--switches-label-color);
 }
 
-/* switch highlighters wrapper (sliding left / right) 
-  - need wrapper to enable the even margins around the highlight box
-*/
 .switch-wrapper {
   position: absolute;
   top: 0;
@@ -304,20 +299,14 @@ label[for=mepp_storewide_deposit_payment_plans] {
   padding: 0.15rem;
   z-index: 3;
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-  /* transition: transform 1s; */
 }
 
-/* switch box highlighter */
 .switch {
   border-radius: 3rem;
   background: var(--switch-bg-color);
   height: 100%;
 }
 
-/* switch box labels
-  - default setup
-  - toggle afterwards based on radio:checked status 
-*/
 .switch div {
   width: 100%;
   text-align: center;
@@ -331,24 +320,63 @@ label[for=mepp_storewide_deposit_payment_plans] {
   left: 0;
 }
 
-/* slide the switch box from right to left */
 .toggle-switch-woocommerce-deposits input:nth-of-type(1):checked ~ .switch-wrapper {
   transform: translateX(0%);
 }
 
-/* slide the switch box from left to right */
 .toggle-switch-woocommerce-deposits input:nth-of-type(2):checked ~ .switch-wrapper {
   transform: translateX(100%);
 }
 
-/* toggle the switch box labels - first checkbox:checked - show first switch div */
 .toggle-switch-woocommerce-deposits input:nth-of-type(1):checked ~ .switch-wrapper .switch div:nth-of-type(1) {
   opacity: 1;
 }
 
-/* toggle the switch box labels - second checkbox:checked - show second switch div */
 .toggle-switch-woocommerce-deposits input:nth-of-type(2):checked ~ .switch-wrapper .switch div:nth-of-type(2) {
   opacity: 1;
+}
+
+.checkout-deposit-buttons #basic-wc-deposits-options-form .basic-style {
+  border: 1px solid #e5e5e5;
+  background-color: #fbfbfb;
+  margin: 0;
+  margin-top: -1px;
+  cursor: pointer;
+  position: relative;
+  padding-left: 50px;
+  font-size: 16px;
+  min-height: auto;
+}
+.checkout-deposit-buttons #basic-wc-deposits-options-form .basic-style input[type=radio] {
+  display: none; /* Hide the radio button */
+}
+.checkout-deposit-buttons #basic-wc-deposits-options-form .basic-style .radio-btn {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc; /* Border of the radio button */
+  border-radius: 50%; /* Make it round */
+  background-color: #fff; /* Background color */
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.checkout-deposit-buttons #basic-wc-deposits-options-form .basic-style input[type=radio]:checked + .radio-btn {
+  background-color: #ffbe00; /* Background color when checked */
+  border-color: #ffbe00; /* Border color when checked */
+}
+.checkout-deposit-buttons #basic-wc-deposits-options-form .basic-style input[type=radio]:checked + .radio-btn::after {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff; /* Dot color */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Shahnur */
