@@ -327,7 +327,6 @@ label[for="mepp_storewide_deposit_payment_plans"] {
 
 // ===================checkout button=========
 .checkout-deposit-buttons{
-    #basic-wc-deposits-options-form{
         .basic-style{
             border: 1px solid #e5e5e5;
             background-color: #fbfbfb;
@@ -373,6 +372,37 @@ label[for="mepp_storewide_deposit_payment_plans"] {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }
+    #mepp-payment-plans{
+        margin: 20px 0;
+        h2{
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        ul{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            li{
+                margin: 0;
+                position: relative;
+                .view-more{
+                    position: absolute;
+                    right: 10px;
+                }
+                .mepp-single-plan{
+                    padding:0 20px;
+                    background: #fff;
+                    border: 1px solid #d8d8d8;
+                    li{
+                        margin: 10px 0;
+                        border-bottom: 1px dotted #d8d8d8;
+                        &:last-child{
+                            border-bottom: none;
+                        }
+                    }
+                }
+            }
         }
     }
 }
