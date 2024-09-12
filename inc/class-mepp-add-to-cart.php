@@ -708,7 +708,9 @@ public function enqueue_inline_styles()
         $product = $args['product'];
         if ($has_payment_plans) {
             ?>
+            
             <div class="mepp-payment-plans">
+            <h2><?php esc_html_e('Payement Plan','advanced-partial-payment-or-deposit-for-woocommerce')?></h2>
                 <fieldset>
                     <ul>
                         <?php
@@ -721,6 +723,7 @@ public function enqueue_inline_styles()
                                     'payment_plan' => $payment_plan,
                                     'product' => $product),
                                 '', MEPP_TEMPLATE_PATH);
+                            
                             $count++;
                         } ?>
                     </ul>
