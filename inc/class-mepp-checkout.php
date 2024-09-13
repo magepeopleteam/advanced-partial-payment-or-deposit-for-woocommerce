@@ -244,7 +244,7 @@ class MEPP_Checkout
             'payment_plans' => $payment_plans,
             'selected_plan' => $selected_plan,
         );
-       // wc_get_template('mepp-checkout-mode-slider.php', $args, '', MEPP_TEMPLATE_PATH);
+       //wc_get_template('mepp-checkout-mode-slider.php', $args, '', MEPP_TEMPLATE_PATH);
        ?>
         <tr  class="checkout-deposit-buttons">
             <td colspan="2">
@@ -272,34 +272,34 @@ class MEPP_Checkout
         $deposit_text = $args['deposit_text'];
         $full_text = $args['full_text'];
     ?>
-        <div id='basic-wc-deposits-options-form'>
-            <div class="<?php echo $hide? 'mepp_hidden ':'' ?>  <?php echo $basic_buttons ? 'basic-switch-Advanced' : 'deposit-options switch-toggle switch-candy switch-Advanced'; ?>">
-                <label id="pay-deposit-label" class="basic-style" for='pay-deposit'><?php echo esc_html__($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                    <input id='pay-deposit' name='deposit-radio'
-                        type='radio' <?php echo checked($default_checked, 'deposit'); ?> class='input-radio'
-                        value='deposit'>
+        
+        <div class="<?php echo $hide? 'mepp_hidden ':'' ?>  basic-switch-Advanced">
+            <label id="pay-deposit-label" class="basic-style" for='pay-deposit'><?php echo esc_html__($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                <input id='pay-deposit' name='deposit-radio'
+                    type='radio' <?php echo checked($default_checked, 'deposit'); ?> class='input-radio'
+                    value='deposit'>
+                    <span class="radio-btn"></span>
+            </label>
+            
+            <?php if (isset($force_deposit) && $force_deposit === 'yes') { ?>
+                <label id="pay-full-amount-label" for='pay-full-amount' onclick=''><?php echo esc_html__($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    <input id='pay-full-amount' name='deposit-radio' type='radio'
+                        class='input-radio'
+                        disabled>
+                    <span class="radio-btn"></span>
+                </label>
+            <?php } else { ?>
+                <label id="pay-full-amount-label"  class="basic-style" for='pay-full-amount' onclick=''><?php echo esc_html__($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    <input id='pay-full-amount' name='deposit-radio'
+                        type='radio' <?php echo checked($default_checked, 'full');; ?> class='input-radio'
+                        value='full'>
                         <span class="radio-btn"></span>
                 </label>
-                
-                <?php if (isset($force_deposit) && $force_deposit === 'yes') { ?>
-                    <label id="pay-full-amount-label" for='pay-full-amount' onclick=''><?php echo esc_html__($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                        <input id='pay-full-amount' name='deposit-radio' type='radio'
-                            class='input-radio'
-                            disabled>
-                        <span class="radio-btn"></span>
-                    </label>
-                <?php } else { ?>
-                    <label id="pay-full-amount-label"  class="basic-style" for='pay-full-amount' onclick=''><?php echo esc_html__($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                        <input id='pay-full-amount' name='deposit-radio'
-                            type='radio' <?php echo checked($default_checked, 'full');; ?> class='input-radio'
-                            value='full'>
-                            <span class="radio-btn"></span>
-                    </label>
-                <?php } ?>
-                <a class='wc-deposits-switcher'></a>
-            </div>
-            <span class='deposit-message' id='wc-deposits-notice'></span>
+            <?php } ?>
+            <a class='wc-deposits-switcher'></a>
         </div>
+        <span class='deposit-message' id='wc-deposits-notice'></span>
+        
         <?php if ($has_payment_plan && $default_checked === 'deposit') {
             $this->payent_plan($args);
         }
@@ -313,8 +313,8 @@ class MEPP_Checkout
         $deposit_text = $args['deposit_text'];
         $full_text = $args['full_text'];
         ?>
-        <div id='<?php echo $basic_buttons ? 'basic-wc-deposits-options-form' : 'wc-deposits-options-form'; ?>'>
-            <div class="<?php echo $hide? 'mepp_hidden ':'' ?>  <?php echo $basic_buttons ? 'basic-switch-Advanced' : 'deposit-options switch-toggle switch-candy switch-Advanced'; ?>">
+        
+            <div class="<?php echo $hide? 'mepp_hidden ':'' ?>  deposit-options switch-toggle switch-candy switch-Advanced">
                 
                 <div class="toggle-switch-woocommerce-deposits">
                     <input id='pay-deposit' name='deposit-radio' type='radio' <?php echo checked($default_checked, 'deposit'); ?> class='input-radio' value='deposit'>
@@ -335,7 +335,7 @@ class MEPP_Checkout
                 </div>
             </div>
             <span class='deposit-message' id='wc-deposits-notice'></span>
-        </div>
+        
         <?php if ($has_payment_plan && $default_checked === 'deposit') {
             $this->payent_plan($args);
         }
