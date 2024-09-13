@@ -246,7 +246,7 @@ class MEPP_Checkout
         );
        wc_get_template('mepp-checkout-mode-slider.php', $args, '', MEPP_TEMPLATE_PATH);
        ?>
-        <tr  class="checkout-deposit-buttons">
+        <tr  class="deposit-buttons">
             <td colspan="2">
                 <?php //$this->get_deposit_template($args); ?>
             </td>
