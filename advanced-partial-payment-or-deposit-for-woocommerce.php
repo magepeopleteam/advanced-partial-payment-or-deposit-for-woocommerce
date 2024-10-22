@@ -339,7 +339,7 @@ if (mepp_woocommerce_is_active()) :
 
             switch ($screen_id) {
                 case 'edit-shop_order' :
-                    require_once('inc/admin/class-admin-list-table-orders.php.php');
+                    require_once('inc/admin/class-admin-list-table-orders.php');
                     $this->admin_list_table_orders = new MEPP_Admin_List_Table_Orders($this);
                     break;
                 case 'edit-mepp_payment' :

@@ -311,7 +311,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 50%;
+  width: 49%;
   padding: 0.15rem;
   z-index: 3;
   transition: transform .5s cubic-bezier(.77, 0, .175, 1);
