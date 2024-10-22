@@ -153,53 +153,6 @@
     color: #fff;
     border-radius:5px;
 }
-.mepp-payment-plans {
-    padding:0;
-}
-.mepp-payment-plans a {
-    cursor : pointer;
-    font-size: larger;
-}
-.mepp-payment-plans ul {
-    list-style:none!important;
-    margin: 0;
-    padding: 0;
-}
-.mepp-payment-plans ul li{
-    padding: 10px;
-    border-bottom: 1px dotted #e5e5e5;
-}
-.mepp-payment-plans ul li label{
-    cursor: pointer;
-}
-.mepp-payment-plans ul li .view-details{
-    font-size: 12px;
-}
-.mepp-payment-plans ul li .plan-items,.mepp-payment-plans ul li .plan-items .items{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-}
-
-.payment-plan-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.payment-plan-table th, .payment-plan-table td {
-    border: 1px solid #fbfbfb;
-    padding: 8px;
-    text-align: left;
-}
-
-.payment-plan-table th {
-    background-color: #f2f2f2;
-}
-
-.payment-plan-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
 
 .wc-deposits-options-form .deposit-option {
      display: block;
@@ -214,8 +167,8 @@
     }
 /* ***************basic style button*********** */
     .basic-style{
-        border: 1px solid #e5e5e5;
-        background-color: #fbfbfb;
+        background-color: var(--mepp-deposit-primary);
+        border: 1px solid var(--mepp-deposit-secondary);
         padding: 10px;
         margin: 0;
         margin-top: -1px;
@@ -223,7 +176,7 @@
         position: relative;
         padding-left: 50px;
         font-size: 16px;
-        min-height: 60px
+        min-height: 60px;
     }
 
     .basic-style input[type='radio'] {
@@ -237,15 +190,15 @@
         transform: translateY(-50%);
         width: 20px;
         height: 20px;
-        border: 2px solid #ccc; /* Border of the radio button */
+        border: 2px solid var(--mepp-deposit-secondary); /* Border of the radio button */
         border-radius: 50%; /* Make it round */
         background-color: #fff; /* Background color */
         transition: background-color 0.3s, border-color 0.3s;
     }
 
     .basic-style input[type='radio']:checked + .radio-btn {
-        background-color: #ffbe00; /* Background color when checked */
-        border-color: #ffbe00; /* Border color when checked */
+        background-color: var(--mepp-deposit-highlight); /* #ffbe00; */
+        border-color: var(--mepp-deposit-highlight); /* #ffbe00; */
     }
 
     .basic-style input[type='radio']:checked + .radio-btn::after {
@@ -273,13 +226,68 @@
     }
 
 
+/*=================payment plans============== */
+.mepp-payment-plans {
+    
+    margin-bottom: 20px;
+}
+
+.mepp-payment-plans .mepp-deposited-plan{
+    background-color: var(--mepp-deposit-primary);
+    border: 1px solid var(--mepp-deposit-secondary);
+    padding: 10px;
+    margin: 0;
+}
+
+.mepp-payment-plans a {
+    cursor : pointer;
+    color: var(--mepp-deposit-highlight);
+}
+.mepp-payment-plans ul {
+    list-style:none!important;
+    margin: 0;
+    padding: 0;
+}
+.mepp-payment-plans ul li{
+    padding: 10px;
+    border-bottom: 1px dotted var(--mepp-deposit-secondary);
+}
+.mepp-payment-plans ul li:last-child{
+    border-bottom: 0;
+}
+.mepp-payment-plans ul li label{
+    cursor: pointer;
+}
+
+.mepp-payment-plans ul li .plan-items,.mepp-payment-plans ul li .plan-items .items{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.payment-plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px auto;
+}
+
+.payment-plan-table th, .payment-plan-table td {
+    border: 1px solid var(--mepp-deposit-secondary);
+    padding: 8px;
+    text-align: left;
+}
+
+
+
+
 /*=================deposit button switch candy============== */
-:root {
+/* :root {
   --switches-bg-color: goldenrod;
   --switches-label-color: white ;
   --switch-bg-color: white;
   --switch-text-color: goldenrod ;
-}
+} */
 .toggle-switch-woocommerce-deposits {
   width:auto;
   position: relative;

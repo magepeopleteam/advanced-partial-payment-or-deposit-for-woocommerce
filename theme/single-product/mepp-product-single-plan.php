@@ -23,24 +23,22 @@ if (!defined('ABSPATH')) {
                 class="mepp-view-plan-details"><?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a></span>
     </div>
     <div style="display:none" class="mepp-single-plan plan-details-<?php echo $plan_id; ?>">
-        <br>
+
         <div>
             <?php esc_html_e($payment_plan['description'], 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
         </div>
 
         <?php if ($product->get_type() !== 'grouped') { ?>
-
-
-            <div>
-                <strong><?php esc_html_e('Payments Total', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                        : <?php echo wc_price($payment_plan['plan_total']); ?></strong>
-            </div>
-
-            <div>
-                <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                    : <?php echo wc_price($payment_plan['deposit_amount']); ?>
-            </div>
-
+            <table class="payment-plan-table">
+                <tr>
+                    <th><?php esc_html_e('Payments Total', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                    <td><?php echo wc_price($payment_plan['plan_total']); ?></td>
+                </tr>
+                <tr>
+                    <th><?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                    <td><?php echo wc_price($payment_plan['deposit_amount']); ?></td>
+                </tr>
+            </table>
             <table class="payment-plan-table">
                 <thead>
                 <th><?php esc_html_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>

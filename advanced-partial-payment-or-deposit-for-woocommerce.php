@@ -103,8 +103,22 @@ if (mepp_woocommerce_is_active()) :
             public function enqueue_styles(){
                 if ($this->wc_version_disabled) return;
                 if (!$this->is_disabled()) {
+                
+                $colors = get_option('mepp_deposit_buttons_colors');
+                $primary    = $colors['primary'] ? $colors['primary'] : '#f8f8f8';
+                $secondary  = $colors['secondary'] ? $colors['secondary'] : '#c4c4c4';
+                $highlight  = $colors['highlight'] ? $colors['highlight'] : '#ffbe00';
+
+                $set_colors = "
+                    :root{
+                        --mepp-deposit-primary: $primary;
+                        --mepp-deposit-secondary: $secondary;
+                        --mepp-deposit-highlight: $highlight;
+                    }";
+                
                 wp_enqueue_style('toggle-switch', plugins_url('assets/css/admin-style.css', __FILE__), array(), MEPP_VERSION, 'screen');
                 wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
+                wp_add_inline_style('wc-deposits-frontend-styles', $set_colors);
 
                 if (is_cart() || is_checkout()) {
                     $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
