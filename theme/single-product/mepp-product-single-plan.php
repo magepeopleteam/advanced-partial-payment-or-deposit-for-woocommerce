@@ -31,7 +31,7 @@ if (!defined('ABSPATH')) {
         <?php if ($product->get_type() !== 'grouped') { ?>
             <table class="payment-plan-table">
                 <tr>
-                    <th><?php esc_html_e('Payments Total', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
+                    <th width="60%"><?php esc_html_e('Payments Total', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></th>
                     <td><?php echo wc_price($payment_plan['plan_total']); ?></td>
                 </tr>
                 <tr>
@@ -41,8 +41,8 @@ if (!defined('ABSPATH')) {
             </table>
             <table class="payment-plan-table">
                 <thead>
-                <th><?php esc_html_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
-                <th><?php esc_html_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th width="60%"><?php esc_html_e('Payment Date', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
+                <th style="text-align: right;"><?php esc_html_e('Amount', 'advanced-partial-payment-or-deposit-for-woocommerce') ?></th>
                 </thead>
                 <tbody>
                 <?php
@@ -59,7 +59,7 @@ if (!defined('ABSPATH')) {
 
                     ?>
                     <tr>
-                        <td><?php echo date_i18n(get_option('date_format'), $payment_timestamp) ?></td>
+                        <td style="padding: 5px;"><?php echo date_i18n(get_option('date_format'), $payment_timestamp) ?></td>
                         <td><?php echo wc_price($plan_line['line_amount']); ?></td>
                     </tr>
                     <?php

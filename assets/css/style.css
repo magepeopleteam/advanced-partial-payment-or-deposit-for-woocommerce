@@ -164,9 +164,10 @@
     }
     #deposit-amount{
         font-weight: 700;
+        color: var(--mepp-deposit-highlight);
     }
 /* ***************basic style button*********** */
-    .basic-style{
+.basic-switch-woocommerce-deposits .basic-style{
         background-color: var(--mepp-deposit-primary);
         border: 1px solid var(--mepp-deposit-secondary);
         padding: 10px;
@@ -175,18 +176,19 @@
         cursor: pointer;
         position: relative;
         padding-left: 50px;
-        font-size: 16px;
-        min-height: 60px;
+        height:50px;
+        display: flex;
+        align-items: center;
     }
 
-    .basic-style input[type='radio'] {
+.basic-switch-woocommerce-deposits .basic-style input[type='radio'] {
         display: none; /* Hide the radio button */
     }
 
-    .basic-style .radio-btn {
+.basic-switch-woocommerce-deposits .basic-style .radio-btn {
         position: absolute;
         left: 15px;
-        top: 25px;
+        top: 50%;
         transform: translateY(-50%);
         width: 20px;
         height: 20px;
@@ -196,12 +198,12 @@
         transition: background-color 0.3s, border-color 0.3s;
     }
 
-    .basic-style input[type='radio']:checked + .radio-btn {
+.basic-switch-woocommerce-deposits .basic-style input[type='radio']:checked + .radio-btn {
         background-color: var(--mepp-deposit-highlight); /* #ffbe00; */
         border-color: var(--mepp-deposit-highlight); /* #ffbe00; */
     }
 
-    .basic-style input[type='radio']:checked + .radio-btn::after {
+.basic-switch-woocommerce-deposits .basic-style input[type='radio']:checked + .radio-btn::after {
         content: '';
         display: block;
         width: 10px;
@@ -227,8 +229,7 @@
 
 
 /*=================payment plans============== */
-.mepp-payment-plans {
-    
+.mepp-payment-plans, .toggle-switch-woocommerce-deposits, .mepp-payment-plans h4{
     margin-bottom: 20px;
 }
 
@@ -275,29 +276,29 @@
 .payment-plan-table th, .payment-plan-table td {
     border: 1px solid var(--mepp-deposit-secondary);
     padding: 8px;
+}
+.payment-plan-table td:nth-child(1) {
     text-align: left;
+    padding-left: 8px;
+}
+.payment-plan-table td:last-child {
+    text-align: right;
 }
 
 
 
-
 /*=================deposit button switch candy============== */
-/* :root {
-  --switches-bg-color: goldenrod;
-  --switches-label-color: white ;
-  --switch-bg-color: white;
-  --switch-text-color: goldenrod ;
-} */
+
 .toggle-switch-woocommerce-deposits {
-  width:auto;
   position: relative;
   display: flex;
-  padding: 0;
-  position: relative;
-  background: var(--switches-bg-color);
-  line-height: 3rem;
-  border-radius: 3rem;
-  margin-left: 0;
+  flex-direction: row;
+  align-items: center;
+  height: 52px;
+  background-color:var(--mepp-deposit-primary);
+  border-radius: 50px;
+  border:1px solid var(--mepp-deposit-secondary);
+  box-sizing: border-box;
 }
 
 .toggle-switch-woocommerce-deposits input {
@@ -312,37 +313,40 @@
   margin: 0;
   text-align: center;
   cursor: pointer;
-  color: var(--switches-label-color);
 }
 
-.switch-wrapper {
+.toggle-switch-woocommerce-deposits .switch-wrapper {
   position: absolute;
   top: 0;
-  bottom: 0;
-  width: 49%;
-  padding: 0.15rem;
+  left: 0;
+  height: 50px;
+  width: 50%;
   z-index: 3;
   transition: transform .5s cubic-bezier(.77, 0, .175, 1);
 
 }
 
-.switch {
-  border-radius: 3rem;
-  background: var(--switch-bg-color);
-  height: 100%;
+.toggle-switch-woocommerce-deposits .switch {
+    border-radius: 50px;
+    background: var(--mepp-deposit-highlight);
+    border:1px solid #fff;
+    width:  100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-.switch div {
-  width: 100%;
-  text-align: center;
-  opacity: 0;
-  display: block;
-  color: var(--switch-text-color) ;
-  transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s;
-  will-change: opacity;
-  position: absolute;
-  top: 0;
-  left: 0;
+.toggle-switch-woocommerce-deposits .switch div {
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    color:  #fff;
+    transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s;
+    will-change: opacity;
+    position: absolute;
 }
 
 .toggle-switch-woocommerce-deposits input:nth-of-type(1):checked~.switch-wrapper {
