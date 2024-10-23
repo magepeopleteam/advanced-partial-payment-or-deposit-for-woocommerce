@@ -166,6 +166,72 @@
         font-weight: 700;
         color: var(--mepp-deposit-highlight);
     }
+/* ***************basic style checkout *********** */
+
+.basic-switch-checkout{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid var(--mepp-deposit-secondary);
+    margin: 10px auto;
+}
+
+.basic-switch-checkout .basic-style {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+    padding-left: 30px; /* Adjust to space out the custom radio */
+    user-select: none; /* Prevents text selection when clicking */
+}
+
+.basic-switch-checkout .input-radio {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.basic-switch-checkout .radio-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    background-color: var(--mepp-deposit-primary);
+    border-radius: 50%;
+    border: 2px solid  var(--mepp-deposit-secondary);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.basic-switch-checkout .input-radio:checked + .radio-btn {
+    background-color: var(--mepp-deposit-highlight); /* Same as --mpev-orange */
+    border-color:  var(--mepp-deposit-highlight);
+}
+
+.basic-switch-checkout .radio-btn:after {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.basic-switch-checkout .input-radio:checked + .radio-btn:after {
+    display: block;
+}
+
+.basic-switch-checkout .basic-style:hover .radio-btn {
+    border-color: #888;
+}
+
+
 /* ***************basic style button*********** */
 .basic-switch-woocommerce-deposits .basic-style{
         background-color: var(--mepp-deposit-primary);
@@ -181,7 +247,7 @@
     }
 
 .basic-switch-woocommerce-deposits .basic-style input[type='radio'] {
-        display: none; /* Hide the radio button */
+        display: none;
     }
 
 .basic-switch-woocommerce-deposits .basic-style .radio-btn {
@@ -306,7 +372,7 @@
   top: 0;
 }
 
-.toggle-switch-woocommerce-deposits label {
+.switch-toggle .toggle-switch-woocommerce-deposits label {
   width: 50%;
   padding: 0;
   margin: 0;

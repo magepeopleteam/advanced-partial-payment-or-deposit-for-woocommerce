@@ -244,25 +244,24 @@ class MEPP_Checkout
             'payment_plans' => $payment_plans,
             'selected_plan' => $selected_plan,
         );
-       wc_get_template('mepp-checkout-mode-slider.php', $args, '', MEPP_TEMPLATE_PATH);
+
        ?>
         <tr  class="deposit-buttons">
             <td colspan="2">
-                <?php //$this->get_deposit_template($args); ?>
+                <?php 
+                    $basic_buttons = $args['basic_buttons'];
+                    if($basic_buttons){
+                        $this->basic_style($args);
+                    }
+                    else{
+                        $this->toggle_style($args);
+                    }
+                ?>
             </td>
         </tr>
         <?php
     }
 
-    public function get_deposit_template($args){
-        $basic_buttons = $args['basic_buttons'];
-        if($basic_buttons){
-            $this->basic_style($args);
-        }
-        else{
-            $this->toggle_style($args);
-        }
-    }
 
     public function basic_style($args){
         $hide = get_option('mepp_hide_ui_when_forced','no') === 'yes';
@@ -273,7 +272,7 @@ class MEPP_Checkout
         $full_text = $args['full_text'];
     ?>
         
-        <div class="<?php echo $hide? 'mepp_hidden ':'' ?>  basic-switch-Advanced">
+        <div class="<?php echo $hide? 'mepp_hidden ':'' ?>  basic-switch-checkout">
             <label id="pay-deposit-label" class="basic-style" for='pay-deposit'><?php echo esc_html__($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                 <input id='pay-deposit' name='deposit-radio'
                     type='radio' <?php echo checked($default_checked, 'deposit'); ?> class='input-radio'
