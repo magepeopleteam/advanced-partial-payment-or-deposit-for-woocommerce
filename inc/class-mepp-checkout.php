@@ -374,15 +374,13 @@ class MEPP_Checkout
                             ?>
                         </div>
                         <div style="display:none" class="mepp-single-plan" id="plan-details-<?php echo $plan_id; ?>">
-                            <table>
-                                <?php
-                                    $payment_timestamp = current_time('timestamp');
-                                    foreach ($display_plan as $payment_timestamp => $plan_line) {
-                                        if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
-                                        echo '<tr><th>' . date_i18n(get_option('date_format'), $payment_timestamp) . '</th><td>' . wc_price($plan_line['total']) . '</td></tr>';
-                                    }
-                                    ?>
-                            </table>
+                            <?php
+                                $payment_timestamp = current_time('timestamp');
+                                foreach ($display_plan as $payment_timestamp => $plan_line) {
+                                    if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
+                                    echo '<div class="items">' . date_i18n(get_option('date_format'), $payment_timestamp) . ' ' . wc_price($plan_line['total']) . '</div>';
+                                }
+                            ?>
                         </div>
                     <?php } ?>
                 </div>
