@@ -339,8 +339,9 @@ class MEPP_Checkout
         
     }
     public function payent_plan($args){
-
+//echo '<pre>';print_r($args);echo '</pre>';
         $payment_plans = $args['payment_plans'];
+	    $selected_plan=array_key_exists('selected_plan',$args) ? $args['selected_plan'] : false;
         ?>
             <div id="mepp-payment-plans">
                 <h4><?php esc_html_e('Payement Plan','advanced-partial-payment-or-deposit-for-woocommerce')?></h4>
@@ -348,6 +349,7 @@ class MEPP_Checkout
                     <?php
                     foreach ($payment_plans as $plan_id => $payment_plan) {
                         if (empty($selected_plan)) $selected_plan = $plan_id;
+	                    //echo '<pre>';print_r($selected_plan);echo '</pre>';
                         ?>
                         <div>
                             <input data-id="<?php echo $plan_id; ?>" <?php checked($selected_plan, $plan_id); ?>

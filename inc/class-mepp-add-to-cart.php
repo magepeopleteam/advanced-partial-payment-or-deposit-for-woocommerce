@@ -63,7 +63,7 @@ class MEPP_Add_To_Cart
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_script('wc-deposits-add-to-cart', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array(), MEPP_VERSION);
+	    wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout'), MEPP_VERSION, true);
 
         $message_deposit = get_option('mepp_message_deposit');
         $message_full_amount = get_option('mepp_message_full_amount');
