@@ -272,15 +272,23 @@ jQuery(document).ready(function($) {
         update_message();
 
         if ($('#mepp-payment-plans').length > 0) {
-
-
-            $('.view-more').click(function(event) {
-                event.preventDefault(); // Prevent default link behavior
-                $(this).closest('.payment-plan-items').find('.mepp-single-plan').slideToggle(); // Find the related list and toggle it
+            $('#mepp-payment-plans a.mepp-view-plan-details').click(function () {
+                var plan_id = $(this).data('id');
+                var selector = '#plan-details-' + plan_id;
+                if ($(this).data('expanded') === 'no') {
+                    var text = $(this).data('hide-text');
+                    $(this).text(text);
+                    $(this).data('expanded', 'yes');
+                    $(selector).slideDown();
+                } else if ($(this).data('expanded') === 'yes') {
+                    var text = $(this).data('view-text');
+                    $(this).text(text);
+                    $(this).data('expanded', 'no');
+                    $(selector).slideUp();
+                }
             });
             
-
-
+            
         }
 
 
