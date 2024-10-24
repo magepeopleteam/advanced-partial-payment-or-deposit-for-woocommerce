@@ -351,11 +351,13 @@ class MEPP_Checkout
                         if (empty($selected_plan)) $selected_plan = $plan_id;
 	                    //echo '<pre>';print_r($selected_plan);echo '</pre>';
                         ?>
-                        <div>
-                            <input data-id="<?php echo $plan_id; ?>" <?php checked($selected_plan, $plan_id); ?>
-                                    type="radio" class="option-input radio" value="<?php echo $plan_id; ?>"
-                                    name="mepp-selected-plan"/>
-                            <?php echo $payment_plan['name']; ?>
+                        <div class="payment-plans-checkout">
+                            <label for="">
+                                <input data-id="<?php echo $plan_id; ?>" <?php checked($selected_plan, $plan_id); ?>
+                                        type="radio" class="option-input radio" value="<?php echo $plan_id; ?>"
+                                        name="mepp-selected-plan"/>
+                                <?php echo $payment_plan['name']; ?>
+                            </label>
                             <?php
                             if ($selected_plan == $plan_id) {
                                 $display_plan  = WC()->cart->deposit_info['payment_schedule'];
@@ -366,19 +368,21 @@ class MEPP_Checkout
                                     data-id="<?php echo $plan_id; ?>"
                                     class="mepp-view-plan-details"><?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a></span>
                                 </span>
-                                <div style="display:none" class="mepp-single-plan"
-                                        id="plan-details-<?php echo $plan_id; ?>">
-                                    <?php
-                                    $payment_timestamp = current_time('timestamp');
-                                    foreach ($display_plan as $payment_timestamp => $plan_line) {
-                                        if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
-                                        echo '<span>' . wc_price($plan_line['total']) . ' ' . date_i18n(get_option('date_format'), $payment_timestamp) . '</span><br/>';
-                                    }
-                                    ?>
-                                </div>
+                                
                                 <?php
                             }
                             ?>
+                        </div>
+                        <div style="display:none" class="mepp-single-plan" id="plan-details-<?php echo $plan_id; ?>">
+                            <table>
+                                <?php
+                                    $payment_timestamp = current_time('timestamp');
+                                    foreach ($display_plan as $payment_timestamp => $plan_line) {
+                                        if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
+                                        echo '<tr><th>' . date_i18n(get_option('date_format'), $payment_timestamp) . '</th><td>' . wc_price($plan_line['total']) . '</td></tr>';
+                                    }
+                                    ?>
+                            </table>
                         </div>
                     <?php } ?>
                 </div>
