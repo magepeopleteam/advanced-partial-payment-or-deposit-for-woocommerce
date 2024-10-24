@@ -451,6 +451,9 @@ tr.checkout-deposit-buttons td label.basic-style .radio-btn {
     margin: 0;
     padding: 5px;
 }
+#mepp-payment-plans .payment-plans-checkout .view-details a{
+    color: var(--mepp-deposit-highlight);
+}
 #mepp-payment-plans .payment-plans-checkout{
     display: flex;
     justify-content: space-between;
@@ -463,15 +466,14 @@ tr.checkout-deposit-buttons td label.basic-style .radio-btn {
     border: 1px solid var(--mepp-deposit-secondary);
     margin-top: -1px;
 }
-#mepp-payment-plans .mepp-single-plan table{
-    width: 90%;
-    margin: auto;
-    border-collapse: collapse;
-}
-#mepp-payment-plans .mepp-single-plan table tr {
+#mepp-payment-plans .mepp-single-plan .items{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
     border-bottom: 1px solid var(--mepp-deposit-secondary);
-    text-align: right;
 }
-#mepp-payment-plans .mepp-single-plan table tbody tr:last-child {
-    border-bottom: 0 !important;
+
+#mepp-payment-plans .mepp-single-plan .items:last-child{
+    border-bottom: 0;
 }
