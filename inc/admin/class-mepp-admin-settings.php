@@ -101,6 +101,7 @@ class MEPP_Admin_Settings
 
         }
 
+        wp_enqueue_script('wc-deposits-admin-custom', MEPP_PLUGIN_URL . '/assets/js/admin/custom.js', array('jquery'), MEPP_VERSION);
 
     }
 
@@ -267,7 +268,7 @@ public function settings_tabs_mepp()
 
                 'deposit_storewide_values' => array(
 
-                    'name' => esc_html__('Deposit Storewide Values', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'name' => esc_html__('Global Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     'type' => 'title',
                     'desc' => '',
                     'id' => 'mepp_deposit_storewide_values',
@@ -287,18 +288,18 @@ public function settings_tabs_mepp()
                     'default' => 'no'
                 ),
                 
-                   'enable_storewide_deposit_details' => array(
-                    'name' => esc_html__('On/Off Pay Deposit details in cart & checkout page', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'select',
-                    'desc_tip' =>true,
-                    'options' => array(
-                        'no' => esc_html__('No', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'yes' => esc_html__('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    ),
-                    'desc' => esc_html__('On/Off Pay Deposit details in cart & checkout page.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_storewide_deposit_enabled_details',
-                    'default' => 'yes'
-                ),
+                //    'enable_storewide_deposit_details' => array(
+                //     'name' => esc_html__('On/Off Pay Deposit details in cart & checkout page', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'select',
+                //     'desc_tip' =>true,
+                //     'options' => array(
+                //         'no' => esc_html__('No', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'yes' => esc_html__('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     ),
+                //     'desc' => esc_html__('On/Off Pay Deposit details in cart & checkout page.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_storewide_deposit_enabled_details',
+                //     'default' => 'yes'
+                // ),
                 
                     'enable_storewide_deposit_btn' => array(
                     'name' => esc_html__('On/Off Pay Deposit button in product list', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -368,14 +369,14 @@ public function settings_tabs_mepp()
                     'desc' => '',
                     'id' => 'mepp_site_wide_title'
                 ),
-                'deposits_disable' => array(
-                    'name' => esc_html__('Disable Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'title',
-                    'type' => 'checkbox',
-                    'desc' => esc_html__('Check this to disable all deposit functionality with one click.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_site_wide_disable',
+                // 'deposits_disable' => array(
+                //     'name' => esc_html__('Disable Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'title',
+                //     'type' => 'checkbox',
+                //     'desc' => esc_html__('Check this to disable all deposit functionality with one click.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_site_wide_disable',
                     
-                ),
+                // ),
 
 
                 'deposits_default' => array(
@@ -402,12 +403,12 @@ public function settings_tabs_mepp()
                     ),
                     'default' => 'full'
                 ),
-                'partially_paid_orders_editable' => array(
-                    'name' => esc_html__('Make partially paid orders editable', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'checkbox',
-                    'desc' => esc_html__('Check to make orders editable while in "partially paid" status', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_partially_paid_orders_editable',
-                ),
+                // 'partially_paid_orders_editable' => array(
+                //     'name' => esc_html__('Make partially paid orders editable', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'checkbox',
+                //     'desc' => esc_html__('Check to make orders editable while in "partially paid" status', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_partially_paid_orders_editable',
+                // ),
 
                 'order_list_table_show_has_deposit' => array(
                     'name' => esc_html__('Show "has deposit" column in admin order list table', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -515,7 +516,7 @@ public function settings_tabs_mepp()
            
 
 
-            woocommerce_admin_fields($general_settings);
+           woocommerce_admin_fields($general_settings);
 
             ?>
             <?php do_action('mepp_settings_tabs_general_tab'); ?>
