@@ -438,79 +438,79 @@ public function settings_tabs_mepp()
                     'type' => 'sectionend',
                     'id' => 'mepp_site_wide_end'
                 ),
-               'calculation_and_structure' => array(
+            //    'calculation_and_structure' => array(
 
-                    'name' => esc_html__('Calculation & Structure', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'title',
-                    'desc' => '',
-                    'id' => 'mepp_calculation_and_structure'
-                ),
-                'partial_payments_structure' => array(
-                    'name' => esc_html__('Partial Payments Structure', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'select',
-                    'desc_tip' =>true,
-                    'desc' => esc_html__('Choose how partial payments are created. If single is checked, partial payment will consist of a single fee. 
-                                               If "Copy main order items" is selected, items of main order will be created in partial payment.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_partial_payments_structure',
-                    'default' => 'single',
-                    'options' => array(
-                        'single' => esc_html__('Single fee item', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'full' => esc_html__('Copy main order items', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                    )
-                ),
-                'taxes_handling' => array(
-                    'name' => esc_html__('Taxes Collection Method', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'select',
-                    'desc_tip' =>true,
-                    'desc' => esc_html__('Choose how to handle taxes.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_taxes_handling',
-                    'options' => array(
-                        'deposit' => esc_html__('with deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'full' => esc_html__('with future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                    )
-                ),
-                'fees_handling' => array(
-                    'name' => esc_html__('Fees Collection Method', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'select',
-                    'desc_tip' =>true,
-                    'desc' => esc_html__('Choose how to handle fees.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_fees_handling',
-                    'options' => array(
-                        'deposit' => esc_html__('with deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'full' => esc_html__('with future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                    )
-                ),
-                'shipping_handling' => array(
-                    'name' => esc_html__('Shipping Handling Method', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'select',
-                    'desc_tip' =>true,
-                    'desc' => esc_html__('Choose how to handle shipping.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_shipping_handling',
-                    'options' => array(
-                        'deposit' => esc_html__('with deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'full' => esc_html__('with future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                    )
-                ),
-                'coupons_handling' => array(
-                    'name' => esc_html__('Discount Coupons Handling', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'select',
-                    'desc_tip' =>true,
-                    'desc' => esc_html__('Choose how to handle coupon discounts', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_coupons_handling',
-                    'options' => array(
-                        'deposit' => esc_html__('Deduct from deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'second_payment' => esc_html__('Deduct from future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                    ),
-                    'default' => 'second_payment'
-                ),
-                'calculation_and_structure_end' => array(
-                    'type' => 'sectionend',
-                    'id' => 'mepp_calculation_and_structure_end'
-                ),
+            //         'name' => esc_html__('Calculation & Structure', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+            //         'type' => 'title',
+            //         'desc' => '',
+            //         'id' => 'mepp_calculation_and_structure'
+            //     ),
+                // 'partial_payments_structure' => array(
+                //     'name' => esc_html__('Partial Payments Structure', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'select',
+                //     'desc_tip' =>true,
+                //     'desc' => esc_html__('Choose how partial payments are created. If single is checked, partial payment will consist of a single fee. 
+                //                                If "Copy main order items" is selected, items of main order will be created in partial payment.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_partial_payments_structure',
+                //     'default' => 'single',
+                //     'options' => array(
+                //         'single' => esc_html__('Single fee item', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'full' => esc_html__('Copy main order items', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                //     )
+                // ),
+                // 'taxes_handling' => array(
+                //     'name' => esc_html__('Taxes Collection Method', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'select',
+                //     'desc_tip' =>true,
+                //     'desc' => esc_html__('Choose how to handle taxes.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_taxes_handling',
+                //     'options' => array(
+                //         'deposit' => esc_html__('with deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'full' => esc_html__('with future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                //     )
+                // ),
+                // 'fees_handling' => array(
+                //     'name' => esc_html__('Fees Collection Method', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'select',
+                //     'desc_tip' =>true,
+                //     'desc' => esc_html__('Choose how to handle fees.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_fees_handling',
+                //     'options' => array(
+                //         'deposit' => esc_html__('with deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'full' => esc_html__('with future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                //     )
+                // ),
+                // 'shipping_handling' => array(
+                //     'name' => esc_html__('Shipping Handling Method', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'select',
+                //     'desc_tip' =>true,
+                //     'desc' => esc_html__('Choose how to handle shipping.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_shipping_handling',
+                //     'options' => array(
+                //         'deposit' => esc_html__('with deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'full' => esc_html__('with future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                //     )
+                // ),
+                // 'coupons_handling' => array(
+                //     'name' => esc_html__('Discount Coupons Handling', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'select',
+                //     'desc_tip' =>true,
+                //     'desc' => esc_html__('Choose how to handle coupon discounts', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_coupons_handling',
+                //     'options' => array(
+                //         'deposit' => esc_html__('Deduct from deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'split' => esc_html__('Split according to deposit amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //         'second_payment' => esc_html__('Deduct from future payment(s)', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                //     ),
+                //     'default' => 'second_payment'
+                // ),
+                // 'calculation_and_structure_end' => array(
+                //     'type' => 'sectionend',
+                //     'id' => 'mepp_calculation_and_structure_end'
+                // ),
 
             );
            
@@ -949,7 +949,7 @@ public function settings_tabs_mepp()
             $gateways_settings['gateways_title'] = array(
                 'name' => esc_html__('Disallowed Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                 'type' => 'title',
-                'desc' => esc_html__('Disallow the following gateways when there is a deposit in the cart.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                // 'desc' => esc_html__('Disallow the following gateways when there is a deposit in the cart.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                 'id' => 'mepp_gateways_title'
             );
 
