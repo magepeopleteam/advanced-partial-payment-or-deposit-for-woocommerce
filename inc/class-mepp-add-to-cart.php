@@ -647,7 +647,7 @@ public function enqueue_inline_styles()
             </label>
         </div>
         <span class='deposit-message wc-deposits-notice'></span>
-        <?php $this->payment_plan($args); ?>
+        <?php do_action('mepp_payment_plan_single_page', $args); ?>
     </div>
     <?php
     }
@@ -679,7 +679,7 @@ public function enqueue_inline_styles()
                 </div>
             </div>
         <span class='deposit-message wc-deposits-notice'></span>
-        <?php $this->payment_plan($args); ?>
+        <?php do_action('mepp_payment_plan_single_page', $args); ?>
         <script>
             jQuery(document).ready(function($) {
                 // Hide deposit-option initially if pay-full-amount is checked
@@ -699,38 +699,6 @@ public function enqueue_inline_styles()
         </script>
     </div>
     <?php
-    }
-
-    public function payment_plan($args){
-        $has_payment_plans = $args['has_payment_plans'];
-        $payment_plans = $args['payment_plans'];
-        $deposit_text = $args['deposit_text'];
-        $product = $args['product'];
-        if ($has_payment_plans) {
-            ?>
-            
-            <div class="mepp-payment-plans">
-                <h4><?php esc_html_e('Payement Plan','advanced-partial-payment-or-deposit-for-woocommerce')?></h4>
-                <div class="mepp-deposited-plan">
-                    <ul>
-                        <?php
-                        $count = 0;
-                        foreach ($payment_plans as $plan_id => $payment_plan) {
-                            wc_get_template('single-product/mepp-product-single-plan.php',
-                                array('count' => $count,
-                                    'plan_id' => $plan_id,
-                                    'deposit_text' => $deposit_text,
-                                    'payment_plan' => $payment_plan,
-                                    'product' => $product),
-                                '', MEPP_TEMPLATE_PATH);
-                            
-                            $count++;
-                        } ?>
-                    </ul>
-                </div>
-            </div>
-            <?php
-        }
     }
 
     /**
