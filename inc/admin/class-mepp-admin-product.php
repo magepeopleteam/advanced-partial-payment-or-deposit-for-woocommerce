@@ -193,8 +193,7 @@ class MEPP_Admin_Product
                         }
                         
                     }
-
-                    woocommerce_wp_select(array(
+                    $args = array(
                         'id' => "_mepp_payment_plans",
                         'name' => "_mepp_payment_plans[]",
                         'label' => esc_html__('Payment plan(s)', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -208,8 +207,9 @@ class MEPP_Admin_Product
                         'custom_attributes' => array(
                             'multiple' => 'multiple'
                         )
-
-                    )); ?>
+                        );
+                    do_action('payment_plan_woo_meta',$args);
+                    ?>
                 </p>
                 <?php if ($product->is_type('booking')  && method_exists($product,'has_persons') && $product->has_persons()) : // check if the product has a 'booking' type, and if so, check if it has persons. ?>
                     <div class="options_group">
@@ -225,83 +225,83 @@ class MEPP_Admin_Product
                     </div>
                 <?php endif; ?>
             </div>
-    <div class="options_group" id="options_group">
-        <?php
-        // Retrieve and sanitize global settings
-        $deposit_enabled_global = sanitize_text_field(get_option('mepp_storewide_deposit_enabled', 'no')); 
-        $deposit_type_global = sanitize_text_field(get_option('mepp_storewide_deposit_amount_type', 'fixed')); 
-        $deposit_amount_global = floatval(get_option('mepp_storewide_deposit_amount', 0)); 
-        $deposit_force_global = sanitize_text_field(get_option('mepp_storewide_deposit_force_deposit', 'no')); 
+            <div class="options_group" id="options_group">
+                <?php
+                // Retrieve and sanitize global settings
+                $deposit_enabled_global = sanitize_text_field(get_option('mepp_storewide_deposit_enabled', 'no')); 
+                $deposit_type_global = sanitize_text_field(get_option('mepp_storewide_deposit_amount_type', 'fixed')); 
+                $deposit_amount_global = floatval(get_option('mepp_storewide_deposit_amount', 0)); 
+                $deposit_force_global = sanitize_text_field(get_option('mepp_storewide_deposit_force_deposit', 'no')); 
 
-        // Determine global deposit status
-        $deposit_status_global = ($deposit_enabled_global === 'yes') ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                // Determine global deposit status
+                $deposit_status_global = ($deposit_enabled_global === 'yes') ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce');
 
-        // Get current product ID and fetch product-specific metadata
-        $product_id = get_the_ID();
-        $inherit_storewide_settings = sanitize_text_field(get_post_meta($product_id, '_mepp_inherit_storewide_settings', true));
-        $enable_deposit_local = sanitize_text_field(get_post_meta($product_id, '_mepp_enable_deposit', true));
-        $deposit_type_local = sanitize_text_field(get_post_meta($product_id, '_mepp_amount_type', true));
-        $deposit_amount_local = floatval(get_post_meta($product_id, '_mepp_deposit_amount', true));
-        $deposit_force_local = sanitize_text_field(get_post_meta($product_id, '_mepp_force_deposit', true)); 
+                // Get current product ID and fetch product-specific metadata
+                $product_id = get_the_ID();
+                $inherit_storewide_settings = sanitize_text_field(get_post_meta($product_id, '_mepp_inherit_storewide_settings', true));
+                $enable_deposit_local = sanitize_text_field(get_post_meta($product_id, '_mepp_enable_deposit', true));
+                $deposit_type_local = sanitize_text_field(get_post_meta($product_id, '_mepp_amount_type', true));
+                $deposit_amount_local = floatval(get_post_meta($product_id, '_mepp_deposit_amount', true));
+                $deposit_force_local = sanitize_text_field(get_post_meta($product_id, '_mepp_force_deposit', true)); 
 
-        // Determine local deposit status
-        $deposit_status_local = ($enable_deposit_local === 'yes') ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                // Determine local deposit status
+                $deposit_status_local = ($enable_deposit_local === 'yes') ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce');
 
-        // Decide settings to display (Global or Local)
-        if ($inherit_storewide_settings === 'no' && $enable_deposit_local === 'yes') {
-            $deposit_status = $deposit_status_local;
-            $setting_label = __('Local', 'advanced-partial-payment-or-deposit-for-woocommerce');
-            $deposit_type = $deposit_type_local;
-            $deposit_amount = $deposit_amount_local;
-        } else {
-            $deposit_status = $deposit_status_global;
-            $setting_label = __('Global', 'advanced-partial-payment-or-deposit-for-woocommerce');
-            $deposit_type = ($deposit_enabled_global === 'yes') ? $deposit_type_global : '';
-            $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
-        }
+                // Decide settings to display (Global or Local)
+                if ($inherit_storewide_settings === 'no' && $enable_deposit_local === 'yes') {
+                    $deposit_status = $deposit_status_local;
+                    $setting_label = __('Local', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                    $deposit_type = $deposit_type_local;
+                    $deposit_amount = $deposit_amount_local;
+                } else {
+                    $deposit_status = $deposit_status_global;
+                    $setting_label = __('Global', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                    $deposit_type = ($deposit_enabled_global === 'yes') ? $deposit_type_global : '';
+                    $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
+                }
 
-        // Fetch payment plan metadata
-        $payment_plan_local = sanitize_text_field(get_post_meta($product_id, '_mepp_amount_type', true));
-        $payment_plan_global = sanitize_text_field(get_option('mepp_storewide_deposit_amount_type', 'fixed')); 
-        $has_payment_plan = ($payment_plan_local === 'payment_plan' || $payment_plan_global === 'payment_plan'); 
-        ?>
+                // Fetch payment plan metadata
+                $payment_plan_local = sanitize_text_field(get_post_meta($product_id, '_mepp_amount_type', true));
+                $payment_plan_global = sanitize_text_field(get_option('mepp_storewide_deposit_amount_type', 'fixed')); 
+                $has_payment_plan = ($payment_plan_local === 'payment_plan' || $payment_plan_global === 'payment_plan'); 
+                ?>
 
-        <div class="product-status">
-            <h3><?php _e('Partial Status for This Product', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h3>
-            <div class="status-row">
-                <div class="status-label"><?php _e('Partial Payment:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                <div class="status-value <?php echo ($deposit_status === __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce')) ? 'enable' : 'disable'; ?>">
-                    <?php echo esc_html($deposit_status); ?>
+                <div class="product-status">
+                    <h3><?php _e('Partial Status for This Product', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></h3>
+                    <div class="status-row">
+                        <div class="status-label"><?php _e('Partial Payment:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                        <div class="status-value <?php echo ($deposit_status === __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce')) ? 'enable' : 'disable'; ?>">
+                            <?php echo esc_html($deposit_status); ?>
+                        </div>
+                    </div>
+                    <div class="status-row">
+                        <div class="status-label"><?php _e('Setting:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                        <div class="status-value"><?php echo esc_html($setting_label); ?></div>
+                    </div>
+                    <div class="status-row">
+                        <div class="status-label"><?php _e('Deposit Type:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                        <div class="status-value"><?php echo esc_html($deposit_type); ?></div>
+                    </div>
+                    <?php if ($deposit_amount && !$has_payment_plan): ?>
+                        <div class="status-row">
+                            <div class="status-label"><?php _e('Deposit Value:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                            <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($deposit_force_global === 'yes'): ?>
+                        <div class="status-row">
+                            <div class="status-label"><?php _e('Global Force Deposit:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                            <div class="status-value enable"><?php _e('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($deposit_force_local === 'yes'): ?>
+                        <div class="status-row">
+                            <div class="status-label"><?php _e('Local Force Deposit:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                            <div class="status-value enable"><?php _e('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
-            <div class="status-row">
-                <div class="status-label"><?php _e('Setting:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                <div class="status-value"><?php echo esc_html($setting_label); ?></div>
-            </div>
-            <div class="status-row">
-                <div class="status-label"><?php _e('Deposit Type:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                <div class="status-value"><?php echo esc_html($deposit_type); ?></div>
-            </div>
-            <?php if ($deposit_amount && !$has_payment_plan): ?>
-                <div class="status-row">
-                    <div class="status-label"><?php _e('Deposit Value:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                    <div class="status-value"><?php echo esc_html($deposit_amount); ?></div>
-                </div>
-            <?php endif; ?>
-            <?php if ($deposit_force_global === 'yes'): ?>
-                <div class="status-row">
-                    <div class="status-label"><?php _e('Global Force Deposit:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                    <div class="status-value enable"><?php _e('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                </div>
-            <?php endif; ?>
-            <?php if ($deposit_force_local === 'yes'): ?>
-                <div class="status-row">
-                    <div class="status-label"><?php _e('Local Force Deposit:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                    <div class="status-value enable"><?php _e('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></div>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
 
             <?php do_action('mepp_admin_product_editor_tab', $product); ?>
         </div>
