@@ -300,7 +300,7 @@ class MEPP_Checkout
         <span class='deposit-message' id='wc-deposits-notice'></span>
         
         <?php if ($has_payment_plan && $default_checked === 'deposit') {
-            $this->payent_plan($args);
+            do_action('mepp_payment_plan_checkout', $args);
         }
     }
 
@@ -334,60 +334,11 @@ class MEPP_Checkout
         <span class='deposit-message' id='wc-deposits-notice'></span>
         
         <?php if ($has_payment_plan && $default_checked === 'deposit') {
-            $this->payent_plan($args);
+            do_action('mepp_payment_plan_checkout', $args);
         }
         
     }
-    public function payent_plan($args){
-//echo '<pre>';print_r($args);echo '</pre>';
-        $payment_plans = $args['payment_plans'];
-	    $selected_plan=array_key_exists('selected_plan',$args) ? $args['selected_plan'] : false;
-        ?>
-            <div id="mepp-payment-plans">
-                <h4><?php esc_html_e('Payement Plan','advanced-partial-payment-or-deposit-for-woocommerce')?></h4>
-                <div class="mepp-deposited-plan">
-                    <?php
-                    foreach ($payment_plans as $plan_id => $payment_plan) {
-                        if (empty($selected_plan)) $selected_plan = $plan_id;
-	                    //echo '<pre>';print_r($selected_plan);echo '</pre>';
-                        ?>
-                        <div class="payment-plans-checkout">
-                            <label for="">
-                                <input data-id="<?php echo $plan_id; ?>" <?php checked($selected_plan, $plan_id); ?>
-                                        type="radio" class="option-input radio" value="<?php echo $plan_id; ?>"
-                                        name="mepp-selected-plan"/>
-                                <?php echo $payment_plan['name']; ?>
-                            </label>
-                            <?php
-                            if ($selected_plan == $plan_id) {
-                                $display_plan  = WC()->cart->deposit_info['payment_schedule'];
-                                ?>
-                                <span class="view-details"> <a data-expanded="no"
-                                    data-view-text="<?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
-                                    data-hide-text="<?php esc_html_e('Hide details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>"
-                                    data-id="<?php echo $plan_id; ?>"
-                                    class="mepp-view-plan-details"><?php esc_html_e('View details', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></a></span>
-                                </span>
-                                
-                                <?php
-                            }
-                            ?>
-                        </div>
-                        <div style="display:none" class="mepp-single-plan" id="plan-details-<?php echo $plan_id; ?>">
-                            <?php
-                                $payment_timestamp = current_time('timestamp');
-                                foreach ($display_plan as $payment_timestamp => $plan_line) {
-                                    if(isset($plan_line['timestamp'])) $payment_timestamp = $plan_line['timestamp'];
-                                    echo '<div class="items">' . date_i18n(get_option('date_format'), $payment_timestamp) . ' ' . wc_price($plan_line['total']) . '</div>';
-                                }
-                            ?>
-                        </div>
-                    <?php } ?>
-                </div>
-            </div>
-            
-        <?php
-    }
+    
     /**
      * @brief adds deposit meta to order line item when created
      * @param $item

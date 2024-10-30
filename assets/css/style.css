@@ -166,6 +166,10 @@
         font-weight: 700;
         color: var(--mepp-deposit-highlight);
     }
+    .deposit-full-amount{
+        font-weight: 700;
+        color: var(--mepp-deposit-highlight);
+    }
 /* ***************basic style checkout *********** */
 
 .basic-switch-checkout{
@@ -242,7 +246,7 @@
         cursor: pointer;
         position: relative;
         padding-left: 50px;
-        height:50px;
+        height:80px;
 
     }
 
@@ -294,6 +298,7 @@
 
 
 /*=================payment plans============== */
+
 .mepp-payment-plans, .toggle-switch-woocommerce-deposits, .mepp-payment-plans h4{
     margin-bottom: 20px;
 }
@@ -353,83 +358,82 @@
 
 
 /*=================deposit button switch candy============== */
-
 .toggle-switch-woocommerce-deposits {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 52px;
-  background-color:var(--mepp-deposit-primary);
-  border-radius: 50px;
-  border:1px solid var(--mepp-deposit-secondary);
-  box-sizing: border-box;
-}
-
-.toggle-switch-woocommerce-deposits input {
-  visibility: hidden;
-  position: absolute;
-  top: 0;
-}
-
-.switch-toggle .toggle-switch-woocommerce-deposits label {
-  width: 50%;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  cursor: pointer;
-}
-
-.toggle-switch-woocommerce-deposits .switch-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 50px;
-  width: 50%;
-  z-index: 3;
-  transition: transform .5s cubic-bezier(.77, 0, .175, 1);
-
-}
-
-.toggle-switch-woocommerce-deposits .switch {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 52px;
+    background-color: var(--mepp-deposit-primary);
     border-radius: 50px;
-    background: var(--mepp-deposit-highlight);
-    border:1px solid #fff;
-    width:  100%;
+    border: 1px solid var(--mepp-deposit-secondary);
+    box-sizing: border-box;
+  }
+  
+  .toggle-switch-woocommerce-deposits input {
+    visibility: hidden; /* Hides the checkbox inputs */
+    position: absolute; /* Positions off-screen */
+    top: 0;
+  }
+  
+  .toggle-switch-woocommerce-deposits label {
+    width: 50%; /* Each label takes half of the switch */
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+  }
+  
+  .toggle-switch-woocommerce-deposits .switch-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 50px;
+    width: 50%; /* Initially occupies half the width */
+    z-index: 3;
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+  }
+  
+  .toggle-switch-woocommerce-deposits .switch {
+    border-radius: 50px; /* Round corners for the switch */
+    background: var(--mepp-deposit-highlight); /* Background color of the switch */
+    border: 1px solid #fff; /* White border for the switch */
+    width: 100%; /* Full width of the container */
+    height: 50px; /* Height of the switch */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     box-sizing: border-box;
-}
-
-.toggle-switch-woocommerce-deposits .switch div {
+  }
+  
+  .toggle-switch-woocommerce-deposits .switch div {
     width: 100%;
     text-align: center;
-    opacity: 0;
-    color:  #fff;
-    transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s;
-    will-change: opacity;
-    position: absolute;
-}
-
-.toggle-switch-woocommerce-deposits input:nth-of-type(1):checked~.switch-wrapper {
-  transform: translateX(0%);
-}
-
-.toggle-switch-woocommerce-deposits input:nth-of-type(2):checked~.switch-wrapper {
-  transform: translateX(100%);
-}
-
-.toggle-switch-woocommerce-deposits input:nth-of-type(1):checked~.switch-wrapper .switch div:nth-of-type(1) {
-  opacity: 1;
-}
-
-.toggle-switch-woocommerce-deposits input:nth-of-type(2):checked~.switch-wrapper .switch div:nth-of-type(2) {
-  opacity: 1;
-}
-/*********************checkout mod*****************/
+    opacity: 0; /* Hidden by default */
+    color: #fff; /* Text color */
+    transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s; /* Fade-in effect */
+    will-change: opacity; /* Optimizes rendering for opacity changes */
+    position: absolute; /* Positions elements within the switch */
+  }
+  
+  .toggle-switch-woocommerce-deposits input:nth-of-type(1):checked ~ .switch-wrapper {
+    transform: translateX(0%); /* Moves switch to the left when the first input is checked */
+  }
+  
+  .toggle-switch-woocommerce-deposits input:nth-of-type(2):checked ~ .switch-wrapper {
+    transform: translateX(100%); /* Moves switch to the right when the second input is checked */
+  }
+  
+  .toggle-switch-woocommerce-deposits input:nth-of-type(1):checked ~ .switch-wrapper .switch div:nth-of-type(1) {
+    opacity: 1; /* Shows the first div when the first input is checked */
+  }
+  
+  .toggle-switch-woocommerce-deposits input:nth-of-type(2):checked ~ .switch-wrapper .switch div:nth-of-type(2) {
+    opacity: 1; /* Shows the second div when the second input is checked */
+  }
+  
+/*********************checkout mode*****************/
 tr.checkout-deposit-buttons{
     padding: 5px;
 }

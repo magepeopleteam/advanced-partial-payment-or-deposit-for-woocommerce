@@ -350,15 +350,8 @@ public function settings_tabs_mepp()
                         'step' => '0.01'
                     )
                 ),
-                'storewide_deposit_payment_plans' => array(
-                    'name' => esc_html__('Default Payment plan(s)', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'multiselect',
-                    'desc_tip' =>true,
-                    'class' => 'chosen_select',
-                    'options' => $all_plans,
-                    'desc' => esc_html__('Selected payment plan(s) will be available for customers to choose from.  ', 'advanced-partial-payment-or-deposit-for-woocommerce') . $manage_plans_link,
-                    'id' => 'mepp_storewide_deposit_payment_plans',
-                ),
+                'storewide_deposit_payment_plans' => apply_filters('mepp_payment_plan_lists',$all_plans),
+                
                 'deposit_storewide_values_end' => array(
                     'type' => 'sectionend',
                     'id' => 'mepp_deposit_storewide_values_end'
@@ -410,13 +403,13 @@ public function settings_tabs_mepp()
                 //     'id' => 'mepp_partially_paid_orders_editable',
                 // ),
 
-                'order_list_table_show_has_deposit' => array(
-                    'name' => esc_html__('Show "has deposit" column in admin order list table', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'type' => 'checkbox',
-                    'desc' => esc_html__('Check to show a column in admin order list indicating if order has deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'id' => 'mepp_order_list_table_show_has_deposit',
-                    'default' => 'yes',
-                ),
+                // 'order_list_table_show_has_deposit' => array(
+                //     'name' => esc_html__('Show "has deposit" column in admin order list table', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'type' => 'checkbox',
+                //     'desc' => esc_html__('Check to show a column in admin order list indicating if order has deposit', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                //     'id' => 'mepp_order_list_table_show_has_deposit',
+                //     'default' => 'yes',
+                // ),
 
                 'disable_deposit_for_user_roles' => array(
                     'name' => esc_html__('Disable deposit for selected user roles', 'advanced-partial-payment-or-deposit-for-woocommerce'),
