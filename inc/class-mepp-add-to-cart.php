@@ -606,15 +606,15 @@ public function enqueue_inline_styles()
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
                 ?>
-                <div class='deposit-option'>
-                    <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
-                    <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
-                        <span id='deposit-amount'><?php echo wc_price($deposit_amount) . '%'; ?></span>
-                    <?php } else { ?>
-                        <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
-                    <?php } ?>
-                    <span id='deposit-suffix'><?php echo $suffix; ?></span>
-                </div>
+                
+                <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
+                    <span id='deposit-amount'><?php echo wc_price($deposit_amount) . '%'; ?></span>
+                <?php } else { ?>
+                    <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
+                <?php } ?>
+                <span id='deposit-suffix'><?php echo $suffix; ?></span>
+
                 <?php
             }
         }
@@ -667,7 +667,9 @@ public function enqueue_inline_styles()
         $deposit_text = $args['deposit_text'];
         $full_text = $args['full_text'];
         ?>
-        <?php $this->deposit_amount_string($args); ?>
+        <div class='deposit-option'>
+            <?php $this->deposit_amount_string($args); ?>
+        </div>
         <div data-ajax-refresh="<?php echo $ajax_refresh; ?>" data-product_id="<?php echo $product->get_id(); ?>" class='magepeople_mepp_single_deposit_form wc-deposits-options-form' >
             <div class="toggle-switch-woocommerce-deposits <?php echo $hide ? 'mepp_hidden ' : '' ?>">
                 <input type="radio" id="<?php echo $product->get_id(); ?>-pay-deposit" class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
@@ -683,26 +685,23 @@ public function enqueue_inline_styles()
                     </div>
                 </div>
             </div>
-        <span class='deposit-message wc-deposits-notice'></span>
-        <?php do_action('mepp_payment_plan_single_page', $args); ?>
-        <script>
-            jQuery(document).ready(function($) {
-                // Hide deposit-option initially if pay-full-amount is checked
-                if ($('#<?php echo $product->get_id(); ?>-pay-full-amount').is(':checked')) {
-                    $('.deposit-option').hide();
-                }
-
-                // Toggle deposit-option visibility on radio button change
-                $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
-                    if ($(this).val() === 'full') {
+            <span class='deposit-message wc-deposits-notice'></span>
+            <?php do_action('mepp_payment_plan_single_page', $args); ?>
+            <script>
+                jQuery(document).ready(function($) {
+                    if ($('#<?php echo $product->get_id(); ?>-pay-full-amount').is(':checked')) {
                         $('.deposit-option').hide();
-                    } else {
-                        $('.deposit-option').show();
                     }
+                    $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
+                        if ($(this).val() === 'full') {
+                            $('.deposit-option').hide();
+                        } else {
+                            $('.deposit-option').show();
+                        }
+                    });
                 });
-            });
-        </script>
-    </div>
+            </script>
+        </div>
     <?php
     }
 
