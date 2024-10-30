@@ -250,4 +250,16 @@ jQuery(document).ready(function ($) {
         var parent = $(this).closest('li');
         parent.find('.mepp-single-plan').slideToggle();
     });
+
+
+    $('.pay-deposit').on('change', function() {
+        var parent = $(this).closest('.magepeople_mepp_single_deposit_form');
+        if($(this).val() === 'deposit'){
+            parent.find('.mepp-payment-plans').show();
+        }
+        if($(this).val() === 'full'){
+            parent.find('.mepp-payment-plans').hide();
+        }
+        
+    });
 })(jQuery);

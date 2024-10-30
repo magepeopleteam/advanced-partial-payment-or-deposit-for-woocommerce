@@ -622,6 +622,8 @@ public function enqueue_inline_styles()
 
     public function basic_style($args){
         do_action('mepp_enqueue_product_scripts');
+        $has_payment_plans = $args['has_payment_plans'];
+        $mepp_default_option = get_option('mepp_default_option');
         if ($args['force_deposit'] === 'yes') $args['default_checked'] = 'deposit';
         $hide = get_option('mepp_hide_ui_when_forced', 'no') === 'yes';
         $ajax_refresh = $args['ajax_refresh'];
@@ -637,7 +639,7 @@ public function enqueue_inline_styles()
                     type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit'>
                     <?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     <span class="radio-btn"></span>
-                    <?php $this->deposit_amount_string($args); ?>
+                    <div class="deposit-option"><?php $this->deposit_amount_string($args); ?></div>
             </label>
             <label class="basic-style">
                 <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
@@ -652,7 +654,27 @@ public function enqueue_inline_styles()
                 </label>
         </div>
         <span class='deposit-message wc-deposits-notice'></span>
-        <?php do_action('mepp_payment_plan_single_page', $args); ?>
+        <?php 
+        if ($mepp_default_option !== 'full') {
+            do_action('mepp_payment_plan_single_page', $args);
+        }
+        ?>
+        <script>
+                jQuery(document).ready(function($) {
+                    if ($('#<?php echo $product->get_id(); ?>-pay-full-amount').is(':checked')) {
+                        $('.deposit-option').hide();
+                    }
+                    $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
+                        if ($(this).val() === 'full') {
+                            $('.deposit-option').hide();
+                            $('.mepp-payment-plans').hide();
+                        } else {
+                            $('.deposit-option').show();
+                            $('.mepp-payment-plans').show();
+                        }
+                    });
+                });
+            </script>
     </div>
     <?php
     }
@@ -695,8 +717,10 @@ public function enqueue_inline_styles()
                     $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
                         if ($(this).val() === 'full') {
                             $('.deposit-option').hide();
+                            $('.mepp-payment-plans').hide();
                         } else {
                             $('.deposit-option').show();
+                            $('.mepp-payment-plans').show();
                         }
                     });
                 });
