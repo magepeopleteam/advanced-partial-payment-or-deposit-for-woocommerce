@@ -644,7 +644,12 @@ public function enqueue_inline_styles()
                     <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
                     <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     <span class="radio-btn"></span>
-            </label>
+                    <div class='deposit-option'>
+                        <?php _e('Full Amount','advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                        <span class='deposit-full-amount'><?php echo wc_price( get_post_meta( get_the_ID(), '_price', true ) ); ?></span>
+                        <?php _e('Per item','advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                    </div>
+                </label>
         </div>
         <span class='deposit-message wc-deposits-notice'></span>
         <?php do_action('mepp_payment_plan_single_page', $args); ?>
