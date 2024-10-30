@@ -242,3 +242,12 @@ jQuery(document).ready(function ($) {
 });
 
 
+// ==================payment plan detais==========
+(function($) {
+    $('.view-details').on('click', function(e) {
+        e.preventDefault(); 
+        e.stopPropagation();
+        var parent = $(this).closest('li');
+        parent.find('.mepp-single-plan').slideToggle();
+    });
+})(jQuery);
