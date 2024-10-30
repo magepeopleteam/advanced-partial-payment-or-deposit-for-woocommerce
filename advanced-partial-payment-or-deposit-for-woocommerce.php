@@ -105,9 +105,9 @@ if (mepp_woocommerce_is_active()) :
                 if (!$this->is_disabled()) {
                 
                 $colors = get_option('mepp_deposit_buttons_colors');
-                $primary    = $colors['primary'] ? $colors['primary'] : '#f8f8f8';
-                $secondary  = $colors['secondary'] ? $colors['secondary'] : '#c4c4c4';
-                $highlight  = $colors['highlight'] ? $colors['highlight'] : '#ffbe00';
+                $primary    = isset($colors['primary']) ? $colors['primary'] : '#f8f8f8';
+                $secondary  = isset($colors['secondary']) ? $colors['secondary'] : '#c4c4c4';
+                $highlight  = isset($colors['highlight']) ? $colors['highlight'] : '#ffbe00';
 
                 $set_colors = "
                     :root{
