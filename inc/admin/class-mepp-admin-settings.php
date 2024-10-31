@@ -42,17 +42,9 @@ class MEPP_Admin_Settings
         // reminder datepicker
         add_action('woocommerce_admin_field_reminder_datepicker', array($this, 'reminder_datepicker'));
         
-        add_action('admin_notices', [$this,'my_data_saved_notice']);
+        
     }
 
-    public function my_data_saved_notice() {
-        if(isset($_POST['submit'])){
-        $message = '<div class="notice notice-success is-dismissible" style="position: fixed;top: 32px;width: 50%;">
-                <p>Data saved successfully.</p>
-            </div>';
-        echo $message;
-        }
-    }
 
     public function sr_partial_patment_menu(): void {
     add_menu_page(
@@ -172,6 +164,14 @@ public function settings_tabs_mepp()
             </div>
 
             <div  class="mepp-nav-tab-content">
+                <?php 
+                    if(isset($_POST['submit'])){
+                    $message = '<div class="setttings-saved-notice" >
+                                    <p>Data saved successfully.</p>
+                                </div>';
+                    echo $message;
+                    }
+                ?>
                 <form method="post" id="settings-form">
 
                 <?php
