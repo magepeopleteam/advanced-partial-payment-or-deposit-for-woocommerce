@@ -47,7 +47,7 @@ class MEPP_Admin_Settings
 
     public function my_data_saved_notice() {
         if(isset($_POST['submit'])){
-        $message = '<div class="notice notice-success is-dismissible">
+        $message = '<div class="notice notice-success is-dismissible" style="position: fixed;top: 32px;width: 50%;">
                 <p>Data saved successfully.</p>
             </div>';
         echo $message;
