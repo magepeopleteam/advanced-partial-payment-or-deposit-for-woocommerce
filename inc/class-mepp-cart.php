@@ -294,6 +294,7 @@ class MEPP_Cart
 
      public function get_item_data($item_data, $cart_item)
 {
+    
     // Check if storewide deposit details are enabled
     $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_details', 'yes');
     if ($storewide_deposit_enabled_details !== 'yes') {
@@ -360,7 +361,7 @@ class MEPP_Cart
             if (!empty($deposit_type) && !empty($deposit_amount)) {
                 // Check if the deposit type is a percentage
                 if ($deposit_type === 'percent') {
-                    $deposit_info = $deposit_type . ": " . $deposit_amount . "%";
+                    $deposit_info = "(%)";
                 } else {
                     $deposit_info = $deposit_type . ": " . wc_price($deposit_amount, array('ex_tax_label' => $tax_display === 'no'));
                 }

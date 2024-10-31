@@ -602,6 +602,7 @@ public function enqueue_inline_styles()
         $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_details', 'yes');
         $deposit_info = $args['deposit_info'];
         $deposit_amount = $args['deposit_amount'];
+        $deposit_percent = get_post_meta(get_the_ID(),'_mepp_deposit_amount',true);
         $suffix = $args['suffix'];
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
@@ -609,7 +610,7 @@ public function enqueue_inline_styles()
 
                 <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                 <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
-                    <span id='deposit-amount'><?php echo wc_price($deposit_amount) . '%'; ?></span>
+                    <span id='deposit-amount'><?php echo wc_price($deposit_amount) ; ?></span><span>(<?php echo esc_html($deposit_percent); ?>%)</span>
                 <?php } else { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                 <?php } ?>
