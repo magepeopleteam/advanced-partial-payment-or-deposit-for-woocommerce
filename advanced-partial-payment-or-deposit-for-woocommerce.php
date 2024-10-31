@@ -3,7 +3,7 @@
  * Plugin Name: Deposit & Partial Payment Solution for WooCommerce - WpDepositly | MagePeople
  * Plugin URI: http://mage-people.com
  * Description: This plugin will add Partial Payment System in the Woocommerce Plugin its also support Woocommerce Event Manager Plugin.
- * Version: 3.0.3
+ * Version: 3.0.5
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: advanced-partial-payment-or-deposit-for-woocommerce
