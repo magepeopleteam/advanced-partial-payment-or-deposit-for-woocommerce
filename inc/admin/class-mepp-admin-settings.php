@@ -18,7 +18,7 @@ class MEPP_Admin_Settings
 
     public function __construct()
     {
-
+        
 
         $allowed_html = array(
             'a' => array('href' => array(), 'title' => array()),
@@ -28,7 +28,7 @@ class MEPP_Admin_Settings
             'del' => array(), 'u' => array(), 'b' => array()
         );
 
-
+        
         // Hook the settings page
         add_action( 'admin_menu', array($this, 'sr_partial_patment_menu') );
 
@@ -41,9 +41,18 @@ class MEPP_Admin_Settings
         add_action('woocommerce_admin_field_deposit_buttons_color', array($this, 'deposit_buttons_color'));
         // reminder datepicker
         add_action('woocommerce_admin_field_reminder_datepicker', array($this, 'reminder_datepicker'));
-
+        
+        add_action('admin_notices', [$this,'my_data_saved_notice']);
     }
 
+    public function my_data_saved_notice() {
+        if(isset($_POST['submit'])){
+        $message = '<div class="notice notice-success is-dismissible">
+                <p>Data saved successfully.</p>
+            </div>';
+        echo $message;
+        }
+    }
 
     public function sr_partial_patment_menu(): void {
     add_menu_page(
@@ -139,7 +148,7 @@ public function settings_tabs_mepp()
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     ));
-    
+
     ?>
 
     <div class="advanced-partial-payment">
@@ -230,6 +239,7 @@ public function settings_tabs_mepp()
 
     function tab_mepp_general_output($active)
     {
+        
         $class = $active ? '' : 'hidden';
         ?>
         
@@ -238,6 +248,7 @@ public function settings_tabs_mepp()
             <?php
             $roles_array = array();
             $user_roles = array_reverse(get_editable_roles());
+            
             foreach ($user_roles as $key => $user_role) {
 
                 $roles_array[$key] = $user_role['name'];
@@ -1264,7 +1275,6 @@ public function settings_tabs_mepp()
             
             foreach ($settings as $key => $setting) {
                 update_option($key, $setting);
-
             }
         }
 
