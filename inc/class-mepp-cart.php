@@ -330,7 +330,6 @@ class MEPP_Cart
             $deposit_amount_text = esc_html__('Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce');
         }
 
-        // Append Deposit Amount
         $item_data[] = array(
             'name' => $deposit_amount_text,
             'display' => wc_price($display_deposit, array('ex_tax_label' => $tax_display === 'no')),
@@ -363,7 +362,7 @@ class MEPP_Cart
                 if ($deposit_type === 'percent') {
                     $deposit_info = "(%)";
                 } else {
-                    $deposit_info = $deposit_type . ": " . wc_price($deposit_amount, array('ex_tax_label' => $tax_display === 'no'));
+                    $deposit_info = __("Fixed",'advanced-partial-payment-or-deposit-for-woocommerce'); 
                 }
                 $item_data[] = array(
                     'name' => esc_html__('Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
