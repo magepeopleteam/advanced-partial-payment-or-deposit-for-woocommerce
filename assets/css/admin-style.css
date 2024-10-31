@@ -402,6 +402,21 @@ label[for=mepp_storewide_deposit_payment_plans] {
   text-align: left;
 }
 
+.setttings-saved-notice {
+  border-left: 3px solid green;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #ddd;
+  padding: 10px 15px;
+  margin-right: 20px;
+}
+
+.setttings-saved-notice p {
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  color: green;
+}
+
 .pro-nav {
   color: var(--mage-white);
   background-color: var(--mage-primary);
