@@ -606,7 +606,7 @@ public function enqueue_inline_styles()
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
                 ?>
-                
+
                 <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                 <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount) . '%'; ?></span>
@@ -617,6 +617,10 @@ public function enqueue_inline_styles()
 
                 <?php
             }
+        }
+        if($has_payment_plans){?>
+            <?php esc_html_e('Select Payment Plan', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+        <?php
         }
     }
 
@@ -660,21 +664,19 @@ public function enqueue_inline_styles()
         }
         ?>
         <script>
-                jQuery(document).ready(function($) {
-                    if ($('#<?php echo $product->get_id(); ?>-pay-full-amount').is(':checked')) {
-                        $('.deposit-option').hide();
+            jQuery(document).ready(function($) {
+                if ($('#<?php echo $product->get_id(); ?>-pay-full-amount').is(':checked')) {
+                    $('.deposit-option').hide();
+                }
+                $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
+                    if ($(this).val() === 'full') {
+                        $('.mepp-payment-plans').hide();
+                    } else {
+                        $('.mepp-payment-plans').show();
                     }
-                    $('input[name="<?php echo $product->get_id(); ?>-deposit-radio"]').change(function() {
-                        if ($(this).val() === 'full') {
-                            $('.deposit-option').hide();
-                            $('.mepp-payment-plans').hide();
-                        } else {
-                            $('.deposit-option').show();
-                            $('.mepp-payment-plans').show();
-                        }
-                    });
                 });
-            </script>
+            });
+        </script>
     </div>
     <?php
     }
@@ -757,8 +759,8 @@ public function enqueue_inline_styles()
         global $product;
 
         $product_id = $product->get_id();
+        
         echo $this->get_deposit_container($product_id);
-
     }
     /**
      * @param $cart_item_meta

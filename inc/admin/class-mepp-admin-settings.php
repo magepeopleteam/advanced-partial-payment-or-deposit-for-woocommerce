@@ -18,7 +18,7 @@ class MEPP_Admin_Settings
 
     public function __construct()
     {
-
+        
 
         $allowed_html = array(
             'a' => array('href' => array(), 'title' => array()),
@@ -28,7 +28,7 @@ class MEPP_Admin_Settings
             'del' => array(), 'u' => array(), 'b' => array()
         );
 
-
+        
         // Hook the settings page
         add_action( 'admin_menu', array($this, 'sr_partial_patment_menu') );
 
@@ -41,7 +41,8 @@ class MEPP_Admin_Settings
         add_action('woocommerce_admin_field_deposit_buttons_color', array($this, 'deposit_buttons_color'));
         // reminder datepicker
         add_action('woocommerce_admin_field_reminder_datepicker', array($this, 'reminder_datepicker'));
-
+        
+        
     }
 
 
@@ -139,7 +140,7 @@ public function settings_tabs_mepp()
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     ));
-    
+
     ?>
 
     <div class="advanced-partial-payment">
@@ -163,6 +164,14 @@ public function settings_tabs_mepp()
             </div>
 
             <div  class="mepp-nav-tab-content">
+                <?php 
+                    if(isset($_POST['submit'])){
+                    $message = '<div class="setttings-saved-notice" >
+                                    <p>Data saved successfully.</p>
+                                </div>';
+                    echo $message;
+                    }
+                ?>
                 <form method="post" id="settings-form">
 
                 <?php
@@ -230,6 +239,7 @@ public function settings_tabs_mepp()
 
     function tab_mepp_general_output($active)
     {
+        
         $class = $active ? '' : 'hidden';
         ?>
         
@@ -238,6 +248,7 @@ public function settings_tabs_mepp()
             <?php
             $roles_array = array();
             $user_roles = array_reverse(get_editable_roles());
+            
             foreach ($user_roles as $key => $user_role) {
 
                 $roles_array[$key] = $user_role['name'];
@@ -1104,10 +1115,10 @@ public function settings_tabs_mepp()
     public function deposit_buttons_color()
     {
 
-        $colors = get_option('mepp_deposit_buttons_colors',array('primary'=>'','secondary'=>'','highlight'=>''));
-        $primary_color = $colors['primary'];
-        $secondary_color = $colors['secondary'];
-        $highlight_color = $colors['highlight'];;
+        $colors = get_option('mepp_deposit_buttons_colors',array('primary'=>'#efefef','secondary'=>'#cccccc','highlight'=>'#dd3333'));
+        $primary_color = isset($colors['primary'])?$colors['primary']:'#efefef';
+        $secondary_color = isset($colors['secondary'])?$colors['secondary']:'#cccccc';
+        $highlight_color = isset($colors['highlight'])?$colors['highlight']:'#dd3333';
 
         ?>
         <tr class="">
@@ -1207,11 +1218,10 @@ public function settings_tabs_mepp()
 
             $settings['mepp_deposit_buttons_colors'] = array(
 
-                'primary' => isset($_POST['mepp_deposit_buttons_colors_primary']) ? $_POST['mepp_deposit_buttons_colors_primary'] : false,
-                'secondary' => isset($_POST['mepp_deposit_buttons_colors_secondary']) ? $_POST['mepp_deposit_buttons_colors_secondary'] : false,
-                'highlight' => isset($_POST['mepp_deposit_buttons_colors_highlight']) ? $_POST['mepp_deposit_buttons_colors_highlight'] : false
+                'primary' => $_POST['mepp_deposit_buttons_colors_primary']!='' ? $_POST['mepp_deposit_buttons_colors_primary'] : '#efefef',
+                'secondary' => $_POST['mepp_deposit_buttons_colors_secondary']!='' ? $_POST['mepp_deposit_buttons_colors_secondary'] : '#cccccc',
+                'highlight' => $_POST['mepp_deposit_buttons_colors_highlight']!='' ? $_POST['mepp_deposit_buttons_colors_highlight'] : '#dd3333',
             );
-
             $settings['mepp_checkout_mode_enabled'] = isset($_POST['mepp_checkout_mode_enabled']) ? $_POST['mepp_checkout_mode_enabled'] : 'no';
             $settings['mepp_checkout_mode_force_deposit'] = isset($_POST['mepp_checkout_mode_force_deposit']) ? $_POST['mepp_checkout_mode_force_deposit'] : 'no';
             $settings['mepp_checkout_mode_deposit_amount'] = isset($_POST['mepp_checkout_mode_deposit_amount']) ? $_POST['mepp_checkout_mode_deposit_amount'] : '0';
@@ -1262,10 +1272,9 @@ public function settings_tabs_mepp()
             $settings['mepp_storewide_deposit_amount_type'] = isset($_POST['mepp_storewide_deposit_amount_type']) ? $_POST['mepp_storewide_deposit_amount_type'] : 'percent';
             $settings['mepp_storewide_deposit_payment_plans'] = isset($_POST['mepp_storewide_deposit_payment_plans']) ? $_POST['mepp_storewide_deposit_payment_plans'] : array();
 
-
+            
             foreach ($settings as $key => $setting) {
                 update_option($key, $setting);
-
             }
         }
 
