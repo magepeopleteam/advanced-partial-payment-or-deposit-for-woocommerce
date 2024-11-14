@@ -19,6 +19,7 @@ The [WooCommerce Deposit & Partial Payment Plugin](https://mage-people.com/produ
 ### Make Yourself Comfortable With Available Demos:
 [View Live PRO Version Demo](https://partial.mage-people.com/)
 [Buy Pro Version](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/)
+[Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
 [Documentation](https://docs.mage-people.com/advanced-partial-payment-or-deposit-for-woocommerce/)
 
 
@@ -58,6 +59,7 @@ Upgrading to the pro version you will get some premium features that will enhanc
 ***💲 Fixed Amount Partial Payment or Deposit:*** Simplify partial payments by setting a fixed deposit amount. [Live Pro Version Demo - Fixed Type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
 ***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a fixed amount or a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
 ***Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
+***Partial Payment Checkout Mode:*** Offer partial payment on the total order at the checkout page. [Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
 ***💰 Zero amount payment option:*** Allow customers to make zero-amount payments for specific scenarios.
 ***📬 Receive payment reminder emails:***
 
