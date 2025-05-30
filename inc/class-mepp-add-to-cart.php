@@ -356,7 +356,6 @@ public function enqueue_inline_styles()
                     $plan_payment_details = get_term_meta($plan_id, 'payment_details', true);
                     if(!is_string($plan_payment_details) || empty($plan_payment_details)) continue;
                     $plan_payment_details = json_decode($plan_payment_details, true);
-                    error_log( print_r( [ '$plan_payment_details' => $plan_payment_details ], true ) );
                     if (!is_array($plan_payment_details['payment-plan']) || empty($plan_payment_details['payment-plan'])) {
                         continue; // invalid plan details
                     }

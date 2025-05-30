@@ -513,8 +513,6 @@ class MEPP_Cart
                     $plan_tax_total = wc_get_price_including_tax($product, array('price' => $plan_total)) - wc_get_price_excluding_tax($product, array('price' => $plan_total));
 
                 } else if($plan_amount_type === 'minimum') {
-
-//                    error_log( print_r( [ '$cart_item'=> $cart_item['mepp_minimum_amount']], true ) );
                     $plan_total_percentage = 100;
                     $plan_deposit_amount = isset( $cart_item['mepp_minimum_amount'] ) ? $cart_item['mepp_minimum_amount'] : 0;
                     $plan_total = floatval($plan_deposit_amount) + array_sum(array_column($plan_payment_details['payment-plan'], 'percentage'));
@@ -1240,11 +1238,13 @@ class MEPP_Cart
             $deposit_amount_meta = get_option('mepp_checkout_mode_deposit_amount');
             $amount_type_meta = get_option('mepp_checkout_mode_deposit_amount_type');
             $selected_plan = $amount_type_meta === 'payment_plan' ? $this->get_checkout_payment_plan() : false;
+
             switch ($amount_type_meta) {
                 case 'payment_plan':
                     $this->has_payment_plans = true;
 
                     $plan_amount_type = get_term_meta($selected_plan, 'amount_type', true);
+
                     if (empty($plan_amount_type))
                         $plan_amount_type = 'percentage'; // backward compatibility ,fallback to percentage if type not detected
 
