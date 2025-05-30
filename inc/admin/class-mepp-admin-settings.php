@@ -345,6 +345,7 @@ public function settings_tabs_mepp()
     'options' => apply_filters('mepp_settings_dropdown_options', array(
         'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'minimum' => esc_html__('Minimum', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     )),
     'default' => 'percent'
 ),
