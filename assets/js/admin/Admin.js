@@ -397,7 +397,15 @@ jQuery(document).ready(function ($) {
                     precision: wcip_data.currency_format_num_decimals,
                     format:    wcip_data.currency_format
                 } ) );
-            } else {
+            } else if( $('#amount_type').val() === 'minimum' ){
+                $( '#total_percentage' ).html( accounting.formatMoney( Math.round((plan_total + Number.EPSILON) * 100) / 100, {
+                    symbol:    wcip_data.currency_format_symbol,
+                    decimal:   wcip_data.currency_format_decimal_sep,
+                    thousand:  wcip_data.currency_format_thousand_sep,
+                    precision: wcip_data.currency_format_num_decimals,
+                    format:    wcip_data.currency_format
+                } ) );
+            }else {
                 $('#total_percentage').text(Math.round((plan_total + Number.EPSILON) * 100) / 100 + '%');
 
             }
@@ -524,7 +532,15 @@ jQuery(document).ready(function($) {
                     precision: wcip_data.currency_format_num_decimals,
                     format: wcip_data.currency_format
                 }))
-            } else {
+            } else if( $('#amount_type').val() === 'minimum' ){
+                $( '#total_percentage' ).html( accounting.formatMoney( Math.round((plan_total + Number.EPSILON) * 100) / 100, {
+                    symbol:    wcip_data.currency_format_symbol,
+                    decimal:   wcip_data.currency_format_decimal_sep,
+                    thousand:  wcip_data.currency_format_thousand_sep,
+                    precision: wcip_data.currency_format_num_decimals,
+                    format:    wcip_data.currency_format
+                } ) );
+            }else {
                 $("#total_percentage").text(Math.round((plan_total + Number.EPSILON) * 100) / 100 + "%")
             }
         };

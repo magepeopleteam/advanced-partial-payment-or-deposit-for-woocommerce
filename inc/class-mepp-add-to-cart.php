@@ -338,6 +338,7 @@ public function enqueue_inline_styles()
                         'include' => $available_plans_meta,
                     )
                 );
+
                 foreach($available_plans as $available_plan){
                     $plan_id = $available_plan->term_id;
 
@@ -355,6 +356,7 @@ public function enqueue_inline_styles()
                     $plan_payment_details = get_term_meta($plan_id, 'payment_details', true);
                     if(!is_string($plan_payment_details) || empty($plan_payment_details)) continue;
                     $plan_payment_details = json_decode($plan_payment_details, true);
+                    error_log( print_r( [ '$plan_payment_details' => $plan_payment_details ], true ) );
                     if (!is_array($plan_payment_details['payment-plan']) || empty($plan_payment_details['payment-plan'])) {
                         continue; // invalid plan details
                     }
@@ -364,6 +366,11 @@ public function enqueue_inline_styles()
                         $plan_deposit_amount = get_term_meta($plan_id, 'deposit_percentage', true);
                         $plan_total = floatval($plan_deposit_amount) + array_sum(array_column($plan_payment_details['payment-plan'], 'percentage'));
                         $plan_total_record = $plan_total;
+                    } else if($plan_amount_type === 'minimum'){
+                        $plan_deposit_amount = get_term_meta($plan_id, 'deposit_percentage', true);
+                        $plan_total = $price;
+                        $plan_total_record = $plan_total;
+                        $payment_plans[$available_plan->term_id]['deposit_percentage'] = $plan_total_record - $plan_total;
                     } else {
                         //get deposit percentage from meta
                         $plan_deposit_percentage = get_term_meta($plan_id, 'deposit_percentage', true);
@@ -410,7 +417,9 @@ public function enqueue_inline_styles()
 
                         if ($plan_amount_type === 'fixed') {
                             $line_percentage = round($payment_line['percentage'] / $plan_total * 100, 1);
-                        } else {
+                        } elseif( $plan_amount_type === 'minimum' ) {
+                            $line_percentage = $plan_total_record - $plan_deposit_amount ;
+                        }else {
                             $line_percentage = $payment_line['percentage'];
                         }
 
@@ -427,7 +436,17 @@ public function enqueue_inline_styles()
 
 
                         } else {
-                            $line_amount = $plan_amount_type === 'fixed' ? round($payment_line['percentage'], wc_get_price_decimals()) : round($price / 100 * $payment_line['percentage'], wc_get_price_decimals());
+                            if ($plan_amount_type === 'fixed') {
+                                $line_amount = round($payment_line['percentage'], wc_get_price_decimals());
+                            }else if( $plan_amount_type === 'minimum' ) {
+                                $line_amount = $plan_total_record - $plan_deposit_amount ;
+                            }else {
+                                $line_amount = round($price / 100 * $payment_line['percentage'], wc_get_price_decimals());
+
+                            }
+
+//                            $line_amount = $plan_amount_type === 'fixed' ? round($payment_line['percentage'], wc_get_price_decimals()) : round($price / 100 * $payment_line['percentage'], wc_get_price_decimals());
+
                             $plan_total_record -= $line_amount;
                             //set the tax for each payment
                             switch ($tax_handling) {
@@ -777,6 +796,11 @@ public function enqueue_inline_styles()
         if (!apply_filters('mepp_deposit_enabled_for_customer', true)) {
             return $cart_item_meta;
         }
+
+        if (isset($_POST['mepp_minimum_amount'])) {
+            $cart_item_meta['mepp_minimum_amount'] = sanitize_text_field($_POST['mepp_minimum_amount']);
+        }
+
 
         $default = get_option('mepp_default_option');
         $product = wc_get_product($product_id);

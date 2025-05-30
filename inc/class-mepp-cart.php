@@ -512,7 +512,17 @@ class MEPP_Cart
                     $plan_total *= $quantity;
                     $plan_tax_total = wc_get_price_including_tax($product, array('price' => $plan_total)) - wc_get_price_excluding_tax($product, array('price' => $plan_total));
 
-                } else {
+                } else if($plan_amount_type === 'minimum') {
+
+//                    error_log( print_r( [ '$cart_item'=> $cart_item['mepp_minimum_amount']], true ) );
+                    $plan_total_percentage = 100;
+                    $plan_deposit_amount = isset( $cart_item['mepp_minimum_amount'] ) ? $cart_item['mepp_minimum_amount'] : 0;
+                    $plan_total = floatval($plan_deposit_amount) + array_sum(array_column($plan_payment_details['payment-plan'], 'percentage'));
+                    $plan_deposit_amount *= $quantity;
+                    $plan_total *= $quantity;
+                    $plan_tax_total = wc_get_price_including_tax($product, array('price' => $plan_total)) - wc_get_price_excluding_tax($product, array('price' => $plan_total));
+
+                }else {
 
                     // prepare display of payment plans
                     $plan_total = $original_price / 100 * $plan_total_percentage;
