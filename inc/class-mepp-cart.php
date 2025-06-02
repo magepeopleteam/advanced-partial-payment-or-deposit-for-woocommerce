@@ -777,10 +777,11 @@ class MEPP_Cart
                 }
 
                 if( MEPP_IS_PRO_ACTIVE ) {
-                    $item_deposit_amount = isset($cart_item['mepp_minimum_amount']) ? $cart_item['mepp_minimum_amount'] : 0;
+                    $item_deposit_amount = isset($cart_item['mepp_minimum_amount']) ? $cart_item['mepp_minimum_amount'] : $amount_or_percentage;
                 }else{
-                    $item_deposit_amount = 0;
+                    $item_deposit_amount = $amount_or_percentage;
                 }
+
 
                 if ($item_amount_type === 'minimum' && class_exists('WC_Booking') && method_exists($product, 'has_persons') && $product->has_persons() && $product->get_meta('_mepp_enable_per_person', true) == 'yes' && isset($cart_item['booking'], $cart_item['booking']['_persons'])) {
                     $persons = array_sum($cart_item['booking']['_persons']);
@@ -789,7 +790,7 @@ class MEPP_Cart
                 //only update on quantity for fixed , no need for percentage
                 if (!mepp_checkout_mode()) {
 //                    $item_deposit_amount = $item_amount_type === 'fixed' ? $item_deposit_amount * $quantity : $item_deposit_amount;
-                    $item_deposit_amount = isset( $cart_item['mepp_minimum_amount'] ) ? $cart_item['mepp_minimum_amount'] : 0;
+                    $item_deposit_amount = isset( $cart_item['mepp_minimum_amount'] ) ? $cart_item['mepp_minimum_amount'] : $amount_or_percentage;
                 }
 
 
