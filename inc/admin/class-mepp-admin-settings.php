@@ -337,18 +337,19 @@ public function settings_tabs_mepp()
 
                 ),
              'storewide_deposit_amount_type' => array(
-    'name' => esc_html__('Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-    'type' => 'select',
-    'desc_tip' => true,
-    'desc' => esc_html__('Choose amount type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-    'id' => 'mepp_storewide_deposit_amount_type',
-    'options' => apply_filters('mepp_settings_dropdown_options', array(
-        'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'minimum' => esc_html__('Minimum', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-    )),
-    'default' => 'percent'
-),
+                'name' => esc_html__('Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                'type' => 'select',
+                'desc_tip' => true,
+                'desc' => esc_html__('Choose amount type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                'id' => 'mepp_storewide_deposit_amount_type',
+                'options' => apply_filters('mepp_settings_dropdown_options', array(
+                    'fixed' => esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'percent' => esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+            //        'minimum' => esc_html__('Minimum', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                )),
+
+                'default' => 'percent'
+            ),
 
                 'storewide_deposit_amount' => array(
                     'name' => esc_html__('Default Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce'),
@@ -518,7 +519,11 @@ public function settings_tabs_mepp()
                 // ),
 
             );
-           
+
+
+            if ( MEPP_IS_PRO_ACTIVE ) {
+                $general_settings['storewide_deposit_amount_type']['options']['minimum'] = esc_html__('Minimum', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            }
 
 
            woocommerce_admin_fields($general_settings);

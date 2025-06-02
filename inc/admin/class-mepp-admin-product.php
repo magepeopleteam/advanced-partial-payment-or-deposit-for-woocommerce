@@ -151,16 +151,27 @@ class MEPP_Admin_Product
                 </p>
                 <p class="form-field">
 
-                    <?php woocommerce_wp_select(array(
-                        'id' => '_mepp_amount_type',
-                        'label' => esc_html__('Deposit type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                        'options' => apply_filters('mepp_amount_type_options', array(
-                            'fixed' => esc_html__('Fixed value', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                            'percent' => esc_html__('Percentage of price', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                            // 'minimum_amount' => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce')
-
-                        ))
-                    ));
+                    <?php
+                    if( MEPP_IS_PRO_ACTIVE ){
+                        woocommerce_wp_select(array(
+                            'id' => '_mepp_amount_type',
+                            'label' => esc_html__('Deposit type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'options' => apply_filters('mepp_amount_type_options', array(
+                                'fixed' => esc_html__('Fixed value', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                                'percent' => esc_html__('Percentage of price', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                                'minimum' => esc_html__('Minimum Amount', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                            ))
+                        ));
+                    }else{
+                        woocommerce_wp_select(array(
+                            'id' => '_mepp_amount_type',
+                            'label' => esc_html__('Deposit type', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            'options' => apply_filters('mepp_amount_type_options', array(
+                                'fixed' => esc_html__('Fixed value', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                                'percent' => esc_html__('Percentage of price', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                            ))
+                        ));
+                    }
 
                     $display_payment_plan_field = $product->get_meta('_mepp_amount_type') === 'payment_plan' ? '' : 'hidden';
                     $display_amount_field = $display_payment_plan_field === 'hidden' ? '' : 'hidden';
@@ -259,6 +270,8 @@ class MEPP_Admin_Product
                     $deposit_type = ($deposit_enabled_global === 'yes') ? $deposit_type_global : '';
                     $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
                 }
+
+                error_log( print_r( [ '$deposit_type' => $deposit_type ], true ) );
 
                 // Fetch payment plan metadata
                 $payment_plan_local = sanitize_text_field(get_post_meta($product_id, '_mepp_amount_type', true));
