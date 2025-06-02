@@ -271,8 +271,6 @@ class MEPP_Admin_Product
                     $deposit_amount = ($deposit_enabled_global === 'yes') ? $deposit_amount_global : '';
                 }
 
-                error_log( print_r( [ '$deposit_type' => $deposit_type ], true ) );
-
                 // Fetch payment plan metadata
                 $payment_plan_local = sanitize_text_field(get_post_meta($product_id, '_mepp_amount_type', true));
                 $payment_plan_global = sanitize_text_field(get_option('mepp_storewide_deposit_amount_type', 'fixed')); 
