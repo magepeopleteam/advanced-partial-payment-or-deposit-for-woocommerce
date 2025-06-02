@@ -633,15 +633,23 @@ public function enqueue_inline_styles()
         $suffix = $args['suffix'];
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
+
+                if( $deposit_info['type'] === 'minimum'  ){
+                    $deposit_text = 'Deposit Minimum Amount :';
+                }else{
+                    $deposit_text = 'Deposit Amount :';
+                }
                 ?>
 
-                <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                <?php echo esc_attr( $deposit_text ); ?>
                 <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount) ; ?></span><span>(<?php echo esc_html($deposit_percent); ?>%)</span>
                 <?php } else if( MEPP_IS_PRO_ACTIVE && $deposit_info['type'] === 'minimum' ){
                     $sale_price = $product->get_price();
                     ?>
-                    <span id='deposit-amount'><input name="mepp_minimum_amount" id="mepp_minimum_amount" min="<?php echo esc_attr( $deposit_amount );?>" max="<?php echo esc_attr($sale_price);?>" value="<?php echo $deposit_amount; ?>"></span>
+                    <span id='deposit-amount'>
+                        <input name="mepp_minimum_amount" id="mepp_minimum_amount" min="<?php echo esc_attr( $deposit_amount );?>" max="<?php echo esc_attr($sale_price);?>" value="<?php echo $deposit_amount; ?>">
+                    </span>
                <?php } else { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                 <?php } ?>
