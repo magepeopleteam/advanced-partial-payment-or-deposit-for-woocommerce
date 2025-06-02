@@ -305,6 +305,15 @@ public function enqueue_inline_styles()
                 }
 
                 break;
+            case 'minimum':
+                $amount = $deposit_amount;
+                if(!is_numeric($amount)) return $html;
+                $amount = round($amount, wc_get_price_decimals());
+
+                if($tax_display){
+                    $amount = $deposit_amount + $tax;
+                }
+                break;
             case 'percent':
 
                 if ($product_type === 'variable' || $product_type === 'composite' || $product_type === 'booking' && !wp_doing_ajax()) {
@@ -629,7 +638,11 @@ public function enqueue_inline_styles()
                 <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                 <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount) ; ?></span><span>(<?php echo esc_html($deposit_percent); ?>%)</span>
-                <?php } else { ?>
+                <?php } else if( MEPP_IS_PRO_ACTIVE && $deposit_info['type'] === 'minimum' ){
+                    $sale_price = $product->get_price();
+                    ?>
+                    <span id='deposit-amount'><input name="mepp_minimum_amount" id="mepp_minimum_amount" min="<?php echo esc_attr( $deposit_amount );?>" max="<?php echo esc_attr($sale_price);?>" value="<?php echo $deposit_amount; ?>"></span>
+               <?php } else { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                 <?php } ?>
                 <span id='deposit-suffix'><?php echo $suffix; ?></span>
@@ -796,7 +809,7 @@ public function enqueue_inline_styles()
             return $cart_item_meta;
         }
 
-        if (isset($_POST['mepp_minimum_amount'])) {
+        if ( MEPP_IS_PRO_ACTIVE && isset($_POST['mepp_minimum_amount'])) {
             $cart_item_meta['mepp_minimum_amount'] = sanitize_text_field($_POST['mepp_minimum_amount']);
         }
 

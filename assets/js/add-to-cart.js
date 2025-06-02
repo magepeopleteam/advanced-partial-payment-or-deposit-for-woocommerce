@@ -262,4 +262,19 @@ jQuery(document).ready(function ($) {
         }
         
     });
+
+    $('#mepp_minimum_amount').on('input', function () {
+        let $this = $(this);
+        let value = parseFloat($this.val());
+        let min = parseFloat($this.attr('min'));
+        let max = parseFloat($this.attr('max'));
+        let defaultVal = parseFloat($this.attr('value')); // original default value
+
+        if (value < min || value > max) {
+            alert('Please enter a value between ' + min + ' and ' + max + '.');
+        }
+        if ( value > max) {
+            $this.val(defaultVal);
+        }
+    });
 })(jQuery);

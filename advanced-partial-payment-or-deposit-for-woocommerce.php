@@ -159,6 +159,11 @@ if (mepp_woocommerce_is_active()) :
          */
         private function __construct()
         {
+            if (is_plugin_active('mage-partial-payment-pro/mage_partial_pro.php')) {
+                $is_pro_active = true;
+            } else {
+                $is_pro_active = false;
+            }
             // Check if WooCommerce is not active
                 if (!mepp_woocommerce_is_active()) {
                 add_action('admin_notices', array($this, 'woocommerce_not_active_notice'));
@@ -172,6 +177,7 @@ if (mepp_woocommerce_is_active()) :
             define('MEPP_PLUGIN_URL', untrailingslashit(plugins_url(basename(plugin_dir_path(__FILE__)), basename(__FILE__))));
             define('MEPP_MAIN_FILE', __FILE__);
             define('MEPP_PAYMENT_PLAN_TAXONOMY', 'mepp_payment_plan');
+            define('MEPP_IS_PRO_ACTIVE', $is_pro_active);
 
             $this->compatibility = new stdClass();
 
