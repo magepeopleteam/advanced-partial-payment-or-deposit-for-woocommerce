@@ -112,7 +112,7 @@ function mepp_modify_cart_checkout_content($content) {
 // Check if the Pro plugin is active
 function mepp_check_pro_plugin_and_prompt_update() {
     $pro_plugin = 'mage-partial-payment-pro/mage_partial_pro.php';
-    $plugin_name = 'Advanced Partial/Deposit Payment For Woocommerce PRO';
+    $plugin_name = 'Advanced Partial/Deposit Payment For WooCommerce PRO';
     
     if (function_exists('wcpp_deactivate_depends_on_dependancy')) {
         // Display the update notice
@@ -452,91 +452,120 @@ function mepp_checkout_mode()
  */
 function mepp_calculate_product_deposit($product)
 {
-
-
     $deposit_enabled = mepp_is_product_deposit_enabled($product->get_id());
     $product_type = $product->get_type();
+    
     if ($deposit_enabled) {
-
-
         $deposit = mepp_get_product_deposit_amount($product->get_id());
         $amount_type = mepp_get_product_deposit_amount_type($product->get_id());
-
 
         $woocommerce_prices_include_tax = get_option('woocommerce_prices_include_tax');
 
         if ($woocommerce_prices_include_tax === 'yes') {
-
             $amount = wc_get_price_including_tax($product);
-
         } else {
             $amount = wc_get_price_excluding_tax($product);
-
         }
 
         switch ($product_type) {
-
-
-            case 'subscription' :
+            case 'subscription':
                 if (class_exists('WC_Subscriptions_Product')) {
-
                     $amount = \WC_Subscriptions_Product::get_sign_up_fee($product);
                     if ($amount_type === 'fixed') {
+                        // Keep deposit amount as is
                     } else {
                         $deposit = $amount * ($deposit / 100.0);
                     }
-
                 }
                 break;
-            case 'yith_bundle' :
+
+            case 'yith_bundle':
                 $amount = $product->price_per_item_tot;
                 if ($amount_type === 'fixed') {
+                    // Keep deposit amount as is
                 } else {
                     $deposit = $amount * ($deposit / 100.0);
                 }
                 break;
-            case 'variable' :
 
+            case 'variable':
                 if ($amount_type === 'fixed') {
+                    // Keep deposit amount as is
                 } else {
                     $deposit = $amount * ($deposit / 100.0);
                 }
                 break;
 
             default:
-
-
                 if ($amount_type !== 'fixed') {
-
                     $deposit = $amount * ($deposit / 100.0);
                 }
-
                 break;
+        }
+
+        // Check if there's a minimum deposit amount for the category
+        $category_settings = mepp_get_category_deposit_settings($product->get_id());
+        if ($category_settings !== false && $category_settings['amount_type'] === 'minimum' && $category_settings['amount'] > $deposit) {
+            $deposit = $category_settings['amount'];
         }
 
         return floatval($deposit);
     }
+
+    return 0;
 }
 
-/**
- * @brief checks if deposit is enabled for product
- * @param $product_id
- * @return mixed
- */
-function mepp_is_product_deposit_enabled($product_id)
-{
+function mepp_get_category_deposit_settings($product_id) {
+    $product = wc_get_product($product_id);
+    if (!$product) {
+        return false;
+    }
+
+    // Get product categories
+    $categories = get_the_terms($product_id, 'product_cat');
+    if (!$categories || is_wp_error($categories)) {
+        return false;
+    }
+
+    // Check each category for deposit settings
+    foreach ($categories as $category) {
+        $cat_id = $category->term_id;
+        
+        // Check if deposit is enabled for this category
+        $enable_deposit = get_option('mepp_category_' . $cat_id . '_enable_deposit', 'inherit');
+        if ($enable_deposit !== 'inherit') {
+            return array(
+                'enabled' => $enable_deposit === 'yes',
+                'force_deposit' => get_option('mepp_category_' . $cat_id . '_force_deposit', 'inherit') === 'yes',
+                'amount_type' => get_option('mepp_category_' . $cat_id . '_amount_type', 'inherit'),
+                'amount' => get_option('mepp_category_' . $cat_id . '_amount', '')
+            );
+        }
+    }
+
+    return false;
+}
+
+// Modify existing functions to check category settings first
+
+function mepp_is_product_deposit_enabled($product_id) {
     $enabled = false;
     $product = wc_get_product($product_id);
+    
     if ($product) {
+        // Check category settings first
+        $category_settings = mepp_get_category_deposit_settings($product_id);
+        if ($category_settings !== false) {
+            return $category_settings['enabled'];
+        }
 
-        // if it is a variation , check variation directly
+        // If no category settings, proceed with existing logic
         if ($product->get_type() === 'variation') {
             $parent_id = $product->get_parent_id();
             $parent = wc_get_product($parent_id);
             $inherit = $parent->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $enabled = get_option('mepp_storewide_deposit_enabled', 'no') === 'yes';
             } else {
                 $override = $product->get_meta('_mepp_override_product_settings', true) === 'yes';
@@ -547,41 +576,38 @@ function mepp_is_product_deposit_enabled($product_id)
                     $enabled = $parent->get_meta('_mepp_enable_deposit', true) === 'yes';
                 }
             }
-
-
         } else {
-
             $inherit = $product->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $enabled = get_option('mepp_storewide_deposit_enabled', 'no') === 'yes';
             } else {
                 $enabled = $product->get_meta('_mepp_enable_deposit', true) === 'yes';
             }
         }
-
-
     }
 
     return apply_filters('mepp_product_enable_deposit', $enabled, $product_id);
-
 }
 
-function mepp_is_product_deposit_forced($product_id)
-{
+function mepp_is_product_deposit_forced($product_id) {
     $forced = false;
     $product = wc_get_product($product_id);
+    
     if ($product) {
+        // Check category settings first
+        $category_settings = mepp_get_category_deposit_settings($product_id);
+        if ($category_settings !== false) {
+            return $category_settings['force_deposit'];
+        }
 
-        // if it is a variation , check variation directly
+        // If no category settings, proceed with existing logic
         if ($product->get_type() === 'variation') {
             $parent_id = $product->get_parent_id();
             $parent = wc_get_product($parent_id);
             $inherit = $parent->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $forced = get_option('mepp_storewide_deposit_force_deposit', 'no') === 'yes';
             } else {
                 $override = $product->get_meta('_mepp_override_product_settings', true) === 'yes';
@@ -592,14 +618,10 @@ function mepp_is_product_deposit_forced($product_id)
                     $forced = $parent->get_meta('_mepp_force_deposit', true) === 'yes';
                 }
             }
-
-
         } else {
-
             $inherit = $product->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $forced = get_option('mepp_storewide_deposit_force_deposit', 'no') === 'yes';
             } else {
                 $forced = $product->get_meta('_mepp_force_deposit', true) === 'yes';
@@ -608,24 +630,26 @@ function mepp_is_product_deposit_forced($product_id)
     }
 
     return apply_filters('mepp_product_force_deposit', $forced, $product_id);
-
 }
 
-function mepp_get_product_deposit_amount($product_id)
-{
+function mepp_get_product_deposit_amount($product_id) {
     $amount = false;
     $product = wc_get_product($product_id);
 
     if ($product) {
+        // Check category settings first
+        $category_settings = mepp_get_category_deposit_settings($product_id);
+        if ($category_settings !== false && $category_settings['amount_type'] !== 'inherit' && $category_settings['amount'] !== '') {
+            return $category_settings['amount'];
+        }
 
-        // if it is a variation , check variation directly
+        // If no category settings, proceed with existing logic
         if ($product->get_type() === 'variation') {
             $parent_id = $product->get_parent_id();
             $parent = wc_get_product($parent_id);
             $inherit = $parent->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $amount = get_option('mepp_storewide_deposit_amount', '50');
             } else {
                 $override = $product->get_meta('_mepp_override_product_settings', true) === 'yes';
@@ -636,14 +660,10 @@ function mepp_get_product_deposit_amount($product_id)
                     $amount = $parent->get_meta('_mepp_deposit_amount', true);
                 }
             }
-
-
         } else {
-
             $inherit = $product->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $amount = get_option('mepp_storewide_deposit_amount', '50');
             } else {
                 $amount = $product->get_meta('_mepp_deposit_amount', true);
@@ -651,31 +671,29 @@ function mepp_get_product_deposit_amount($product_id)
         }
     }
 
-
     return apply_filters('mepp_product_deposit_amount', $amount, $product_id);
-
 }
 
-function mepp_get_product_deposit_amount_type($product_id)
-{
-
+function mepp_get_product_deposit_amount_type($product_id) {
     $amount_type = false;
     $product = wc_get_product($product_id);
 
-
     if ($product) {
+        // Check category settings first
+        $category_settings = mepp_get_category_deposit_settings($product_id);
+        if ($category_settings !== false && $category_settings['amount_type'] !== 'inherit') {
+            return $category_settings['amount_type'];
+        }
 
-        // if it is a variation , check variation directly
+        // If no category settings, proceed with existing logic
         if ($product->get_type() === 'variation') {
             $parent_id = $product->get_parent_id();
             $parent = wc_get_product($parent_id);
             $inherit = $parent->get_meta('_mepp_inherit_storewide_settings');
 
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $amount_type = get_option('mepp_storewide_deposit_amount_type', 'percent');
             } else {
-
                 $override = $product->get_meta('_mepp_override_product_settings', true) === 'yes';
 
                 if ($override) {
@@ -684,22 +702,19 @@ function mepp_get_product_deposit_amount_type($product_id)
                     $amount_type = $parent->get_meta('_mepp_amount_type', true);
                 }
             }
-
-
         } else {
-
             $inherit = $product->get_meta('_mepp_inherit_storewide_settings');
+
             if (empty($inherit) || $inherit === 'yes') {
-                // get global setting
                 $amount_type = get_option('mepp_storewide_deposit_amount_type', 'percent');
             } else {
                 $amount_type = $product->get_meta('_mepp_amount_type', true);
             }
         }
     }
+
     return apply_filters('mepp_product_deposit_amount_type', $amount_type, $product_id);
 }
-
 
 function mepp_get_product_available_plans($product_id)
 {
