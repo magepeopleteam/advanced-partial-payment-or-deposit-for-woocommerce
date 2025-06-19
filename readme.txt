@@ -27,7 +27,7 @@ WpDepositly gives you full control to define how much the customer needs to pay 
 Our solution is designed based on real-world use cases and international best practices. Whether you're accepting down payments, securing service bookings, or confirming product reservations, this plugin is built to help you manage payments smarter.
 Whether it’s confirming bookings, accepting pre-orders, or offering split payments — **WpDepositly** brings a professional-grade deposit and partial payment system to your WooCommerce store.
 
-= ✅ Key Features (Free Version) =
+### Key Features (Free Version) 
 ***💲 Fixed Amount Partial Payment or Deposit:*** Simplify partial payments by setting a fixed deposit amount. [Live Pro Version Demo - Fixed Type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
 ***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
 ***🌐 Cross-browser compatibility:*** Enjoy a seamless experience across different browsers such as Chrome, Firefox, Safari, Opera, etc.
@@ -40,8 +40,7 @@ Whether it’s confirming bookings, accepting pre-orders, or offering split paym
 
 Upgrading to the pro version, you will get some premium features that will enhance your offering list of unique features, including:
 
-= 🚀 Pro Features (Upgrade Available) =
-
+### Pro Features (Upgrade Available) 
 ***⏰ Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
 ***💲 Partial Payment Checkout Mode:*** Offer partial payment on the total order at the checkout page. [Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
 ***💸 custom minimal amount payment option:*** This is **Unique feature and no one has this feature** that offers a custom minimal amount on the total order at the checkout page or product page [Live Pro Version Demo](https://partial.mage-people.com/product/polo/)
