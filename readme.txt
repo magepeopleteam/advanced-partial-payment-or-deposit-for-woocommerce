@@ -19,7 +19,7 @@ The [WooCommerce Deposits and Partial Payments](https://mage-people.com/product/
 ### Make Yourself Comfortable With Available Demos:
 [View Live PRO Version Demo](https://partial.mage-people.com/)
 [Buy Pro Version](https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/)
-[Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
+[Live Pro Version checkout Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
 [Documentation](https://docs.mage-people.com/advanced-partial-payment-or-deposit-for-woocommerce/)
 
 = 💡 Why Use WpDepositly? =
