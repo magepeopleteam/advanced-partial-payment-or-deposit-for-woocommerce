@@ -44,7 +44,7 @@ Upgrading to the pro version, you will get some premium features that will enhan
 
 ***⏰ Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
 ***💲 Partial Payment Checkout Mode:*** Offer partial payment on the total order at the checkout page. [Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
-***💸 custom minimal amount payment option:*** Offer a custom minimal amount on the total order at the checkout page or product page [Live Pro Version Demo](https://partial.mage-people.com/product/polo/)
+***💸 custom minimal amount payment option:*** This is **Unique feature and no one has this feature** that offers a custom minimal amount on the total order at the checkout page or product page [Live Pro Version Demo](https://partial.mage-people.com/product/polo/)
 ***💰 Zero amount payment option:*** Allow customers to make zero-amount payments for specific scenarios.
 ***📬 Receive payment reminder emails:*** Send email reminders to customers with pending balances.
 ***📊 Priority support and continuous updates***  Get priority support and new feature updates with the Pro version.
