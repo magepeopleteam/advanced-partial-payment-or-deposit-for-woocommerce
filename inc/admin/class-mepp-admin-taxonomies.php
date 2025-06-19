@@ -231,6 +231,7 @@ class  MEPP_Taxonomies
                             value="percentage"><?php echo esc_html__('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
                     <option <?php selected($amount_type, 'fixed'); ?>
                             value="fixed"><?php echo esc_html__('Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
+
                 </select></td>
         </tr>
         <?php

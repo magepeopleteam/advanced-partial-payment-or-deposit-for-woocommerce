@@ -305,6 +305,15 @@ public function enqueue_inline_styles()
                 }
 
                 break;
+            case 'minimum':
+                $amount = $deposit_amount;
+                if(!is_numeric($amount)) return $html;
+                $amount = round($amount, wc_get_price_decimals());
+
+                if($tax_display){
+                    $amount = $deposit_amount + $tax;
+                }
+                break;
             case 'percent':
 
                 if ($product_type === 'variable' || $product_type === 'composite' || $product_type === 'booking' && !wp_doing_ajax()) {
@@ -338,6 +347,7 @@ public function enqueue_inline_styles()
                         'include' => $available_plans_meta,
                     )
                 );
+
                 foreach($available_plans as $available_plan){
                     $plan_id = $available_plan->term_id;
 
@@ -364,6 +374,11 @@ public function enqueue_inline_styles()
                         $plan_deposit_amount = get_term_meta($plan_id, 'deposit_percentage', true);
                         $plan_total = floatval($plan_deposit_amount) + array_sum(array_column($plan_payment_details['payment-plan'], 'percentage'));
                         $plan_total_record = $plan_total;
+                    } else if($plan_amount_type === 'minimum'){
+                        $plan_deposit_amount = get_term_meta($plan_id, 'deposit_percentage', true);
+                        $plan_total = $price;
+                        $plan_total_record = $plan_total;
+                        $payment_plans[$available_plan->term_id]['deposit_percentage'] = $plan_total_record - $plan_total;
                     } else {
                         //get deposit percentage from meta
                         $plan_deposit_percentage = get_term_meta($plan_id, 'deposit_percentage', true);
@@ -410,7 +425,9 @@ public function enqueue_inline_styles()
 
                         if ($plan_amount_type === 'fixed') {
                             $line_percentage = round($payment_line['percentage'] / $plan_total * 100, 1);
-                        } else {
+                        } elseif( $plan_amount_type === 'minimum' ) {
+                            $line_percentage = $plan_total_record - $plan_deposit_amount ;
+                        }else {
                             $line_percentage = $payment_line['percentage'];
                         }
 
@@ -427,7 +444,17 @@ public function enqueue_inline_styles()
 
 
                         } else {
-                            $line_amount = $plan_amount_type === 'fixed' ? round($payment_line['percentage'], wc_get_price_decimals()) : round($price / 100 * $payment_line['percentage'], wc_get_price_decimals());
+                            if ($plan_amount_type === 'fixed') {
+                                $line_amount = round($payment_line['percentage'], wc_get_price_decimals());
+                            }else if( $plan_amount_type === 'minimum' ) {
+                                $line_amount = $plan_total_record - $plan_deposit_amount ;
+                            }else {
+                                $line_amount = round($price / 100 * $payment_line['percentage'], wc_get_price_decimals());
+
+                            }
+
+//                            $line_amount = $plan_amount_type === 'fixed' ? round($payment_line['percentage'], wc_get_price_decimals()) : round($price / 100 * $payment_line['percentage'], wc_get_price_decimals());
+
                             $plan_total_record -= $line_amount;
                             //set the tax for each payment
                             switch ($tax_handling) {
@@ -606,12 +633,24 @@ public function enqueue_inline_styles()
         $suffix = $args['suffix'];
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
+
+                if( $deposit_info['type'] === 'minimum'  ){
+                    $deposit_text = 'Deposit Minimum Amount :';
+                }else{
+                    $deposit_text = 'Deposit Amount :';
+                }
                 ?>
 
-                <?php esc_html_e('Deposit Amount :', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
+                <?php echo esc_attr( $deposit_text ); ?>
                 <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount) ; ?></span><span>(<?php echo esc_html($deposit_percent); ?>%)</span>
-                <?php } else { ?>
+                <?php } else if( MEPP_IS_PRO_ACTIVE && $deposit_info['type'] === 'minimum' ){
+                    $sale_price = $product->get_price();
+                    ?>
+                    <span id='deposit-amount'>
+                        <input name="mepp_minimum_amount" id="mepp_minimum_amount" min="<?php echo esc_attr( $deposit_amount );?>" max="<?php echo esc_attr($sale_price);?>" value="<?php echo $deposit_amount; ?>">
+                    </span>
+               <?php } else { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                 <?php } ?>
                 <span id='deposit-suffix'><?php echo $suffix; ?></span>
@@ -777,6 +816,11 @@ public function enqueue_inline_styles()
         if (!apply_filters('mepp_deposit_enabled_for_customer', true)) {
             return $cart_item_meta;
         }
+
+        if ( MEPP_IS_PRO_ACTIVE && isset($_POST['mepp_minimum_amount'])) {
+            $cart_item_meta['mepp_minimum_amount'] = sanitize_text_field($_POST['mepp_minimum_amount']);
+        }
+
 
         $default = get_option('mepp_default_option');
         $product = wc_get_product($product_id);

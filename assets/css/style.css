@@ -481,3 +481,21 @@ tr.checkout-deposit-buttons td label.basic-style .radio-btn {
 #mepp-payment-plans .mepp-single-plan .items:last-child{
     border-bottom: 0;
 }
+#mepp_minimum_amount {
+    width: 100px;
+    padding: 6px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#mepp_minimum_amount:focus {
+    border-color: #0073aa; /* WordPress blue */
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+#mepp_minimum_amount:invalid {
+    border-color: red;
+}
