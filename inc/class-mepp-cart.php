@@ -456,6 +456,7 @@ class MEPP_Cart
 
     static function calculate_deposit_for_cart_item($cart_item, $item_amount_type, $amount_or_percentage = 0, $selected_plan = false, $plan_override = array(), $taxes_handling = '')
     {
+
         $enable = 'yes';
         if (mepp_checkout_mode() && !WC()->cart->deposit_info['deposit_enabled'] && MEPP_Cart::checkout_mode_selection() === 'full') {
             $enable = 'no';
@@ -512,7 +513,15 @@ class MEPP_Cart
                     $plan_total *= $quantity;
                     $plan_tax_total = wc_get_price_including_tax($product, array('price' => $plan_total)) - wc_get_price_excluding_tax($product, array('price' => $plan_total));
 
-                } else {
+                } /*else if($plan_amount_type === 'minimum') {
+                    $plan_total_percentage = 100;
+                    $plan_deposit_amount = isset( $cart_item['mepp_minimum_amount'] ) ? $cart_item['mepp_minimum_amount'] : 0;
+                    $plan_total = floatval($plan_deposit_amount) + array_sum(array_column($plan_payment_details['payment-plan'], 'percentage'));
+                    $plan_deposit_amount *= $quantity;
+                    $plan_total *= $quantity;
+                    $plan_tax_total = wc_get_price_including_tax($product, array('price' => $plan_total)) - wc_get_price_excluding_tax($product, array('price' => $plan_total));
+
+                }*/else {
 
                     // prepare display of payment plans
                     $plan_total = $original_price / 100 * $plan_total_percentage;
@@ -578,6 +587,10 @@ class MEPP_Cart
 
                     //set the amount for each payment
                     if ($plan_amount_type === 'fixed') {
+                        $line_percentage = round($plan_detail['percentage'] / $plan_total * 100, 1);
+                        $line_amount = round($plan_detail['percentage'] * $quantity, wc_get_price_decimals());
+                    }
+                    else if ($plan_amount_type === 'minimum') {
                         $line_percentage = round($plan_detail['percentage'] / $plan_total * 100, 1);
                         $line_amount = round($plan_detail['percentage'] * $quantity, wc_get_price_decimals());
                     } else {
@@ -692,6 +705,92 @@ class MEPP_Cart
                 //only update on quantity for fixed , no need for percentage
                 if (!mepp_checkout_mode()) {
                     $item_deposit_amount = $item_amount_type === 'fixed' ? $item_deposit_amount * $quantity : $item_deposit_amount;
+                }
+
+
+                switch ($taxes_handling) {
+                    case 'deposit' :
+                        $item_deposit_tax = $item_tax;
+                        break;
+                    case 'split' :
+                        //default tax is the split
+                        $item_deposit_tax = wc_get_price_including_tax($product, array('price' => $item_deposit_amount)) - wc_get_price_excluding_tax($product, array('price' => $item_deposit_amount));
+                        break;
+                    default :
+                        $item_deposit_tax = 0.0;
+                        break;
+                }
+
+                $item_deposit_amount = round($item_deposit_amount, wc_get_price_decimals());
+                $item_deposit_tax = round($item_deposit_tax, wc_get_price_decimals());
+
+
+                if (wc_prices_include_tax()) {
+                    $item_price -= $cart_item['line_subtotal_tax'];
+                    $item_deposit_amount -= $item_deposit_tax;
+
+                    if ($item_deposit_amount <= 0) {
+                        $item_deposit_amount = 0;
+                        if ($taxes_handling === 'deposit' || $taxes_handling === 'split') {
+                            $item_deposit_tax = 0;
+
+                        }
+                    }
+                }
+
+                $deposit_meta['enable'] = 'yes';
+                $deposit_meta['deposit'] = $item_deposit_amount;
+                $deposit_meta['remaining'] = ($item_price - $item_deposit_amount);
+                $deposit_meta['total'] = $item_price;
+                $deposit_meta['tax_total'] = $item_tax;
+                $deposit_meta['tax'] = $item_deposit_tax;
+
+                $schedule = array();
+                // simple deposit , build schedule based on due date if set
+
+                // if second payment has no date then set the date as 1 day after deposit
+                if ($deposit_meta['remaining'] > 0 || $item_deposit_tax !== $item_tax) {
+                    if (!empty($second_payment_due_after) && is_numeric($second_payment_due_after)) {
+                        $after = "+{$second_payment_due_after} days";
+                        $payment_date = strtotime(date('Y-m-d', current_time('timestamp')) . "+{$after}");
+
+                    } else {
+                        $payment_date = 'unlimited';
+                    }
+                    $single_payment_data = array();
+
+                    $single_payment_data['timestamp'] = $payment_date;
+                    $single_payment_data['amount'] = $deposit_meta['remaining'];
+                    $single_payment_data['tax'] = $item_tax - $item_deposit_tax;
+                    $schedule[] = $single_payment_data;
+                }
+
+                $deposit_meta['payment_schedule'] = $schedule;
+                break;
+            case 'minimum':
+                $item_price = $cart_item['line_subtotal'];
+                $item_tax = $cart_item['line_subtotal_tax'];
+
+                if (wc_prices_include_tax()) {
+                    $item_price += $item_tax;
+                    $item_price = round($item_price, wc_get_price_decimals());
+                }
+
+                if( MEPP_IS_PRO_ACTIVE ) {
+                    $item_deposit_amount = isset($cart_item['mepp_minimum_amount']) ? $cart_item['mepp_minimum_amount'] : $amount_or_percentage;
+                }else{
+                    $item_deposit_amount = $amount_or_percentage;
+                }
+
+
+                if ($item_amount_type === 'minimum' && class_exists('WC_Booking') && method_exists($product, 'has_persons') && $product->has_persons() && $product->get_meta('_mepp_enable_per_person', true) == 'yes' && isset($cart_item['booking'], $cart_item['booking']['_persons'])) {
+                    $persons = array_sum($cart_item['booking']['_persons']);
+                    $item_deposit_amount = $item_deposit_amount * $persons;
+                }
+                //only update on quantity for fixed , no need for percentage
+                if (!mepp_checkout_mode()) {
+//                    $item_deposit_amount = $item_amount_type === 'fixed' ? $item_deposit_amount * $quantity : $item_deposit_amount;
+                    $item_deposit_amount = isset( $cart_item['mepp_minimum_amount'] ) ? $cart_item['mepp_minimum_amount'] : $amount_or_percentage;
                 }
 
 
@@ -1230,11 +1329,13 @@ class MEPP_Cart
             $deposit_amount_meta = get_option('mepp_checkout_mode_deposit_amount');
             $amount_type_meta = get_option('mepp_checkout_mode_deposit_amount_type');
             $selected_plan = $amount_type_meta === 'payment_plan' ? $this->get_checkout_payment_plan() : false;
+
             switch ($amount_type_meta) {
                 case 'payment_plan':
                     $this->has_payment_plans = true;
 
                     $plan_amount_type = get_term_meta($selected_plan, 'amount_type', true);
+
                     if (empty($plan_amount_type))
                         $plan_amount_type = 'percentage'; // backward compatibility ,fallback to percentage if type not detected
 
