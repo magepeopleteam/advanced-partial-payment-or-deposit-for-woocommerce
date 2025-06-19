@@ -1,0 +1,224 @@
+.mepp-tab-content {
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.mepp-tab-content.hidden {
+    display: none;
+}
+
+.mepp-tab-content h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.mepp-tab-content .form-table {
+    margin-top: 0;
+}
+
+.mepp-tab-content .form-table th {
+    padding: 20px 10px 20px 0;
+}
+
+.mepp-tab-content .form-table td {
+    padding: 15px 10px;
+}
+
+.mepp-tab-content select {
+    min-width: 200px;
+}
+
+.mepp-tab-content input[type="number"] {
+    width: 100px;
+}
+
+.mepp-tab-content .description {
+    margin-top: 5px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Category specific styles */
+#category_deposits .form-table {
+    margin-bottom: 30px;
+}
+
+#category_deposits h3 {
+    margin: 20px 0 10px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-left: 4px solid #0073aa;
+}
+
+#category_deposits .form-table:last-child {
+    margin-bottom: 0;
+}
+
+/* Category filters */
+.category-filters {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.category-filters input[type="text"],
+.category-filters select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 180px;
+    height: 40px;
+    background: #fff;
+}
+
+.category-filters select {
+    padding-right: 30px;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M5 6l5 5 5-5" fill="none" stroke="%23555" stroke-width="2"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.category-filters input[type="text"]:focus,
+.category-filters select:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+/* No results message */
+.no-results-message {
+    text-align: center;
+    padding: 30px;
+    background: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    margin: 20px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Category list */
+.category-list {
+    max-height: 800px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.category-pagination {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.category-pagination button {
+    padding: 5px 15px;
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.category-pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.category-pagination .page-info {
+    font-size: 14px;
+    color: #666;
+}
+
+.category-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.category-item:hover {
+    border-color: #0073aa;
+}
+
+.category-item h3 {
+    margin: 0 0 15px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-left: 4px solid #0073aa;
+}
+
+.category-item .form-table {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.category-item .form-table th {
+    padding: 15px 10px 15px 0;
+}
+
+.category-item .form-table td {
+    padding: 10px;
+}
+
+.category-item select {
+    min-width: 200px;
+}
+
+.category-item input[type="number"] {
+    width: 100px;
+}
+
+.category-item .description {
+    margin-top: 5px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 782px) {
+    .mepp-tab-content .form-table td {
+        padding: 10px;
+    }
+    
+    .mepp-tab-content select {
+        min-width: 150px;
+    }
+
+    .category-filters {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .category-filters select {
+        margin-left: 0;
+    }
+
+    .category-item .form-table td {
+        padding: 10px;
+    }
+    
+    .category-item select {
+        min-width: 150px;
+    }
+} 
