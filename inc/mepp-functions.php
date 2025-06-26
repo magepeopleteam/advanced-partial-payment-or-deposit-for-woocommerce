@@ -294,7 +294,7 @@ add_action('init', 'mepp_register_mepp_payment_post_type', 6);
         function ppcp_early_compatibility_register()
         {
             if (is_plugin_active('woocommerce-paypal-payments/woocommerce-paypal-payments.php')) {
-                $this->compatibility->wc_ppcp = require_once('inc/compatibility/mepp-ppcp-compatibility.php');
+                $this->compatibility->wc_ppcp = require_once(plugin_dir_path(dirname(__FILE__)) . 'compatibility/mepp-ppcp-compatibility.php');
             }
         }
 

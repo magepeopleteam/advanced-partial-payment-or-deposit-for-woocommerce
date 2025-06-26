@@ -154,6 +154,8 @@ public function settings_tabs_mepp()
         'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'category_deposits' => __('<i class="fas fa-sitemap"></i> Category Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'checkout_mode' => __('<i class="fas fa-shopping-cart"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+        'second_payment' => __('<i class="fas fa-calendar-alt"></i> Future Payments', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     ));
@@ -182,11 +184,15 @@ public function settings_tabs_mepp()
 
             <div  class="mepp-nav-tab-content">
                 <?php 
+                    if(isset($_GET['success']) && $_GET['success'] == '1'){
+                        echo '<div class="notice notice-success is-dismissible">
+                                <p>' . esc_html__('Settings saved successfully.', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</p>
+                              </div>';
+                    }
                     if(isset($_POST['submit'])){
-                    $message = '<div class="setttings-saved-notice" >
-                                    <p>Data saved successfully.</p>
+                        echo '<div class="notice notice-success is-dismissible">
+                                <p>' . esc_html__('Settings saved successfully.', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</p>
                                 </div>';
-                    echo $message;
                     }
                 ?>
                 <form method="post" id="settings-form">
@@ -1314,6 +1320,15 @@ public function settings_tabs_mepp()
      */
     public function update_options_mepp()
     {
+        // Only process if we're on the right page and it's a POST request
+        if ( !isset($_GET['page']) || $_GET['page'] !== 'admin-mepp-deposits' ) {
+            return;
+        }
+        
+        if ( !isset($_POST['submit']) ) {
+            return;
+        }
+        
         if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'sr_mepp_nonce' ) ) {
             
             $allowed_html = array(
@@ -1327,15 +1342,51 @@ public function settings_tabs_mepp()
 
             $settings = array();
 
-            // Save existing settings
-            $settings['mepp_storewide_deposit_enabled'] = isset($_POST['mepp_storewide_deposit_enabled']) ? 'yes' : 'no';
-            $settings['mepp_storewide_deposit_enabled_btn'] = isset($_POST['mepp_storewide_deposit_enabled_btn']) ? $_POST['mepp_storewide_deposit_enabled_btn'] : 'yes';
-            $settings['mepp_storewide_deposit_force_deposit'] = isset($_POST['mepp_storewide_deposit_force_deposit']) ? $_POST['mepp_storewide_deposit_force_deposit'] : 'no';
-            $settings['mepp_storewide_deposit_amount_type'] = isset($_POST['mepp_storewide_deposit_amount_type']) ? $_POST['mepp_storewide_deposit_amount_type'] : 'percent';
-            $settings['mepp_storewide_deposit_amount'] = isset($_POST['mepp_storewide_deposit_amount']) ? $_POST['mepp_storewide_deposit_amount'] : '50';
-            $settings['mepp_storewide_deposit_payment_plans'] = isset($_POST['mepp_storewide_deposit_payment_plans']) ? $_POST['mepp_storewide_deposit_payment_plans'] : array();
+            // General Settings Tab
+            $settings['mepp_storewide_deposit_enabled'] = isset($_POST['mepp_storewide_deposit_enabled']) ? sanitize_text_field($_POST['mepp_storewide_deposit_enabled']) : 'no';
+            $settings['mepp_storewide_deposit_enabled_btn'] = isset($_POST['mepp_storewide_deposit_enabled_btn']) ? sanitize_text_field($_POST['mepp_storewide_deposit_enabled_btn']) : 'yes';
+            $settings['mepp_storewide_deposit_force_deposit'] = isset($_POST['mepp_storewide_deposit_force_deposit']) ? sanitize_text_field($_POST['mepp_storewide_deposit_force_deposit']) : 'no';
+            $settings['mepp_storewide_deposit_amount_type'] = isset($_POST['mepp_storewide_deposit_amount_type']) ? sanitize_text_field($_POST['mepp_storewide_deposit_amount_type']) : 'percent';
+            $settings['mepp_storewide_deposit_amount'] = isset($_POST['mepp_storewide_deposit_amount']) ? sanitize_text_field($_POST['mepp_storewide_deposit_amount']) : '50';
+            $settings['mepp_storewide_deposit_payment_plans'] = isset($_POST['mepp_storewide_deposit_payment_plans']) && is_array($_POST['mepp_storewide_deposit_payment_plans']) ? array_map('sanitize_text_field', $_POST['mepp_storewide_deposit_payment_plans']) : array();
+            $settings['mepp_default_option'] = isset($_POST['mepp_default_option']) ? sanitize_text_field($_POST['mepp_default_option']) : 'deposit';
+            $settings['mepp_reduce_stock'] = isset($_POST['mepp_reduce_stock']) ? sanitize_text_field($_POST['mepp_reduce_stock']) : 'full';
+            $settings['mepp_disable_deposit_for_user_roles'] = isset($_POST['mepp_disable_deposit_for_user_roles']) && is_array($_POST['mepp_disable_deposit_for_user_roles']) ? array_map('sanitize_text_field', $_POST['mepp_disable_deposit_for_user_roles']) : array();
+            $settings['mepp_restrict_deposits_for_logged_in_users_only'] = isset($_POST['mepp_restrict_deposits_for_logged_in_users_only']) ? 'yes' : 'no';
+            $settings['mepp_partial_payments_structure'] = isset($_POST['mepp_partial_payments_structure']) ? sanitize_text_field($_POST['mepp_partial_payments_structure']) : 'single';
+            $settings['mepp_fees_handling'] = isset($_POST['mepp_fees_handling']) ? sanitize_text_field($_POST['mepp_fees_handling']) : 'split';
+            $settings['mepp_taxes_handling'] = isset($_POST['mepp_taxes_handling']) ? sanitize_text_field($_POST['mepp_taxes_handling']) : 'split';
+            $settings['mepp_shipping_handling'] = isset($_POST['mepp_shipping_handling']) ? sanitize_text_field($_POST['mepp_shipping_handling']) : 'split';
+            $settings['mepp_coupons_handling'] = isset($_POST['mepp_coupons_handling']) ? sanitize_text_field($_POST['mepp_coupons_handling']) : 'full';
 
-            // Save category settings
+            // Display & Text Settings Tab
+            $settings['mepp_use_basic_radio_buttons'] = isset($_POST['mepp_use_basic_radio_buttons']) ? 'yes' : 'no';
+            $settings['mepp_button_deposit'] = isset($_POST['mepp_button_deposit']) ? esc_html($_POST['mepp_button_deposit']) : esc_html__('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_button_full_amount'] = isset($_POST['mepp_button_full_amount']) ? esc_html($_POST['mepp_button_full_amount']) : esc_html__('Full Amount', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_to_pay_text'] = isset($_POST['mepp_to_pay_text']) ? esc_html($_POST['mepp_to_pay_text']) : esc_html__('To Pay', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_deposit_amount_text'] = isset($_POST['mepp_deposit_amount_text']) ? esc_html($_POST['mepp_deposit_amount_text']) : esc_html__('Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_second_payment_text'] = isset($_POST['mepp_second_payment_text']) ? esc_html($_POST['mepp_second_payment_text']) : esc_html__('Future Payments', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_deposit_option_text'] = isset($_POST['mepp_deposit_option_text']) ? esc_html($_POST['mepp_deposit_option_text']) : esc_html__('Deposit Option', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_payment_link_text'] = isset($_POST['mepp_payment_link_text']) ? esc_html($_POST['mepp_payment_link_text']) : esc_html__('Payment Link', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            $settings['mepp_message_deposit'] = isset($_POST['mepp_message_deposit']) ? wp_kses($_POST['mepp_message_deposit'], $allowed_html) : '';
+            $settings['mepp_message_full_amount'] = isset($_POST['mepp_message_full_amount']) ? wp_kses($_POST['mepp_message_full_amount'], $allowed_html) : '';
+
+            // Color Settings
+            if (isset($_POST['mepp_deposit_buttons_colors_primary']) || isset($_POST['mepp_deposit_buttons_colors_secondary']) || isset($_POST['mepp_deposit_buttons_colors_highlight'])) {
+                $colors = array();
+                if (isset($_POST['mepp_deposit_buttons_colors_primary'])) {
+                    $colors['primary'] = sanitize_hex_color($_POST['mepp_deposit_buttons_colors_primary']);
+                }
+                if (isset($_POST['mepp_deposit_buttons_colors_secondary'])) {
+                    $colors['secondary'] = sanitize_hex_color($_POST['mepp_deposit_buttons_colors_secondary']);
+                }
+                if (isset($_POST['mepp_deposit_buttons_colors_highlight'])) {
+                    $colors['highlight'] = sanitize_hex_color($_POST['mepp_deposit_buttons_colors_highlight']);
+                }
+                update_option('mepp_deposit_buttons_colors', $colors);
+            }
+
+            // Category Settings
             $product_categories = get_terms('product_cat', array('hide_empty' => false));
             if (!empty($product_categories)) {
                 foreach ($product_categories as $category) {
@@ -1367,32 +1418,49 @@ public function settings_tabs_mepp()
                 }
             }
 
-            // Save remaining settings
-            $settings['mepp_default_option'] = isset($_POST['mepp_default_option']) ? $_POST['mepp_default_option'] : 'deposit';
-            $settings['mepp_reduce_stock'] = isset($_POST['mepp_reduce_stock']) ? $_POST['mepp_reduce_stock'] : 'full';
-            $settings['mepp_disable_deposit_for_user_roles'] = isset($_POST['mepp_disable_deposit_for_user_roles']) ? $_POST['mepp_disable_deposit_for_user_roles'] : array();
-            $settings['mepp_restrict_deposits_for_logged_in_users_only'] = isset($_POST['mepp_restrict_deposits_for_logged_in_users_only']) ? 'yes' : 'no';
-            $settings['mepp_partial_payments_structure'] = isset($_POST['mepp_partial_payments_structure']) ? $_POST['mepp_partial_payments_structure'] : 'single';
-            $settings['mepp_fees_handling'] = isset($_POST['mepp_fees_handling']) ? $_POST['mepp_fees_handling'] : 'split';
-            $settings['mepp_taxes_handling'] = isset($_POST['mepp_taxes_handling']) ? $_POST['mepp_taxes_handling'] : 'split';
-            $settings['mepp_shipping_handling'] = isset($_POST['mepp_shipping_handling']) ? $_POST['mepp_shipping_handling'] : 'split';
-            $settings['mepp_coupons_handling'] = isset($_POST['mepp_coupons_handling']) ? $_POST['mepp_coupons_handling'] : 'full';
+            // Gateway Settings
+            $settings['mepp_disallowed_gateways_for_deposit'] = isset($_POST['mepp_disallowed_gateways_for_deposit']) && is_array($_POST['mepp_disallowed_gateways_for_deposit']) ? array_map('sanitize_text_field', $_POST['mepp_disallowed_gateways_for_deposit']) : array();
+            $settings['mepp_disallowed_gateways_for_second_payment'] = isset($_POST['mepp_disallowed_gateways_for_second_payment']) && is_array($_POST['mepp_disallowed_gateways_for_second_payment']) ? array_map('sanitize_text_field', $_POST['mepp_disallowed_gateways_for_second_payment']) : array();
+            
+            // Pro Gateway Deposit Control Settings
+            if (defined('MEPP_PRO_VERSION_ACTIVE')) {
+                $settings['mepp_force_full_payment_gateways'] = isset($_POST['mepp_force_full_payment_gateways']) && is_array($_POST['mepp_force_full_payment_gateways']) ? array_map('sanitize_text_field', $_POST['mepp_force_full_payment_gateways']) : array();
+                $settings['mepp_gateway_deposit_control_mode'] = isset($_POST['mepp_gateway_deposit_control_mode']) ? sanitize_text_field($_POST['mepp_gateway_deposit_control_mode']) : 'hide_ui';
+                $settings['mepp_gateway_restriction_message'] = isset($_POST['mepp_gateway_restriction_message']) ? sanitize_textarea_field($_POST['mepp_gateway_restriction_message']) : '';
+            }
 
-            $settings['mepp_remaining_payable'] = isset($_POST['mepp_remaining_payable']) ? 'yes' : 'yes';
+            // Checkout Mode Settings
+            $settings['mepp_checkout_mode_enabled'] = isset($_POST['mepp_checkout_mode_enabled']) ? sanitize_text_field($_POST['mepp_checkout_mode_enabled']) : 'no';
+            $settings['mepp_checkout_mode_force_deposit'] = isset($_POST['mepp_checkout_mode_force_deposit']) ? sanitize_text_field($_POST['mepp_checkout_mode_force_deposit']) : 'no';
+            $settings['mepp_checkout_mode_deposit_amount_type'] = isset($_POST['mepp_checkout_mode_deposit_amount_type']) ? sanitize_text_field($_POST['mepp_checkout_mode_deposit_amount_type']) : 'percentage';
+            $settings['mepp_checkout_mode_deposit_amount'] = isset($_POST['mepp_checkout_mode_deposit_amount']) ? sanitize_text_field($_POST['mepp_checkout_mode_deposit_amount']) : '50';
+            $settings['mepp_checkout_mode_payment_plans'] = isset($_POST['mepp_checkout_mode_payment_plans']) && is_array($_POST['mepp_checkout_mode_payment_plans']) ? array_map('sanitize_text_field', $_POST['mepp_checkout_mode_payment_plans']) : array();
+
+            // Second Payment / Reminder Settings
+            $settings['mepp_remaining_payable'] = isset($_POST['mepp_remaining_payable']) ? 'yes' : 'no';
+            $settings['mepp_second_payment_due_after'] = isset($_POST['mepp_second_payment_due_after']) ? sanitize_text_field($_POST['mepp_second_payment_due_after']) : '';
+            $settings['mepp_order_fully_paid_status'] = isset($_POST['mepp_order_fully_paid_status']) ? sanitize_text_field($_POST['mepp_order_fully_paid_status']) : '';
             $settings['mepp_enable_second_payment_reminder'] = isset($_POST['mepp_enable_second_payment_reminder']) ? 'yes' : 'no';
-            $settings['mepp_second_payment_due_after'] = isset($_POST['mepp_second_payment_due_after']) ? $_POST['mepp_second_payment_due_after'] : '';
-            $settings['mepp_second_payment_reminder_duration'] = isset($_POST['mepp_second_payment_reminder_duration']) ? $_POST['mepp_second_payment_reminder_duration'] : '0';
-            $settings['mepp_button_deposit'] = isset($_POST['mepp_button_deposit']) ? esc_html($_POST['mepp_button_deposit']) : esc_html__('Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce');
-            $settings['mepp_button_full_amount'] = isset($_POST['mepp_button_full_amount']) ? esc_html($_POST['mepp_button_full_amount']) : esc_html__('Full Amount', 'advanced-partial-payment-or-deposit-for-woocommerce');
-            $settings['mepp_message_deposit'] = isset($_POST['mepp_message_deposit']) ? wp_kses($_POST['mepp_message_deposit'], $allowed_html) : '';
-            $settings['mepp_message_full_amount'] = isset($_POST['mepp_message_full_amount']) ? wp_kses($_POST['mepp_message_full_amount'], $allowed_html) : '';
+            $settings['mepp_second_payment_reminder_duration'] = isset($_POST['mepp_second_payment_reminder_duration']) ? intval($_POST['mepp_second_payment_reminder_duration']) : 0;
+            $settings['mepp_enable_partial_payment_reminder'] = isset($_POST['mepp_enable_partial_payment_reminder']) ? 'yes' : 'no';
+            $settings['mepp_partial_payment_reminder_x_days_before_due_date'] = isset($_POST['mepp_partial_payment_reminder_x_days_before_due_date']) ? intval($_POST['mepp_partial_payment_reminder_x_days_before_due_date']) : 3;
+
+            // Date picker settings
+            if (isset($_POST['mepp_reminder_datepicker'])) {
+                $settings['mepp_reminder_datepicker'] = sanitize_text_field($_POST['mepp_reminder_datepicker']);
+            }
 
             // Save all settings
             foreach ($settings as $key => $value) {
                 update_option($key, $value);
             }
 
-            wp_safe_redirect(admin_url('admin.php?page=admin-mepp-deposits&tab=wc-deposits&success=1'));
+            // Allow other plugins/addons to save their settings
+            do_action('mepp_save_settings', $_POST);
+
+            // Preserve the current section in redirect
+            $section = isset($_GET['section']) ? '&section=' . sanitize_text_field($_GET['section']) : '';
+            wp_safe_redirect(admin_url('admin.php?page=admin-mepp-deposits&tab=wc-deposits&success=1' . $section));
             exit;
         }
     }
