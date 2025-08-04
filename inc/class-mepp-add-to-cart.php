@@ -114,7 +114,32 @@ public function enqueue_inline_styles()
     $highlight = isset($colors['highlight']) && !empty($colors['highlight']) ? $colors['highlight'] : (isset($fallback_colors['highlight']) ? $fallback_colors['highlight'] : '#FF0000');
     $gend = mepp_adjust_colour($gstart, 15);
 
+    // Add custom CSS for deposit type display
+    $custom_css = "
+        .mepp-deposit-type-info {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .mepp-deposit-type-label {
+            color: #495057;
+            font-weight: 500;
+        }
+        .mepp-deposit-type-info strong {
+            color: #007cba;
+            font-weight: 600;
+        }
+        .mepp-deposit-type-info .amount {
+            color: #d63384;
+            font-weight: 500;
+        }
+    ";
     
+    wp_add_inline_style('woocommerce-general', $custom_css);
 }
 
 
@@ -548,8 +573,6 @@ public function enqueue_inline_styles()
                 $suffix = esc_html__('per person', 'advanced-partial-payment-or-deposit-for-woocommerce');
             } elseif ($product_type === 'booking') {
                 $suffix = esc_html__('per booking', 'advanced-partial-payment-or-deposit-for-woocommerce');
-            } elseif (!$product->is_sold_individually()) {
-                $suffix = esc_html__('per item', 'advanced-partial-payment-or-deposit-for-woocommerce');
             } else {
                 $suffix = '';
             }
@@ -561,11 +584,7 @@ public function enqueue_inline_styles()
 
             }
 
-            if (!$product->is_sold_individually()) {
-                $suffix = esc_html__('per item', 'advanced-partial-payment-or-deposit-for-woocommerce');
-            } else {
-                $suffix = '';
-            }
+            $suffix = '';
         }
 
         $default_checked = get_option('mepp_default_option', 'deposit');
@@ -629,7 +648,8 @@ public function enqueue_inline_styles()
         $storewide_deposit_enabled_details = get_option('mepp_storewide_deposit_enabled_details', 'yes');
         $deposit_info = $args['deposit_info'];
         $deposit_amount = $args['deposit_amount'];
-        $deposit_percent = get_post_meta(get_the_ID(),'_mepp_deposit_amount',true);
+        // Get the actual deposit percentage from deposit info instead of post meta
+        $deposit_percent = isset($deposit_info['amount']) ? $deposit_info['amount'] : get_post_meta(get_the_ID(),'_mepp_deposit_amount',true);
         $suffix = $args['suffix'];
         if ($storewide_deposit_enabled_details !== 'no') {
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
@@ -643,7 +663,7 @@ public function enqueue_inline_styles()
 
                 <?php echo esc_attr( $deposit_text ); ?>
                 <?php if ($product->get_type() === 'variable' || $deposit_info['type'] === 'percent') { ?>
-                    <span id='deposit-amount'><?php echo wc_price($deposit_amount) ; ?></span><span>(<?php echo esc_html($deposit_percent); ?>%)</span>
+                    <span id='deposit-amount'><?php echo wc_price($deposit_amount) ; ?></span>
                 <?php } else if( MEPP_IS_PRO_ACTIVE && $deposit_info['type'] === 'minimum' ){
                     $sale_price = $product->get_price();
                     ?>
@@ -653,7 +673,29 @@ public function enqueue_inline_styles()
                <?php } else { ?>
                     <span id='deposit-amount'><?php echo wc_price($deposit_amount); ?></span>
                 <?php } ?>
-                <span id='deposit-suffix'><?php echo $suffix; ?></span>
+                
+                <!-- Enhanced Deposit Type Display -->
+                <div class="mepp-deposit-type-info">
+                    <?php
+                    $deposit_type = $deposit_info['type'];
+                    switch($deposit_type) {
+                        case 'percent':
+                            echo '<span class="mepp-deposit-type-label">Deposit Type:</span> <strong>Percentage</strong><br>';
+                            echo '<span class="mepp-deposit-type-label">Rate:</span> <span class="amount">' . esc_html($deposit_percent) . '%</span> of total price';
+                            break;
+                        case 'fixed':
+                            echo '<span class="mepp-deposit-type-label">Deposit Type:</span> <strong>Fixed Amount</strong><br>';
+                            echo '<span class="mepp-deposit-type-label">Amount:</span> <span class="amount">' . wc_price($deposit_percent) . '</span> (fixed)';
+                            break;
+                        case 'minimum':
+                            echo '<span class="mepp-deposit-type-label">Deposit Type:</span> <strong>Minimum Amount</strong><br>';
+                            echo '<span class="mepp-deposit-type-label">Minimum Required:</span> <span class="amount">' . wc_price($deposit_percent) . '</span>';
+                            break;
+                        default:
+                            echo '<span class="mepp-deposit-type-label">Deposit Type:</span> <strong>Standard</strong>';
+                    }
+                    ?>
+                </div>
 
                 <?php
             }
@@ -693,7 +735,6 @@ public function enqueue_inline_styles()
                     <div class='deposit-option'>
                         <?php _e('Full Amount','advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                         <span class='deposit-full-amount'><?php echo wc_price( get_post_meta( get_the_ID(), '_price', true ) ); ?></span>
-                        <?php _e('Per item','advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     </div>
                 </label>
         </div>

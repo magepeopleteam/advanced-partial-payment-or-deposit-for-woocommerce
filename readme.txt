@@ -40,9 +40,16 @@ Whether it’s confirming bookings, accepting pre-orders, or offering split paym
 
 Upgrading to the pro version, you will get some premium features that will enhance your offering list of unique features, including:
 
-### Pro Features (Upgrade Available) 
-***⏰ Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
-***💲 Partial Payment Checkout Mode:*** Offer partial payment on the total order at the checkout page. [Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
+
+Upgrading to the pro version you will get some premium features that will enhance your offering list of unique features including:
+
+### Pro Version Plugin Features:
+
+*** Gateway based deposit options : *** Payment gateway based deposit options hide or warning message 
+***💲 Fixed Amount Partial Payment or Deposit:*** Simplify partial payments by setting a fixed deposit amount. [Live Pro Version Demo - Fixed Type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
+***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a fixed amount or a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
+***Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
+***Partial Payment Checkout Mode:*** Offer partial payment on the total order at the checkout page. [Live Pro Version Demo - Checkout Mode](https://checkoutmode.mage-people.com/)
 ***💸 custom minimal amount payment option:*** This is **Unique feature and no one has this feature** that offers a custom minimal amount on the total order at the checkout page or product page [Live Pro Version Demo](https://partial.mage-people.com/product/polo/)
 ***💰 Zero amount payment option:*** Allow customers to make zero-amount payments for specific scenarios.
 ***📬 Receive payment reminder emails:*** Send email reminders to customers with pending balances.
@@ -104,6 +111,9 @@ A. No! Upgradation is easy it will just add extra feature with free version.
 
 
 == Changelog ==
+= 3.0.9 =
+Product category wise deposit options 
+
 = 3.0.3 =
 partial payment form add details
 in admin order section by default has column for partial 
