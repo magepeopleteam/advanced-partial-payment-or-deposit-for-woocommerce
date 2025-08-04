@@ -56,6 +56,8 @@ Upgrading to the pro version you will get some premium features that will enhanc
 
 ### Pro Version Plugin Features:
 
+*** Gateway based deposit options : *** Payment gateway based deposit options hide or warning message 
+
 ***💲 Fixed Amount Partial Payment or Deposit:*** Simplify partial payments by setting a fixed deposit amount. [Live Pro Version Demo - Fixed Type Partial](https://partial.mage-people.com/product/beanie-with-logo/)
 ***⏰ Percentage Base Partial Payment or Deposit:*** Deposit a fixed amount or a percentage of the total. [Live Pro Version Demo - Percentage Base Partial](https://partial.mage-people.com/product/t-shirt-with-logo/)
 ***Partial Payment Based on Payment Term:*** Create custom payment plans with deposit percentages. [Live Pro Version Demo - Payment Term](https://partial.mage-people.com/product/logo-collection/)
@@ -121,6 +123,9 @@ A. No! Upgradation is easy it will just add extra feature with free version.
 
 
 == Changelog ==
+= 3.0.9 =
+Product category wise deposit options 
+
 = 3.0.3 =
 partial payment form add details
 in admin order section by default has column for partial 
