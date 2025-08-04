@@ -48,8 +48,8 @@ class MEPP_Admin_Settings
 
     public function sr_partial_patment_menu(): void {
     add_menu_page(
-        'Advanced Partial Payment',
-        'Advanced Partial Payment',
+        'Partial Payment',
+        'Partial Payment',
         'manage_options',
         'admin-mepp-deposits',
         array($this, 'settings_tabs_mepp'),
