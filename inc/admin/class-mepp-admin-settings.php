@@ -154,8 +154,6 @@ public function settings_tabs_mepp()
         'mepp_general' => __('<i class="fas fa-tools"></i> General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'display_text' => __('<i class="fas fa-palette"></i> Display & Text', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'category_deposits' => __('<i class="fas fa-sitemap"></i> Category Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'checkout_mode' => __('<i class="fas fa-shopping-cart"></i> Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-        'second_payment' => __('<i class="fas fa-calendar-alt"></i> Future Payments', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'gateways' => __('<i class="fas fa-shield-alt"></i> Gateways', 'advanced-partial-payment-or-deposit-for-woocommerce'),
         'license' => __('<i class="fas fa-certificate"></i> License', 'advanced-partial-payment-or-deposit-for-woocommerce'),
     ));
@@ -385,6 +383,18 @@ public function settings_tabs_mepp()
                         'min' => '0.0',
                         'step' => '0.01'
                     )
+                ),
+                'enable_zero_deposit' => array(
+                    'name' => esc_html__('Enable Zero Deposit Payment', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'type' => 'select',
+                    'desc_tip' => true,
+                    'options' => array(
+                        'no' => esc_html__('No', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        'yes' => esc_html__('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    ),
+                    'desc' => esc_html__('Allow customers to place orders with zero deposit (no upfront payment).', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    'id' => 'mepp_enable_zero_deposit',
+                    'default' => 'no'
                 ),
                 'storewide_deposit_payment_plans' => apply_filters('mepp_payment_plan_lists',$all_plans),
                 
@@ -815,7 +825,6 @@ public function settings_tabs_mepp()
                                     <select name="mepp_category_<?php echo $cat_id; ?>_enable_deposit" class="deposit-enabled-select">
                                         <option value="inherit" <?php selected($enable_deposit, 'inherit'); ?>><?php esc_html_e('Inherit from Global Settings', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
                                         <option value="yes" <?php selected($enable_deposit, 'yes'); ?>><?php esc_html_e('Yes', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
-                                        <option value="no" <?php selected($enable_deposit, 'no'); ?>><?php esc_html_e('No', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></option>
                                     </select>
                                 </td>
                             </tr>
@@ -1358,6 +1367,7 @@ public function settings_tabs_mepp()
             $settings['mepp_taxes_handling'] = isset($_POST['mepp_taxes_handling']) ? sanitize_text_field($_POST['mepp_taxes_handling']) : 'split';
             $settings['mepp_shipping_handling'] = isset($_POST['mepp_shipping_handling']) ? sanitize_text_field($_POST['mepp_shipping_handling']) : 'split';
             $settings['mepp_coupons_handling'] = isset($_POST['mepp_coupons_handling']) ? sanitize_text_field($_POST['mepp_coupons_handling']) : 'full';
+            $settings['mepp_enable_zero_deposit'] = isset($_POST['mepp_enable_zero_deposit']) ? sanitize_text_field($_POST['mepp_enable_zero_deposit']) : 'no';
 
             // Display & Text Settings Tab
             $settings['mepp_use_basic_radio_buttons'] = isset($_POST['mepp_use_basic_radio_buttons']) ? 'yes' : 'no';

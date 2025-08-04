@@ -447,6 +447,13 @@ function mepp_second_payment_reminder() {
         if ($product->is_type('booking')  && method_exists($product,'has_persons') && $product->has_persons()) {
             $product->update_meta_data('_mepp_enable_per_person', $enable_persons);
         }
+
+        // Enforce zero deposit setting
+        $allow_zero_deposit = get_option('mepp_enable_zero_deposit', 'no') === 'yes';
+        if (!$allow_zero_deposit && $amount <= 0) {
+            $amount = 0.00;
+        }
+
         $product->save();
 
 
