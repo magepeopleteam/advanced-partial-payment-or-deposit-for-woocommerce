@@ -738,6 +738,11 @@ class MEPP_Cart
                     }
                 }
 
+                // Enforce zero deposit setting
+                $allow_zero_deposit = get_option('mepp_enable_zero_deposit', 'no') === 'yes';
+                if (!$allow_zero_deposit && $item_deposit_amount <= 0) {
+                    $item_deposit_amount = 0.01;
+                }
                 $deposit_meta['enable'] = 'yes';
                 $deposit_meta['deposit'] = $item_deposit_amount;
                 $deposit_meta['remaining'] = ($item_price - $item_deposit_amount);
@@ -824,6 +829,11 @@ class MEPP_Cart
                     }
                 }
 
+                // Enforce zero deposit setting
+                $allow_zero_deposit = get_option('mepp_enable_zero_deposit', 'no') === 'yes';
+                if (!$allow_zero_deposit && $item_deposit_amount <= 0) {
+                    $item_deposit_amount = 0.01;
+                }
                 $deposit_meta['enable'] = 'yes';
                 $deposit_meta['deposit'] = $item_deposit_amount;
                 $deposit_meta['remaining'] = ($item_price - $item_deposit_amount);
