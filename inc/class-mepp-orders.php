@@ -793,15 +793,26 @@ class MEPP_Orders
                 $order->update_meta_data('_mepp_deposit_paid', 'yes');
                 $order->update_meta_data('_mepp_second_payment_paid', 'yes');
 
-                //manually mark deposit partial payment as completed
+                // FIXED: Only mark partial payments as completed if ALL payments are actually paid - 2025-01-27 by Shahnur Alam
+                // Check if all partial payments are actually paid before auto-completing them
+                $all_payments_completed = true;
                 foreach ($payment_schedule as $payment) {
-
                     $partial_payment = wc_get_order($payment['id']);
-                    if ($partial_payment) {
-                        $partial_payment->set_status('completed');
-                        $partial_payment->save();
+                    if ($partial_payment && !in_array($partial_payment->get_status(), array('completed', 'processing'))) {
+                        $all_payments_completed = false;
+                        break;
                     }
-
+                }
+                
+                // Only auto-complete remaining payments if this is intentional (all should be completed)
+                if ($all_payments_completed) {
+                    foreach ($payment_schedule as $payment) {
+                        $partial_payment = wc_get_order($payment['id']);
+                        if ($partial_payment && $partial_payment->get_status() !== 'completed') {
+                            $partial_payment->set_status('completed');
+                            $partial_payment->save();
+                        }
+                    }
                 }
             }
 

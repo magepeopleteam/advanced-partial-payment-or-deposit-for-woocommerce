@@ -73,7 +73,7 @@ class MEPP_Admin_Settings
         'admin-mepp-deposits',    // Parent menu slug
         'Partial Order List',    // Submenu label
         'Partial Order List',    // Submenu label
-        'manage_options',
+        'edit_shop_orders',      // FIXED: Changed capability to match mepp_payment post type - 2025-01-27 by Shahnur Alam
         'admin.php?page=wc-orders--mepp_payment', // Partial Order List URL
         ''
     );

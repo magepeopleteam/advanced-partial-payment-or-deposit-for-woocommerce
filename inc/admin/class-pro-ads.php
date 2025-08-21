@@ -30,7 +30,7 @@ class MEPP_Pro_Ads{
             'admin-mepp-deposits',       // Parent slug (the slug of the top-level menu)
             'Payment Plans',      // Page title
             'Payment Plans <span class="pro-nav">PRO</span>',         // Sub-menu title
-            'manage_options',       // Capability required to view this submenu
+            'edit_shop_orders',       // FIXED: Changed capability to match shop_order permissions - 2025-01-27 by Shahnur Alam
             'payment-plans',      // Submenu slug (unique ID)
             [$this,'payment_plans_ads'] // Callback function to display the submenu page content
         );
