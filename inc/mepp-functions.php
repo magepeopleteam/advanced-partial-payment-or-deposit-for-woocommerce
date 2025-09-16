@@ -185,7 +185,7 @@ add_action('woocommerce_order_status_completed', 'mepp_update_main_order_status_
 function mepp_update_main_order_status_on_second_payment_completion($order_id) {
     $order = wc_get_order($order_id);
 
-    // Check if it's a child order (second payment)
+    // Check if it's a child order (partial payment)
     if ($order && $order->get_parent_id() > 0) {
         $parent_order_id = $order->get_parent_id();
         $parent_order = wc_get_order($parent_order_id);
@@ -199,13 +199,25 @@ function mepp_update_main_order_status_on_second_payment_completion($order_id) {
             ));
 
             $total_paid = 0;
+            $total_expected = 0;
 
-            foreach ($child_orders as $child_order) {
-                $total_paid += $child_order->get_total();
+            // Get all child orders to calculate expected total
+            $all_child_orders = wc_get_orders(array(
+                'parent' => $parent_order_id,
+                'type' => 'mepp_payment'
+            ));
+
+            foreach ($all_child_orders as $child_order) {
+                $total_expected += $child_order->get_total();
+                // Only count completed/processing payments toward paid total
+                if (in_array($child_order->get_status(), array('completed', 'processing'))) {
+                    $total_paid += $child_order->get_total();
+                }
             }
 
-            // Compare the total amount of child orders with the total amount of the parent order
-            if ($total_paid >= $parent_order->get_total()) {
+            // Only update parent status to completed if ALL partial payments are actually completed
+            // This prevents auto-completion when only one payment is marked as completed
+            if ($total_paid >= $total_expected) {
                 $parent_order->update_status('completed');
             }
         }
@@ -991,9 +1003,12 @@ function mepp_is_mepp_payment_screen()
 
     $hpos_enabled = wc_get_container()->get(CustomOrdersTableController::class)->custom_orders_table_usage_is_enabled();
     $screen_name = $hpos_enabled && function_exists('wc_get_page_screen_id') ? wc_get_page_screen_id('mepp_payment') : 'mepp_payment';
+    if (is_null($screen)) {
+    	return false;
+    }
     return $screen->id == $screen_name;
-
-}
+  
+   }
 
 
 function mepp_is_shop_order_screen()
@@ -1006,5 +1021,8 @@ function mepp_is_shop_order_screen()
     $hpos_enabled = wc_get_container()->get(CustomOrdersTableController::class)->custom_orders_table_usage_is_enabled();
     $screen_name = $hpos_enabled && function_exists('wc_get_page_screen_id') ? wc_get_page_screen_id('shop-order') : 'shop_order';
 
+    if (is_null($screen)) {
+    	return false;
+    }
     return $screen->id == $screen_name;
-}
+   }
