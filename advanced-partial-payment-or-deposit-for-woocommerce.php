@@ -3,7 +3,7 @@
  * Plugin Name: Deposit & Partial Payment Solution for WooCommerce - WpDepositly | MagePeople
  * Plugin URI: http://mage-people.com
  * Description: This plugin will add Partial Payment System in the Woocommerce Plugin its also support Woocommerce Event Manager Plugin.
- * Version: 3.0.6
+ * Version: 3.0.9
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: advanced-partial-payment-or-deposit-for-woocommerce
@@ -27,22 +27,33 @@ function mepp_woocommerce_is_active()
         require_once(ABSPATH . '/wp-admin/includes/plugin.php');
     }
 
-    // Check if WooCommerce is active
-    $woocommerce_active = in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')));
+    // Prefer runtime checks first – covers network/site activation and load order reliably
+    if (class_exists('WooCommerce') || defined('WC_VERSION')) {
+        return true;
+    }
+
+    // Fallback to explicit activation checks (handles multisite network activation)
+    $woocommerce_active = false;
+    if (is_multisite()) {
+        $woocommerce_active = is_plugin_active('woocommerce/woocommerce.php') || is_plugin_active_for_network('woocommerce/woocommerce.php');
+    } else {
+        $woocommerce_active = is_plugin_active('woocommerce/woocommerce.php');
+    }
 
     if (!$woocommerce_active && is_admin()) {
         // WooCommerce is not active, display notice using JavaScript
         add_action('admin_footer', function() {
+            // Use correct admin URL depending on network admin vs site admin
+            $install_url = (function_exists('is_network_admin') && is_network_admin())
+                ? network_admin_url('plugin-install.php?s=woocommerce&tab=search&type=term')
+                : admin_url('plugin-install.php?s=woocommerce&tab=search&type=term');
             ?>
             <script type="text/javascript">
                 jQuery(document).ready(function($) {
-                    // Create notice element
                     var notice = '<div class="notice notice-error">';
                     notice += '<p><?php _e( 'Deposit & Partial Payment Solution for WooCommerce - WpDepositly requires WooCommerce to be installed and activated.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>';
-                    // Add Install WooCommerce button
-                    notice += '<p><a href="<?php echo admin_url('plugin-install.php?s=woocommerce&tab=search&type=term'); ?>" class="button-primary"><?php _e( 'Install WooCommerce', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></a></p>';
+                    notice += '<p><a href="<?php echo esc_url($install_url); ?>" class="button-primary"><?php _e( 'Install WooCommerce', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></a></p>';
                     notice += '</div>';
-                    // Prepend notice to admin page
                     $('#wpbody-content').prepend(notice);
                 });
             </script>
@@ -493,7 +504,7 @@ if (mepp_woocommerce_is_active()) :
 // Install the singleton instance
 MEPP_Advance_Deposits::get_singleton();
 	
-    register_activation_hook(__FILE__, array('\MagePeople\MEPP\MEPP_Advance_Deposits', 'plugin_activated'));
-    register_deactivation_hook(__FILE__, array('\MagePeople\MEPP\MEPP_Advance_Deposits', 'plugin_deactivated'));
+    register_activation_hook(__FILE__, array('\\MagePeople\\MEPP\\MEPP_Advance_Deposits', 'plugin_activated'));
+    register_deactivation_hook(__FILE__, array('\\MagePeople\\MEPP\\MEPP_Advance_Deposits', 'plugin_deactivated'));
 
 endif;
