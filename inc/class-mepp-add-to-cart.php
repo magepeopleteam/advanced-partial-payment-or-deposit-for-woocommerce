@@ -43,15 +43,73 @@ class MEPP_Add_To_Cart
 
     function ajax_update_deposit_container()
     {
-        $price = isset($_POST['price']) ? $_POST['price'] : false;
-        $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : false;
-        if ($product_id) {
+        // Verify nonce for security
+        if (!check_ajax_referer('mepp_update_deposit_container', 'nonce', false)) {
+            wp_send_json_error(array('message' => esc_html__('Security check failed', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+            wp_die();
+        }
+
+        // Rate limiting - prevent too frequent calls (DoS protection)
+        $rate_limit_key = 'mepp_deposit_update_' . md5((isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        if (get_transient($rate_limit_key)) {
+            wp_send_json_error(array('message' => esc_html__('Too many requests. Please try again later.', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+            wp_die();
+        }
+        set_transient($rate_limit_key, true, 2); // 2 second rate limit
+
+        // Validate and sanitize product_id
+        $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+        if (!$product_id) {
+            wp_send_json_error(array('message' => esc_html__('Invalid product ID', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+            wp_die();
+        }
+
+        // Verify product exists and is accessible
+        $product = wc_get_product($product_id);
+        if (!$product) {
+            wp_send_json_error(array('message' => esc_html__('Product not found', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+            wp_die();
+        }
+
+        // Check if product is publicly accessible (not private/draft)
+        $product_status = $product->get_status();
+        if ($product_status !== 'publish') {
+            wp_send_json_error(array('message' => esc_html__('Product not available', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+            wp_die();
+        }
+
+        // Validate and sanitize price input
+        $price = false;
+        if (isset($_POST['price'])) {
+            // Convert to string first, then validate
+            $price_raw = sanitize_text_field($_POST['price']);
+            
+            // Validate that price is numeric
+            if (!is_numeric($price_raw)) {
+                wp_send_json_error(array('message' => esc_html__('Invalid price value', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+                wp_die();
+            }
+
+            // Convert to float and validate range
+            $price = floatval($price_raw);
+            
+            // Validate price is within reasonable bounds (0 to 10 million)
+            if ($price < 0 || $price > 10000000) {
+                wp_send_json_error(array('message' => esc_html__('Price value out of range', 'advanced-partial-payment-or-deposit-for-woocommerce')));
+                wp_die();
+            }
+        }
+
+        // Calculate deposit container with validated inputs
+        try {
             $deposit_slider_html = $this->get_deposit_container($product_id, $price);
             wp_send_json_success($deposit_slider_html);
-
-        } else {
-            wp_send_json_error();
+        } catch (Exception $e) {
+            // Log error but don't expose details to client
+            error_log('MEPP Deposit Container Error: ' . $e->getMessage());
+            wp_send_json_error(array('message' => esc_html__('Error calculating deposit', 'advanced-partial-payment-or-deposit-for-woocommerce')));
         }
+        
         wp_die();
     }
 
@@ -63,7 +121,12 @@ class MEPP_Add_To_Cart
      */
     public function enqueue_scripts()
     {
-	    wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout'), MEPP_VERSION, true);
+        // Only include wc-checkout dependency on checkout/cart pages
+        $dependencies = array('jquery');
+        if (is_checkout() || is_cart()) {
+            $dependencies[] = 'wc-checkout';
+        }
+	    wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', $dependencies, MEPP_VERSION, true);
 
         $message_deposit = get_option('mepp_message_deposit');
         $message_full_amount = get_option('mepp_message_full_amount');
@@ -88,13 +151,14 @@ class MEPP_Add_To_Cart
         );
         $script_args = array(
             'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('mepp_update_deposit_container'),
             'message' => array(
                 'deposit' => wp_kses(__($message_deposit, 'advanced-partial-payment-or-deposit-for-woocommerce'), $allowed_html),
                 'full' => wp_kses(__($message_full_amount, 'advanced-partial-payment-or-deposit-for-woocommerce'), $allowed_html),
             )
         );
 
-        wp_localize_script('wc-deposits-add-to-cart', 'mepp_add_to_cart_options', $script_args);
+        wp_localize_script('wc-deposits-checkout', 'mepp_add_to_cart_options', $script_args);
 
     }
 

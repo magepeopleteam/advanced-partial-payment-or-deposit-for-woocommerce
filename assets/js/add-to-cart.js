@@ -1,6 +1,27 @@
+// Global fallback for mepp_add_to_cart_options
+if (typeof window.mepp_add_to_cart_options === 'undefined') {
+    window.mepp_add_to_cart_options = {
+        ajax_url: (typeof woocommerce_params !== 'undefined' && woocommerce_params.ajax_url) ? woocommerce_params.ajax_url : '/wp-admin/admin-ajax.php',
+        message: {
+            deposit: 'Pay Deposit',
+            full: 'Full Amount'
+        }
+    };
+}
+
+// Global fallback for mepp_checkout_options
+if (typeof window.mepp_checkout_options === 'undefined') {
+    window.mepp_checkout_options = {
+        message: {
+            deposit: 'Pay Deposit',
+            full: 'Full Amount'
+        }
+    };
+}
+
 jQuery(document).ready(function ($) {
     'use strict';
-    var options = mepp_add_to_cart_options;
+    var options = window.mepp_add_to_cart_options || {};
     $.fn.initDepositController = function () {
         var depositController = {
             init: function (form, ajax_reload = false, selection = false) {
@@ -135,6 +156,7 @@ jQuery(document).ready(function ($) {
                 });
                 var request_data = {
                     action: 'mepp_update_deposit_container',
+                    nonce: options.nonce || '',
                     price: data.price,
                     product_id: data.product_id,
                     data: data //allow any other data to be included
@@ -187,12 +209,14 @@ jQuery(document).ready(function ($) {
 jQuery(document).ready(function ($) {
     'use strict';
     var activate_tooltip = function () {
-        $('#deposit-help-tip').tipTip({
-            'attribute': 'data-tip',
-            'fadeIn': 50,
-            'fadeOut': 50,
-            'delay': 200,
-        });
+        if ($.fn.tipTip) {
+            $('#deposit-help-tip').tipTip({
+                'attribute': 'data-tip',
+                'fadeIn': 50,
+                'fadeOut': 50,
+                'delay': 200,
+            });
+        }
     };
     $(document.body).on('updated_cart_totals updated_checkout', activate_tooltip);
     activate_tooltip();
@@ -200,7 +224,7 @@ jQuery(document).ready(function ($) {
 jQuery(document).ready(function ($) {
     'use strict';
     $(document.body).on('updated_checkout', function () {
-        var options = mepp_checkout_options;
+        var options = window.mepp_checkout_options || {};
         var form = $('#wc-deposits-options-form');
         var deposit = form.find('#pay-deposit');
         var deposit_label = form.find('#pay-deposit-label');
@@ -243,24 +267,24 @@ jQuery(document).ready(function ($) {
 
 
 // ==================payment plan detais==========
-(function($) {
-    $('.view-details').on('click', function(e) {
-        e.preventDefault(); 
+(function ($) {
+    $('.view-details').on('click', function (e) {
+        e.preventDefault();
         e.stopPropagation();
         var parent = $(this).closest('li');
         parent.find('.mepp-single-plan').slideToggle();
     });
 
 
-    $('.pay-deposit').on('change', function() {
+    $('.pay-deposit').on('change', function () {
         var parent = $(this).closest('.magepeople_mepp_single_deposit_form');
-        if($(this).val() === 'deposit'){
+        if ($(this).val() === 'deposit') {
             parent.find('.mepp-payment-plans').show();
         }
-        if($(this).val() === 'full'){
+        if ($(this).val() === 'full') {
             parent.find('.mepp-payment-plans').hide();
         }
-        
+
     });
 
     $('#mepp_minimum_amount').on('input', function () {
@@ -273,7 +297,7 @@ jQuery(document).ready(function ($) {
         if (value < min || value > max) {
             alert('Please enter a value between ' + min + ' and ' + max + '.');
         }
-        if ( value > max) {
+        if (value > max) {
             $this.val(defaultVal);
         }
     });

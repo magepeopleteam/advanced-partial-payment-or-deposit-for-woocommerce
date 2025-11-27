@@ -65,6 +65,7 @@ class MEPP_Checkout
         $message_deposit = stripslashes($message_deposit);
         $message_full_amount = stripslashes($message_full_amount);
 
+        // Localize checkout options
         $script_args = array(
             'message' => array(
                 'deposit' => $message_deposit,
@@ -72,6 +73,17 @@ class MEPP_Checkout
             )
         );
         wp_localize_script('wc-deposits-checkout', 'mepp_checkout_options', $script_args);
+        
+        // Also localize add-to-cart options (same script file is used)
+        $script_args_add_to_cart = array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('mepp_update_deposit_container'),
+            'message' => array(
+                'deposit' => $message_deposit,
+                'full' => $message_full_amount
+            )
+        );
+        wp_localize_script('wc-deposits-checkout', 'mepp_add_to_cart_options', $script_args_add_to_cart);
 
         // prepare inline styles
         $colors = get_option('mepp_deposit_buttons_colors');
