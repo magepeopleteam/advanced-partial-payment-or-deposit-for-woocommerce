@@ -1,8 +1,7 @@
 .mepp-tab-content {
     padding: 20px;
     background: #fff;
-    border: 1px solid #ccc;
-    border-top: none;
+    border: none;
 }
 
 .mepp-tab-content.hidden {
@@ -50,7 +49,8 @@
     margin: 20px 0 10px;
     padding: 10px;
     background: #f8f8f8;
-    border-left: 4px solid #0073aa;
+    border-radius: 6px;
+    border-left: 4px solid #2271b1;
 }
 
 #category_deposits .form-table:last-child {
@@ -61,9 +61,9 @@
 .category-filters {
     margin-bottom: 20px;
     padding: 15px;
-    background: #f8f8f8;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
+    background: #f6f7f7;
+    border: 1px solid #e2e4e7;
+    border-radius: 8px;
     display: flex;
     gap: 15px;
     align-items: center;
@@ -73,8 +73,8 @@
 .category-filters input[type="text"],
 .category-filters select {
     padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
     min-width: 180px;
     height: 40px;
     background: #fff;
@@ -101,9 +101,9 @@
 .no-results-message {
     text-align: center;
     padding: 30px;
-    background: #f8f8f8;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
+    background: #f6f7f7;
+    border: 1px solid #e2e4e7;
+    border-radius: 8px;
     margin: 20px 0;
     color: #666;
     font-size: 14px;
@@ -119,9 +119,9 @@
 .category-pagination {
     margin-top: 20px;
     padding: 15px;
-    background: #f8f8f8;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
+    background: #f6f7f7;
+    border: 1px solid #e2e4e7;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,12 +129,18 @@
 }
 
 .category-pagination button {
-    padding: 5px 15px;
-    background: #0073aa;
+    padding: 6px 16px;
+    background: #2271b1;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.category-pagination button:not(:disabled):hover {
+    background: #135e96;
 }
 
 .category-pagination button:disabled {
@@ -151,20 +157,22 @@
     margin-bottom: 20px;
     padding: 15px;
     background: #fff;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid #e2e4e7;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06);
+    transition: border-color 0.15s ease;
 }
 
 .category-item:hover {
-    border-color: #0073aa;
+    border-color: #2271b1;
 }
 
 .category-item h3 {
     margin: 0 0 15px;
     padding: 10px;
-    background: #f8f8f8;
-    border-left: 4px solid #0073aa;
+    background: #f6f7f7;
+    border-radius: 6px;
+    border-left: 4px solid #2271b1;
 }
 
 .category-item .form-table {

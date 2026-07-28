@@ -7,7 +7,51 @@
 }
 
 .deposit-option{
-    margin: 5px 0;
+    margin: 4px 0 14px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.mepp-deposit-type-info {
+    display: block;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid var(--mepp-deposit-highlight);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #475569;
+}
+
+.mepp-deposit-type-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.mepp-deposit-type-info strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.mepp-deposit-type-info .amount {
+    color: var(--mepp-deposit-highlight);
+    font-weight: 600;
+}
+
+/* Keep the Add to cart button on one line next to the quantity box, but only
+   on forms that actually render our deposit widget, so plain (non-deposit)
+   products are untouched. */
+form.cart:has(.magepeople_mepp_single_deposit_form) .single_add_to_cart_button {
+    align-self: center;
+    padding: 0 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    white-space: nowrap;
+    font-size: 14px;
 }
 
 .wc-deposits-options-form  .deposit-option{
@@ -158,16 +202,19 @@
      display: block;
      color: #475569;
      background-color: #f2f2f2;
-     padding: 20px; 
+     padding: 20px;
      margin: 4px 0;
-     border: 1px solid #939393;
+     border: 1px solid var(--mepp-deposit-secondary);
+     border-radius: 6px;
     }
     #deposit-amount{
         font-weight: 700;
+        font-size: 16px;
         color: var(--mepp-deposit-highlight);
     }
     .deposit-full-amount{
         font-weight: 700;
+        font-size: 16px;
         color: var(--mepp-deposit-highlight);
     }
 /* ***************basic style checkout *********** */
@@ -357,7 +404,7 @@
 
 
 
-/*=================deposit button switch candy============== */
+/*=================deposit button switch============== */
 .toggle-switch-woocommerce-deposits {
     position: relative;
     display: flex;
@@ -368,22 +415,26 @@
     border-radius: 50px;
     border: 1px solid var(--mepp-deposit-secondary);
     box-sizing: border-box;
+    overflow: hidden;
   }
-  
+
   .toggle-switch-woocommerce-deposits input {
     visibility: hidden; /* Hides the checkbox inputs */
     position: absolute; /* Positions off-screen */
     top: 0;
   }
-  
+
   .toggle-switch-woocommerce-deposits label {
     width: 50%; /* Each label takes half of the switch */
     padding: 0;
     margin: 0;
     text-align: center;
     cursor: pointer; /* Changes cursor to pointer on hover */
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
   }
-  
+
   .toggle-switch-woocommerce-deposits .switch-wrapper {
     position: absolute;
     top: 0;
@@ -391,27 +442,30 @@
     height: 50px;
     width: 50%; /* Initially occupies half the width */
     z-index: 3;
-    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    padding: 1px;
+    box-sizing: border-box;
+    transition: transform .35s cubic-bezier(.4, 0, .2, 1);
   }
-  
+
   .toggle-switch-woocommerce-deposits .switch {
     border-radius: 50px; /* Round corners for the switch */
     background: var(--mepp-deposit-highlight); /* Background color of the switch */
-    border: 1px solid #fff; /* White border for the switch */
     width: 100%; /* Full width of the container */
-    height: 50px; /* Height of the switch */
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   }
-  
+
   .toggle-switch-woocommerce-deposits .switch div {
     width: 100%;
     text-align: center;
     opacity: 0; /* Hidden by default */
     color: #fff; /* Text color */
+    font-weight: 600;
     transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s; /* Fade-in effect */
     will-change: opacity; /* Optimizes rendering for opacity changes */
     position: absolute; /* Positions elements within the switch */

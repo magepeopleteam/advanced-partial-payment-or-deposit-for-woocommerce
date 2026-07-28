@@ -1278,10 +1278,10 @@ public function settings_tabs_mepp()
     public function deposit_buttons_color()
     {
 
-        $colors = get_option('mepp_deposit_buttons_colors',array('primary'=>'#efefef','secondary'=>'#cccccc','highlight'=>'#dd3333'));
+        $colors = get_option('mepp_deposit_buttons_colors',array('primary'=>'#efefef','secondary'=>'#cccccc','highlight'=>'#16a34a'));
         $primary_color = isset($colors['primary'])?$colors['primary']:'#efefef';
         $secondary_color = isset($colors['secondary'])?$colors['secondary']:'#cccccc';
-        $highlight_color = isset($colors['highlight'])?$colors['highlight']:'#dd3333';
+        $highlight_color = isset($colors['highlight'])?$colors['highlight']:'#16a34a';
 
         ?>
         <tr class="">

@@ -1,12 +1,17 @@
 @charset "UTF-8";
 :root {
-  --mage-primary:#f12971;
+  --mage-primary: #2271b1;
+  --mage-primary-dark: #135e96;
+  --mage-primary-light: #f0f6fb;
   --mage-secondary: #666;
-  --mage-dark: #333;
-  --mage-gray: #ddd;
-  --mage-light: #F2F2F2;
+  --mage-dark: #1d2327;
+  --mage-gray: #dcdcde;
+  --mage-light: #f6f7f7;
   --mage-white: #fff;
   --mage-black: #000;
+  --mage-border: #e2e4e7;
+  --mage-radius: 8px;
+  --mage-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 #woocommerce-coupon-data ul.wc-tabs li.deposits_tab a:before,
@@ -75,97 +80,106 @@ p.form-row-last[class*=_mepp_payment_plans] .select2, p.form-row-last[class*=_me
 }
 
 .mepp_deposit_storewide_values {
-  background: #03a9f4 !important;
+  background: var(--mage-primary-light) !important;
   padding: 10px;
-  width: 43%;
 }
 
 /* Style the select element within the WooCommerce form table */
-.woocommerce table.form-table select {
+.woocommerce table.form-table select,
+#settings-form select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px 12px;
+  background-color: var(--mage-white);
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M5 6l5 5 5-5" fill="none" stroke="%23666" stroke-width="2"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  border: 1px solid var(--mage-border);
+  border-radius: 6px;
+  padding: 8px 32px 8px 12px;
   font-size: 14px;
-  color: #555;
+  color: var(--mage-dark);
   width: 100%;
   max-width: 300px; /* Adjust the width as needed */
   box-sizing: border-box;
   outline: none;
-}
-
-/* Style the dropdown arrow */
-.woocommerce table.form-table select::after {
-  content: "▼"; /* Unicode character for down arrow */
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  pointer-events: none; /* Ensure the arrow doesn't interfere with clicking on the select */
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 /* Hover effect */
-.woocommerce table.form-table select:hover {
-  border-color: #999;
+.woocommerce table.form-table select:hover,
+#settings-form select:hover {
+  border-color: #b7bcc2;
 }
 
 /* Focus effect */
-.woocommerce table.form-table select:focus {
-  border-color: #333;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+.woocommerce table.form-table select:focus,
+#settings-form select:focus {
+  border-color: var(--mage-primary);
+  box-shadow: 0 0 0 1px var(--mage-primary);
 }
 
-.mepp-custom-container .submit {
-  background: indigo !important;
-  padding: 10px !important;
-  margin-top: 1px !important;
+#settings-form input[type="text"],
+#settings-form input[type="number"],
+#settings-form input[type="email"],
+#settings-form input[type="url"],
+#settings-form textarea {
+  border: 1px solid var(--mage-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--mage-dark);
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-label[for=mepp_storewide_deposit_enabled] {
-  font-weight: 700 !important;
-  padding: 10px;
+#settings-form input[type="text"]:focus,
+#settings-form input[type="number"]:focus,
+#settings-form input[type="email"]:focus,
+#settings-form input[type="url"]:focus,
+#settings-form textarea:focus {
+  border-color: var(--mage-primary);
+  box-shadow: 0 0 0 1px var(--mage-primary);
+  outline: none;
 }
 
-label[for=mepp_storewide_deposit_enabled_details] {
-  font-weight: 700 !important;
-  padding: 10px;
+#settings-form .submit {
+  padding: 20px 0 4px;
+  margin: 0;
 }
 
-label[for=mepp_storewide_deposit_enabled_btn] {
-  font-weight: 700 !important;
-  padding: 10px;
+#settings-form .submit .button-primary {
+  background: var(--mage-primary);
+  border-color: var(--mage-primary-dark);
+  border-radius: 6px;
+  padding: 6px 22px;
+  height: auto;
+  font-weight: 600;
+  box-shadow: none;
+  text-shadow: none;
 }
 
-label[for=mepp_storewide_deposit_force_deposit] {
-  font-weight: 700 !important;
-  padding: 10px;
+#settings-form .submit .button-primary:hover,
+#settings-form .submit .button-primary:focus {
+  background: var(--mage-primary-dark);
+  border-color: var(--mage-primary-dark);
 }
 
-label[for=mepp_storewide_deposit_amount_type] {
-  font-weight: 700 !important;
-  padding: 10px;
-}
-
-label[for=mepp_storewide_deposit_amount] {
-  font-weight: 700 !important;
-  padding: 10px;
-}
-
-label[for=mepp_storewide_deposit_payment_plans] {
-  font-weight: 700 !important;
-  padding: 10px;
-}
-
+label[for=mepp_storewide_deposit_enabled],
+label[for=mepp_storewide_deposit_enabled_details],
+label[for=mepp_storewide_deposit_enabled_btn],
+label[for=mepp_storewide_deposit_force_deposit],
+label[for=mepp_storewide_deposit_amount_type],
+label[for=mepp_storewide_deposit_amount],
+label[for=mepp_storewide_deposit_payment_plans],
 .titledesc {
-  font-weight: 700 !important;
-  padding: 10px;
+  font-weight: 600 !important;
+  color: var(--mage-dark);
+  padding: 10px 20px 10px 0;
 }
 
 #mepp_deposit_storewide_values {
-  border: solid;
+  border: 0;
 }
 
 /* Custom styles for taxonomy editor */
@@ -296,116 +310,161 @@ label[for=mepp_storewide_deposit_payment_plans] {
 }
 
 .advanced-partial-payment {
-  background-color: var(--mage-white);
-  margin: 20px;
-  margin-left: 0;
+  background-color: transparent;
+  margin: 20px 20px 20px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 .advanced-partial-payment header {
-  background-color: var(--mage-primary);
+  background: linear-gradient(135deg, var(--mage-primary) 0%, var(--mage-primary-dark) 100%);
   color: var(--mage-white);
-  padding: 8px 12px;
+  padding: 18px 28px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  border-radius: var(--mage-radius) var(--mage-radius) 0 0;
 }
 .advanced-partial-payment header h2 {
   color: var(--mage-white);
-  font-size: 1.2rem;
+  font-size: 18px;
+  font-weight: 600;
   margin: 0;
   padding: 0;
   line-height: 1.4;
+  letter-spacing: 0.2px;
 }
 .advanced-partial-payment header h2 span {
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.85;
 }
 .advanced-partial-payment .partial-settings-area {
   display: flex;
-  justify-content: space-between;
-  border: 1px solid var(--mage-gray);
+  align-items: flex-start;
+  background-color: var(--mage-white);
+  border: 1px solid var(--mage-border);
   border-top: 0;
+  border-radius: 0 0 var(--mage-radius) var(--mage-radius);
+  box-shadow: var(--mage-shadow);
+  overflow: hidden;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper {
-  width: 20%;
+  width: 260px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  gap: 2px;
   background-color: var(--mage-light);
-  padding: 25px 0 25px 25px;
+  padding: 16px 12px;
+  border-right: 1px solid var(--mage-border);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
   cursor: pointer;
-  padding: 15px;
-  color: var(--mage-black);
+  padding: 11px 14px;
+  color: var(--mage-dark);
   border: 0;
-  font-weight: normal;
-  border-left: 2px solid transparent;
-  font-size: 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.6;
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background-color: transparent;
+  box-shadow: none;
+  white-space: normal;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab i {
-  margin: 0 10px 0 0;
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab:hover {
+  background-color: rgba(0, 0, 0, 0.04);
   color: var(--mage-primary);
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  border-bottom: 1px solid var(--mage-gray);
-  width: 90%;
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab i {
+  display: inline-block;
+  width: 16px;
+  margin-right: 8px;
+  text-align: center;
+  color: var(--mage-secondary);
+  vertical-align: middle;
+  transition: color 0.15s ease;
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.nav-tab-active {
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab .pro-nav {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.nav-tab-active,
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.mepp-nav-tab-active {
   background-color: var(--mage-white);
-  border-left: 2px solid var(--mage-primary);
+  color: var(--mage-primary);
+  font-weight: 600;
+  box-shadow: var(--mage-shadow);
 }
-.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.nav-tab-active::after {
-  width: 100%;
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.nav-tab-active i,
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-wrapper a.mepp.nav-tab.mepp-nav-tab-active i {
+  color: var(--mage-primary);
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content {
-  width: 80%;
-  padding: 2% 5%;
+  width: 100%;
+  padding: 8px 32px 32px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container h2 {
-  background-color: var(--mage-light);
+  background-color: transparent;
   color: var(--mage-dark);
-  font-size: 20px;
+  font-size: 16px;
   margin: 0;
+  margin-top: 28px;
+  padding: 0 0 12px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--mage-light);
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container h2:first-child {
   margin-top: 20px;
-  padding: 20px;
-  font-weight: bold;
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table {
+  border-collapse: collapse;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table tr {
-  border: 1px solid var(--mage-gray);
+  border: 0;
+  border-bottom: 1px solid var(--mage-light);
+}
+.advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table tr:last-child {
+  border-bottom: 0;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table th {
   width: 50%;
   vertical-align: middle;
   text-align: left;
-  padding: 10px 20px;
+  padding: 16px 20px 16px 0;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td {
   width: 50%;
   vertical-align: middle;
   text-align: left;
-  padding: 10px 20px;
+  padding: 14px 0;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td select, .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td input[type=text], .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td input[type=number] {
-  width: 200px;
+  width: 260px;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td textarea, .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td select[multiple] {
   width: 100%;
+  max-width: 460px;
 }
 .advanced-partial-payment .partial-settings-area .mepp-nav-tab-content .mepp-custom-container .form-table td fieldset input[type=number] {
   text-align: left;
 }
 
 .setttings-saved-notice {
-  border-left: 3px solid green;
+  border-left: 3px solid #00a32a;
   background-color: #fff;
-  box-shadow: 0 0 0 1px #ddd;
+  box-shadow: var(--mage-shadow);
+  border-radius: 4px;
   padding: 10px 15px;
   margin-right: 20px;
 }
@@ -420,8 +479,10 @@ label[for=mepp_storewide_deposit_payment_plans] {
 .pro-nav {
   color: var(--mage-white);
   background-color: var(--mage-primary);
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .pro-ads {
@@ -453,5 +514,3 @@ label[for=mepp_storewide_deposit_payment_plans] {
   background-color: rgba(0, 0, 0, 0.664);
   z-index: 1;
 }
-
-/*# sourceMappingURL=admin-style.css.map */

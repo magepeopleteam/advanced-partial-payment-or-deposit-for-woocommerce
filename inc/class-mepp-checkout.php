@@ -58,7 +58,7 @@ class MEPP_Checkout
             )
         );
 
-        wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout'), MEPP_VERSION, true);
+        wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout', 'jquery-tiptip'), MEPP_VERSION, true);
         $message_deposit = wp_kses(__(get_option('mepp_message_deposit'), 'advanced-partial-payment-or-deposit-for-woocommerce'), $allowed_html);
         $message_full_amount = wp_kses(__(get_option('mepp_message_full_amount'), 'advanced-partial-payment-or-deposit-for-woocommerce'), $allowed_html);
 
@@ -97,8 +97,8 @@ class MEPP_Checkout
             #wc-deposits-options-form .deposit-option { display: inline; }
           }";
 
-        wp_enqueue_style('wc-deposits-frontend-styles-checkout-mode', MEPP_PLUGIN_URL . '/assets/css/admin-style.css', array(), MEPP_VERSION);
-        wp_add_inline_style('wc-deposits-frontend-styles-checkout-mode', $style);
+        wp_enqueue_style('wc-deposits-frontend-styles', MEPP_PLUGIN_URL . '/assets/css/style.css', array(), MEPP_VERSION);
+        wp_add_inline_style('wc-deposits-frontend-styles', $style);
 
 
     }

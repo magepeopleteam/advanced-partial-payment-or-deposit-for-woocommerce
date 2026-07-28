@@ -19,7 +19,6 @@ class MEPP_Add_To_Cart
     {
         // Add the required styles
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'), 20);
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_inline_styles'), 20);
         add_filter('woocommerce_bookings_booking_cost_string', array($this, 'calculate_bookings_cost'));
 
         //appointments plugin
@@ -63,7 +62,7 @@ class MEPP_Add_To_Cart
      */
     public function enqueue_scripts()
     {
-	    wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout'), MEPP_VERSION, true);
+	    wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout', 'jquery-tiptip'), MEPP_VERSION, true);
 
         $message_deposit = get_option('mepp_message_deposit');
         $message_full_amount = get_option('mepp_message_full_amount');
@@ -94,53 +93,9 @@ class MEPP_Add_To_Cart
             )
         );
 
-        wp_localize_script('wc-deposits-add-to-cart', 'mepp_add_to_cart_options', $script_args);
+        wp_localize_script('wc-deposits-checkout', 'mepp_add_to_cart_options', $script_args);
 
     }
-
-
-   /**
- * @brief Enqueues front-end styles
- *
- * @return void
- */
-public function enqueue_inline_styles()
-{
-    // prepare inline styles
-    $colors = get_option('mepp_deposit_buttons_colors', array());
-    $fallback_colors = mepp_woocommerce_frontend_colours();
-    $gstart = isset($colors['green']) && !empty($colors['green']) ? $colors['green'] : (isset($fallback_colors['green']) ? $fallback_colors['green'] : '#00aa00');
-    $secondary = isset($colors['secondary']) && !empty($colors['secondary']) ? $colors['secondary'] : (isset($fallback_colors['secondary']) ? $fallback_colors['secondary'] : '#CCCCCC');
-    $highlight = isset($colors['highlight']) && !empty($colors['highlight']) ? $colors['highlight'] : (isset($fallback_colors['highlight']) ? $fallback_colors['highlight'] : '#FF0000');
-    $gend = mepp_adjust_colour($gstart, 15);
-
-    // Add custom CSS for deposit type display
-    $custom_css = "
-        .mepp-deposit-type-info {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
-            padding: 8px 12px;
-            margin-top: 8px;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        .mepp-deposit-type-label {
-            color: #495057;
-            font-weight: 500;
-        }
-        .mepp-deposit-type-info strong {
-            color: #007cba;
-            font-weight: 600;
-        }
-        .mepp-deposit-type-info .amount {
-            color: #d63384;
-            font-weight: 500;
-        }
-    ";
-    
-    wp_add_inline_style('woocommerce-general', $custom_css);
-}
 
 
     /**
@@ -655,9 +610,9 @@ public function enqueue_inline_styles()
             if (!$has_payment_plans && $product->get_type() !== 'grouped') {
 
                 if( $deposit_info['type'] === 'minimum'  ){
-                    $deposit_text = 'Deposit Minimum Amount :';
+                    $deposit_text = 'Deposit Minimum Amount:';
                 }else{
-                    $deposit_text = 'Deposit Amount :';
+                    $deposit_text = 'Deposit Amount:';
                 }
                 ?>
 
@@ -729,7 +684,7 @@ public function enqueue_inline_styles()
             </label>
             <label class="basic-style">
                 <input id='<?php echo $product->get_id(); ?>-pay-full-amount' class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio' type='radio' <?php checked($default_checked, 'full'); ?>
-                    <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full">
+                    <?php echo $args['force_deposit'] === 'yes' ? 'disabled' : ''?> value="full">
                     <?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>
                     <span class="radio-btn"></span>
                     <div class='deposit-option'>
@@ -780,7 +735,7 @@ public function enqueue_inline_styles()
                 <input type="radio" id="<?php echo $product->get_id(); ?>-pay-deposit" class='pay-deposit input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
                 type='radio' <?php checked($default_checked, 'deposit'); ?> value='deposit' checked="checked" />
                 <input type="radio" id="<?php echo $product->get_id(); ?>-pay-full-amount" class='pay-full-amount input-radio' name='<?php echo $product->get_id(); ?>-deposit-radio'
-                type='radio' <?php checked($default_checked, 'full'); ?> <?php echo isset($force_deposit) && $force_deposit === 'yes' ? 'disabled' : ''?> value="full" />
+                type='radio' <?php checked($default_checked, 'full'); ?> <?php echo $args['force_deposit'] === 'yes' ? 'disabled' : ''?> value="full" />
                 <label for="<?php echo $product->get_id(); ?>-pay-deposit"><?php esc_html_e($deposit_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
                 <label for="<?php echo $product->get_id(); ?>-pay-full-amount"><?php esc_html_e($full_text, 'advanced-partial-payment-or-deposit-for-woocommerce'); ?></label>
                 <div class="switch-wrapper">

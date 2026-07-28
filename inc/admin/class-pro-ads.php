@@ -51,8 +51,8 @@ class MEPP_Pro_Ads{
     }
     public function show_advertise($menu){
         $ads_menu = array(
-            'checkout_mode_ads' =>  '<i class="fas fa-money-check-alt"></i> ' . __('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce') . '<i>&nbsp; PRO</i>',
-            'future_payment_ads' => '<i class="far fa-credit-card"></i> ' . __('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce') . '<i>&nbsp; PRO</i>',
+            'checkout_mode_ads' =>  '<i class="fas fa-money-check-alt"></i> ' . __('Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce') . ' <span class="pro-nav">PRO</span>',
+            'future_payment_ads' => '<i class="far fa-credit-card"></i> ' . __('Future Payments & Reminders', 'advanced-partial-payment-or-deposit-for-woocommerce') . ' <span class="pro-nav">PRO</span>',
         );
         return array_merge($menu, $ads_menu);
     }

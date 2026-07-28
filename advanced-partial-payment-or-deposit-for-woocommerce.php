@@ -118,7 +118,7 @@ if (mepp_woocommerce_is_active()) :
                 $colors = get_option('mepp_deposit_buttons_colors');
                 $primary    = isset($colors['primary']) ? $colors['primary'] : '#f8f8f8';
                 $secondary  = isset($colors['secondary']) ? $colors['secondary'] : '#c4c4c4';
-                $highlight  = isset($colors['highlight']) ? $colors['highlight'] : '#ffbe00';
+                $highlight  = isset($colors['highlight']) ? $colors['highlight'] : '#16a34a';
 
                 $set_colors = "
                     :root{
@@ -127,7 +127,6 @@ if (mepp_woocommerce_is_active()) :
                         --mepp-deposit-highlight: $highlight;
                     }";
                 
-                wp_enqueue_style('toggle-switch', plugins_url('assets/css/admin-style.css', __FILE__), array(), MEPP_VERSION, 'screen');
                 wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
                 wp_add_inline_style('wc-deposits-frontend-styles', $set_colors);
 
