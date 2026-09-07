@@ -8,19 +8,19 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  */
 ?>
 <div class="apd-myaccount-deposits">
-    <h3><?php esc_html_e( 'My Deposits', 'advanced-partial-payment' ); ?></h3>
+    <h3><?php esc_html_e( 'My Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
 
     <?php if ( ! empty( $orders ) ) : ?>
     <table class="woocommerce-orders-table apd-deposits-table">
         <thead>
             <tr>
-                <th><?php esc_html_e( 'Order', 'advanced-partial-payment' ); ?></th>
-                <th><?php esc_html_e( 'Date', 'advanced-partial-payment' ); ?></th>
-                <th><?php esc_html_e( 'Total', 'advanced-partial-payment' ); ?></th>
-                <th><?php esc_html_e( 'Paid', 'advanced-partial-payment' ); ?></th>
-                <th><?php esc_html_e( 'Balance', 'advanced-partial-payment' ); ?></th>
-                <th><?php esc_html_e( 'Status', 'advanced-partial-payment' ); ?></th>
-                <th><?php esc_html_e( 'Action', 'advanced-partial-payment' ); ?></th>
+                <th><?php esc_html_e( 'Order', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                <th><?php esc_html_e( 'Date', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                <th><?php esc_html_e( 'Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                <th><?php esc_html_e( 'Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                <th><?php esc_html_e( 'Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                <th><?php esc_html_e( 'Status', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                <th><?php esc_html_e( 'Action', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -38,9 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
                 </td>
                 <td>
                     <?php if ( $details['balance_due'] > 0 ) : ?>
-                        <span class="apd-status-badge apd-status-pending"><?php esc_html_e( 'Partially Paid', 'advanced-partial-payment' ); ?></span>
+                        <span class="apd-status-badge apd-status-pending"><?php esc_html_e( 'Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
                     <?php else : ?>
-                        <span class="apd-status-badge apd-status-complete"><?php esc_html_e( 'Fully Paid', 'advanced-partial-payment' ); ?></span>
+                        <span class="apd-status-badge apd-status-complete"><?php esc_html_e( 'Fully Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
                     <?php endif; ?>
                 </td>
                 <td>
@@ -59,7 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
     </table>
     <?php else : ?>
     <div class="woocommerce-message woocommerce-message--info">
-        <p><?php esc_html_e( 'No deposit orders found.', 'advanced-partial-payment' ); ?></p>
+        <p><?php esc_html_e( 'No deposit orders found.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
     </div>
     <?php endif; ?>
 </div>

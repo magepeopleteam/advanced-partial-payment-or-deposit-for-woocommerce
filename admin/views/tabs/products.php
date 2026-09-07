@@ -4,13 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="apd-tab-header">
-    <h2><?php esc_html_e( 'Product Deposit Settings', 'advanced-partial-payment' ); ?></h2>
-    <p><?php esc_html_e( 'Configure deposit settings on individual products to override the global settings.', 'advanced-partial-payment' ); ?></p>
+    <h2><?php esc_html_e( 'Product Deposit Settings', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h2>
+    <p><?php esc_html_e( 'Configure deposit settings on individual products to override the global settings.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
 </div>
 
 <div class="apd-card">
     <div class="apd-card-header">
-        <h3><?php esc_html_e( 'How It Works', 'advanced-partial-payment' ); ?></h3>
+        <h3><?php esc_html_e( 'How It Works', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
     </div>
     <div class="apd-card-body">
         <div class="apd-info-box">
@@ -18,35 +18,35 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <span class="dashicons dashicons-info-outline"></span>
             </div>
             <div class="apd-info-content">
-                <p><?php esc_html_e( 'Per-product deposit settings can be configured directly from the product edit page.', 'advanced-partial-payment' ); ?></p>
+                <p><?php esc_html_e( 'Per-product deposit settings can be configured directly from the product edit page.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 <ol>
-                    <li><?php esc_html_e( 'Go to Products → Edit a product', 'advanced-partial-payment' ); ?></li>
-                    <li><?php esc_html_e( 'Click the "Deposit" tab in the Product Data panel', 'advanced-partial-payment' ); ?></li>
-                    <li><?php esc_html_e( 'Enable deposit and set the type (Fixed/Percentage) and value', 'advanced-partial-payment' ); ?></li>
-                    <li><?php esc_html_e( 'Save the product', 'advanced-partial-payment' ); ?></li>
+                    <li><?php esc_html_e( 'Go to Products → Edit a product', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></li>
+                    <li><?php esc_html_e( 'Click the "Deposit" tab in the Product Data panel', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></li>
+                    <li><?php esc_html_e( 'Enable deposit and set the type (Fixed/Percentage) and value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></li>
+                    <li><?php esc_html_e( 'Save the product', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></li>
                 </ol>
             </div>
         </div>
 
         <div class="apd-priority-info">
-            <h4><?php esc_html_e( 'Priority Order', 'advanced-partial-payment' ); ?></h4>
+            <h4><?php esc_html_e( 'Priority Order', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h4>
             <div class="apd-priority-chain">
                 <div class="apd-priority-item apd-priority-high">
                     <span class="apd-priority-num">1</span>
-                    <span><?php esc_html_e( 'Product Level', 'advanced-partial-payment' ); ?></span>
-                    <small><?php esc_html_e( 'Highest priority', 'advanced-partial-payment' ); ?></small>
+                    <span><?php esc_html_e( 'Product Level', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
+                    <small><?php esc_html_e( 'Highest priority', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></small>
                 </div>
                 <span class="apd-priority-arrow">→</span>
                 <div class="apd-priority-item apd-priority-mid">
                     <span class="apd-priority-num">2</span>
-                    <span><?php esc_html_e( 'Category Level', 'advanced-partial-payment' ); ?></span>
-                    <small><?php esc_html_e( 'Medium priority', 'advanced-partial-payment' ); ?></small>
+                    <span><?php esc_html_e( 'Category Level', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
+                    <small><?php esc_html_e( 'Medium priority', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></small>
                 </div>
                 <span class="apd-priority-arrow">→</span>
                 <div class="apd-priority-item apd-priority-low">
                     <span class="apd-priority-num">3</span>
-                    <span><?php esc_html_e( 'Global Setting', 'advanced-partial-payment' ); ?></span>
-                    <small><?php esc_html_e( 'Default fallback', 'advanced-partial-payment' ); ?></small>
+                    <span><?php esc_html_e( 'Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
+                    <small><?php esc_html_e( 'Default fallback', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></small>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="apd-card">
     <div class="apd-card-header">
-        <h3><?php esc_html_e( 'Products with Custom Deposits', 'advanced-partial-payment' ); ?></h3>
+        <h3><?php esc_html_e( 'Products with Custom Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
     </div>
     <div class="apd-card-body">
         <?php
@@ -76,10 +76,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         <table class="apd-table">
             <thead>
                 <tr>
-                    <th><?php esc_html_e( 'Product', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Value', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Action', 'advanced-partial-payment' ); ?></th>
+                    <th><?php esc_html_e( 'Product', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Action', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -93,7 +93,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <td><?php echo esc_html( $value ); ?><?php echo $type === 'percentage' ? '%' : ' ' . get_woocommerce_currency_symbol(); ?></td>
                     <td>
                         <a href="<?php echo esc_url( get_edit_post_link( $p->ID ) ); ?>" class="apd-btn apd-btn-small">
-                            <?php esc_html_e( 'Edit', 'advanced-partial-payment' ); ?>
+                            <?php esc_html_e( 'Edit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                         </a>
                     </td>
                 </tr>
@@ -103,7 +103,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <?php else : ?>
         <div class="apd-empty-state">
             <span class="dashicons dashicons-products"></span>
-            <p><?php esc_html_e( 'No products with custom deposit settings yet.', 'advanced-partial-payment' ); ?></p>
+            <p><?php esc_html_e( 'No products with custom deposit settings yet.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
         </div>
         <?php endif; ?>
     </div>

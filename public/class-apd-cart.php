@@ -40,8 +40,8 @@ class APD_Cart {
         }
 
         $settings      = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
-        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $deposit_total = $summary['deposit_amount'];
         $balance_due   = $summary['balance_due'];
 
@@ -68,7 +68,7 @@ class APD_Cart {
         $deposit = $deposit_engine->get_cart_item_deposit( $cart_item );
 
         $settings     = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
         echo '<div class="apd-cart-item-deposit">';
         echo '<small class="apd-cart-deposit-tag">' . esc_html( $deposit_label ) . ': ' . wc_price( $deposit ) . '</small>';
@@ -95,7 +95,7 @@ class APD_Cart {
         $total_dep = $deposit_engine->get_cart_item_deposit( $cart_item );
 
         $settings      = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
         return $subtotal . '<br><small class="apd-subtotal-deposit">' . esc_html( $deposit_label ) . ': ' . wc_price( $total_dep ) . '</small>';
     }
@@ -160,7 +160,7 @@ class APD_Cart {
         $payment_type  = sanitize_text_field( wp_unslash( $_POST['payment_type'] ?? 'deposit' ) );
 
         if ( ! $cart_item_key ) {
-            wp_send_json_error( 'Invalid item.' );
+            wp_send_json_error( __( 'Invalid item.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $cart = WC()->cart->get_cart();
@@ -174,7 +174,7 @@ class APD_Cart {
             wp_send_json_success();
         }
 
-        wp_send_json_error( 'Item not found.' );
+        wp_send_json_error( __( 'Item not found.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
     }
 
     /**

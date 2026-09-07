@@ -41,7 +41,7 @@ class APD_MyAccount {
         foreach ( $items as $key => $label ) {
             if ( 'orders' === $key ) {
                 $new_items[ $key ] = $label;
-                $new_items['deposits'] = __( 'Deposits', 'advanced-partial-payment' );
+                $new_items['deposits'] = __( 'Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce' );
             } else {
                 $new_items[ $key ] = $label;
             }
@@ -71,7 +71,7 @@ class APD_MyAccount {
         ) );
 
         $settings       = get_option( 'apd_settings', array() );
-        $pay_btn_label  = $settings['pay_button_label'] ?? __( 'Pay Remaining Balance', 'advanced-partial-payment' );
+        $pay_btn_label  = $settings['pay_button_label'] ?? __( 'Pay Remaining Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
         include APD_PLUGIN_DIR . 'public/views/myaccount-deposits.php';
     }

@@ -12,8 +12,8 @@ class APD_Email_Payment_Complete extends WC_Email {
         $config = APD_Emails::get_email_template_config( 'payment_complete' );
 
         $this->id             = 'apd_payment_complete';
-        $this->title          = __( 'Full Payment Complete', 'advanced-partial-payment' );
-        $this->description    = __( 'Sent to the customer when the full balance has been paid.', 'advanced-partial-payment' );
+        $this->title          = __( 'Full Payment Complete', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $this->description    = __( 'Sent to the customer when the full balance has been paid.', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $this->heading        = $config['heading'];
         $this->subject        = $config['subject'];
         $this->template_base  = APD_PLUGIN_DIR . 'templates/';
