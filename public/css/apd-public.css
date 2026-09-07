@@ -1,0 +1,314 @@
+/**
+ * Advanced Partial Payment - Frontend Public Styles
+ */
+
+/* ============================================
+   Product Page Deposit Form
+   ============================================ */
+.apd-product-deposit-form {
+    margin: 16px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+.apd-deposit-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+.apd-deposit-icon {
+    font-size: 18px;
+}
+.apd-deposit-options {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.apd-deposit-option {
+    display: block;
+    cursor: pointer;
+    margin: 0;
+}
+.apd-deposit-option input[type="radio"] {
+    display: none;
+}
+.apd-option-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all .2s ease;
+}
+.apd-deposit-option input:checked + .apd-option-content {
+    border-color: #6366f1;
+    background: #eef2ff;
+}
+.apd-option-radio {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    transition: all .2s ease;
+}
+.apd-deposit-option input:checked + .apd-option-content .apd-option-radio {
+    border-color: #6366f1;
+}
+.apd-deposit-option input:checked + .apd-option-content .apd-option-radio::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #6366f1;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.apd-option-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.apd-option-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+}
+.apd-option-detail {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ============================================
+   Cart Deposit Styles
+   ============================================ */
+.apd-cart-item-deposit {
+    margin-top: 4px;
+}
+.apd-cart-deposit-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 4px;
+    color: #4f46e5;
+    font-size: 11px;
+    font-weight: 600;
+}
+.apd-subtotal-deposit {
+    color: #6366f1;
+    font-weight: 600;
+    font-size: 12px;
+}
+.apd-cart-deposit-row th,
+.apd-checkout-deposit-row th {
+    font-weight: 600;
+    color: #334155;
+}
+.apd-blocks-summary {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+}
+.apd-blocks-summary__label-wrap {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.apd-blocks-summary__row--deposit .wc-block-components-totals-item__label,
+.apd-blocks-summary__row--deposit .wc-block-components-totals-item__value {
+    color: #4f46e5;
+    font-weight: 600;
+}
+.apd-blocks-summary .wc-block-components-totals-item__value {
+    margin-left: auto;
+    text-align: right;
+    white-space: nowrap;
+}
+.apd-blocks-item-deposit {
+    margin-top: 4px;
+}
+.apd-cart-deposit-row th small,
+.apd-checkout-deposit-row th small,
+.apd-cart-balance-row th small,
+.apd-checkout-balance-row th small {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 11px;
+}
+.apd-text-primary {
+    color: #6366f1 !important;
+}
+.apd-text-success {
+    color: #10b981 !important;
+}
+.apd-text-danger {
+    color: #ef4444 !important;
+}
+.apd-text-warning {
+    color: #f59e0b !important;
+}
+
+/* ============================================
+   Thank You / Order Details
+   ============================================ */
+.apd-thankyou-deposit,
+.apd-order-deposit-details {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+.apd-thankyou-deposit h3,
+.apd-order-deposit-details h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+.apd-deposit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.apd-deposit-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #475569;
+}
+.apd-deposit-table td:last-child {
+    text-align: right;
+}
+.apd-deposit-table tr:last-child td {
+    border-bottom: none;
+}
+.apd-balance-row td {
+    padding-top: 12px;
+    border-top: 2px solid #cbd5e1;
+    font-size: 16px;
+}
+.apd-thankyou-note {
+    margin: 14px 0 0;
+    font-size: 13px;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* ============================================
+   My Account Deposits Tab
+   ============================================ */
+.apd-myaccount-deposits h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 16px;
+}
+.apd-deposits-table {
+    width: 100%;
+    font-size: 14px;
+}
+.apd-deposits-table th {
+    background: #f8fafc;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #64748b;
+    padding: 10px 12px;
+    text-align: left;
+}
+.apd-deposits-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+.apd-status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.apd-status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+.apd-status-complete {
+    background: #d1fae5;
+    color: #065f46;
+}
+.apd-pay-balance-btn {
+    background: #6366f1 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+.apd-pay-balance-btn:hover {
+    background: #4f46e5 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(99,102,241,.3);
+}
+.apd-paid-check {
+    color: #10b981;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* ============================================
+   Block Cart / Checkout Deposit Toggle
+   ============================================ */
+.apd-deposit-toggle {
+    background: #f8fafc;
+}
+.apd-deposit-toggle__label {
+    color: #334155;
+    font-size: 14px;
+}
+.apd-deposit-toggle__btn {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+.apd-deposit-toggle__btn:hover {
+    background: #4f46e5;
+}
+.apd-deposit-toggle__btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+    .apd-deposits-table {
+        font-size: 12px;
+    }
+    .apd-deposits-table th,
+    .apd-deposits-table td {
+        padding: 8px;
+    }
+}
