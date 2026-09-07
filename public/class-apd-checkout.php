@@ -34,8 +34,8 @@ class APD_Checkout {
         }
 
         $settings      = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
-        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $deposit_total = $summary['deposit_amount'];
         $balance_due   = $summary['balance_due'];
 
@@ -63,18 +63,18 @@ class APD_Checkout {
         if ( ! $details ) return;
 
         $settings      = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
-        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         ?>
         <div class="apd-thankyou-deposit">
-            <h3><?php esc_html_e( 'Deposit Payment Summary', 'advanced-partial-payment' ); ?></h3>
+            <h3><?php esc_html_e( 'Deposit Payment Summary', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
             <table class="apd-deposit-table">
                 <tr>
-                    <td><?php esc_html_e( 'Order Total', 'advanced-partial-payment' ); ?></td>
+                    <td><?php esc_html_e( 'Order Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
                     <td><?php echo wc_price( $details['total_amount'] ); ?></td>
                 </tr>
                 <tr>
-                    <td><?php echo esc_html( $deposit_label ); ?> <?php esc_html_e( 'Paid', 'advanced-partial-payment' ); ?></td>
+                    <td><?php echo esc_html( $deposit_label ); ?> <?php esc_html_e( 'Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
                     <td class="apd-text-success"><?php echo wc_price( $details['deposit_amount'] ); ?></td>
                 </tr>
                 <?php if ( $details['balance_due'] > 0 ) : ?>
@@ -86,7 +86,7 @@ class APD_Checkout {
             </table>
             <?php if ( $details['balance_due'] > 0 ) : ?>
             <p class="apd-thankyou-note">
-                <?php esc_html_e( 'You can pay the remaining balance from your account page.', 'advanced-partial-payment' ); ?>
+                <?php esc_html_e( 'You can pay the remaining balance from your account page.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
             </p>
             <?php endif; ?>
         </div>
@@ -105,14 +105,14 @@ class APD_Checkout {
         if ( ! $details ) return;
 
         $settings      = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
-        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         ?>
         <div class="apd-order-deposit-details">
-            <h3><?php esc_html_e( 'Deposit Information', 'advanced-partial-payment' ); ?></h3>
+            <h3><?php esc_html_e( 'Deposit Information', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
             <table class="apd-deposit-table">
                 <tr>
-                    <td><?php esc_html_e( 'Full Order Total', 'advanced-partial-payment' ); ?></td>
+                    <td><?php esc_html_e( 'Full Order Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
                     <td><?php echo wc_price( $details['total_amount'] ); ?></td>
                 </tr>
                 <tr>
@@ -120,7 +120,7 @@ class APD_Checkout {
                     <td><?php echo wc_price( $details['deposit_amount'] ); ?></td>
                 </tr>
                 <tr>
-                    <td><?php esc_html_e( 'Total Paid', 'advanced-partial-payment' ); ?></td>
+                    <td><?php esc_html_e( 'Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
                     <td class="apd-text-success"><?php echo wc_price( $details['amount_paid'] ); ?></td>
                 </tr>
                 <tr class="apd-balance-row">

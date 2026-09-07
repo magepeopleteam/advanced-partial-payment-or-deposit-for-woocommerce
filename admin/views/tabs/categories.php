@@ -9,45 +9,45 @@ $product_cats = get_terms( array(
 ) );
 ?>
 <div class="apd-tab-header">
-    <h2><?php esc_html_e( 'Category Deposit Rules', 'advanced-partial-payment' ); ?></h2>
-    <p><?php esc_html_e( 'Set deposit rules per product category. Products inherit these settings if no product-level override exists.', 'advanced-partial-payment' ); ?></p>
+    <h2><?php esc_html_e( 'Category Deposit Rules', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h2>
+    <p><?php esc_html_e( 'Set deposit rules per product category. Products inherit these settings if no product-level override exists.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
 </div>
 
 <div class="apd-card">
     <div class="apd-card-header">
-        <h3><?php esc_html_e( 'Add Category Rule', 'advanced-partial-payment' ); ?></h3>
+        <h3><?php esc_html_e( 'Add Category Rule', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
     </div>
     <div class="apd-card-body">
         <form id="apd-category-form">
             <div class="apd-grid apd-grid-4">
                 <div class="apd-field">
-                    <label><?php esc_html_e( 'Category', 'advanced-partial-payment' ); ?></label>
+                    <label><?php esc_html_e( 'Category', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
                     <select name="category_id" id="apd-cat-select" class="apd-select">
-                        <option value=""><?php esc_html_e( 'Select Category', 'advanced-partial-payment' ); ?></option>
+                        <option value=""><?php esc_html_e( 'Select Category', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                         <?php foreach ( $product_cats as $cat ) : ?>
                         <option value="<?php echo esc_attr( $cat->term_id ); ?>"><?php echo esc_html( $cat->name ); ?> (<?php echo esc_html( $cat->count ); ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="apd-field">
-                    <label><?php esc_html_e( 'Enable', 'advanced-partial-payment' ); ?></label>
+                    <label><?php esc_html_e( 'Enable', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
                     <select name="enable_deposit" class="apd-select">
-                        <option value="yes"><?php esc_html_e( 'Yes', 'advanced-partial-payment' ); ?></option>
-                        <option value="no"><?php esc_html_e( 'No', 'advanced-partial-payment' ); ?></option>
+                        <option value="yes"><?php esc_html_e( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                        <option value="no"><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                     </select>
                 </div>
                 <div class="apd-field">
-                    <label><?php esc_html_e( 'Type', 'advanced-partial-payment' ); ?></label>
+                    <label><?php esc_html_e( 'Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
                     <select name="deposit_type" class="apd-select">
-                        <option value="percentage"><?php esc_html_e( 'Percentage', 'advanced-partial-payment' ); ?></option>
-                        <option value="fixed"><?php esc_html_e( 'Fixed', 'advanced-partial-payment' ); ?></option>
+                        <option value="percentage"><?php esc_html_e( 'Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                        <option value="fixed"><?php esc_html_e( 'Fixed', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                     </select>
                 </div>
                 <div class="apd-field">
-                    <label><?php esc_html_e( 'Value', 'advanced-partial-payment' ); ?></label>
+                    <label><?php esc_html_e( 'Value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
                     <div class="apd-field-with-btn">
                         <input type="number" name="deposit_value" step="0.01" min="0" class="apd-input" placeholder="50" />
-                        <button type="submit" class="apd-btn apd-btn-primary"><?php esc_html_e( 'Add Rule', 'advanced-partial-payment' ); ?></button>
+                        <button type="submit" class="apd-btn apd-btn-primary"><?php esc_html_e( 'Add Rule', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></button>
                     </div>
                 </div>
             </div>
@@ -57,18 +57,18 @@ $product_cats = get_terms( array(
 
 <div class="apd-card">
     <div class="apd-card-header">
-        <h3><?php esc_html_e( 'Existing Category Rules', 'advanced-partial-payment' ); ?></h3>
+        <h3><?php esc_html_e( 'Existing Category Rules', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
     </div>
     <div class="apd-card-body">
         <table class="apd-table" id="apd-category-rules-table">
             <thead>
                 <tr>
-                    <th><?php esc_html_e( 'Category', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Status', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Type', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Value', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Products', 'advanced-partial-payment' ); ?></th>
-                    <th><?php esc_html_e( 'Action', 'advanced-partial-payment' ); ?></th>
+                    <th><?php esc_html_e( 'Category', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Status', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Products', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Action', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -86,7 +86,7 @@ $product_cats = get_terms( array(
                     <td><strong><?php echo esc_html( $cat->name ); ?></strong></td>
                     <td>
                         <span class="apd-status-dot <?php echo $enabled === 'yes' ? 'apd-status-active' : 'apd-status-inactive'; ?>"></span>
-                        <?php echo $enabled === 'yes' ? esc_html__( 'Active', 'advanced-partial-payment' ) : esc_html__( 'Inactive', 'advanced-partial-payment' ); ?>
+                        <?php echo $enabled === 'yes' ? esc_html__( 'Active', 'advanced-partial-payment-or-deposit-for-woocommerce' ) : esc_html__( 'Inactive', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                     </td>
                     <td><span class="apd-badge"><?php echo esc_html( ucfirst( $type ?: 'global' ) ); ?></span></td>
                     <td><?php echo esc_html( $value ); ?><?php echo $type === 'percentage' ? '%' : ( $value ? ' ' . get_woocommerce_currency_symbol() : '' ); ?></td>
@@ -94,7 +94,7 @@ $product_cats = get_terms( array(
                     <td>
                         <button type="button" class="apd-btn apd-btn-small apd-btn-danger apd-delete-category-rule"
                                 data-cat-id="<?php echo esc_attr( $cat->term_id ); ?>">
-                            <?php esc_html_e( 'Remove', 'advanced-partial-payment' ); ?>
+                            <?php esc_html_e( 'Remove', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                         </button>
                     </td>
                 </tr>
@@ -105,7 +105,7 @@ $product_cats = get_terms( array(
                     <td colspan="6">
                         <div class="apd-empty-state">
                             <span class="dashicons dashicons-category"></span>
-                            <p><?php esc_html_e( 'No category deposit rules defined yet.', 'advanced-partial-payment' ); ?></p>
+                            <p><?php esc_html_e( 'No category deposit rules defined yet.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                         </div>
                     </td>
                 </tr>

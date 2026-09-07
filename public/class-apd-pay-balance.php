@@ -37,28 +37,28 @@ class APD_Pay_Balance {
         $nonce    = isset( $_GET['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : '';
 
         if ( ! wp_verify_nonce( $nonce, 'apd_pay_balance_' . $order_id ) ) {
-            wc_add_notice( __( 'Invalid request.', 'advanced-partial-payment' ), 'error' );
+            wc_add_notice( __( 'Invalid request.', 'advanced-partial-payment-or-deposit-for-woocommerce' ), 'error' );
             wp_redirect( wc_get_account_endpoint_url( 'deposits' ) );
             exit;
         }
 
         $order = wc_get_order( $order_id );
         if ( ! $order || ! APD_Order::is_deposit_order( $order ) ) {
-            wc_add_notice( __( 'Invalid order.', 'advanced-partial-payment' ), 'error' );
+            wc_add_notice( __( 'Invalid order.', 'advanced-partial-payment-or-deposit-for-woocommerce' ), 'error' );
             wp_redirect( wc_get_account_endpoint_url( 'deposits' ) );
             exit;
         }
 
         // Check ownership
         if ( $order->get_customer_id() !== get_current_user_id() ) {
-            wc_add_notice( __( 'You do not have permission to pay this balance.', 'advanced-partial-payment' ), 'error' );
+            wc_add_notice( __( 'You do not have permission to pay this balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ), 'error' );
             wp_redirect( wc_get_account_endpoint_url( 'deposits' ) );
             exit;
         }
 
         $details = APD_Order::get_deposit_details( $order );
         if ( ! $details || $details['balance_due'] <= 0 ) {
-            wc_add_notice( __( 'This order has no outstanding balance.', 'advanced-partial-payment' ), 'notice' );
+            wc_add_notice( __( 'This order has no outstanding balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ), 'notice' );
             wp_redirect( wc_get_account_endpoint_url( 'deposits' ) );
             exit;
         }
@@ -67,7 +67,7 @@ class APD_Pay_Balance {
         $order->update_meta_data( '_apd_balance_payment_pending', $details['balance_due'] );
         $order->set_total( $details['balance_due'] );
         if ( $order->get_status() !== 'partially-paid' ) {
-            $order->set_status( 'partially-paid', __( 'Customer started a remaining balance payment.', 'advanced-partial-payment' ) );
+            $order->set_status( 'partially-paid', __( 'Customer started a remaining balance payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
         $order->save();
 
@@ -93,26 +93,26 @@ class APD_Pay_Balance {
         check_ajax_referer( 'apd_public_nonce', 'nonce' );
 
         if ( ! is_user_logged_in() ) {
-            wp_send_json_error( __( 'Please log in to pay the balance.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Please log in to pay the balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $order_id = intval( $_POST['order_id'] ?? 0 );
         if ( ! $order_id ) {
-            wp_send_json_error( __( 'Invalid order.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Invalid order.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $order = wc_get_order( $order_id );
         if ( ! $order || $order->get_customer_id() !== get_current_user_id() ) {
-            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         if ( ! APD_Order::is_deposit_order( $order ) ) {
-            wp_send_json_error( __( 'This order is not a deposit order.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'This order is not a deposit order.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $details = APD_Order::get_deposit_details( $order );
         if ( ! $details || $details['balance_due'] <= 0 ) {
-            wp_send_json_error( __( 'This order has no outstanding balance.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'This order has no outstanding balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $pay_url = self::get_pay_balance_url( $order_id );

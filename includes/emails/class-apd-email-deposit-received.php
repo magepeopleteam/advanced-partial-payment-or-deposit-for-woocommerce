@@ -12,8 +12,8 @@ class APD_Email_Deposit_Received extends WC_Email {
         $config = APD_Emails::get_email_template_config( 'deposit_received' );
 
         $this->id             = 'apd_deposit_received';
-        $this->title          = __( 'Deposit Received', 'advanced-partial-payment' );
-        $this->description    = __( 'Sent to the customer when a deposit payment is received.', 'advanced-partial-payment' );
+        $this->title          = __( 'Deposit Received', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $this->description    = __( 'Sent to the customer when a deposit payment is received.', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $this->heading        = $config['heading'];
         $this->subject        = $config['subject'];
         $this->template_base  = APD_PLUGIN_DIR . 'templates/';

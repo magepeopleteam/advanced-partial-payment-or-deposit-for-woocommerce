@@ -38,7 +38,7 @@ class APD_Deposit {
      */
     public function register_order_status() {
         register_post_status( 'wc-partially-paid', array(
-            'label'                     => _x( 'Partially Paid', 'Order status', 'advanced-partial-payment' ),
+            'label'                     => _x( 'Partially Paid', 'Order status', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
             'public'                    => true,
             'show_in_admin_status_list' => true,
             'show_in_admin_all_list'    => true,
@@ -47,7 +47,7 @@ class APD_Deposit {
             'label_count'               => _n_noop(
                 'Partially Paid <span class="count">(%s)</span>',
                 'Partially Paid <span class="count">(%s)</span>',
-                'advanced-partial-payment'
+                'advanced-partial-payment-or-deposit-for-woocommerce'
             ),
         ) );
     }
@@ -60,7 +60,7 @@ class APD_Deposit {
         foreach ( $statuses as $key => $label ) {
             $new_statuses[ $key ] = $label;
             if ( 'wc-on-hold' === $key ) {
-                $new_statuses['wc-partially-paid'] = _x( 'Partially Paid', 'Order status', 'advanced-partial-payment' );
+                $new_statuses['wc-partially-paid'] = _x( 'Partially Paid', 'Order status', 'advanced-partial-payment-or-deposit-for-woocommerce' );
             }
         }
         return $new_statuses;
@@ -412,11 +412,11 @@ class APD_Deposit {
         }
 
         $settings      = get_option( 'apd_settings', array() );
-        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' );
+        $balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $legacy_label  = sprintf(
             '%1$s (%2$s)',
             $balance_label,
-            __( 'Pay Later', 'advanced-partial-payment' )
+            __( 'Pay Later', 'advanced-partial-payment-or-deposit-for-woocommerce' )
         );
 
         return sanitize_title( $legacy_label ) === $fee->id;

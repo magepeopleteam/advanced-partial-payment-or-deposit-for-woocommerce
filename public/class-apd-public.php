@@ -82,10 +82,10 @@ class APD_Public {
         $allow_full     = $deposit_engine->is_full_payment_allowed( $product->get_id() );
 
         $settings       = get_option( 'apd_settings', array() );
-        $deposit_label  = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
-        $balance_label  = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' );
-        $deposit_text   = $settings['deposit_text'] ?? 'Pay a deposit of {deposit_amount}';
-        $full_text      = $settings['full_payment_text'] ?? 'Pay full amount of {full_amount}';
+        $deposit_label  = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $balance_label  = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $deposit_text   = $settings['deposit_text'] ?? __( 'Pay a deposit of {deposit_amount}', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $full_text      = $settings['full_payment_text'] ?? __( 'Pay full amount of {full_amount}', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
         // Min/Max type: show a range input so customer chooses their deposit
         if ( $deposit_type === 'min_max' && defined( 'APD_PRO_VERSION' ) ) {
@@ -113,13 +113,15 @@ class APD_Public {
 
         if ( 'percentage' === $deposit_type ) {
             $deposit_text = sprintf(
-                __( 'Pay %1$s%% deposit now (%2$s)', 'advanced-partial-payment' ),
+                /* translators: 1: deposit percentage, 2: formatted deposit amount. */
+                __( 'Pay %1$s%% deposit now (%2$s)', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 wc_format_localized_decimal( $deposit_value ),
                 wc_price( $deposit_amount )
             );
         } elseif ( 'fixed' === $deposit_type ) {
             $deposit_text = sprintf(
-                __( 'Pay fixed deposit of %s', 'advanced-partial-payment' ),
+                /* translators: %s: formatted deposit amount. */
+                __( 'Pay fixed deposit of %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 wc_price( $deposit_amount )
             );
         } else {

@@ -28,15 +28,15 @@ class APD_Migration {
         ?>
         <div class="notice notice-info" id="apd-migration-notice" style="display:block !important; border-left-color: #4338ca;">
             <p>
-                <strong><?php esc_html_e( 'Legacy Data Detected', 'advanced-partial-payment' ); ?></strong><br>
-                <?php esc_html_e( 'We noticed you have data from the old Mage Partial Payment plugin. Would you like to sync your old settings, product configurations, and orders to the new system?', 'advanced-partial-payment' ); ?>
+                <strong><?php esc_html_e( 'Legacy Data Detected', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></strong><br>
+                <?php esc_html_e( 'We noticed you have data from the old Mage Partial Payment plugin. Would you like to sync your old settings, product configurations, and orders to the new system?', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
             </p>
             <p>
-                <button type="button" class="button button-primary" id="apd-start-migration"><?php esc_html_e( 'Sync Old Data Now', 'advanced-partial-payment' ); ?></button>
-                <button type="button" class="button" id="apd-dismiss-migration"><?php esc_html_e( 'I will do this later', 'advanced-partial-payment' ); ?></button>
+                <button type="button" class="button button-primary" id="apd-start-migration"><?php esc_html_e( 'Sync Old Data Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></button>
+                <button type="button" class="button" id="apd-dismiss-migration"><?php esc_html_e( 'I will do this later', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></button>
             </p>
             <div id="apd-migration-progress" style="display:none; margin-top:10px;">
-                <p id="apd-migration-status"><?php esc_html_e( 'Initializing...', 'advanced-partial-payment' ); ?></p>
+                <p id="apd-migration-status"><?php esc_html_e( 'Initializing...', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 <progress id="apd-migration-bar" value="0" max="100" style="width: 100%;"></progress>
             </div>
         </div>
@@ -106,17 +106,17 @@ class APD_Migration {
                                 if (response.data.next_step !== 'done') {
                                     apd_run_migration(response.data.next_step, response.data.next_offset);
                                 } else {
-                                    $('#apd-migration-status').text('<?php esc_html_e('Migration completed successfully!', 'advanced-partial-payment'); ?>');
+                                    $('#apd-migration-status').text('<?php esc_html_e('Migration completed successfully!', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>');
                                     setTimeout(function() {
                                         $('#apd-migration-notice').slideUp();
                                     }, 3000);
                                 }
                             } else {
-                                $('#apd-migration-status').text('<?php esc_html_e('Error:', 'advanced-partial-payment'); ?> ' + response.data);
+                                $('#apd-migration-status').text('<?php esc_html_e('Error:', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?> ' + response.data);
                             }
                         },
                         error: function() {
-                            $('#apd-migration-status').text('<?php esc_html_e('An error occurred during migration. Please try again.', 'advanced-partial-payment'); ?>');
+                            $('#apd-migration-status').text('<?php esc_html_e('An error occurred during migration. Please try again.', 'advanced-partial-payment-or-deposit-for-woocommerce'); ?>');
                         }
                     });
                 }
@@ -129,7 +129,7 @@ class APD_Migration {
         check_ajax_referer( 'apd_migration_nonce', 'nonce' );
 
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $step = isset( $_POST['step'] ) ? sanitize_text_field( wp_unslash( $_POST['step'] ) ) : 'global_settings';
@@ -140,7 +140,7 @@ class APD_Migration {
             case 'global_settings':
                 $this->migrate_global_settings();
                 wp_send_json_success( array(
-                    'message' => __( 'Global settings and categories migrated.', 'advanced-partial-payment' ),
+                    'message' => __( 'Global settings and categories migrated.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     'progress' => 10,
                     'next_step' => 'payment_plans',
                     'next_offset' => 0
@@ -150,7 +150,7 @@ class APD_Migration {
             case 'payment_plans':
                 $this->migrate_payment_plans();
                 wp_send_json_success( array(
-                    'message' => __( 'Payment plans migrated.', 'advanced-partial-payment' ),
+                    'message' => __( 'Payment plans migrated.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     'progress' => 20,
                     'next_step' => 'products',
                     'next_offset' => 0
@@ -172,14 +172,15 @@ class APD_Migration {
                         $this->migrate_product_meta( $post_id );
                     }
                     wp_send_json_success( array(
-                        'message' => sprintf( __( 'Migrated %d products...', 'advanced-partial-payment' ), $offset + count($products) ),
+                        /* translators: %d: number of products migrated so far. */
+                        'message' => sprintf( __( 'Migrated %d products...', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $offset + count($products) ),
                         'progress' => 40,
                         'next_step' => 'products',
                         'next_offset' => $offset + $batch_size
                     ) );
                 } else {
                     wp_send_json_success( array(
-                        'message' => __( 'Products migration complete.', 'advanced-partial-payment' ),
+                        'message' => __( 'Products migration complete.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         'progress' => 60,
                         'next_step' => 'orders',
                         'next_offset' => 0
@@ -212,7 +213,8 @@ class APD_Migration {
                         $this->migrate_order_meta( $order_id );
                     }
                     wp_send_json_success( array(
-                        'message' => sprintf( __( 'Migrated %d orders...', 'advanced-partial-payment' ), $offset + count($orders) ),
+                        /* translators: %d: number of orders migrated so far. */
+                        'message' => sprintf( __( 'Migrated %d orders...', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $offset + count($orders) ),
                         'progress' => 90,
                         'next_step' => 'orders',
                         'next_offset' => $offset + $batch_size
@@ -220,7 +222,7 @@ class APD_Migration {
                 } else {
                     update_option( 'apd_migration_from_mepp_done', 'yes' );
                     wp_send_json_success( array(
-                        'message' => __( 'All data migrated successfully.', 'advanced-partial-payment' ),
+                        'message' => __( 'All data migrated successfully.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         'progress' => 100,
                         'next_step' => 'done',
                         'next_offset' => 0
