@@ -1,510 +1,183 @@
 <?php
 /**
- * Plugin Name: Deposit & Partial Payment Solution for WooCommerce - WpDepositly | MagePeople
- * Plugin URI: http://mage-people.com
- * Description: This plugin will add Partial Payment System in the Woocommerce Plugin its also support Woocommerce Event Manager Plugin.
- * Version: 3.0.9
- * Author: MagePeople Team
- * Author URI: http://www.mage-people.com/
- * Text Domain: advanced-partial-payment-or-deposit-for-woocommerce
- * Domain Path: /language
+ * Plugin Name:       Advanced Partial Payment or Deposit for WooCommerce
+ * Plugin URI:        https://www.mage-people.com
+ * Description:       Accept partial payments, deposits, and installments on your WooCommerce store. Supports fixed, percentage, category-wise deposits with a professional admin dashboard.
+ * Version:           4.0.1
+ * Author:            Developer
+ * Author URI:        https://www.mage-people.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       advanced-partial-payment
+ * Domain Path:       /languages
+ * Requires at least: 5.8
+ * Requires PHP:      7.4
+ * WC requires at least: 5.0
+ * WC tested up to:   8.5
  */
 
-namespace MagePeople\MEPP;
-
-use stdClass;
-
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 /**
+ * Plugin constants
+ */
+define( 'APD_VERSION', '4.0.1' );
+define( 'APD_PLUGIN_FILE', __FILE__ );
+define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'APD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'APD_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+define( 'APD_REWRITE_VERSION', '1.0.0-account-endpoints-1' );
+
+/**
  * Check if WooCommerce is active
  */
-function mepp_woocommerce_is_active()
-{
-    if (!function_exists('is_plugin_active_for_network')) {
-        require_once(ABSPATH . '/wp-admin/includes/plugin.php');
+function apd_check_woocommerce() {
+    if ( ! class_exists( 'WooCommerce' ) ) {
+        return false;
     }
-
-    // Prefer runtime checks first – covers network/site activation and load order reliably
-    if (class_exists('WooCommerce') || defined('WC_VERSION')) {
-        return true;
-    }
-
-    // Fallback to explicit activation checks (handles multisite network activation)
-    $woocommerce_active = false;
-    if (is_multisite()) {
-        $woocommerce_active = is_plugin_active('woocommerce/woocommerce.php') || is_plugin_active_for_network('woocommerce/woocommerce.php');
-    } else {
-        $woocommerce_active = is_plugin_active('woocommerce/woocommerce.php');
-    }
-
-    if (!$woocommerce_active && is_admin()) {
-        // WooCommerce is not active, display notice using JavaScript
-        add_action('admin_footer', function() {
-            // Use correct admin URL depending on network admin vs site admin
-            $install_url = (function_exists('is_network_admin') && is_network_admin())
-                ? network_admin_url('plugin-install.php?s=woocommerce&tab=search&type=term')
-                : admin_url('plugin-install.php?s=woocommerce&tab=search&type=term');
-            ?>
-            <script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    var notice = '<div class="notice notice-error">';
-                    notice += '<p><?php _e( 'Deposit & Partial Payment Solution for WooCommerce - WpDepositly requires WooCommerce to be installed and activated.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>';
-                    notice += '<p><a href="<?php echo esc_url($install_url); ?>" class="button-primary"><?php _e( 'Install WooCommerce', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></a></p>';
-                    notice += '</div>';
-                    $('#wpbody-content').prepend(notice);
-                });
-            </script>
-            <?php
-        });
-    }
-
-    return $woocommerce_active;
+    return true;
 }
 
-if (mepp_woocommerce_is_active()) :
-    require_once( plugin_dir_path( __FILE__ ) . '/inc/mepp-functions.php' );
-    require_once( plugin_dir_path( __FILE__ ) . '/inc/mepp-migration.php' );
+/**
+ * Set a transient on plugin activation to trigger the
+ * WooCommerce check / redirect on next admin page load.
+ */
+function apd_activate() {
+    set_transient( 'apd_plugin_activated', true, 60 );
+    require_once APD_PLUGIN_DIR . 'includes/class-apd-activator.php';
+    APD_Activator::activate();
+}
+register_activation_hook( __FILE__, 'apd_activate' );
 
+/**
+ * Always load the WooCommerce Installer module in admin.
+ * It handles: activation redirect when WooCommerce IS active,
+ * and shows the beautiful popup when WooCommerce is NOT active.
+ */
+if ( is_admin() ) {
+    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+    require_once APD_PLUGIN_DIR . 'includes/class-apd-woo-installer.php';
+}
+
+/**
+ * Register public rewrite endpoints used by My Account flows.
+ * Only register when WooCommerce is active.
+ */
+function apd_register_rewrite_endpoints() {
+    add_rewrite_endpoint( 'deposits', EP_ROOT | EP_PAGES );
+    add_rewrite_endpoint( 'pay-deposit-balance', EP_ROOT | EP_PAGES );
+}
+add_action( 'init', 'apd_register_rewrite_endpoints', 5 );
+
+/**
+ * Flush rewrites once when endpoint definitions change.
+ */
+function apd_maybe_flush_rewrite_rules() {
+    $stored_version = get_option( 'apd_rewrite_version', '' );
+
+    if ( APD_REWRITE_VERSION === $stored_version ) {
+        return;
+    }
+
+    apd_register_rewrite_endpoints();
+    flush_rewrite_rules( false );
+    update_option( 'apd_rewrite_version', APD_REWRITE_VERSION );
+}
+add_action( 'init', 'apd_maybe_flush_rewrite_rules', 99 );
+
+/**
+ * Deactivation hook
+ */
+function apd_deactivate() {
+    require_once APD_PLUGIN_DIR . 'includes/class-apd-deactivator.php';
+    APD_Deactivator::deactivate();
+}
+register_deactivation_hook( __FILE__, 'apd_deactivate' );
+
+/**
+ * HPOS compatibility declaration
+ */
+add_action( 'before_woocommerce_init', function () {
+    if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+    }
+});
+
+/**
+ * Initialize the plugin
+ */
+function apd_init() {
+    if ( ! apd_check_woocommerce() ) {
+        return;
+    }
+
+    // Load text domain
+    load_plugin_textdomain( 'advanced-partial-payment', false, dirname( APD_PLUGIN_BASENAME ) . '/languages' );
+
+    // Include core files
+    require_once APD_PLUGIN_DIR . 'includes/class-apd-deposit.php';
+    require_once APD_PLUGIN_DIR . 'includes/class-apd-order.php';
+    require_once APD_PLUGIN_DIR . 'includes/class-apd-emails.php';
+
+    // Admin
+    if ( is_admin() ) {
+        require_once APD_PLUGIN_DIR . 'admin/class-apd-admin.php';
+        require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-settings.php';
+        require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-order.php';
+        require_once APD_PLUGIN_DIR . 'admin/class-apd-product-meta.php';
+        require_once APD_PLUGIN_DIR . 'admin/class-apd-category-meta.php';
+        require_once APD_PLUGIN_DIR . 'admin/class-apd-migration.php';
+
+        new APD_Admin();
+        new APD_Admin_Settings();
+        new APD_Admin_Order();
+        new APD_Product_Meta();
+        new APD_Category_Meta();
+        new APD_Migration();
+    }
+
+    // Frontend
+    if ( ! is_admin() || wp_doing_ajax() ) {
+        require_once APD_PLUGIN_DIR . 'public/class-apd-public.php';
+        require_once APD_PLUGIN_DIR . 'public/class-apd-cart.php';
+        require_once APD_PLUGIN_DIR . 'public/class-apd-blocks.php';
+        require_once APD_PLUGIN_DIR . 'public/class-apd-checkout.php';
+        require_once APD_PLUGIN_DIR . 'public/class-apd-myaccount.php';
+        require_once APD_PLUGIN_DIR . 'public/class-apd-pay-balance.php';
+
+        new APD_Public();
+        new APD_Cart();
+        new APD_Blocks();
+        new APD_Checkout();
+        new APD_MyAccount();
+        new APD_Pay_Balance();
+    }
+
+    // Initialize deposit engine (global)
+    APD_Deposit::instance();
+    APD_Order::instance();
 
     /**
-         *  Main MEPP_Advance_Deposits class
-         *
-         */
-        class MEPP_Advance_Deposits {
-                public $cart; // Instance of MEPP_Cart
-                public $coupons; // Instance of MEPP_Coupons
-                public $add_to_cart; // Instance of MEPP_Add_To_Cart
-                public $orders; // Instance of MEPP_Orders
-                public $taxonomies; // Instance of MEPP_Taxonomies
-                public $reminders; // Instance of MEPP_Reminders
-                public $emails; // Instance of MEPP_Emails
-                public $checkout; // Instance of MEPP_Checkout
-                public $compatibility; // All compatibility classes are loaded in this var
-                public $admin_product; // Instance of MEPP_Admin_Product
-                public $admin_order; // Instance of MEPP_Admin_Order
-                public $admin_list_table_orders; // Instance of MEPP_Admin_List_Table_Orders
-                public $admin_list_table_partial_payments; // Instance of MEPP_Admin_List_Table_Partial_Payments
-                public $admin_settings; // Instance of MEPP_Admin_Settings
-                public $admin_reports; // Instance of MEPP_Admin_Reports
-
-                // Properties for notices and version disabled state
-                public $admin_notices = []; // Stores notices before output function
-                public $wc_version_disabled = false; // Stores version disabled state
-
-            /**
-             *  Returns the global instance
-             *
-             * @param array $GLOBALS ...
-             * @return mixed
-             */
-            public static function & get_singleton()
-            {
-                if (!isset($GLOBALS['mepp'])) $GLOBALS['mepp'] = new MEPP_Advance_Deposits();
-                return $GLOBALS['mepp'];
-            }
-
-                /**
-             *  Enqueues front-end styles
-             *
-             * @return void
-             */
-            public function enqueue_styles(){
-                if ($this->wc_version_disabled) return;
-                if (!$this->is_disabled()) {
-                
-                $colors = get_option('mepp_deposit_buttons_colors');
-                $primary    = isset($colors['primary']) ? $colors['primary'] : '#f8f8f8';
-                $secondary  = isset($colors['secondary']) ? $colors['secondary'] : '#c4c4c4';
-                $highlight  = isset($colors['highlight']) ? $colors['highlight'] : '#ffbe00';
-
-                $set_colors = "
-                    :root{
-                        --mepp-deposit-primary: $primary;
-                        --mepp-deposit-secondary: $secondary;
-                        --mepp-deposit-highlight: $highlight;
-                    }";
-                
-                wp_enqueue_style('toggle-switch', plugins_url('assets/css/admin-style.css', __FILE__), array(), MEPP_VERSION, 'screen');
-                wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
-                wp_add_inline_style('wc-deposits-frontend-styles', $set_colors);
-
-                if (is_cart() || is_checkout()) {
-                    $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-                    wp_register_script('jquery-tiptip', WC()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array('jquery'), WC_VERSION, true);
-	                wp_enqueue_script('wc-deposits-checkout', MEPP_PLUGIN_URL . '/assets/js/add-to-cart.js', array('jquery', 'wc-checkout'), MEPP_VERSION, true);
-                    wp_enqueue_script('jquery-tiptip');
-                    wp_enqueue_style('wc-deposits-frontend-styles', plugins_url('assets/css/style.css', __FILE__), array(), MEPP_VERSION);
-                }
-            }
-        }
-
-         /**
-         *  Display all buffered admin notices
-         *
-         * @return void
-         */
-        public function show_admin_notices() {
-            if (is_array($this->admin_notices) && !empty($this->admin_notices)) {
-          try {
-            foreach ($this->admin_notices as $notice) {
-                $dismissible = isset($notice['dismissible']) && $notice['dismissible'] ? 'is-dismissible' : '';
-                ?>
-                <div class='<?php echo $dismissible; ?> notice notice-<?php echo esc_attr($notice['type']); ?>'>
-                    <p><?php echo $notice['content']; ?></p>
-                </div>
-                <?php
-            }
-            } catch (Exception $e) {
-                // Silence any exceptions
-            }
-            }
-        }
-
-        /**
-         *  Constructor
-         *
-         * @return void
-         */
-        private function __construct()
-        {
-            if (is_plugin_active('mage-partial-payment-pro/mage_partial_pro.php')) {
-                $is_pro_active = true;
-            } else {
-                $is_pro_active = false;
-            }
-            // Check if WooCommerce is not active
-                if (!mepp_woocommerce_is_active()) {
-                add_action('admin_notices', array($this, 'woocommerce_not_active_notice'));
-                return;
-                }
-                    // Redirect to plugin settings page after WooCommerce logic
-            define('MEPP_ADVANCE_DEPOSITS_ACTIVE', true);
-            define('MEPP_VERSION', '3.0.3');
-            define('MEPP_TEMPLATE_PATH', untrailingslashit(plugin_dir_path(__FILE__)) . '/theme/');
-            define('MEPP_PLUGIN_PATH', plugin_dir_path(__FILE__));
-            define('MEPP_PLUGIN_URL', untrailingslashit(plugins_url(basename(plugin_dir_path(__FILE__)), basename(__FILE__))));
-            define('MEPP_MAIN_FILE', __FILE__);
-            define('MEPP_PAYMENT_PLAN_TAXONOMY', 'mepp_payment_plan');
-            define('MEPP_IS_PRO_ACTIVE', $is_pro_active);
-
-            $this->compatibility = new stdClass();
-
-            if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-            if (is_admin()) {
-                // translators: %1$s is a placeholder for the plugin name, %2$s is a placeholder for the required PHP version
-                $message = sprintf(esc_html__('%1$s Requires PHP version %2$s or higher.', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'), '5.6');
-                add_action('admin_notices', function() use ($message) {
-                    echo '<div class="error"><p>' . esc_html($message) . '</p></div>';
-                });
-            }
-            return;
-            }
-            add_action('init', array($this, 'load_plugin_textdomain'), 0);
-            add_action('init', array($this, 'register_order_status'));          
-            if (!did_action('woocommerce_init')) {
-                add_action('woocommerce_init', array($this, 'email_inc'));
-                add_action('woocommerce_init', array($this, 'mepp_admin_inc'));
-                add_action('woocommerce_init', array($this, 'inc'));
-            }
-            add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts_and_styles'));
-            add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-            if (is_admin()) {
-
-                //plugin row urls in plugins page
-                add_filter('plugin_row_meta', array($this, 'plugin_row_meta'), 10, 2);
-                add_action('admin_notices', array($this, 'show_admin_notices'));
-                add_action('current_screen', array($this, 'mepp_screen'), 10);
-                add_action('init', 'MagePeople\MEPP\MEPP_Advance_Deposits::plugin_activated', 100); //plugin activated is not called with automatic updates anymore.
-
-            }
-           
-                    }
-
-               
-
-        /**
-         * Display additional links in plugin row located in plugins page
-         *
-         * @param array $links
-         * @param string $file
-         * @return array
-         */
-        function plugin_row_meta($links, $file)
-        {
-            if ($file === 'advanced-partial-payment-or-deposit-for-woocommerce/advanced-partial-payment-or-deposit-for-woocommerce.php') {
-
-                $row_meta = array(
-                    'settings' => '<a href="' . esc_url(admin_url('/admin.php?page=admin-mepp-deposits&tab=settings_tabs_mepp&section=mepp_general')) . '"> ' . esc_html__('Settings', 'text-domain') . '</a>',
-                    'documentation' => '<a target="_blank" href="' . esc_url('#') . '"> ' . esc_html__('Documentation', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>',
-                    'support' => '<a target="_blank" href="' . esc_url('#') . '"> ' . esc_html__('Support', 'advanced-partial-payment-or-deposit-for-woocommerce') . '</a>',
-                );
-
-                // translators: %s is a placeholder for the plugin name
-                $row_meta['view-details'] = sprintf(
-                    '<a href="%s" class="thickbox open-plugin-details-modal" aria-label="%s" data-title="%s">%s</a>',
-                    esc_url(network_admin_url('plugin-install.php?tab=plugin-information&plugin=' . urlencode('advanced-partial-payment-or-deposit-for-woocommerce') . '&TB_iframe=true&width=600&height=550')),
-                    sprintf(esc_html__('More information about %s', 'advanced-partial-payment-or-deposit-for-woocommerce'), esc_html__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce')),
-                    esc_attr__('WooCommerce Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    esc_html__('View details', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                );
-
-                $links = array_merge($links, $row_meta);
-            }
-
-            return $links;
-        }
-
-
-        /**
-         *   load plugin's translated strings
-         * @brief Localisation
-         *
-         * @return void
-         */
-        public function load_plugin_textdomain()
-        {
-
-
-            load_plugin_textdomain('advanced-partial-payment-or-deposit-for-woocommerce', false, dirname(plugin_basename(__FILE__)) . '/language/');
-        }
-
-   
-
-
-        /**
-         *  Email inc
-         *
-         * @return void
-         * @since 1.3
-         *
-         */
-
-        public function email_inc()
-        {
-            if ($this->wc_version_disabled) return;
-            require_once 'inc/class-mepp-emails.php';
-            $this->emails = MEPP_Emails::instance();
-
-            require_once 'inc/class-mepp-reminders.php';
-            $this->reminders = new MEPP_Reminders();
-
-
-        }
-
-        /**
-         *  Load classes
-         *
-         * @return void
-         */
-        public function inc()
-        {
-
-            if ($this->wc_version_disabled) return;
-            if (!$this->is_disabled()) {
-
-                require_once('inc/class-mepp-cart.php');
-                require_once('inc/class-mepp-coupons.php');
-                require_once('inc/class-mepp-checkout.php');
-
-                $this->cart = new MEPP_Cart();
-                $this->checkout = new MEPP_Checkout();
-                $this->coupons = new MEPP_Coupons();
-
-                if (!mepp_checkout_mode()) {
-                    require_once('inc/class-mepp-add-to-cart.php');
-                    $this->add_to_cart = new MEPP_Add_To_Cart();
-
-                }
-            }
-
-            require_once('inc/admin/class-mepp-admin-taxonomies.php');
-            require_once('inc/admin/class-pro-ads.php');
-            require_once('inc/class-mepp-payment.php');
-            require_once('inc/class-mepp-orders.php');
-            $this->orders = new MEPP_Orders();
-            $this->taxonomies = new MEPP_Taxonomies();
-
-
-            /**
-             * 3RD PARTY COMPATIBILITY
-             */
-
-            if (is_plugin_active('woocommerce-pdf-invoices-packing-slips/woocommerce-pdf-invoices-packingslips.php')) {
-                $this->compatibility->pdf_invoices = require_once('inc/compatibility/pdf-invoices/main.php');
-            }
-
-            if (is_plugin_active('woocommerce-bookings/woocommerce-bookings.php')) {
-                $this->compatibility->wc_bookings = require_once('inc/compatibility/mepp-bookings-compatibility.php');
-            }
-
-            if (is_plugin_active('woocommerce-gateway-paypal-express-checkout/woocommerce-gateway-paypal-express-checkout.php')) {
-                $this->compatibility->wc_ppec = require_once('inc/compatibility/mepp-ppec-compatibility.php');
-            }
-
-        }
-
-
-        /**
-         *  load proper admin list table class based on current screen
-         * @return void
-         */
-        function mepp_screen()
-        {
-
-            if ($this->wc_version_disabled) return;
-
-            $screen_id = false;
-
-            if (function_exists('get_current_screen')) {
-                $screen = get_current_screen();
-                $screen_id = isset($screen, $screen->id) ? $screen->id : '';
-            }
-
-            if (!empty($_REQUEST['screen'])) { // WPCS: input var ok.
-                $screen_id = wc_clean(wp_unslash($_REQUEST['screen'])); // WPCS: input var ok, sanitization ok.
-            }
-
-
-            switch ($screen_id) {
-                case 'edit-shop_order' :
-                    require_once('inc/admin/class-admin-list-table-orders.php');
-                    $this->admin_list_table_orders = new MEPP_Admin_List_Table_Orders($this);
-                    break;
-                case 'edit-mepp_payment' :
-                    require_once('inc/admin/class-admin-list-table-partial-payments.php');
-                    $this->admin_list_table_partial_payments = new MEPP_Admin_List_Table_Partial_Payments();
-                    break;
-
-            }
-        }
-
-        /**
-         *  Load admin inc
-         *
-         * @return void
-         */
-        public function mepp_admin_inc()
-        {
-            if ($this->wc_version_disabled) return;
-
-            require_once('inc/admin/class-mepp-admin-settings.php');
-            require_once('inc/admin/class-mepp-admin-order.php');
-
-            $this->admin_settings = new MEPP_Admin_Settings($this);
-            $this->admin_order = new MEPP_Admin_Order($this);
-
-            require_once('inc/admin/class-mepp-admin-product.php');
-            $this->admin_product = new MEPP_Admin_Product($this);
-            add_filter('woocommerce_admin_reports', array($this, 'admin_reports'));
-        }
-
-        /**
-         *  Load reports functionality
-         * @param $reports
-         * @return mixed
-         */
-        public function admin_reports($reports)
-        {
-            if (!$this->admin_reports) {
-                $admin_reports = require_once('inc/admin/class-mepp-admin-reports.php');
-                $this->admin_reports = $admin_reports;
-            }
-            return $this->admin_reports->admin_reports($reports);
-        }
-
-        /**
-         *  Load admin scripts and styles
-         * @return void
-         */
-        public function enqueue_admin_scripts_and_styles()
-        {
-            wp_enqueue_script('jquery');
-            wp_enqueue_style('wc-deposits-admin-style', plugins_url('assets/css/admin-style.css', __FILE__), '',MEPP_VERSION,'all');
-        }
-
-       
-        /**
-         *  Add a new notice
-         *
-         * @param $content String notice contents
-         * @param $type String Notice class
-         *
-         * @return void
-         */
-        public function enqueue_admin_notice($content, $type, $dismissible = false)
-        {
-            array_push($this->admin_notices, array('content' => $content, 'type' => $type, 'dismissible' => $dismissible));
-        }
-
-        /**
-         *  checks if plugin frontend functionality is disabled sitewide
-         * @return bool
-         */
-        public function is_disabled()
-        {
-            return get_option('mepp_site_wide_disable') === 'yes';
-        }
-        /**
-         *  Register custom order status partially-paid
-         *
-         * @return void
-         * @since 1.3
-         *
-         */
-            public function register_order_status(){
-                    register_post_status('wc-partially-paid', array(
-                    'label' => _x('Partially Paid', 'Order status', 'advanced-partial-payment-or-deposit-for-woocommerce'),
-                    'public' => true,
-                    'exclude_from_search' => false,
-                    'show_in_admin_all_list' => true,
-                    'show_in_admin_status_list' => true,
-                    // translators: %s is a placeholder for the number of orders with this status
-                    'label_count' => _n_noop('Partially Paid <span class="count">(%s)</span>',
-                        'Partially Paid <span class="count">(%s)</span>', 'advanced-partial-payment-or-deposit-for-woocommerce')
-                ));
-            }
-
-        /**
-         *  plugin activation hook , schedule action 'mepp_job_scheduler'
-         * @return void
-         */
-        public static function plugin_activated()
-        {
-            if (function_exists('WC')) {
-                $next = WC()->queue()->get_next('mepp_job_scheduler');
-                if (!$next) {
-                    $timestamp = time() + DAY_IN_SECONDS;
-                    WC()->queue()->cancel_all('mepp_job_scheduler');
-                    WC()->queue()->schedule_recurring($timestamp, DAY_IN_SECONDS, 'mepp_job_scheduler', array(), 'MEPP');
-                }
-            }
-
-        }
-
-        /**
-         *  plugin deactivation hook , remove scheduled action 'mepp_job_scheduler'
-         * @return void
-         */
-        public static function plugin_deactivated()
-        {
-            if (function_exists('WC')) {
-
-                WC()->queue()->cancel_all('mepp_job_scheduler');
-            }
-
-            wp_clear_scheduled_hook('woocommerce_deposits_second_payment_reminder');
-            delete_option('mepp_instance');
-
-        }
-
-    }
-// Install the singleton instance
-MEPP_Advance_Deposits::get_singleton();
-	
-    register_activation_hook(__FILE__, array('\\MagePeople\\MEPP\\MEPP_Advance_Deposits', 'plugin_activated'));
-    register_deactivation_hook(__FILE__, array('\\MagePeople\\MEPP\\MEPP_Advance_Deposits', 'plugin_deactivated'));
-
-endif;
+     * Fires after the plugin is fully loaded.
+     */
+    do_action( 'apd_loaded' );
+}
+add_action( 'plugins_loaded', 'apd_init', 20 );
+
+/**
+ * Helper: Get plugin option
+ */
+function apd_get_option( $key, $default = '' ) {
+    $options = get_option( 'apd_settings', array() );
+    return isset( $options[ $key ] ) ? $options[ $key ] : $default;
+}
+
+/**
+ * Helper: Check if pro addon is active
+ */
+function apd_is_pro_active() {
+    return defined( 'APD_PRO_VERSION' );
+}
