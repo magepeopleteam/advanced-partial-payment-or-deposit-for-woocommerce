@@ -21,33 +21,33 @@ class APD_Category_Meta {
     public function add_category_fields() {
         ?>
         <div class="form-field">
-            <label><?php esc_html_e( 'Enable Deposit', 'advanced-partial-payment' ); ?></label>
+            <label><?php esc_html_e( 'Enable Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
             <select name="_apd_enable_deposit">
-                <option value=""><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment' ); ?></option>
-                <option value="yes"><?php esc_html_e( 'Yes', 'advanced-partial-payment' ); ?></option>
-                <option value="no"><?php esc_html_e( 'No', 'advanced-partial-payment' ); ?></option>
+                <option value=""><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                <option value="yes"><?php esc_html_e( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                <option value="no"><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
             </select>
         </div>
         <div class="form-field">
-            <label><?php esc_html_e( 'Force Deposit Only', 'advanced-partial-payment' ); ?></label>
+            <label><?php esc_html_e( 'Force Deposit Only', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
             <select name="_apd_force_deposit">
-                <option value=""><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment' ); ?></option>
-                <option value="yes"><?php esc_html_e( 'Yes', 'advanced-partial-payment' ); ?></option>
-                <option value="no"><?php esc_html_e( 'No', 'advanced-partial-payment' ); ?></option>
+                <option value=""><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                <option value="yes"><?php esc_html_e( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                <option value="no"><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
             </select>
-            <p class="description"><?php esc_html_e( 'Force products in this category to show only the deposit/partial payment option.', 'advanced-partial-payment' ); ?></p>
+            <p class="description"><?php esc_html_e( 'Force products in this category to show only the deposit/partial payment option.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
         </div>
         <div class="form-field">
-            <label><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment' ); ?></label>
+            <label><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
             <select name="_apd_deposit_type">
-                <option value="global"><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment' ); ?></option>
-                <option value="fixed"><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment' ); ?></option>
-                <option value="percentage"><?php esc_html_e( 'Percentage', 'advanced-partial-payment' ); ?></option>
+                <option value="global"><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                <option value="fixed"><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                <option value="percentage"><?php esc_html_e( 'Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
             </select>
         </div>
         <div class="form-field">
-            <label><?php esc_html_e( 'Deposit Value', 'advanced-partial-payment' ); ?></label>
-            <input type="number" step="0.01" min="0" name="_apd_deposit_value" placeholder="<?php esc_attr_e( 'e.g. 50', 'advanced-partial-payment' ); ?>" />
+            <label><?php esc_html_e( 'Deposit Value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+            <input type="number" step="0.01" min="0" name="_apd_deposit_value" placeholder="<?php esc_attr_e( 'e.g. 50', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>" />
         </div>
         <?php $this->render_payment_plan_add_fields(); ?>
         <?php
@@ -63,38 +63,38 @@ class APD_Category_Meta {
         $value  = get_term_meta( $term->term_id, '_apd_deposit_value', true );
         ?>
         <tr class="form-field">
-            <th><label><?php esc_html_e( 'Enable Deposit', 'advanced-partial-payment' ); ?></label></th>
+            <th><label><?php esc_html_e( 'Enable Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
                 <select name="_apd_enable_deposit">
-                    <option value="" <?php selected( $enable, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment' ); ?></option>
-                    <option value="yes" <?php selected( $enable, 'yes' ); ?>><?php esc_html_e( 'Yes', 'advanced-partial-payment' ); ?></option>
-                    <option value="no" <?php selected( $enable, 'no' ); ?>><?php esc_html_e( 'No', 'advanced-partial-payment' ); ?></option>
+                    <option value="" <?php selected( $enable, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="yes" <?php selected( $enable, 'yes' ); ?>><?php esc_html_e( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="no" <?php selected( $enable, 'no' ); ?>><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                 </select>
             </td>
         </tr>
         <tr class="form-field">
-            <th><label><?php esc_html_e( 'Force Deposit Only', 'advanced-partial-payment' ); ?></label></th>
+            <th><label><?php esc_html_e( 'Force Deposit Only', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
                 <select name="_apd_force_deposit">
-                    <option value="" <?php selected( $force, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment' ); ?></option>
-                    <option value="yes" <?php selected( $force, 'yes' ); ?>><?php esc_html_e( 'Yes', 'advanced-partial-payment' ); ?></option>
-                    <option value="no" <?php selected( $force, 'no' ); ?>><?php esc_html_e( 'No', 'advanced-partial-payment' ); ?></option>
+                    <option value="" <?php selected( $force, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="yes" <?php selected( $force, 'yes' ); ?>><?php esc_html_e( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="no" <?php selected( $force, 'no' ); ?>><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                 </select>
-                <p class="description"><?php esc_html_e( 'Force products in this category to show only the deposit/partial payment option.', 'advanced-partial-payment' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Force products in this category to show only the deposit/partial payment option.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
             </td>
         </tr>
         <tr class="form-field">
-            <th><label><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment' ); ?></label></th>
+            <th><label><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
                 <select name="_apd_deposit_type">
-                    <option value="global" <?php selected( $type, 'global' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment' ); ?></option>
-                    <option value="fixed" <?php selected( $type, 'fixed' ); ?>><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment' ); ?></option>
-                    <option value="percentage" <?php selected( $type, 'percentage' ); ?>><?php esc_html_e( 'Percentage', 'advanced-partial-payment' ); ?></option>
+                    <option value="global" <?php selected( $type, 'global' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="fixed" <?php selected( $type, 'fixed' ); ?>><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="percentage" <?php selected( $type, 'percentage' ); ?>><?php esc_html_e( 'Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                 </select>
             </td>
         </tr>
         <tr class="form-field">
-            <th><label><?php esc_html_e( 'Deposit Value', 'advanced-partial-payment' ); ?></label></th>
+            <th><label><?php esc_html_e( 'Deposit Value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
                 <input type="number" step="0.01" min="0" name="_apd_deposit_value" value="<?php echo esc_attr( $value ); ?>" />
             </td>
@@ -138,7 +138,7 @@ class APD_Category_Meta {
         $plans = APD_Payment_Plans::get_plans();
         ?>
         <div class="form-field">
-            <label><?php esc_html_e( 'Assigned Payment Plans', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' ); ?></label>
+            <label><?php esc_html_e( 'Assigned Payment Plans', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
             <div style="max-height:220px;overflow:auto;padding:10px 12px;border:1px solid #dcdcde;border-radius:4px;background:#fff;">
                 <?php if ( ! empty( $plans ) ) : ?>
                     <?php foreach ( $plans as $plan_id => $plan ) : ?>
@@ -151,17 +151,17 @@ class APD_Category_Meta {
                                     '(%1$s, %2$d %3$s)',
                                     esc_html( ucfirst( $plan['price_type'] ?? 'percentage' ) ),
                                     ! empty( $plan['installments'] ) && is_array( $plan['installments'] ) ? count( $plan['installments'] ) : 0,
-                                    esc_html__( 'installments', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' )
+                                    esc_html__( 'installments', 'advanced-partial-payment-or-deposit-for-woocommerce' )
                                 );
                                 ?>
                             </span>
                         </label>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <p class="description"><?php esc_html_e( 'No payment plans found yet. Create plans from Deposits > Payment Plans.', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' ); ?></p>
+                    <p class="description"><?php esc_html_e( 'No payment plans found yet. Create plans from Deposits > Payment Plans.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 <?php endif; ?>
             </div>
-            <p class="description"><?php esc_html_e( 'Optional Pro override. If no product-level plans are assigned, these category plans will be used for products in this category.', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' ); ?></p>
+            <p class="description"><?php esc_html_e( 'Optional Pro override. If no product-level plans are assigned, these category plans will be used for products in this category.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
         </div>
         <?php
     }
@@ -180,7 +180,7 @@ class APD_Category_Meta {
         $assigned = (array) get_term_meta( $term->term_id, '_apd_assigned_plans', true );
         ?>
         <tr class="form-field">
-            <th><label><?php esc_html_e( 'Assigned Payment Plans', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' ); ?></label></th>
+            <th><label><?php esc_html_e( 'Assigned Payment Plans', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
                 <div style="max-height:240px;overflow:auto;padding:10px 12px;border:1px solid #dcdcde;border-radius:4px;background:#fff;">
                     <?php if ( ! empty( $plans ) ) : ?>
@@ -199,17 +199,17 @@ class APD_Category_Meta {
                                         '(%1$s, %2$d %3$s)',
                                         esc_html( ucfirst( $plan['price_type'] ?? 'percentage' ) ),
                                         ! empty( $plan['installments'] ) && is_array( $plan['installments'] ) ? count( $plan['installments'] ) : 0,
-                                        esc_html__( 'installments', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' )
+                                        esc_html__( 'installments', 'advanced-partial-payment-or-deposit-for-woocommerce' )
                                     );
                                     ?>
                                 </span>
                             </label>
                         <?php endforeach; ?>
                     <?php else : ?>
-                        <p class="description"><?php esc_html_e( 'No payment plans found yet. Create plans from Deposits > Payment Plans.', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' ); ?></p>
+                        <p class="description"><?php esc_html_e( 'No payment plans found yet. Create plans from Deposits > Payment Plans.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                     <?php endif; ?>
                 </div>
-                <p class="description"><?php esc_html_e( 'Optional Pro override. Product-specific plan assignments take priority over category plan assignments.', 'advanced-partial-payment-or-deposit-for-woocommerce-pro' ); ?></p>
+                <p class="description"><?php esc_html_e( 'Optional Pro override. Product-specific plan assignments take priority over category plan assignments.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
             </td>
         </tr>
         <?php

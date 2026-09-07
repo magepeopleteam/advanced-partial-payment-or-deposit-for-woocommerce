@@ -21,7 +21,7 @@ class APD_Admin_Settings {
         check_ajax_referer( 'apd_admin_nonce', 'nonce' );
 
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $tab = isset( $_POST['tab'] ) ? sanitize_text_field( wp_unslash( $_POST['tab'] ) ) : 'general';
@@ -65,7 +65,7 @@ class APD_Admin_Settings {
 
         update_option( 'apd_settings', $settings );
 
-        wp_send_json_success( __( 'Settings saved successfully!', 'advanced-partial-payment' ) );
+        wp_send_json_success( __( 'Settings saved successfully!', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
     }
 
     /**
@@ -75,7 +75,7 @@ class APD_Admin_Settings {
         check_ajax_referer( 'apd_admin_nonce', 'nonce' );
 
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $cat_id       = intval( $_POST['category_id'] ?? 0 );
@@ -85,7 +85,7 @@ class APD_Admin_Settings {
         $deposit_val  = floatval( $_POST['deposit_value'] ?? 0 );
 
         if ( ! $cat_id ) {
-            wp_send_json_error( __( 'Invalid category.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Invalid category.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         update_term_meta( $cat_id, '_apd_enable_deposit', $enable );
@@ -93,7 +93,7 @@ class APD_Admin_Settings {
         update_term_meta( $cat_id, '_apd_deposit_type', $deposit_type );
         update_term_meta( $cat_id, '_apd_deposit_value', $deposit_val );
 
-        wp_send_json_success( __( 'Category deposit saved!', 'advanced-partial-payment' ) );
+        wp_send_json_success( __( 'Category deposit saved!', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
     }
 
     /**
@@ -103,12 +103,12 @@ class APD_Admin_Settings {
         check_ajax_referer( 'apd_admin_nonce', 'nonce' );
 
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Permission denied.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $cat_id = intval( $_POST['category_id'] ?? 0 );
         if ( ! $cat_id ) {
-            wp_send_json_error( __( 'Invalid category.', 'advanced-partial-payment' ) );
+            wp_send_json_error( __( 'Invalid category.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         delete_term_meta( $cat_id, '_apd_enable_deposit' );
@@ -117,6 +117,6 @@ class APD_Admin_Settings {
         delete_term_meta( $cat_id, '_apd_deposit_value' );
         delete_term_meta( $cat_id, '_apd_assigned_plans' );
 
-        wp_send_json_success( __( 'Category deposit removed!', 'advanced-partial-payment' ) );
+        wp_send_json_success( __( 'Category deposit removed!', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
     }
 }

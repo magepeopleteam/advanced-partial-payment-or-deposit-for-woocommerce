@@ -4,6 +4,18 @@
 (function ($) {
     'use strict';
 
+    // wp-i18n is a declared dependency of this script. The guard keeps the panel
+    // rendering in English rather than throwing if it is ever missing.
+    var i18n    = ( window.wp && window.wp.i18n ) ? window.wp.i18n : null;
+    var __      = i18n ? i18n.__ : function ( text ) { return text; };
+    var sprintf = ( i18n && i18n.sprintf ) ? i18n.sprintf : function ( format ) {
+        var args = Array.prototype.slice.call( arguments, 1 );
+        var next = 0;
+        return String( format ).replace( /%(?:(\d+)\$)?([sd])/g, function ( match, position ) {
+            return position ? args[ parseInt( position, 10 ) - 1 ] : args[ next++ ];
+        } );
+    };
+
     var APD_Admin = {
         init: function () {
             this.bindTabNavigation();
@@ -161,11 +173,11 @@
                 var amount  = parseFloat($('#apd-manual-amount').val());
 
                 if (!amount || amount <= 0) {
-                    self.showToast('Please enter a valid amount.', 'error');
+                    self.showToast(__('Please enter a valid amount.', 'advanced-partial-payment-or-deposit-for-woocommerce'), 'error');
                     return;
                 }
 
-                $btn.prop('disabled', true).text('Recording...');
+                $btn.prop('disabled', true).text(__('Recording...', 'advanced-partial-payment-or-deposit-for-woocommerce'));
 
                 $.post(apd_admin.ajax_url, {
                     action: 'apd_record_payment',
@@ -181,12 +193,12 @@
                             }, 1000);
                         } else {
                             self.showToast(response.data || apd_admin.strings.error, 'error');
-                            $btn.prop('disabled', false).text('Record');
+                            $btn.prop('disabled', false).text(__('Record', 'advanced-partial-payment-or-deposit-for-woocommerce'));
                         }
                     })
                     .fail(function () {
                         self.showToast(apd_admin.strings.error, 'error');
-                        $btn.prop('disabled', false).text('Record');
+                        $btn.prop('disabled', false).text(__('Record', 'advanced-partial-payment-or-deposit-for-woocommerce'));
                     });
             });
         },
@@ -249,29 +261,36 @@
 
                 self.toggleProductTypePanels(productType, effectiveType.value);
 
+                var effectiveScopeLabel = self.formatScopeLabel(effectiveScope);
+                var enabledLabel = effectiveEnable.value === 'yes'
+                    ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                    : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce');
+
                 $('#apd-effective-enabled-badge')
                     .removeClass('apd-pill-success apd-pill-danger')
                     .addClass(effectiveEnable.value === 'yes' ? 'apd-pill-success' : 'apd-pill-danger')
-                    .text(effectiveEnable.value === 'yes' ? 'Enabled' : 'Disabled');
+                    .text(enabledLabel);
 
                 $('#apd-effective-mode-badge')
                     .removeClass('apd-pill-info apd-pill-warning')
-                    .addClass(effectiveScope === 'Product Override' ? 'apd-pill-info' : 'apd-pill-warning')
-                    .text(effectiveScope);
+                    .addClass(effectiveScope === 'product' ? 'apd-pill-info' : 'apd-pill-warning')
+                    .text(effectiveScopeLabel);
 
-                $('#apd-effective-enable-value').text(effectiveEnable.value === 'yes' ? 'Enabled' : 'Disabled');
-                $('#apd-effective-enable-source').text('Source: ' + effectiveEnable.source);
+                $('#apd-effective-enable-value').text(enabledLabel);
+                $('#apd-effective-enable-source').text(self.formatSourceLine(effectiveEnable.source));
 
                 $('#apd-effective-type-value').text(self.formatTypeLabel(effectiveType.value));
-                $('#apd-effective-type-source').text('Source: ' + effectiveType.source);
+                $('#apd-effective-type-source').text(self.formatSourceLine(effectiveType.source));
 
                 $('#apd-effective-value-value').text(self.formatValueLabel(effectiveType.value, effectiveValue.value, context));
-                $('#apd-effective-value-source').text('Source: ' + effectiveValue.source);
+                $('#apd-effective-value-source').text(self.formatSourceLine(effectiveValue.source));
 
-                $('#apd-effective-force-value').text(effectiveForce.value === 'yes' ? 'Forced' : 'Not forced');
-                $('#apd-effective-force-source').text('Source: ' + effectiveForce.source);
+                $('#apd-effective-force-value').text(effectiveForce.value === 'yes'
+                    ? __('Forced', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                    : __('Not forced', 'advanced-partial-payment-or-deposit-for-woocommerce'));
+                $('#apd-effective-force-source').text(self.formatSourceLine(effectiveForce.source));
 
-                $('#apd-effective-scope-value').text(effectiveScope);
+                $('#apd-effective-scope-value').text(effectiveScopeLabel);
                 $('#apd-effective-scope-meta').text(self.getScopeMeta(effectiveScope, effectiveForce.source || effectiveType.source));
 
                 $('#apd-product-setting-line').text(self.getProductLine(productEnable, productForce, productType, productValue, productMin, productMax, assignedPlanIds, context));
@@ -318,23 +337,23 @@
             if (productEnable === 'yes' || productEnable === 'no') {
                 return {
                     value: productEnable,
-                    source: 'Product override',
-                    scope: 'Product Override',
+                    source: this.sourceLabel('product'),
+                    sourceKey: 'product',
                 };
             }
 
             if (context.category && (context.category.enable === 'yes' || context.category.enable === 'no')) {
                 return {
                     value: context.category.enable,
-                    source: 'Category: ' + context.category.name,
-                    scope: 'Category Fallback',
+                    source: this.sourceLabel('category', context.category.name),
+                    sourceKey: 'category',
                 };
             }
 
             return {
                 value: context.global.enable || 'yes',
-                source: 'Global settings',
-                scope: 'Global Default',
+                source: this.sourceLabel('global'),
+                sourceKey: 'global',
             };
         },
 
@@ -342,23 +361,23 @@
             if (productForce === 'yes' || productForce === 'no') {
                 return {
                     value: productForce,
-                    source: 'Product override',
-                    scope: 'Product Override',
+                    source: this.sourceLabel('product'),
+                    sourceKey: 'product',
                 };
             }
 
             if (context.category && (context.category.force === 'yes' || context.category.force === 'no')) {
                 return {
                     value: context.category.force,
-                    source: 'Category: ' + context.category.name,
-                    scope: 'Category Fallback',
+                    source: this.sourceLabel('category', context.category.name),
+                    sourceKey: 'category',
                 };
             }
 
             return {
                 value: (context.global && context.global.force) || 'no',
-                source: 'Global settings',
-                scope: 'Global Default',
+                source: this.sourceLabel('global'),
+                sourceKey: 'global',
             };
         },
 
@@ -366,20 +385,23 @@
             if (productType && productType !== 'global') {
                 return {
                     value: productType,
-                    source: 'Product override',
+                    source: this.sourceLabel('product'),
+                    sourceKey: 'product',
                 };
             }
 
             if (context.category && context.category.type && context.category.type !== 'global') {
                 return {
                     value: context.category.type,
-                    source: 'Category: ' + context.category.name,
+                    source: this.sourceLabel('category', context.category.name),
+                    sourceKey: 'category',
                 };
             }
 
             return {
                 value: context.global.type || 'percentage',
-                source: 'Global settings',
+                source: this.sourceLabel('global'),
+                sourceKey: 'global',
             };
         },
 
@@ -388,7 +410,7 @@
             var globalMax = parseFloat((context.min_max && context.min_max.global_max) || 0);
             var min = productMin !== '' ? parseFloat(productMin || 0) : globalMin;
             var max = productMax !== '' ? parseFloat(productMax || 0) : globalMax;
-            var source = (productMin !== '' || productMax !== '') ? 'Product override' : 'Global settings';
+            var sourceKey = (productMin !== '' || productMax !== '') ? 'product' : 'global';
 
             if (isNaN(min)) {
                 min = globalMin;
@@ -400,10 +422,13 @@
                 min = max;
             }
 
+            var effectiveKey = effectiveType === 'min_max' ? sourceKey : 'global';
+
             return {
                 min: min,
                 max: max,
-                source: effectiveType === 'min_max' ? source : 'Global settings',
+                source: this.sourceLabel(effectiveKey),
+                sourceKey: effectiveKey,
             };
         },
 
@@ -416,7 +441,8 @@
                 return {
                     plans: plans,
                     count: plans.length,
-                    source: 'Available plans',
+                    source: this.sourceLabel('plans_available'),
+                    sourceKey: 'plans_available',
                 };
             }
 
@@ -428,14 +454,16 @@
                 return {
                     plans: plans,
                     count: plans.length,
-                    source: 'Product override',
+                    source: this.sourceLabel('product'),
+                    sourceKey: 'product',
                 };
             }
 
             return {
                 plans: plans,
                 count: plans.length,
-                source: 'All active plans',
+                source: this.sourceLabel('plans_all'),
+                sourceKey: 'plans_all',
             };
         },
 
@@ -444,6 +472,7 @@
                 return {
                     value: effectivePlans,
                     source: effectivePlans.source,
+                    sourceKey: effectivePlans.sourceKey,
                 };
             }
 
@@ -451,59 +480,103 @@
                 return {
                     value: effectiveMinMax,
                     source: effectiveMinMax.source,
+                    sourceKey: effectiveMinMax.sourceKey,
                 };
             }
 
             if (productType && productType !== 'global' && productValue !== '') {
                 return {
                     value: parseFloat(productValue || 0),
-                    source: 'Product override',
+                    source: this.sourceLabel('product'),
+                    sourceKey: 'product',
                 };
             }
 
             if (context.category && context.category.type && context.category.type !== 'global' && context.category.value !== '') {
                 return {
                     value: parseFloat(context.category.value || 0),
-                    source: 'Category: ' + context.category.name,
+                    source: this.sourceLabel('category', context.category.name),
+                    sourceKey: 'category',
                 };
             }
 
             return {
                 value: parseFloat(context.global.value || 0),
-                source: 'Global settings',
+                source: this.sourceLabel('global'),
+                sourceKey: 'global',
             };
         },
 
+        /**
+         * Scopes and sources are compared as stable keys and only turned into
+         * text at render time, so translating the labels cannot change which
+         * branch is taken.
+         */
         getOverallScope: function (effectiveEnable, effectiveForce, effectiveType, effectiveValue) {
             var scopes = [
-                this.sourceToScope(effectiveEnable.source),
-                this.sourceToScope(effectiveForce.source),
-                this.sourceToScope(effectiveType.source),
-                this.sourceToScope(effectiveValue.source),
+                this.sourceToScope(effectiveEnable.sourceKey),
+                this.sourceToScope(effectiveForce.sourceKey),
+                this.sourceToScope(effectiveType.sourceKey),
+                this.sourceToScope(effectiveValue.sourceKey),
             ];
 
-            if (scopes.indexOf('Product Override') !== -1) {
-                return 'Product Override';
+            if (scopes.indexOf('product') !== -1) {
+                return 'product';
             }
 
-            if (scopes.indexOf('Category Fallback') !== -1) {
-                return 'Category Fallback';
+            if (scopes.indexOf('category') !== -1) {
+                return 'category';
             }
 
-            return 'Global Default';
+            return 'global';
         },
 
-        sourceToScope: function (source) {
-            if (!source) {
-                return 'Global Default';
+        sourceToScope: function (sourceKey) {
+            if (sourceKey === 'product') {
+                return 'product';
             }
-            if (source.indexOf('Product override') !== -1) {
-                return 'Product Override';
+            if (sourceKey === 'category') {
+                return 'category';
             }
-            if (source.indexOf('Category:') !== -1) {
-                return 'Category Fallback';
+            return 'global';
+        },
+
+        /**
+         * Translated label for a source key.
+         *
+         * @param {string} sourceKey  One of product|category|global|plans_available|plans_all.
+         * @param {string} [name]     Category name, used by the category source.
+         * @return {string}
+         */
+        sourceLabel: function (sourceKey, name) {
+            switch (sourceKey) {
+                case 'product':
+                    return __('Product override', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                case 'category':
+                    /* translators: %s: product category name. */
+                    return sprintf(__('Category: %s', 'advanced-partial-payment-or-deposit-for-woocommerce'), name || '');
+                case 'plans_available':
+                    return __('Available plans', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                case 'plans_all':
+                    return __('All active plans', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                default:
+                    return __('Global settings', 'advanced-partial-payment-or-deposit-for-woocommerce');
             }
-            return 'Global Default';
+        },
+
+        formatSourceLine: function (source) {
+            /* translators: %s: where the effective setting comes from. */
+            return sprintf(__('Source: %s', 'advanced-partial-payment-or-deposit-for-woocommerce'), source);
+        },
+
+        formatScopeLabel: function (scopeKey) {
+            if (scopeKey === 'product') {
+                return __('Product Override', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            }
+            if (scopeKey === 'category') {
+                return __('Category Fallback', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            }
+            return __('Global Default', 'advanced-partial-payment-or-deposit-for-woocommerce');
         },
 
         getCurrentProductPrice: function (fallback) {
@@ -520,28 +593,33 @@
         },
 
         getDepositPreview: function (enabled, force, type, value, price, context, effectiveMinMax, effectivePlans) {
+            var notAvailable = __('N/A', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            var forceNote = force === 'yes'
+                ? __('Full payment is hidden.', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                : __('Full payment is still allowed.', 'advanced-partial-payment-or-deposit-for-woocommerce');
+
             if (enabled !== 'yes') {
                 return {
-                    deposit: 'Disabled',
-                    balance: 'N/A',
-                    note: 'Deposit is currently disabled for this product.',
+                    deposit: __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                    balance: notAvailable,
+                    note: __('Deposit is currently disabled for this product.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                 };
             }
 
             if (!price || price <= 0) {
                 return {
-                    deposit: 'N/A',
-                    balance: 'N/A',
-                    note: 'Save a product price to preview the payable deposit and due balance.',
+                    deposit: notAvailable,
+                    balance: notAvailable,
+                    note: __('Save a product price to preview the payable deposit and due balance.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                 };
             }
 
             if (type === 'payment_plan') {
                 if (!value || !value.plans || !value.plans.length) {
                     return {
-                        deposit: 'No plans',
-                        balance: 'N/A',
-                        note: 'Create or assign at least one active plan to preview the first installment.',
+                        deposit: __('No plans', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        balance: notAvailable,
+                        note: __('Create or assign at least one active plan to preview the first installment.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     };
                 }
 
@@ -552,7 +630,8 @@
                 return {
                     deposit: this.formatMoney(firstInstallment, context),
                     balance: this.formatMoney(remaining, context),
-                    note: 'Preview based on the first installment of "' + (firstPlan.name || 'the selected plan') + '". ' + (force === 'yes' ? 'Full payment is hidden.' : 'Full payment is still allowed.'),
+                    /* translators: %s: payment plan name. */
+                    note: sprintf(__('Preview based on the first installment of "%s".', 'advanced-partial-payment-or-deposit-for-woocommerce'), firstPlan.name || __('the selected plan', 'advanced-partial-payment-or-deposit-for-woocommerce')) + ' ' + forceNote,
                 };
             }
 
@@ -562,9 +641,9 @@
 
                 if (maxDeposit <= 0) {
                     return {
-                        deposit: 'Range not set',
-                        balance: 'N/A',
-                        note: 'Set product or global min/max values to preview the customer-selectable range.',
+                        deposit: __('Range not set', 'advanced-partial-payment-or-deposit-for-woocommerce'),
+                        balance: notAvailable,
+                        note: __('Set product or global min/max values to preview the customer-selectable range.', 'advanced-partial-payment-or-deposit-for-woocommerce'),
                     };
                 }
 
@@ -574,7 +653,7 @@
                 return {
                     deposit: this.formatMoneyRange(minDeposit, maxDeposit, context),
                     balance: this.formatMoneyRange(minBalance, maxBalance, context),
-                    note: 'Preview based on the current min/max range customers can choose. ' + (force === 'yes' ? 'Full payment is hidden.' : 'Full payment is still allowed.'),
+                    note: __('Preview based on the current min/max range customers can choose.', 'advanced-partial-payment-or-deposit-for-woocommerce') + ' ' + forceNote,
                 };
             }
 
@@ -592,7 +671,7 @@
             return {
                 deposit: this.formatMoney(deposit, context),
                 balance: this.formatMoney(balance, context),
-                note: 'Preview based on the current product price. ' + (force === 'yes' ? 'Full payment is hidden.' : 'Full payment is still allowed.'),
+                note: __('Preview based on the current product price.', 'advanced-partial-payment-or-deposit-for-woocommerce') + ' ' + forceNote,
             };
         },
 
@@ -613,24 +692,28 @@
 
         formatTypeLabel: function (type) {
             if (type === 'fixed') {
-                return 'Fixed Amount';
+                return __('Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce');
             }
             if (type === 'min_max') {
-                return 'Min / Max';
+                return __('Min / Max', 'advanced-partial-payment-or-deposit-for-woocommerce');
             }
             if (type === 'payment_plan') {
-                return 'Payment Plan';
+                return __('Payment Plan', 'advanced-partial-payment-or-deposit-for-woocommerce');
             }
-            return 'Percentage';
+            return __('Percentage', 'advanced-partial-payment-or-deposit-for-woocommerce');
         },
 
         formatValueLabel: function (type, value, context) {
             if (type === 'payment_plan') {
                 var count = value && value.count ? value.count : 0;
                 if (!count) {
-                    return 'No active plans';
+                    return __('No active plans', 'advanced-partial-payment-or-deposit-for-woocommerce');
                 }
-                return count === 1 ? '1 plan selected' : count + ' plans available';
+                if (count === 1) {
+                    return __('1 plan selected', 'advanced-partial-payment-or-deposit-for-woocommerce');
+                }
+                /* translators: %d: number of payment plans available. */
+                return sprintf(__('%d plans available', 'advanced-partial-payment-or-deposit-for-woocommerce'), count);
             }
 
             if (type === 'min_max') {
@@ -638,7 +721,7 @@
                 var max = value && typeof value.max !== 'undefined' ? parseFloat(value.max || 0) : 0;
 
                 if (max <= 0) {
-                    return 'Range not set';
+                    return __('Range not set', 'advanced-partial-payment-or-deposit-for-woocommerce');
                 }
 
                 return this.formatMoneyRange(min, max, context);
@@ -654,21 +737,23 @@
             }) + '%';
         },
 
-        getScopeMeta: function (scope, source) {
-            if (scope === 'Product Override') {
-                return 'This product is using its own deposit configuration.';
+        getScopeMeta: function (scopeKey, source) {
+            if (scopeKey === 'product') {
+                return __('This product is using its own deposit configuration.', 'advanced-partial-payment-or-deposit-for-woocommerce');
             }
-            if (scope === 'Category Fallback') {
-                return 'Using fallback from ' + source + '.';
+            if (scopeKey === 'category') {
+                /* translators: %s: source the setting falls back to, e.g. a category name. */
+                return sprintf(__('Using fallback from %s.', 'advanced-partial-payment-or-deposit-for-woocommerce'), source);
             }
-            return 'Using the global deposit configuration.';
+            return __('Using the global deposit configuration.', 'advanced-partial-payment-or-deposit-for-woocommerce');
         },
 
         getProductLine: function (enable, force, type, value, productMin, productMax, assignedPlanIds, context) {
-            var enableLabel = enable === 'yes' ? 'Enabled' : (enable === 'no' ? 'Disabled' : 'Uses fallback');
-            var forceLabel = force === 'yes' ? 'Forced' : (force === 'no' ? 'Not forced' : 'Uses fallback');
-            var typeLabel = type && type !== 'global' ? this.formatTypeLabel(type) : 'Uses fallback';
-            var valueLabel = 'Uses fallback';
+            var usesFallback = __('Uses fallback', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            var enableLabel = enable === 'yes' ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : (enable === 'no' ? __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : usesFallback);
+            var forceLabel = force === 'yes' ? __('Forced', 'advanced-partial-payment-or-deposit-for-woocommerce') : (force === 'no' ? __('Not forced', 'advanced-partial-payment-or-deposit-for-woocommerce') : usesFallback);
+            var typeLabel = type && type !== 'global' ? this.formatTypeLabel(type) : usesFallback;
+            var valueLabel = usesFallback;
 
             if (type === 'payment_plan') {
                 valueLabel = this.formatValueLabel(type, this.getEffectivePlans(type, assignedPlanIds, context), context);
@@ -678,18 +763,20 @@
                 valueLabel = this.formatValueLabel(type, value, context);
             }
 
-            return 'Availability: ' + enableLabel + ' | Force only: ' + forceLabel + ' | Type: ' + typeLabel + ' | Value: ' + valueLabel;
+            /* translators: 1: availability label, 2: force-deposit label, 3: deposit type label, 4: deposit value label. */
+            return sprintf(__('Availability: %1$s | Force only: %2$s | Type: %3$s | Value: %4$s', 'advanced-partial-payment-or-deposit-for-woocommerce'), enableLabel, forceLabel, typeLabel, valueLabel);
         },
 
         getCategoryLine: function (context) {
-            var categoryName = (context.category && context.category.name) ? context.category.name : 'No category override';
-            var enableLabel = context.category && context.category.enable ? (context.category.enable === 'yes' ? 'Enabled' : 'Disabled') : 'Not set';
-            var forceLabel = context.category && context.category.force ? (context.category.force === 'yes' ? 'Forced' : 'Not forced') : 'Not set';
-            var typeLabel = context.category && context.category.type && context.category.type !== 'global' ? this.formatTypeLabel(context.category.type) : 'Not set';
-            var valueLabel = 'Not set';
+            var notSet = __('Not set', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            var categoryName = (context.category && context.category.name) ? context.category.name : __('No category override', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            var enableLabel = context.category && context.category.enable ? (context.category.enable === 'yes' ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce')) : notSet;
+            var forceLabel = context.category && context.category.force ? (context.category.force === 'yes' ? __('Forced', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Not forced', 'advanced-partial-payment-or-deposit-for-woocommerce')) : notSet;
+            var typeLabel = context.category && context.category.type && context.category.type !== 'global' ? this.formatTypeLabel(context.category.type) : notSet;
+            var valueLabel = notSet;
 
             if (context.category && context.category.type === 'payment_plan') {
-                valueLabel = 'Uses available payment plans';
+                valueLabel = __('Uses available payment plans', 'advanced-partial-payment-or-deposit-for-woocommerce');
             } else if (context.category && context.category.type === 'min_max') {
                 valueLabel = this.formatValueLabel('min_max', {
                     min: parseFloat((context.min_max && context.min_max.global_min) || 0),
@@ -699,12 +786,13 @@
                 valueLabel = this.formatValueLabel(context.category.type || 'percentage', context.category.value, context);
             }
 
-            return categoryName + ' | Availability: ' + enableLabel + ' | Force only: ' + forceLabel + ' | Type: ' + typeLabel + ' | Value: ' + valueLabel;
+            /* translators: 1: category name, 2: availability label, 3: force-deposit label, 4: deposit type label, 5: deposit value label. */
+            return sprintf(__('%1$s | Availability: %2$s | Force only: %3$s | Type: %4$s | Value: %5$s', 'advanced-partial-payment-or-deposit-for-woocommerce'), categoryName, enableLabel, forceLabel, typeLabel, valueLabel);
         },
 
         getGlobalLine: function (context) {
-            var enableLabel = context.global.enable === 'yes' ? 'Enabled' : 'Disabled';
-            var forceLabel = context.global.force === 'yes' ? 'Forced' : 'Not forced';
+            var enableLabel = context.global.enable === 'yes' ? __('Enabled', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Disabled', 'advanced-partial-payment-or-deposit-for-woocommerce');
+            var forceLabel = context.global.force === 'yes' ? __('Forced', 'advanced-partial-payment-or-deposit-for-woocommerce') : __('Not forced', 'advanced-partial-payment-or-deposit-for-woocommerce');
             var typeLabel = this.formatTypeLabel(context.global.type || 'percentage');
             var valueLabel;
 
@@ -719,7 +807,8 @@
                 valueLabel = this.formatValueLabel(context.global.type || 'percentage', context.global.value || 0, context);
             }
 
-            return 'Availability: ' + enableLabel + ' | Force only: ' + forceLabel + ' | Type: ' + typeLabel + ' | Value: ' + valueLabel;
+            /* translators: 1: availability label, 2: force-deposit label, 3: deposit type label, 4: deposit value label. */
+            return sprintf(__('Availability: %1$s | Force only: %2$s | Type: %3$s | Value: %4$s', 'advanced-partial-payment-or-deposit-for-woocommerce'), enableLabel, forceLabel, typeLabel, valueLabel);
         },
 
         formatMoney: function (amount, context) {

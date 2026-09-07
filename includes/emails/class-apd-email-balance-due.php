@@ -12,8 +12,8 @@ class APD_Email_Balance_Due extends WC_Email {
         $config = APD_Emails::get_email_template_config( 'balance_due' );
 
         $this->id             = 'apd_balance_due';
-        $this->title          = __( 'Balance Due Reminder', 'advanced-partial-payment' );
-        $this->description    = __( 'Sent to the customer as a reminder of outstanding balance.', 'advanced-partial-payment' );
+        $this->title          = __( 'Balance Due Reminder', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+        $this->description    = __( 'Sent to the customer as a reminder of outstanding balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $this->heading        = $config['heading'];
         $this->subject        = $config['subject'];
         $this->template_base  = APD_PLUGIN_DIR . 'templates/';

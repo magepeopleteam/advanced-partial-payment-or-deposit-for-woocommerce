@@ -4,11 +4,11 @@
  * Plugin URI:        https://www.mage-people.com
  * Description:       Accept partial payments, deposits, and installments on your WooCommerce store. Supports fixed, percentage, category-wise deposits with a professional admin dashboard.
  * Version:           4.0.1
- * Author:            Developer
+ * Author:            MagePeople Team
  * Author URI:        https://www.mage-people.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       advanced-partial-payment
+ * Text Domain:       advanced-partial-payment-or-deposit-for-woocommerce
  * Domain Path:       /languages
  * Requires at least: 5.8
  * Requires PHP:      7.4
@@ -115,7 +115,7 @@ function apd_init() {
     }
 
     // Load text domain
-    load_plugin_textdomain( 'advanced-partial-payment', false, dirname( APD_PLUGIN_BASENAME ) . '/languages' );
+    load_plugin_textdomain( 'advanced-partial-payment-or-deposit-for-woocommerce', false, dirname( APD_PLUGIN_BASENAME ) . '/languages' );
 
     // Include core files
     require_once APD_PLUGIN_DIR . 'includes/class-apd-deposit.php';
