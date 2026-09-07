@@ -13,7 +13,7 @@ $tabs = APD_Admin::get_tabs();
                 <div class="apd-header-left">
                     <span class="dashicons dashicons-money-alt apd-header-icon"></span>
                     <div>
-                        <h1><?php esc_html_e( 'Deposit Settings', 'advanced-partial-payment' ); ?></h1>
+                        <h1><?php esc_html_e( 'Deposit Settings', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h1>
                         <span class="apd-version">v<?php echo esc_html( APD_VERSION ); ?></span>
                     </div>
                 </div>
@@ -21,12 +21,12 @@ $tabs = APD_Admin::get_tabs();
                     <?php if ( ! apd_is_pro_active() ) : ?>
                     <a href="#" class="apd-upgrade-btn">
                         <span class="dashicons dashicons-star-filled"></span>
-                        <?php esc_html_e( 'Upgrade to Pro', 'advanced-partial-payment' ); ?>
+                        <?php esc_html_e( 'Upgrade to Pro', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                     </a>
                     <?php else : ?>
                     <span class="apd-pro-badge">
                         <span class="dashicons dashicons-yes-alt"></span>
-                        <?php esc_html_e( 'Pro Active', 'advanced-partial-payment' ); ?>
+                        <?php esc_html_e( 'Pro Active', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                     </span>
                     <?php endif; ?>
                     <?php do_action( 'apd_dashboard_header_badges' ); ?>
@@ -47,7 +47,7 @@ $tabs = APD_Admin::get_tabs();
                             $has_separator = true;
                             ?>
                             <div class="apd-nav-separator">
-                                <span><?php esc_html_e( 'Pro Features', 'advanced-partial-payment' ); ?></span>
+                                <span><?php esc_html_e( 'Pro Features', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
                             </div>
                         <?php endif; ?>
                         <a href="#"
@@ -86,11 +86,11 @@ $tabs = APD_Admin::get_tabs();
                                     <span class="dashicons dashicons-lock"></span>
                                 </div>
                                 <h2><?php echo esc_html( $tab['label'] ); ?></h2>
-                                <p><?php esc_html_e( 'This feature is available in the Pro version.', 'advanced-partial-payment' ); ?></p>
-                                <p><?php esc_html_e( 'Unlock payment plans, min/max deposits, gateway rules, auto reminders, reports, and more!', 'advanced-partial-payment' ); ?></p>
+                                <p><?php esc_html_e( 'This feature is available in the Pro version.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
+                                <p><?php esc_html_e( 'Unlock payment plans, min/max deposits, gateway rules, auto reminders, reports, and more!', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                                 <a href="#" class="button button-primary button-hero apd-upgrade-btn-large">
                                     <span class="dashicons dashicons-star-filled"></span>
-                                    <?php esc_html_e( 'Upgrade to Pro', 'advanced-partial-payment' ); ?>
+                                    <?php esc_html_e( 'Upgrade to Pro', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                                 </a>
                             </div>
                             <?php

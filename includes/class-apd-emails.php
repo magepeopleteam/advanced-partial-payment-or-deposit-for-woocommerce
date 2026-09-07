@@ -70,49 +70,49 @@ class APD_Emails {
     public static function get_email_template_defaults() {
         return array(
             'deposit_received' => array(
-                'title'       => __( 'Deposit Received', 'advanced-partial-payment' ),
-                'description' => __( 'Sent to the customer when their deposit payment is confirmed.', 'advanced-partial-payment' ),
-                'subject'     => __( 'Your deposit payment for Order #{order_number}', 'advanced-partial-payment' ),
-                'heading'     => __( 'Deposit Payment Received', 'advanced-partial-payment' ),
+                'title'       => __( 'Deposit Received', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'description' => __( 'Sent to the customer when their deposit payment is confirmed.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'subject'     => __( 'Your deposit payment for Order #{order_number}', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'heading'     => __( 'Deposit Payment Received', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'body'        => implode(
                     "\n\n",
                     array(
-                        __( 'Hi {customer_first_name},', 'advanced-partial-payment' ),
-                        __( 'Thank you for your deposit payment for order #{order_number}.', 'advanced-partial-payment' ),
+                        __( 'Hi {customer_first_name},', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        __( 'Thank you for your deposit payment for order #{order_number}.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         '[deposit_summary]',
-                        __( 'You can pay your remaining balance from your account page or payment link when you are ready.', 'advanced-partial-payment' ),
+                        __( 'You can pay your remaining balance from your account page or payment link when you are ready.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     )
                 ),
                 'button_label' => '',
             ),
             'balance_due' => array(
-                'title'       => __( 'Balance Due Reminder', 'advanced-partial-payment' ),
-                'description' => __( 'Sent as a reminder when a customer has an outstanding balance.', 'advanced-partial-payment' ),
-                'subject'     => __( 'Balance payment due for Order #{order_number}', 'advanced-partial-payment' ),
-                'heading'     => __( 'Balance Payment Due', 'advanced-partial-payment' ),
+                'title'       => __( 'Balance Due Reminder', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'description' => __( 'Sent as a reminder when a customer has an outstanding balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'subject'     => __( 'Balance payment due for Order #{order_number}', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'heading'     => __( 'Balance Payment Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'body'        => implode(
                     "\n\n",
                     array(
-                        __( 'Hi {customer_first_name},', 'advanced-partial-payment' ),
-                        __( 'This is a reminder that you still have an outstanding balance for order #{order_number}.', 'advanced-partial-payment' ),
+                        __( 'Hi {customer_first_name},', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        __( 'This is a reminder that you still have an outstanding balance for order #{order_number}.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         '[deposit_summary]',
                         '[pay_balance_button]',
                     )
                 ),
-                'button_label' => __( 'Pay Balance Now', 'advanced-partial-payment' ),
+                'button_label' => __( 'Pay Balance Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
             ),
             'payment_complete' => array(
-                'title'       => __( 'Payment Complete', 'advanced-partial-payment' ),
-                'description' => __( 'Sent when the customer has paid the full remaining balance.', 'advanced-partial-payment' ),
-                'subject'     => __( 'Payment complete for Order #{order_number}', 'advanced-partial-payment' ),
-                'heading'     => __( 'Payment Complete', 'advanced-partial-payment' ),
+                'title'       => __( 'Payment Complete', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'description' => __( 'Sent when the customer has paid the full remaining balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'subject'     => __( 'Payment complete for Order #{order_number}', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'heading'     => __( 'Payment Complete', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'body'        => implode(
                     "\n\n",
                     array(
-                        __( 'Hi {customer_first_name},', 'advanced-partial-payment' ),
-                        __( 'Great news! Your order #{order_number} has been fully paid.', 'advanced-partial-payment' ),
+                        __( 'Hi {customer_first_name},', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        __( 'Great news! Your order #{order_number} has been fully paid.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         '[deposit_summary]',
-                        __( 'Your order is now complete. Thank you for completing your payment.', 'advanced-partial-payment' ),
+                        __( 'Your order is now complete. Thank you for completing your payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     )
                 ),
                 'button_label' => '',
@@ -231,19 +231,27 @@ class APD_Emails {
 
         if ( $plain_text ) {
             $lines   = array();
-            $lines[] = sprintf( __( 'Order Number: #%s', 'advanced-partial-payment' ), $order->get_order_number() );
+            /* translators: %s: order number. */
+            $lines[] = sprintf( __( 'Order Number: #%s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $order->get_order_number() );
 
             if ( $deposit ) {
                 if ( 'payment_complete' === $template_id ) {
-                    $lines[] = sprintf( __( 'Total Paid: %s', 'advanced-partial-payment' ), wc_price( $deposit['total_amount'] ?? 0 ) );
+                    /* translators: %s: formatted total amount paid. */
+                    $lines[] = sprintf( __( 'Total Paid: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['total_amount'] ?? 0 ) );
                 } elseif ( 'balance_due' === $template_id ) {
-                    $lines[] = sprintf( __( 'Total Amount: %s', 'advanced-partial-payment' ), wc_price( $deposit['total_amount'] ?? 0 ) );
-                    $lines[] = sprintf( __( 'Amount Paid: %s', 'advanced-partial-payment' ), wc_price( $deposit['amount_paid'] ?? 0 ) );
-                    $lines[] = sprintf( __( 'Balance Due: %s', 'advanced-partial-payment' ), wc_price( $deposit['balance_due'] ?? 0 ) );
+                    /* translators: %s: formatted order total. */
+                    $lines[] = sprintf( __( 'Total Amount: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['total_amount'] ?? 0 ) );
+                    /* translators: %s: formatted amount already paid. */
+                    $lines[] = sprintf( __( 'Amount Paid: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['amount_paid'] ?? 0 ) );
+                    /* translators: %s: formatted balance still due. */
+                    $lines[] = sprintf( __( 'Balance Due: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['balance_due'] ?? 0 ) );
                 } else {
-                    $lines[] = sprintf( __( 'Total Amount: %s', 'advanced-partial-payment' ), wc_price( $deposit['total_amount'] ?? 0 ) );
-                    $lines[] = sprintf( __( 'Deposit Paid: %s', 'advanced-partial-payment' ), wc_price( $deposit['deposit_amount'] ?? 0 ) );
-                    $lines[] = sprintf( __( 'Balance Due: %s', 'advanced-partial-payment' ), wc_price( $deposit['balance_due'] ?? 0 ) );
+                    /* translators: %s: formatted order total. */
+                    $lines[] = sprintf( __( 'Total Amount: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['total_amount'] ?? 0 ) );
+                    /* translators: %s: formatted deposit amount paid. */
+                    $lines[] = sprintf( __( 'Deposit Paid: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['deposit_amount'] ?? 0 ) );
+                    /* translators: %s: formatted balance still due. */
+                    $lines[] = sprintf( __( 'Balance Due: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['balance_due'] ?? 0 ) );
                 }
             }
 
@@ -254,39 +262,39 @@ class APD_Emails {
         ?>
         <table cellspacing="0" cellpadding="6" style="width:100%;border:1px solid #e5e5e5;margin-bottom:20px;" border="1">
             <tr>
-                <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Order Number', 'advanced-partial-payment' ); ?></th>
+                <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Order Number', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                 <td style="padding:12px;">#<?php echo esc_html( $order->get_order_number() ); ?></td>
             </tr>
             <?php if ( $deposit ) : ?>
                 <?php if ( 'payment_complete' === $template_id ) : ?>
                     <tr>
-                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Paid', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;"><?php echo wp_kses_post( wc_price( $deposit['total_amount'] ?? 0 ) ); ?></td>
                     </tr>
                 <?php elseif ( 'balance_due' === $template_id ) : ?>
                     <tr>
-                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Amount', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;"><?php echo wp_kses_post( wc_price( $deposit['total_amount'] ?? 0 ) ); ?></td>
                     </tr>
                     <tr>
-                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Amount Paid', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Amount Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;"><?php echo wp_kses_post( wc_price( $deposit['amount_paid'] ?? 0 ) ); ?></td>
                     </tr>
                     <tr>
-                        <th style="text-align:left;padding:12px;color:#e74c3c;font-weight:bold;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;color:#e74c3c;font-weight:bold;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;color:#e74c3c;font-weight:bold;"><?php echo wp_kses_post( wc_price( $deposit['balance_due'] ?? 0 ) ); ?></td>
                     </tr>
                 <?php else : ?>
                     <tr>
-                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Amount', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;"><?php echo wp_kses_post( wc_price( $deposit['total_amount'] ?? 0 ) ); ?></td>
                     </tr>
                     <tr>
-                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Deposit Paid', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;"><?php esc_html_e( 'Deposit Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;"><?php echo wp_kses_post( wc_price( $deposit['deposit_amount'] ?? 0 ) ); ?></td>
                     </tr>
                     <tr>
-                        <th style="text-align:left;padding:12px;color:#e74c3c;font-weight:bold;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment' ); ?></th>
+                        <th style="text-align:left;padding:12px;color:#e74c3c;font-weight:bold;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
                         <td style="padding:12px;color:#e74c3c;font-weight:bold;"><?php echo wp_kses_post( wc_price( $deposit['balance_due'] ?? 0 ) ); ?></td>
                     </tr>
                 <?php endif; ?>
@@ -310,11 +318,12 @@ class APD_Emails {
         }
 
         $config = self::get_email_template_config( $template_id );
-        $label  = $config['button_label'] ?: __( 'Pay Balance Now', 'advanced-partial-payment' );
+        $label  = $config['button_label'] ?: __( 'Pay Balance Now', 'advanced-partial-payment-or-deposit-for-woocommerce' );
         $url    = $order->get_checkout_payment_url();
 
         if ( $plain_text ) {
-            return sprintf( __( '%1$s: %2$s', 'advanced-partial-payment' ), $label, $url );
+            /* translators: 1: call to action label, 2: payment URL. */
+            return sprintf( __( '%1$s: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $label, $url );
         }
 
         return sprintf(

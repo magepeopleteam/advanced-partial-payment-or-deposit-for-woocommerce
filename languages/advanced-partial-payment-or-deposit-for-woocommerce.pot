@@ -1,0 +1,1696 @@
+# Copyright (C) 2026 MagePeople Team
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.1\n"
+"Report-Msgid-Bugs-To: https://www.mage-people.com/\n"
+"Last-Translator: MagePeople Team <support@mage-people.com>\n"
+"Language-Team: MagePeople Team <support@mage-people.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-07T07:44:51+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: advanced-partial-payment-or-deposit-for-woocommerce.php
+msgid "Advanced Partial Payment or Deposit for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: advanced-partial-payment-or-deposit-for-woocommerce.php
+msgid "https://www.mage-people.com"
+msgstr ""
+
+#. Description of the plugin
+#: advanced-partial-payment-or-deposit-for-woocommerce.php
+msgid "Accept partial payments, deposits, and installments on your WooCommerce store. Supports fixed, percentage, category-wise deposits with a professional admin dashboard."
+msgstr ""
+
+#. Author of the plugin
+#: advanced-partial-payment-or-deposit-for-woocommerce.php
+msgid "MagePeople Team"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:36
+msgid "💰 Deposit Details"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:45
+msgid "Deposit Payment Record"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:60
+msgid "This is not a deposit order."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:72
+#: admin/class-apd-admin-order.php:160
+#: public/class-apd-checkout.php:115
+msgid "Full Order Total"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:76
+#: admin/class-apd-admin-order.php:164
+msgid "Deposit Amount"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:80
+#: admin/class-apd-admin-order.php:168
+#: includes/class-apd-emails.php:271
+#: public/class-apd-checkout.php:123
+msgid "Total Paid"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:84
+#: admin/class-apd-admin-order.php:172
+#: admin/class-apd-admin-order.php:268
+#: includes/class-apd-emails.php:284
+#: includes/class-apd-emails.php:297
+msgid "Balance Due"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:94
+msgid "Record Manual Payment"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:100
+#: admin/class-apd-admin-order.php:184
+msgid "Amount"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:103
+#: admin/js/apd-admin.js:196
+#: admin/js/apd-admin.js:201
+msgid "Record"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:112
+msgid "Payment History"
+msgstr ""
+
+#. translators: %d: payment number in the sequence.
+#: admin/class-apd-admin-order.php:118
+#: admin/class-apd-admin-order.php:202
+#, php-format
+msgid "Payment %d"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:144
+msgid "No deposit payment record available for this order."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:150
+msgid "No payment record found."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:180
+msgid "#"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:181
+#: admin/class-apd-admin-order.php:358
+msgid "Payment"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:182
+#: public/views/myaccount-deposits.php:18
+msgid "Date"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:183
+msgid "Note"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:185
+msgid "Running Paid"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:186
+msgid "Balance After"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:192
+msgid "No payment entries recorded yet."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:226
+#: admin/class-apd-product-meta.php:23
+#: admin/views/tabs/labels.php:26
+#: includes/class-apd-activator.php:34
+#: public/class-apd-blocks.php:90
+#: public/class-apd-blocks.php:237
+#: public/class-apd-blocks.php:254
+#: public/class-apd-cart.php:43
+#: public/class-apd-cart.php:71
+#: public/class-apd-cart.php:98
+#: public/class-apd-checkout.php:37
+#: public/class-apd-checkout.php:66
+#: public/class-apd-checkout.php:108
+#: public/class-apd-public.php:85
+msgid "Deposit"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:269
+msgid "Due:"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:273
+#: public/class-apd-checkout.php:77
+#: public/views/myaccount-deposits.php:20
+msgid "Paid"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:284
+#: admin/class-apd-admin-settings.php:24
+#: admin/class-apd-admin-settings.php:78
+#: admin/class-apd-admin-settings.php:106
+#: admin/class-apd-migration.php:132
+#: public/class-apd-pay-balance.php:106
+msgid "Permission denied."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:291
+msgid "Invalid data."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:294
+msgid "Manual payment recorded by admin"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:297
+msgid "Payment recorded!"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:299
+msgid "Failed to record payment."
+msgstr ""
+
+#: admin/class-apd-admin-order.php:354
+msgid "Initial Deposit"
+msgstr ""
+
+#: admin/class-apd-admin-order.php:356
+msgid "Remaining Balance"
+msgstr ""
+
+#: admin/class-apd-admin-settings.php:68
+#: admin/class-apd-admin.php:78
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: admin/class-apd-admin-settings.php:88
+#: admin/class-apd-admin-settings.php:111
+msgid "Invalid category."
+msgstr ""
+
+#: admin/class-apd-admin-settings.php:96
+msgid "Category deposit saved!"
+msgstr ""
+
+#: admin/class-apd-admin-settings.php:120
+msgid "Category deposit removed!"
+msgstr ""
+
+#: admin/class-apd-admin.php:21
+#: admin/class-apd-product-meta.php:43
+#: admin/views/dashboard.php:16
+msgid "Deposit Settings"
+msgstr ""
+
+#: admin/class-apd-admin.php:22
+#: public/class-apd-myaccount.php:44
+msgid "Deposits"
+msgstr ""
+
+#: admin/class-apd-admin.php:77
+msgid "Saving..."
+msgstr ""
+
+#: admin/class-apd-admin.php:79
+msgid "Error saving settings. Please try again."
+msgstr ""
+
+#: admin/class-apd-admin.php:80
+msgid "Are you sure?"
+msgstr ""
+
+#: admin/class-apd-admin.php:127
+msgid "General"
+msgstr ""
+
+#: admin/class-apd-admin.php:132
+msgid "Labels"
+msgstr ""
+
+#: admin/class-apd-admin.php:137
+#: admin/views/tabs/categories.php:70
+msgid "Products"
+msgstr ""
+
+#: admin/class-apd-admin.php:142
+msgid "Categories"
+msgstr ""
+
+#: admin/class-apd-admin.php:147
+msgid "Emails"
+msgstr ""
+
+#: admin/class-apd-admin.php:156
+#: admin/class-apd-product-meta.php:334
+msgid "Payment Plans"
+msgstr ""
+
+#: admin/class-apd-admin.php:161
+#: admin/js/apd-admin.js:698
+msgid "Min / Max"
+msgstr ""
+
+#: admin/class-apd-admin.php:166
+msgid "Gateway Rules"
+msgstr ""
+
+#: admin/class-apd-admin.php:171
+msgid "Reminders"
+msgstr ""
+
+#: admin/class-apd-admin.php:176
+msgid "Reports"
+msgstr ""
+
+#: admin/class-apd-admin.php:181
+msgid "Conditional Rules"
+msgstr ""
+
+#: admin/class-apd-admin.php:186
+msgid "License"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:24
+#: admin/class-apd-category-meta.php:66
+#: admin/class-apd-product-meta.php:52
+msgid "Enable Deposit"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:26
+#: admin/class-apd-category-meta.php:34
+#: admin/class-apd-category-meta.php:43
+#: admin/class-apd-category-meta.php:69
+#: admin/class-apd-category-meta.php:79
+#: admin/class-apd-category-meta.php:90
+#: admin/class-apd-product-meta.php:54
+#: admin/class-apd-product-meta.php:67
+#: admin/class-apd-product-meta.php:77
+msgid "Use Global Setting"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:27
+#: admin/class-apd-category-meta.php:35
+#: admin/class-apd-category-meta.php:70
+#: admin/class-apd-category-meta.php:80
+#: admin/class-apd-product-meta.php:55
+#: admin/class-apd-product-meta.php:68
+#: admin/views/tabs/categories.php:35
+msgid "Yes"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:28
+#: admin/class-apd-category-meta.php:36
+#: admin/class-apd-category-meta.php:71
+#: admin/class-apd-category-meta.php:81
+#: admin/class-apd-product-meta.php:56
+#: admin/class-apd-product-meta.php:69
+#: admin/views/tabs/categories.php:36
+msgid "No"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:32
+#: admin/class-apd-category-meta.php:76
+#: admin/class-apd-product-meta.php:65
+#: admin/class-apd-product-meta.php:259
+msgid "Force Deposit Only"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:38
+#: admin/class-apd-category-meta.php:83
+msgid "Force products in this category to show only the deposit/partial payment option."
+msgstr ""
+
+#: admin/class-apd-category-meta.php:41
+#: admin/class-apd-category-meta.php:87
+#: admin/class-apd-product-meta.php:87
+#: admin/views/tabs/products.php:80
+msgid "Deposit Type"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:44
+#: admin/class-apd-category-meta.php:91
+#: admin/class-apd-product-meta.php:78
+#: admin/views/tabs/general.php:43
+#: admin/js/apd-admin.js:695
+msgid "Fixed Amount"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:45
+#: admin/class-apd-category-meta.php:92
+#: admin/class-apd-product-meta.php:79
+#: admin/views/tabs/categories.php:42
+#: admin/js/apd-admin.js:703
+msgid "Percentage"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:49
+#: admin/class-apd-category-meta.php:97
+#: admin/class-apd-product-meta.php:97
+msgid "Deposit Value"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:50
+#: admin/class-apd-product-meta.php:100
+msgid "e.g. 50"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:141
+#: admin/class-apd-category-meta.php:183
+msgid "Assigned Payment Plans"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:154
+#: admin/class-apd-category-meta.php:202
+#: admin/class-apd-product-meta.php:356
+msgid "installments"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:161
+#: admin/class-apd-category-meta.php:209
+msgid "No payment plans found yet. Create plans from Deposits > Payment Plans."
+msgstr ""
+
+#: admin/class-apd-category-meta.php:164
+msgid "Optional Pro override. If no product-level plans are assigned, these category plans will be used for products in this category."
+msgstr ""
+
+#: admin/class-apd-category-meta.php:212
+msgid "Optional Pro override. Product-specific plan assignments take priority over category plan assignments."
+msgstr ""
+
+#: admin/class-apd-migration.php:31
+msgid "Legacy Data Detected"
+msgstr ""
+
+#: admin/class-apd-migration.php:32
+msgid "We noticed you have data from the old Mage Partial Payment plugin. Would you like to sync your old settings, product configurations, and orders to the new system?"
+msgstr ""
+
+#: admin/class-apd-migration.php:35
+msgid "Sync Old Data Now"
+msgstr ""
+
+#: admin/class-apd-migration.php:36
+msgid "I will do this later"
+msgstr ""
+
+#: admin/class-apd-migration.php:39
+msgid "Initializing..."
+msgstr ""
+
+#: admin/class-apd-migration.php:109
+msgid "Migration completed successfully!"
+msgstr ""
+
+#: admin/class-apd-migration.php:115
+msgid "Error:"
+msgstr ""
+
+#: admin/class-apd-migration.php:119
+msgid "An error occurred during migration. Please try again."
+msgstr ""
+
+#: admin/class-apd-migration.php:143
+msgid "Global settings and categories migrated."
+msgstr ""
+
+#: admin/class-apd-migration.php:153
+msgid "Payment plans migrated."
+msgstr ""
+
+#. translators: %d: number of products migrated so far.
+#: admin/class-apd-migration.php:176
+#, php-format
+msgid "Migrated %d products..."
+msgstr ""
+
+#: admin/class-apd-migration.php:183
+msgid "Products migration complete."
+msgstr ""
+
+#. translators: %d: number of orders migrated so far.
+#: admin/class-apd-migration.php:217
+#, php-format
+msgid "Migrated %d orders..."
+msgstr ""
+
+#: admin/class-apd-migration.php:225
+msgid "All data migrated successfully."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:45
+msgid "Override global deposit settings for this product."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:60
+msgid "Enable or disable deposit for this specific product."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:73
+msgid "Force this product to show only the deposit/partial payment option and hide full payment."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:82
+#: admin/views/tabs/general.php:45
+msgid "Payment Plan (Pro)"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:83
+#: admin/views/tabs/general.php:46
+msgid "Min / Max – Customer Chooses (Pro)"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:91
+msgid "Choose deposit type for this product."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:102
+msgid "Enter deposit value. For percentage: enter 50 for 50%. For fixed: enter the exact amount."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:118
+msgid "Min / Max Deposit (Pro)"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:120
+msgid "Override global min/max for this product. Leave empty to use global settings."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:126
+msgid "Minimum Deposit"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:129
+#: admin/class-apd-product-meta.php:139
+msgid "Use global"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:131
+msgid "Minimum deposit amount for this product."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:136
+msgid "Maximum Deposit"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:141
+msgid "Maximum deposit amount for this product."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:156
+msgid "Payment Plan Selection (Pro)"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:158
+msgid "Choose which plans are available when this product uses the Payment Plan deposit type. Leave all unchecked to use all active plans."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:166
+msgid "Plan Name"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:167
+#: admin/views/tabs/categories.php:40
+#: admin/views/tabs/categories.php:68
+msgid "Type"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:168
+msgid "Installments"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:169
+#: admin/views/tabs/categories.php:67
+#: public/views/myaccount-deposits.php:22
+msgid "Status"
+msgstr ""
+
+#. translators: %d: number of installments in the payment plan.
+#: admin/class-apd-product-meta.php:200
+#, php-format
+msgid "%d installment(s)"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:214
+msgid "Tip: if no plan is checked, all active plans will be shown on the frontend for this product."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:218
+msgid "No payment plans created yet. Create plans from Deposits > Payment Plans first."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:232
+msgid "Effective Deposit Configuration"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:233
+msgid "Rule Summary"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:234
+msgid "See whether this product uses its own deposit rule or falls back to category/global settings."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:237
+#: admin/js/apd-admin.js:266
+#: admin/js/apd-admin.js:753
+#: admin/js/apd-admin.js:773
+#: admin/js/apd-admin.js:794
+msgid "Enabled"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:238
+#: admin/js/apd-admin.js:574
+msgid "Product Override"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:244
+msgid "Deposit Availability"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:249
+msgid "Effective Deposit Type"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:254
+msgid "Effective Deposit Value"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:264
+msgid "Active Rule Scope"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:283
+msgid "Min Deposit"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:288
+#: admin/class-apd-product-meta.php:303
+msgid "Source: Product override"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:290
+#: admin/class-apd-product-meta.php:305
+msgid "Source: Global settings"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:292
+msgid "No minimum set"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:298
+msgid "Max Deposit"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:307
+msgid "No maximum set"
+msgstr ""
+
+#. translators: %d: number of payment plans assigned to the product.
+#: admin/class-apd-product-meta.php:340
+#, php-format
+msgid "%d plan(s) assigned to this product"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:342
+msgid "Using all active plans"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:371
+msgid "No payment plans available. Create plans in Deposits → Payment Plans."
+msgstr ""
+
+#: admin/class-apd-product-meta.php:379
+msgid "Product Setting"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:383
+#: admin/js/apd-admin.js:577
+msgid "Category Fallback"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:387
+#: admin/js/apd-admin.js:579
+msgid "Global Default"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:394
+msgid "Current Product Price"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:399
+msgid "Pay Now"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:403
+#: includes/class-apd-deposit.php:419
+#: public/class-apd-blocks.php:93
+#: public/class-apd-blocks.php:267
+msgid "Pay Later"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:459
+#: admin/js/apd-admin.js:772
+msgid "No category override"
+msgstr ""
+
+#: admin/class-apd-product-meta.php:465
+msgid "Category rule"
+msgstr ""
+
+#: admin/views/dashboard.php:24
+#: admin/views/dashboard.php:93
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: admin/views/dashboard.php:29
+msgid "Pro Active"
+msgstr ""
+
+#: admin/views/dashboard.php:50
+msgid "Pro Features"
+msgstr ""
+
+#: admin/views/dashboard.php:89
+msgid "This feature is available in the Pro version."
+msgstr ""
+
+#: admin/views/dashboard.php:90
+msgid "Unlock payment plans, min/max deposits, gateway rules, auto reminders, reports, and more!"
+msgstr ""
+
+#: admin/views/tabs/categories.php:12
+msgid "Category Deposit Rules"
+msgstr ""
+
+#: admin/views/tabs/categories.php:13
+msgid "Set deposit rules per product category. Products inherit these settings if no product-level override exists."
+msgstr ""
+
+#: admin/views/tabs/categories.php:18
+msgid "Add Category Rule"
+msgstr ""
+
+#: admin/views/tabs/categories.php:24
+#: admin/views/tabs/categories.php:66
+msgid "Category"
+msgstr ""
+
+#: admin/views/tabs/categories.php:26
+msgid "Select Category"
+msgstr ""
+
+#: admin/views/tabs/categories.php:33
+msgid "Enable"
+msgstr ""
+
+#: admin/views/tabs/categories.php:43
+msgid "Fixed"
+msgstr ""
+
+#: admin/views/tabs/categories.php:47
+#: admin/views/tabs/categories.php:69
+#: admin/views/tabs/products.php:81
+msgid "Value"
+msgstr ""
+
+#: admin/views/tabs/categories.php:50
+msgid "Add Rule"
+msgstr ""
+
+#: admin/views/tabs/categories.php:60
+msgid "Existing Category Rules"
+msgstr ""
+
+#: admin/views/tabs/categories.php:71
+#: admin/views/tabs/products.php:82
+#: public/views/myaccount-deposits.php:23
+msgid "Action"
+msgstr ""
+
+#: admin/views/tabs/categories.php:89
+msgid "Active"
+msgstr ""
+
+#: admin/views/tabs/categories.php:89
+msgid "Inactive"
+msgstr ""
+
+#: admin/views/tabs/categories.php:97
+msgid "Remove"
+msgstr ""
+
+#: admin/views/tabs/categories.php:108
+msgid "No category deposit rules defined yet."
+msgstr ""
+
+#: admin/views/tabs/emails.php:27
+msgid "Email Notifications"
+msgstr ""
+
+#: admin/views/tabs/emails.php:28
+msgid "Configure which deposit-related emails are sent and edit the built-in email templates directly from here."
+msgstr ""
+
+#: admin/views/tabs/emails.php:64
+msgid "Email Templates"
+msgstr ""
+
+#: admin/views/tabs/emails.php:72
+msgid "Predefined templates are loaded below. You can edit the subject, heading, and body. Available placeholders: {customer_first_name}, {order_number}, {order_date}, {total_amount}, {deposit_amount}, {amount_paid}, {balance_due}, {pay_balance_url}, {site_title}. Available body tokens: [deposit_summary], [pay_balance_button]."
+msgstr ""
+
+#: admin/views/tabs/emails.php:85
+msgid "Email Subject"
+msgstr ""
+
+#: admin/views/tabs/emails.php:86
+msgid "Customer email subject line."
+msgstr ""
+
+#: admin/views/tabs/emails.php:101
+msgid "Email Heading"
+msgstr ""
+
+#: admin/views/tabs/emails.php:102
+msgid "Main heading shown inside the email template."
+msgstr ""
+
+#: admin/views/tabs/emails.php:118
+#: admin/views/tabs/labels.php:45
+msgid "Pay Button Label"
+msgstr ""
+
+#: admin/views/tabs/emails.php:119
+msgid "Label used for the [pay_balance_button] token."
+msgstr ""
+
+#: admin/views/tabs/emails.php:135
+msgid "Email Body Template"
+msgstr ""
+
+#: admin/views/tabs/emails.php:136
+msgid "Edit the predefined template text. The placeholders and body tokens above are supported."
+msgstr ""
+
+#: admin/views/tabs/emails.php:156
+msgid "Save Email Settings"
+msgstr ""
+
+#: admin/views/tabs/general.php:9
+msgid "General Settings"
+msgstr ""
+
+#: admin/views/tabs/general.php:10
+msgid "Configure global deposit settings for your store."
+msgstr ""
+
+#: admin/views/tabs/general.php:18
+msgid "Deposit Configuration"
+msgstr ""
+
+#: admin/views/tabs/general.php:23
+msgid "Enable Deposits"
+msgstr ""
+
+#: admin/views/tabs/general.php:24
+msgid "Enable or disable the deposit system globally."
+msgstr ""
+
+#: admin/views/tabs/general.php:37
+msgid "Default Deposit Type"
+msgstr ""
+
+#: admin/views/tabs/general.php:38
+msgid "Choose how the default deposit amount is calculated."
+msgstr ""
+
+#: admin/views/tabs/general.php:42
+msgid "Percentage (%)"
+msgstr ""
+
+#: admin/views/tabs/general.php:54
+msgid "Default Deposit Value"
+msgstr ""
+
+#: admin/views/tabs/general.php:55
+msgid "The default deposit amount or percentage."
+msgstr ""
+
+#: admin/views/tabs/general.php:71
+#: public/views/product-deposit-form.php:17
+msgid "Payment Options"
+msgstr ""
+
+#: admin/views/tabs/general.php:76
+msgid "Allow Full Payment"
+msgstr ""
+
+#: admin/views/tabs/general.php:77
+msgid "Allow customers to choose between deposit or full payment."
+msgstr ""
+
+#: admin/views/tabs/general.php:90
+msgid "Force Deposit"
+msgstr ""
+
+#: admin/views/tabs/general.php:91
+msgid "Force customers to pay only the deposit amount (no full payment option)."
+msgstr ""
+
+#: admin/views/tabs/general.php:107
+msgid "Save Settings"
+msgstr ""
+
+#: admin/views/tabs/labels.php:9
+msgid "Label Customization"
+msgstr ""
+
+#: admin/views/tabs/labels.php:10
+msgid "Customize the text displayed to customers throughout the deposit process."
+msgstr ""
+
+#: admin/views/tabs/labels.php:16
+msgid "Display Labels"
+msgstr ""
+
+#: admin/views/tabs/labels.php:21
+msgid "Deposit Label"
+msgstr ""
+
+#: admin/views/tabs/labels.php:22
+msgid "Label shown for the deposit amount."
+msgstr ""
+
+#: admin/views/tabs/labels.php:33
+msgid "Due Balance Label"
+msgstr ""
+
+#: admin/views/tabs/labels.php:34
+msgid "Label shown for the remaining balance."
+msgstr ""
+
+#: admin/views/tabs/labels.php:38
+#: includes/class-apd-activator.php:35
+#: includes/class-apd-deposit.php:415
+#: public/class-apd-blocks.php:91
+#: public/class-apd-blocks.php:268
+#: public/class-apd-cart.php:44
+#: public/class-apd-checkout.php:38
+#: public/class-apd-checkout.php:67
+#: public/class-apd-checkout.php:109
+#: public/class-apd-public.php:86
+msgid "Due Balance"
+msgstr ""
+
+#: admin/views/tabs/labels.php:46
+msgid "Text on the pay balance button in My Account."
+msgstr ""
+
+#: admin/views/tabs/labels.php:50
+#: includes/class-apd-activator.php:36
+#: public/class-apd-myaccount.php:74
+msgid "Pay Remaining Balance"
+msgstr ""
+
+#: admin/views/tabs/labels.php:59
+msgid "Product Page Text"
+msgstr ""
+
+#: admin/views/tabs/labels.php:64
+msgid "Deposit Option Text"
+msgstr ""
+
+#: admin/views/tabs/labels.php:65
+msgid "Text for deposit radio button. Use {deposit_amount} as placeholder."
+msgstr ""
+
+#: admin/views/tabs/labels.php:69
+#: includes/class-apd-activator.php:37
+#: public/class-apd-public.php:87
+msgid "Pay a deposit of {deposit_amount}"
+msgstr ""
+
+#: admin/views/tabs/labels.php:76
+msgid "Full Payment Text"
+msgstr ""
+
+#: admin/views/tabs/labels.php:77
+msgid "Text for full payment radio button. Use {full_amount} as placeholder."
+msgstr ""
+
+#: admin/views/tabs/labels.php:81
+#: includes/class-apd-activator.php:38
+#: public/class-apd-public.php:88
+msgid "Pay full amount of {full_amount}"
+msgstr ""
+
+#: admin/views/tabs/labels.php:91
+msgid "Save Labels"
+msgstr ""
+
+#: admin/views/tabs/products.php:7
+msgid "Product Deposit Settings"
+msgstr ""
+
+#: admin/views/tabs/products.php:8
+msgid "Configure deposit settings on individual products to override the global settings."
+msgstr ""
+
+#: admin/views/tabs/products.php:13
+msgid "How It Works"
+msgstr ""
+
+#: admin/views/tabs/products.php:21
+msgid "Per-product deposit settings can be configured directly from the product edit page."
+msgstr ""
+
+#: admin/views/tabs/products.php:23
+msgid "Go to Products → Edit a product"
+msgstr ""
+
+#: admin/views/tabs/products.php:24
+msgid "Click the \"Deposit\" tab in the Product Data panel"
+msgstr ""
+
+#: admin/views/tabs/products.php:25
+msgid "Enable deposit and set the type (Fixed/Percentage) and value"
+msgstr ""
+
+#: admin/views/tabs/products.php:26
+msgid "Save the product"
+msgstr ""
+
+#: admin/views/tabs/products.php:32
+msgid "Priority Order"
+msgstr ""
+
+#: admin/views/tabs/products.php:36
+msgid "Product Level"
+msgstr ""
+
+#: admin/views/tabs/products.php:37
+msgid "Highest priority"
+msgstr ""
+
+#: admin/views/tabs/products.php:42
+msgid "Category Level"
+msgstr ""
+
+#: admin/views/tabs/products.php:43
+msgid "Medium priority"
+msgstr ""
+
+#: admin/views/tabs/products.php:48
+msgid "Global Setting"
+msgstr ""
+
+#: admin/views/tabs/products.php:49
+msgid "Default fallback"
+msgstr ""
+
+#: admin/views/tabs/products.php:58
+msgid "Products with Custom Deposits"
+msgstr ""
+
+#: admin/views/tabs/products.php:79
+msgid "Product"
+msgstr ""
+
+#: admin/views/tabs/products.php:96
+msgid "Edit"
+msgstr ""
+
+#: admin/views/tabs/products.php:106
+msgid "No products with custom deposit settings yet."
+msgstr ""
+
+#: includes/class-apd-deposit.php:41
+#: includes/class-apd-deposit.php:63
+msgctxt "Order status"
+msgid "Partially Paid"
+msgstr ""
+
+#. translators: %s: number of orders
+#: includes/class-apd-deposit.php:47
+#, php-format
+msgid "Partially Paid <span class=\"count\">(%s)</span>"
+msgid_plural "Partially Paid <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-apd-emails.php:73
+#: includes/emails/class-apd-email-deposit-received.php:15
+msgid "Deposit Received"
+msgstr ""
+
+#: includes/class-apd-emails.php:74
+msgid "Sent to the customer when their deposit payment is confirmed."
+msgstr ""
+
+#: includes/class-apd-emails.php:75
+msgid "Your deposit payment for Order #{order_number}"
+msgstr ""
+
+#: includes/class-apd-emails.php:76
+msgid "Deposit Payment Received"
+msgstr ""
+
+#: includes/class-apd-emails.php:80
+#: includes/class-apd-emails.php:96
+#: includes/class-apd-emails.php:112
+msgid "Hi {customer_first_name},"
+msgstr ""
+
+#: includes/class-apd-emails.php:81
+msgid "Thank you for your deposit payment for order #{order_number}."
+msgstr ""
+
+#: includes/class-apd-emails.php:83
+msgid "You can pay your remaining balance from your account page or payment link when you are ready."
+msgstr ""
+
+#: includes/class-apd-emails.php:89
+#: includes/emails/class-apd-email-balance-due.php:15
+msgid "Balance Due Reminder"
+msgstr ""
+
+#: includes/class-apd-emails.php:90
+msgid "Sent as a reminder when a customer has an outstanding balance."
+msgstr ""
+
+#: includes/class-apd-emails.php:91
+msgid "Balance payment due for Order #{order_number}"
+msgstr ""
+
+#: includes/class-apd-emails.php:92
+msgid "Balance Payment Due"
+msgstr ""
+
+#: includes/class-apd-emails.php:97
+msgid "This is a reminder that you still have an outstanding balance for order #{order_number}."
+msgstr ""
+
+#: includes/class-apd-emails.php:102
+#: includes/class-apd-emails.php:321
+msgid "Pay Balance Now"
+msgstr ""
+
+#: includes/class-apd-emails.php:105
+#: includes/class-apd-emails.php:108
+msgid "Payment Complete"
+msgstr ""
+
+#: includes/class-apd-emails.php:106
+msgid "Sent when the customer has paid the full remaining balance."
+msgstr ""
+
+#: includes/class-apd-emails.php:107
+msgid "Payment complete for Order #{order_number}"
+msgstr ""
+
+#: includes/class-apd-emails.php:113
+msgid "Great news! Your order #{order_number} has been fully paid."
+msgstr ""
+
+#: includes/class-apd-emails.php:115
+msgid "Your order is now complete. Thank you for completing your payment."
+msgstr ""
+
+#. translators: %s: order number.
+#: includes/class-apd-emails.php:235
+#, php-format
+msgid "Order Number: #%s"
+msgstr ""
+
+#. translators: %s: formatted total amount paid.
+#: includes/class-apd-emails.php:240
+#, php-format
+msgid "Total Paid: %s"
+msgstr ""
+
+#. translators: %s: formatted order total.
+#: includes/class-apd-emails.php:243
+#: includes/class-apd-emails.php:250
+#, php-format
+msgid "Total Amount: %s"
+msgstr ""
+
+#. translators: %s: formatted amount already paid.
+#: includes/class-apd-emails.php:245
+#, php-format
+msgid "Amount Paid: %s"
+msgstr ""
+
+#. translators: %s: formatted balance still due.
+#: includes/class-apd-emails.php:247
+#: includes/class-apd-emails.php:254
+#, php-format
+msgid "Balance Due: %s"
+msgstr ""
+
+#. translators: %s: formatted deposit amount paid.
+#: includes/class-apd-emails.php:252
+#, php-format
+msgid "Deposit Paid: %s"
+msgstr ""
+
+#: includes/class-apd-emails.php:265
+msgid "Order Number"
+msgstr ""
+
+#: includes/class-apd-emails.php:276
+#: includes/class-apd-emails.php:289
+msgid "Total Amount"
+msgstr ""
+
+#: includes/class-apd-emails.php:280
+msgid "Amount Paid"
+msgstr ""
+
+#: includes/class-apd-emails.php:293
+msgid "Deposit Paid"
+msgstr ""
+
+#. translators: 1: call to action label, 2: payment URL.
+#: includes/class-apd-emails.php:326
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+#: includes/class-apd-order.php:67
+msgid "Initial deposit payment"
+msgstr ""
+
+#: includes/class-apd-order.php:94
+msgid "Balance payment received."
+msgstr ""
+
+#: includes/class-apd-order.php:101
+msgid "Deposit payment received. Balance due: "
+msgstr ""
+
+#: includes/class-apd-order.php:122
+msgid "Balance payment completed on thank-you page."
+msgstr ""
+
+#: includes/class-apd-order.php:130
+#: includes/class-apd-order.php:159
+msgid "Deposit payment received. Balance is still due."
+msgstr ""
+
+#: includes/class-apd-order.php:151
+msgid "Balance payment recorded after order status update."
+msgstr ""
+
+#: includes/class-apd-order.php:250
+msgid "Balance payment recorded"
+msgstr ""
+
+#: includes/class-apd-order.php:258
+msgid "Full balance paid."
+msgstr ""
+
+#. translators: 1: payment amount, 2: balance due
+#: includes/class-apd-order.php:264
+#, php-format
+msgid "Balance payment of %1$s recorded. Remaining balance: %2$s"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:120
+msgid "Installing WooCommerce..."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:121
+msgid "Activating WooCommerce..."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:122
+#: includes/class-apd-woo-installer.php:300
+msgid "WooCommerce activated successfully!"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:123
+msgid "Redirecting..."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:124
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:125
+msgid "Installation failed. Please install WooCommerce manually."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:126
+msgid "Activation failed. Please activate WooCommerce manually."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:141
+msgid "Activate WooCommerce"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:142
+msgid "Install & Activate WooCommerce"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:155
+msgid "Advanced Partial Payment"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:170
+msgid "WooCommerce Required"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:172
+msgid "Advanced Partial Payment requires WooCommerce to manage deposits, partial payments, and installment plans. Please install and activate WooCommerce to continue using this plugin."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:182
+msgid "Deposit & partial payments"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:188
+msgid "Installment schedules"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:194
+msgid "Order management"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:217
+msgid "Install Manually"
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:226
+msgid "WooCommerce is free, open-source, and trusted by millions of stores worldwide."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:240
+msgid "You do not have permission to install plugins."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:278
+msgid "Installation failed."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:281
+msgid "WooCommerce installed successfully."
+msgstr ""
+
+#: includes/class-apd-woo-installer.php:291
+msgid "You do not have permission to activate plugins."
+msgstr ""
+
+#: includes/emails/class-apd-email-balance-due.php:16
+msgid "Sent to the customer as a reminder of outstanding balance."
+msgstr ""
+
+#: includes/emails/class-apd-email-deposit-received.php:16
+msgid "Sent to the customer when a deposit payment is received."
+msgstr ""
+
+#: includes/emails/class-apd-email-payment-complete.php:15
+msgid "Full Payment Complete"
+msgstr ""
+
+#: includes/emails/class-apd-email-payment-complete.php:16
+msgid "Sent to the customer when the full balance has been paid."
+msgstr ""
+
+#: public/class-apd-blocks.php:92
+#: public/class-apd-blocks.php:261
+#: public/class-apd-blocks.php:266
+msgid "To Pay Now"
+msgstr ""
+
+#: public/class-apd-blocks.php:97
+msgid "Pay Deposit"
+msgstr ""
+
+#: public/class-apd-blocks.php:98
+msgid "Pay Full Amount"
+msgstr ""
+
+#: public/class-apd-blocks.php:141
+msgid "Whether this cart item is being paid as a deposit."
+msgstr ""
+
+#: public/class-apd-blocks.php:146
+msgid "Formatted deposit amount for this cart item."
+msgstr ""
+
+#: public/class-apd-blocks.php:151
+msgid "Deposit label for this cart item."
+msgstr ""
+
+#: public/class-apd-blocks.php:166
+msgid "Whether the cart includes at least one deposit payment item."
+msgstr ""
+
+#: public/class-apd-blocks.php:171
+msgid "The label shown beside the payable amount in Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:176
+msgid "The formatted total value text for Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:181
+msgid "Formatted deposit amount shown in Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:186
+msgid "Formatted balance due amount shown in Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:191
+msgid "Description shown below the deposit label in Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:196
+msgid "Description shown below the balance due label in Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:201
+msgid "Balance due label shown in Cart and Checkout blocks."
+msgstr ""
+
+#: public/class-apd-blocks.php:263
+msgid "Pay <price/> now"
+msgstr ""
+
+#: public/class-apd-cart.php:163
+msgid "Invalid item."
+msgstr ""
+
+#: public/class-apd-cart.php:177
+msgid "Item not found."
+msgstr ""
+
+#: public/class-apd-checkout.php:70
+msgid "Deposit Payment Summary"
+msgstr ""
+
+#: public/class-apd-checkout.php:73
+msgid "Order Total"
+msgstr ""
+
+#: public/class-apd-checkout.php:89
+msgid "You can pay the remaining balance from your account page."
+msgstr ""
+
+#: public/class-apd-checkout.php:112
+msgid "Deposit Information"
+msgstr ""
+
+#: public/class-apd-pay-balance.php:40
+msgid "Invalid request."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:47
+#: public/class-apd-pay-balance.php:101
+msgid "Invalid order."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:54
+msgid "You do not have permission to pay this balance."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:61
+#: public/class-apd-pay-balance.php:115
+msgid "This order has no outstanding balance."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:70
+msgid "Customer started a remaining balance payment."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:96
+msgid "Please log in to pay the balance."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:110
+msgid "This order is not a deposit order."
+msgstr ""
+
+#. translators: 1: deposit percentage, 2: formatted deposit amount.
+#: public/class-apd-public.php:117
+#, php-format
+msgid "Pay %1$s%% deposit now (%2$s)"
+msgstr ""
+
+#. translators: %s: formatted deposit amount.
+#: public/class-apd-public.php:124
+#, php-format
+msgid "Pay fixed deposit of %s"
+msgstr ""
+
+#: public/views/cart-deposit-summary.php:13
+#: public/views/checkout-deposit-summary.php:13
+msgid "(To Pay Now)"
+msgstr ""
+
+#: public/views/cart-deposit-summary.php:19
+#: public/views/checkout-deposit-summary.php:19
+msgid "(Pay Later)"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:11
+msgid "My Deposits"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:17
+msgid "Order"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:19
+msgid "Total"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:21
+msgid "Balance"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:41
+msgid "Partially Paid"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:43
+msgid "Fully Paid"
+msgstr ""
+
+#: public/views/myaccount-deposits.php:62
+msgid "No deposit orders found."
+msgstr ""
+
+#: public/views/product-deposit-form-minmax.php:19
+msgid "Choose Your Deposit Amount"
+msgstr ""
+
+#. translators: %s: formatted minimum deposit amount.
+#: public/views/product-deposit-form-minmax.php:26
+#, php-format
+msgid "Min: %s"
+msgstr ""
+
+#. translators: %s: formatted maximum deposit amount.
+#: public/views/product-deposit-form-minmax.php:27
+#, php-format
+msgid "Max: %s"
+msgstr ""
+
+#. translators: %s: formatted full product price.
+#: public/views/product-deposit-form-minmax.php:67
+#, php-format
+msgid "Pay full amount of %s instead"
+msgstr ""
+
+#: admin/js/apd-admin.js:176
+msgid "Please enter a valid amount."
+msgstr ""
+
+#: admin/js/apd-admin.js:180
+msgid "Recording..."
+msgstr ""
+
+#: admin/js/apd-admin.js:267
+#: admin/js/apd-admin.js:603
+#: admin/js/apd-admin.js:753
+#: admin/js/apd-admin.js:773
+#: admin/js/apd-admin.js:794
+msgid "Disabled"
+msgstr ""
+
+#: admin/js/apd-admin.js:289
+#: admin/js/apd-admin.js:754
+#: admin/js/apd-admin.js:774
+#: admin/js/apd-admin.js:795
+msgid "Forced"
+msgstr ""
+
+#: admin/js/apd-admin.js:290
+#: admin/js/apd-admin.js:754
+#: admin/js/apd-admin.js:774
+#: admin/js/apd-admin.js:795
+msgid "Not forced"
+msgstr ""
+
+#: admin/js/apd-admin.js:554
+msgid "Product override"
+msgstr ""
+
+#. translators: %s: product category name.
+#: admin/js/apd-admin.js:557
+#, js-format
+msgid "Category: %s"
+msgstr ""
+
+#: admin/js/apd-admin.js:559
+msgid "Available plans"
+msgstr ""
+
+#: admin/js/apd-admin.js:561
+msgid "All active plans"
+msgstr ""
+
+#: admin/js/apd-admin.js:563
+msgid "Global settings"
+msgstr ""
+
+#. translators: %s: where the effective setting comes from.
+#: admin/js/apd-admin.js:569
+#, js-format
+msgid "Source: %s"
+msgstr ""
+
+#: admin/js/apd-admin.js:596
+msgid "N/A"
+msgstr ""
+
+#: admin/js/apd-admin.js:598
+msgid "Full payment is hidden."
+msgstr ""
+
+#: admin/js/apd-admin.js:599
+msgid "Full payment is still allowed."
+msgstr ""
+
+#: admin/js/apd-admin.js:605
+msgid "Deposit is currently disabled for this product."
+msgstr ""
+
+#: admin/js/apd-admin.js:613
+msgid "Save a product price to preview the payable deposit and due balance."
+msgstr ""
+
+#: admin/js/apd-admin.js:620
+msgid "No plans"
+msgstr ""
+
+#: admin/js/apd-admin.js:622
+msgid "Create or assign at least one active plan to preview the first installment."
+msgstr ""
+
+#. translators: %s: payment plan name.
+#: admin/js/apd-admin.js:634
+#, js-format
+msgid "Preview based on the first installment of \"%s\"."
+msgstr ""
+
+#: admin/js/apd-admin.js:634
+msgid "the selected plan"
+msgstr ""
+
+#: admin/js/apd-admin.js:644
+#: admin/js/apd-admin.js:724
+msgid "Range not set"
+msgstr ""
+
+#: admin/js/apd-admin.js:646
+msgid "Set product or global min/max values to preview the customer-selectable range."
+msgstr ""
+
+#: admin/js/apd-admin.js:656
+msgid "Preview based on the current min/max range customers can choose."
+msgstr ""
+
+#: admin/js/apd-admin.js:674
+msgid "Preview based on the current product price."
+msgstr ""
+
+#: admin/js/apd-admin.js:701
+msgid "Payment Plan"
+msgstr ""
+
+#: admin/js/apd-admin.js:710
+msgid "No active plans"
+msgstr ""
+
+#: admin/js/apd-admin.js:713
+msgid "1 plan selected"
+msgstr ""
+
+#. translators: %d: number of payment plans available.
+#: admin/js/apd-admin.js:716
+#, js-format
+msgid "%d plans available"
+msgstr ""
+
+#: admin/js/apd-admin.js:742
+msgid "This product is using its own deposit configuration."
+msgstr ""
+
+#. translators: %s: source the setting falls back to, e.g. a category name.
+#: admin/js/apd-admin.js:746
+#, js-format
+msgid "Using fallback from %s."
+msgstr ""
+
+#: admin/js/apd-admin.js:748
+msgid "Using the global deposit configuration."
+msgstr ""
+
+#: admin/js/apd-admin.js:752
+msgid "Uses fallback"
+msgstr ""
+
+#. translators: 1: availability label, 2: force-deposit label, 3: deposit type label, 4: deposit value label.
+#: admin/js/apd-admin.js:767
+#: admin/js/apd-admin.js:811
+#, js-format
+msgid "Availability: %1$s | Force only: %2$s | Type: %3$s | Value: %4$s"
+msgstr ""
+
+#: admin/js/apd-admin.js:771
+msgid "Not set"
+msgstr ""
+
+#: admin/js/apd-admin.js:779
+msgid "Uses available payment plans"
+msgstr ""
+
+#. translators: 1: category name, 2: availability label, 3: force-deposit label, 4: deposit type label, 5: deposit value label.
+#: admin/js/apd-admin.js:790
+#, js-format
+msgid "%1$s | Availability: %2$s | Force only: %3$s | Type: %4$s | Value: %5$s"
+msgstr ""

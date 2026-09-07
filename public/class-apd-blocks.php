@@ -87,15 +87,15 @@ class APD_Blocks {
             'apd-blocks',
             'apd_blocks',
             array(
-                'deposit_label' => $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' ),
-                'balance_label' => $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' ),
-                'to_pay_now'    => __( 'To Pay Now', 'advanced-partial-payment' ),
-                'pay_later'     => __( 'Pay Later', 'advanced-partial-payment' ),
+                'deposit_label' => $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'balance_label' => $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'to_pay_now'    => __( 'To Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'pay_later'     => __( 'Pay Later', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'ajax_url'      => admin_url( 'admin-ajax.php' ),
                 'nonce'         => wp_create_nonce( 'apd_public_nonce' ),
                 'strings'       => array(
-                    'pay_deposit' => __( 'Pay Deposit', 'advanced-partial-payment' ),
-                    'pay_full'    => __( 'Pay Full Amount', 'advanced-partial-payment' ),
+                    'pay_deposit' => __( 'Pay Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                    'pay_full'    => __( 'Pay Full Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 ),
             )
         );
@@ -138,17 +138,17 @@ class APD_Blocks {
     public function get_cart_item_schema() {
         return array(
             'has_deposit' => array(
-                'description' => __( 'Whether this cart item is being paid as a deposit.', 'advanced-partial-payment' ),
+                'description' => __( 'Whether this cart item is being paid as a deposit.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'boolean',
                 'readonly'    => true,
             ),
             'deposit_amount_html' => array(
-                'description' => __( 'Formatted deposit amount for this cart item.', 'advanced-partial-payment' ),
+                'description' => __( 'Formatted deposit amount for this cart item.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'deposit_label' => array(
-                'description' => __( 'Deposit label for this cart item.', 'advanced-partial-payment' ),
+                'description' => __( 'Deposit label for this cart item.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
@@ -163,42 +163,42 @@ class APD_Blocks {
     public function get_cart_schema() {
         return array(
             'has_deposit' => array(
-                'description' => __( 'Whether the cart includes at least one deposit payment item.', 'advanced-partial-payment' ),
+                'description' => __( 'Whether the cart includes at least one deposit payment item.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'boolean',
                 'readonly'    => true,
             ),
             'deposit_total_label' => array(
-                'description' => __( 'The label shown beside the payable amount in Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'The label shown beside the payable amount in Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'total_value_label' => array(
-                'description' => __( 'The formatted total value text for Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'The formatted total value text for Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'deposit_amount_html' => array(
-                'description' => __( 'Formatted deposit amount shown in Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'Formatted deposit amount shown in Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'balance_due_html' => array(
-                'description' => __( 'Formatted balance due amount shown in Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'Formatted balance due amount shown in Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'deposit_description' => array(
-                'description' => __( 'Description shown below the deposit label in Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'Description shown below the deposit label in Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'balance_description' => array(
-                'description' => __( 'Description shown below the balance due label in Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'Description shown below the balance due label in Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
             'balance_label' => array(
-                'description' => __( 'Balance due label shown in Cart and Checkout blocks.', 'advanced-partial-payment' ),
+                'description' => __( 'Balance due label shown in Cart and Checkout blocks.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'type'        => 'string',
                 'readonly'    => true,
             ),
@@ -234,7 +234,7 @@ class APD_Blocks {
 
         $total_deposit  = APD_Deposit::instance()->get_cart_item_deposit( $cart_item );
         $settings       = get_option( 'apd_settings', array() );
-        $deposit_label  = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
+        $deposit_label  = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
         return array(
             'has_deposit'         => true,
@@ -251,21 +251,21 @@ class APD_Blocks {
     public function get_cart_data() {
         $summary       = APD_Deposit::instance()->get_cart_payment_summary();
         $settings      = get_option( 'apd_settings', array() );
-        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment' );
+        $deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
         return array(
             'has_deposit'         => ! empty( $summary['has_deposit'] ),
             'deposit_total_label' => sprintf(
                 '%1$s (%2$s)',
                 $deposit_label,
-                __( 'To Pay Now', 'advanced-partial-payment' )
+                __( 'To Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce' )
             ),
-            'total_value_label'   => __( 'Pay <price/> now', 'advanced-partial-payment' ),
+            'total_value_label'   => __( 'Pay <price/> now', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
             'deposit_amount_html' => wc_price( $summary['deposit_amount'] ),
             'balance_due_html'    => wc_price( $summary['balance_due'] ),
-            'deposit_description' => __( 'To Pay Now', 'advanced-partial-payment' ),
-            'balance_description' => __( 'Pay Later', 'advanced-partial-payment' ),
-            'balance_label'       => $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment' ),
+            'deposit_description' => __( 'To Pay Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+            'balance_description' => __( 'Pay Later', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+            'balance_label'       => $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
         );
     }
 }

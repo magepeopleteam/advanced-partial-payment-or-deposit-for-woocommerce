@@ -24,8 +24,8 @@ $email_cards     = array(
 );
 ?>
 <div class="apd-tab-header">
-    <h2><?php esc_html_e( 'Email Notifications', 'advanced-partial-payment' ); ?></h2>
-    <p><?php esc_html_e( 'Configure which deposit-related emails are sent and edit the built-in email templates directly from here.', 'advanced-partial-payment' ); ?></p>
+    <h2><?php esc_html_e( 'Email Notifications', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h2>
+    <p><?php esc_html_e( 'Configure which deposit-related emails are sent and edit the built-in email templates directly from here.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
 </div>
 
 <form class="apd-settings-form" data-tab="emails">
@@ -61,7 +61,7 @@ $email_cards     = array(
 
     <div class="apd-card">
         <div class="apd-card-header">
-            <h3><?php esc_html_e( 'Email Templates', 'advanced-partial-payment' ); ?></h3>
+            <h3><?php esc_html_e( 'Email Templates', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
         </div>
         <div class="apd-card-body">
             <div class="apd-info-box" style="margin-bottom:18px;">
@@ -69,7 +69,7 @@ $email_cards     = array(
                     <span class="dashicons dashicons-editor-help"></span>
                 </div>
                 <div class="apd-info-content">
-                    <p><?php esc_html_e( 'Predefined templates are loaded below. You can edit the subject, heading, and body. Available placeholders: {customer_first_name}, {order_number}, {order_date}, {total_amount}, {deposit_amount}, {amount_paid}, {balance_due}, {pay_balance_url}, {site_title}. Available body tokens: [deposit_summary], [pay_balance_button].', 'advanced-partial-payment' ); ?></p>
+                    <p><?php esc_html_e( 'Predefined templates are loaded below. You can edit the subject, heading, and body. Available placeholders: {customer_first_name}, {order_number}, {order_date}, {total_amount}, {deposit_amount}, {amount_paid}, {balance_due}, {pay_balance_url}, {site_title}. Available body tokens: [deposit_summary], [pay_balance_button].', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 </div>
             </div>
 
@@ -82,8 +82,8 @@ $email_cards     = array(
                     <div class="apd-card-body">
                         <div class="apd-field-row">
                             <div class="apd-field-label">
-                                <label><?php esc_html_e( 'Email Subject', 'advanced-partial-payment' ); ?></label>
-                                <p class="apd-field-desc"><?php esc_html_e( 'Customer email subject line.', 'advanced-partial-payment' ); ?></p>
+                                <label><?php esc_html_e( 'Email Subject', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                                <p class="apd-field-desc"><?php esc_html_e( 'Customer email subject line.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                             </div>
                             <div class="apd-field-input" style="min-width:420px;">
                                 <input
@@ -98,8 +98,8 @@ $email_cards     = array(
 
                         <div class="apd-field-row">
                             <div class="apd-field-label">
-                                <label><?php esc_html_e( 'Email Heading', 'advanced-partial-payment' ); ?></label>
-                                <p class="apd-field-desc"><?php esc_html_e( 'Main heading shown inside the email template.', 'advanced-partial-payment' ); ?></p>
+                                <label><?php esc_html_e( 'Email Heading', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                                <p class="apd-field-desc"><?php esc_html_e( 'Main heading shown inside the email template.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                             </div>
                             <div class="apd-field-input" style="min-width:420px;">
                                 <input
@@ -115,8 +115,8 @@ $email_cards     = array(
                         <?php if ( 'balance_due' === $email_key ) : ?>
                             <div class="apd-field-row">
                                 <div class="apd-field-label">
-                                    <label><?php esc_html_e( 'Pay Button Label', 'advanced-partial-payment' ); ?></label>
-                                    <p class="apd-field-desc"><?php esc_html_e( 'Label used for the [pay_balance_button] token.', 'advanced-partial-payment' ); ?></p>
+                                    <label><?php esc_html_e( 'Pay Button Label', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                                    <p class="apd-field-desc"><?php esc_html_e( 'Label used for the [pay_balance_button] token.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                                 </div>
                                 <div class="apd-field-input" style="min-width:420px;">
                                     <input
@@ -132,8 +132,8 @@ $email_cards     = array(
 
                         <div class="apd-field-row">
                             <div class="apd-field-label">
-                                <label><?php esc_html_e( 'Email Body Template', 'advanced-partial-payment' ); ?></label>
-                                <p class="apd-field-desc"><?php esc_html_e( 'Edit the predefined template text. The placeholders and body tokens above are supported.', 'advanced-partial-payment' ); ?></p>
+                                <label><?php esc_html_e( 'Email Body Template', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                                <p class="apd-field-desc"><?php esc_html_e( 'Edit the predefined template text. The placeholders and body tokens above are supported.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                             </div>
                             <div class="apd-field-input" style="min-width:560px;align-items:flex-start;">
                                 <textarea
@@ -153,7 +153,7 @@ $email_cards     = array(
     <div class="apd-form-actions">
         <button type="submit" class="apd-btn apd-btn-primary">
             <span class="dashicons dashicons-saved"></span>
-            <?php esc_html_e( 'Save Email Settings', 'advanced-partial-payment' ); ?>
+            <?php esc_html_e( 'Save Email Settings', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
         </button>
     </div>
 </form>

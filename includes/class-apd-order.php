@@ -64,7 +64,7 @@ class APD_Order {
                 'type'   => 'deposit',
                 'amount' => $deposit_amount,
                 'date'   => current_time( 'mysql' ),
-                'note'   => __( 'Initial deposit payment', 'advanced-partial-payment' ),
+                'note'   => __( 'Initial deposit payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
             ),
         ) );
 
@@ -91,14 +91,14 @@ class APD_Order {
         if ( $pending_balance_payment > 0 ) {
             $this->finalize_pending_balance_payment(
                 $order,
-                __( 'Balance payment received.', 'advanced-partial-payment' )
+                __( 'Balance payment received.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
             );
             return;
         }
 
         $balance_due = floatval( $order->get_meta( '_apd_balance_due' ) );
         if ( $balance_due > 0 ) {
-            $order->set_status( 'partially-paid', __( 'Deposit payment received. Balance due: ', 'advanced-partial-payment' ) . wc_price( $balance_due ) );
+            $order->set_status( 'partially-paid', __( 'Deposit payment received. Balance due: ', 'advanced-partial-payment-or-deposit-for-woocommerce' ) . wc_price( $balance_due ) );
             $order->save();
 
             do_action( 'apd_deposit_payment_complete', $order_id, $order );
@@ -119,7 +119,7 @@ class APD_Order {
         if ( self::has_pending_balance_payment( $order ) && in_array( $order->get_status(), array( 'processing', 'completed', 'on-hold' ), true ) ) {
             $this->finalize_pending_balance_payment(
                 $order,
-                __( 'Balance payment completed on thank-you page.', 'advanced-partial-payment' )
+                __( 'Balance payment completed on thank-you page.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
             );
             return;
         }
@@ -127,7 +127,7 @@ class APD_Order {
         if ( self::order_has_outstanding_balance( $order ) && in_array( $order->get_status(), array( 'processing', 'completed', 'on-hold' ), true ) ) {
             $this->normalize_outstanding_deposit_status(
                 $order,
-                __( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment' )
+                __( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
             );
         }
     }
@@ -148,7 +148,7 @@ class APD_Order {
         if ( self::has_pending_balance_payment( $order ) && in_array( $to_status, array( 'processing', 'completed', 'on-hold' ), true ) ) {
             $this->finalize_pending_balance_payment(
                 $order,
-                __( 'Balance payment recorded after order status update.', 'advanced-partial-payment' )
+                __( 'Balance payment recorded after order status update.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
             );
             return;
         }
@@ -156,7 +156,7 @@ class APD_Order {
         if ( self::order_has_outstanding_balance( $order ) && in_array( $to_status, array( 'processing', 'completed', 'on-hold' ), true ) ) {
             $this->normalize_outstanding_deposit_status(
                 $order,
-                __( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment' )
+                __( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
             );
         }
     }
@@ -247,7 +247,7 @@ class APD_Order {
             'type'   => 'balance_payment',
             'amount' => $amount,
             'date'   => current_time( 'mysql' ),
-            'note'   => $note ? $note : __( 'Balance payment recorded', 'advanced-partial-payment' ),
+            'note'   => $note ? $note : __( 'Balance payment recorded', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
         );
         $order->update_meta_data( '_apd_payment_history', $history );
 
@@ -255,13 +255,13 @@ class APD_Order {
 
         // If fully paid, update status
         if ( $is_fully_paid ) {
-            $order->set_status( 'completed', __( 'Full balance paid.', 'advanced-partial-payment' ) );
+            $order->set_status( 'completed', __( 'Full balance paid.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $order->add_order_note(
             sprintf(
                 /* translators: 1: payment amount, 2: balance due */
-                __( 'Balance payment of %1$s recorded. Remaining balance: %2$s', 'advanced-partial-payment' ),
+                __( 'Balance payment of %1$s recorded. Remaining balance: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 wc_price( $amount ),
                 wc_price( $new_balance )
             )

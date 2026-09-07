@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 <div class="apd-product-deposit-form">
     <div class="apd-deposit-header">
         <span class="apd-deposit-icon">💰</span>
-        <span class="apd-deposit-title"><?php esc_html_e( 'Payment Options', 'advanced-partial-payment' ); ?></span>
+        <span class="apd-deposit-title"><?php esc_html_e( 'Payment Options', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
     </div>
     <div class="apd-deposit-options">
         <label class="apd-deposit-option apd-deposit-option-active">

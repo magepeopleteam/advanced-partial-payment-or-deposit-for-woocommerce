@@ -6,8 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $settings = get_option( 'apd_settings', array() );
 ?>
 <div class="apd-tab-header">
-    <h2><?php esc_html_e( 'General Settings', 'advanced-partial-payment' ); ?></h2>
-    <p><?php esc_html_e( 'Configure global deposit settings for your store.', 'advanced-partial-payment' ); ?></p>
+    <h2><?php esc_html_e( 'General Settings', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h2>
+    <p><?php esc_html_e( 'Configure global deposit settings for your store.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
 </div>
 
 <?php do_action( 'apd_general_tab_after_intro' ); ?>
@@ -15,13 +15,13 @@ $settings = get_option( 'apd_settings', array() );
 <form class="apd-settings-form" data-tab="general">
     <div class="apd-card">
         <div class="apd-card-header">
-            <h3><?php esc_html_e( 'Deposit Configuration', 'advanced-partial-payment' ); ?></h3>
+            <h3><?php esc_html_e( 'Deposit Configuration', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
         </div>
         <div class="apd-card-body">
             <div class="apd-field-row">
                 <div class="apd-field-label">
-                    <label for="apd-enable-deposit"><?php esc_html_e( 'Enable Deposits', 'advanced-partial-payment' ); ?></label>
-                    <p class="apd-field-desc"><?php esc_html_e( 'Enable or disable the deposit system globally.', 'advanced-partial-payment' ); ?></p>
+                    <label for="apd-enable-deposit"><?php esc_html_e( 'Enable Deposits', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                    <p class="apd-field-desc"><?php esc_html_e( 'Enable or disable the deposit system globally.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 </div>
                 <div class="apd-field-input">
                     <label class="apd-toggle">
@@ -34,16 +34,16 @@ $settings = get_option( 'apd_settings', array() );
 
             <div class="apd-field-row">
                 <div class="apd-field-label">
-                    <label for="apd-deposit-type"><?php esc_html_e( 'Default Deposit Type', 'advanced-partial-payment' ); ?></label>
-                    <p class="apd-field-desc"><?php esc_html_e( 'Choose how the default deposit amount is calculated.', 'advanced-partial-payment' ); ?></p>
+                    <label for="apd-deposit-type"><?php esc_html_e( 'Default Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                    <p class="apd-field-desc"><?php esc_html_e( 'Choose how the default deposit amount is calculated.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 </div>
                 <div class="apd-field-input">
                     <select name="deposit_type" id="apd-deposit-type" class="apd-select">
-                        <option value="percentage" <?php selected( $settings['deposit_type'] ?? 'percentage', 'percentage' ); ?>><?php esc_html_e( 'Percentage (%)', 'advanced-partial-payment' ); ?></option>
-                        <option value="fixed" <?php selected( $settings['deposit_type'] ?? 'percentage', 'fixed' ); ?>><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment' ); ?></option>
+                        <option value="percentage" <?php selected( $settings['deposit_type'] ?? 'percentage', 'percentage' ); ?>><?php esc_html_e( 'Percentage (%)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                        <option value="fixed" <?php selected( $settings['deposit_type'] ?? 'percentage', 'fixed' ); ?>><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                         <?php if ( defined( 'APD_PRO_VERSION' ) ) : ?>
-                        <option value="payment_plan" <?php selected( $settings['deposit_type'] ?? 'percentage', 'payment_plan' ); ?>><?php esc_html_e( 'Payment Plan (Pro)', 'advanced-partial-payment' ); ?></option>
-                        <option value="min_max" <?php selected( $settings['deposit_type'] ?? 'percentage', 'min_max' ); ?>><?php esc_html_e( 'Min / Max – Customer Chooses (Pro)', 'advanced-partial-payment' ); ?></option>
+                        <option value="payment_plan" <?php selected( $settings['deposit_type'] ?? 'percentage', 'payment_plan' ); ?>><?php esc_html_e( 'Payment Plan (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                        <option value="min_max" <?php selected( $settings['deposit_type'] ?? 'percentage', 'min_max' ); ?>><?php esc_html_e( 'Min / Max – Customer Chooses (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                         <?php endif; ?>
                     </select>
                 </div>
@@ -51,8 +51,8 @@ $settings = get_option( 'apd_settings', array() );
 
             <div class="apd-field-row" id="apd-deposit-value-row">
                 <div class="apd-field-label">
-                    <label for="apd-deposit-value"><?php esc_html_e( 'Default Deposit Value', 'advanced-partial-payment' ); ?></label>
-                    <p class="apd-field-desc"><?php esc_html_e( 'The default deposit amount or percentage.', 'advanced-partial-payment' ); ?></p>
+                    <label for="apd-deposit-value"><?php esc_html_e( 'Default Deposit Value', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                    <p class="apd-field-desc"><?php esc_html_e( 'The default deposit amount or percentage.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 </div>
                 <div class="apd-field-input">
                     <div class="apd-input-group">
@@ -68,13 +68,13 @@ $settings = get_option( 'apd_settings', array() );
 
     <div class="apd-card">
         <div class="apd-card-header">
-            <h3><?php esc_html_e( 'Payment Options', 'advanced-partial-payment' ); ?></h3>
+            <h3><?php esc_html_e( 'Payment Options', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
         </div>
         <div class="apd-card-body">
             <div class="apd-field-row">
                 <div class="apd-field-label">
-                    <label for="apd-allow-full-payment"><?php esc_html_e( 'Allow Full Payment', 'advanced-partial-payment' ); ?></label>
-                    <p class="apd-field-desc"><?php esc_html_e( 'Allow customers to choose between deposit or full payment.', 'advanced-partial-payment' ); ?></p>
+                    <label for="apd-allow-full-payment"><?php esc_html_e( 'Allow Full Payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                    <p class="apd-field-desc"><?php esc_html_e( 'Allow customers to choose between deposit or full payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 </div>
                 <div class="apd-field-input">
                     <label class="apd-toggle">
@@ -87,8 +87,8 @@ $settings = get_option( 'apd_settings', array() );
 
             <div class="apd-field-row">
                 <div class="apd-field-label">
-                    <label for="apd-force-deposit"><?php esc_html_e( 'Force Deposit', 'advanced-partial-payment' ); ?></label>
-                    <p class="apd-field-desc"><?php esc_html_e( 'Force customers to pay only the deposit amount (no full payment option).', 'advanced-partial-payment' ); ?></p>
+                    <label for="apd-force-deposit"><?php esc_html_e( 'Force Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+                    <p class="apd-field-desc"><?php esc_html_e( 'Force customers to pay only the deposit amount (no full payment option).', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
                 </div>
                 <div class="apd-field-input">
                     <label class="apd-toggle">
@@ -104,7 +104,7 @@ $settings = get_option( 'apd_settings', array() );
     <div class="apd-form-actions">
         <button type="submit" class="apd-btn apd-btn-primary">
             <span class="dashicons dashicons-saved"></span>
-            <?php esc_html_e( 'Save Settings', 'advanced-partial-payment' ); ?>
+            <?php esc_html_e( 'Save Settings', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
         </button>
     </div>
 </form>

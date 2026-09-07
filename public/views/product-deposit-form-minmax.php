@@ -16,15 +16,15 @@ $currency = html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, '
 <div class="apd-product-deposit-form">
     <div class="apd-deposit-header">
         <span class="apd-deposit-icon">💰</span>
-        <span class="apd-deposit-title"><?php esc_html_e( 'Choose Your Deposit Amount', 'advanced-partial-payment' ); ?></span>
+        <span class="apd-deposit-title"><?php esc_html_e( 'Choose Your Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
     </div>
     <div class="apd-deposit-options" style="padding:16px;">
         <!-- Hidden radio: always deposit -->
         <input type="hidden" name="apd_payment_type" value="deposit" />
 
         <div class="apd-minmax-info" style="display:flex;justify-content:space-between;font-size:13px;color:#64748b;margin-bottom:8px;">
-            <span><?php printf( esc_html__( 'Min: %s', 'advanced-partial-payment' ), wc_price( $min_deposit ) ); ?></span>
-            <span><?php printf( esc_html__( 'Max: %s', 'advanced-partial-payment' ), wc_price( $max_deposit ) ); ?></span>
+            <span><?php /* translators: %s: formatted minimum deposit amount. */ printf( esc_html__( 'Min: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $min_deposit ) ); ?></span>
+            <span><?php /* translators: %s: formatted maximum deposit amount. */ printf( esc_html__( 'Max: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $max_deposit ) ); ?></span>
         </div>
 
         <div class="apd-minmax-slider" style="margin-bottom:12px;">
@@ -64,7 +64,7 @@ $currency = html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, '
             <label class="apd-deposit-option" style="margin:0;">
                 <input type="checkbox" id="apd-pay-full-toggle" value="1" style="margin-right:8px;" />
                 <span style="font-size:13px;color:#334155;">
-                    <?php printf( esc_html__( 'Pay full amount of %s instead', 'advanced-partial-payment' ), wc_price( $price ) ); ?>
+                    <?php /* translators: %s: formatted full product price. */ printf( esc_html__( 'Pay full amount of %s instead', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $price ) ); ?>
                 </span>
             </label>
         </div>
