@@ -380,6 +380,64 @@ class APD_Order {
     }
 
     /**
+     * Resolve the per-product / per-category Flexible Payments override for an order.
+     *
+     * Walks the order's line items, checking product meta first and then the product's
+     * categories, mirroring how deposit settings resolve elsewhere. An explicit "yes"
+     * anywhere in the order wins, because the setting is a customer convenience and a
+     * mixed basket should not take it away.
+     *
+     * @param WC_Order|int|null $order Order object or ID.
+     * @return string 'yes', 'no', or '' to inherit the global setting.
+     */
+    public static function get_flexible_payment_override( $order ) {
+        if ( is_numeric( $order ) ) {
+            $order = wc_get_order( $order );
+        }
+
+        if ( ! $order || ! method_exists( $order, 'get_items' ) ) {
+            return '';
+        }
+
+        $found_no = false;
+
+        foreach ( $order->get_items() as $item ) {
+            $product_id = $item->get_product_id();
+            if ( ! $product_id ) {
+                continue;
+            }
+
+            $override = get_post_meta( $product_id, '_apd_flexible_payments', true );
+
+            // Fall back to the product's categories when the product itself inherits.
+            if ( 'yes' !== $override && 'no' !== $override ) {
+                $product = wc_get_product( $product_id );
+
+                if ( $product ) {
+                    foreach ( $product->get_category_ids() as $cat_id ) {
+                        $cat_override = get_term_meta( $cat_id, '_apd_flexible_payments', true );
+
+                        if ( 'yes' === $cat_override || 'no' === $cat_override ) {
+                            $override = $cat_override;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if ( 'yes' === $override ) {
+                return 'yes';
+            }
+
+            if ( 'no' === $override ) {
+                $found_no = true;
+            }
+        }
+
+        return $found_no ? 'no' : '';
+    }
+
+    /**
      * Smallest and largest amount a customer may put towards a balance right now.
      *
      * @param WC_Order|int $order Order object or ID.
