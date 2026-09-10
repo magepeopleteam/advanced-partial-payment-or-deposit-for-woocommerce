@@ -306,17 +306,6 @@
 
             renderSummary();
 
-            // Flexible Payments is its own collapsible group inside the Deposit tab:
-            // click the header and its fields appear.
-            $(document).on('click', '.apd-collapsible__toggle', function () {
-                var $toggle = $(this);
-                var open = $toggle.attr('aria-expanded') === 'true';
-
-                $toggle.attr('aria-expanded', open ? 'false' : 'true')
-                       .closest('.apd-collapsible').toggleClass('is-open', !open);
-                $('#' + $toggle.attr('aria-controls')).slideToggle(150);
-            });
-
             $(document).on('change input', '#_apd_enable_deposit, #_apd_force_deposit, #_apd_deposit_type, #_apd_deposit_value, #_apd_min_deposit, #_apd_max_deposit, #_apd_flexible_payments, #_price, #_regular_price, #_sale_price, input[name="_apd_assigned_plans[]"]', renderSummary);
             $(document).on('change', '#apd-product-plans-section input[name="_apd_assigned_plans[]"], #apd_payment_plans_data input[name="_apd_assigned_plans[]"]', function () {
                 var value = $(this).val();
@@ -327,20 +316,14 @@
         },
 
         toggleFlexiblePanel: function (effectiveType) {
+            // Flexible Payments is a single always-visible dropdown now, nothing to
+            // reveal. Only the Payment Plan conflict still needs handling: a plan
+            // schedules the balance into fixed instalments, which is the opposite of
+            // paying any amount whenever, so when Flexible Payments is on it is the
+            // plan that stands down.
             var flexible = $('#_apd_flexible_payments').val() === 'yes';
             var isPlan = effectiveType === 'payment_plan';
 
-            // Flexible Payments is always reachable: it decides how the balance is
-            // paid, so hiding it would leave no way to turn it back off.
-            $('#apd-product-flexible-wrap').show();
-
-            // The per-product minimum only means something when this product explicitly
-            // opts in. On "Use Global Setting" the global Flexible Payments rules apply.
-            $('#apd-product-flexible-section').toggle(flexible);
-
-            // A Payment Plan schedules the balance into fixed instalments, which is the
-            // opposite of paying any amount whenever. When Flexible Payments is on it is
-            // the plan that stands down, not the other way round.
             $('#_apd_deposit_type option[value="payment_plan"]').prop('disabled', flexible);
 
             if (flexible) {

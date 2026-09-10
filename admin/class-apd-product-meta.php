@@ -221,65 +221,26 @@ class APD_Product_Meta {
                 </div>
                 <?php endif; ?>
                 <?php if ( defined( 'APD_PRO_VERSION' ) ) : ?>
-                <div class="apd-collapsible" id="apd-flexible-collapsible">
-                    <button type="button" class="apd-collapsible__toggle" aria-expanded="false" aria-controls="apd-flexible-body">
-                        <span class="dashicons dashicons-money-alt apd-collapsible__icon"></span>
-                        <span class="apd-collapsible__label"><?php esc_html_e( 'Flexible Payments (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
-                        <span class="apd-collapsible__hint"><?php esc_html_e( 'How the customer pays off the remaining balance', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
-                        <span class="dashicons dashicons-arrow-down-alt2 apd-collapsible__arrow"></span>
-                    </button>
-                    <div class="apd-collapsible__body" id="apd-flexible-body" style="display:none;">
-                        <div id="apd-product-flexible-wrap">
-                            <?php
-                            woocommerce_wp_select( array(
-                                'id'          => '_apd_flexible_payments',
-                                'label'       => __( 'Flexible Payments (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                'options'     => array(
-                                    ''    => __( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                    'yes' => __( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                    'no'  => __( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                ),
-                                'value'       => get_post_meta( $product_id, '_apd_flexible_payments', true ),
-                                'desc_tip'    => true,
-                                'description' => __( 'Let customers pay the remaining balance in any amount, over as many payments as they like, until this booking is paid in full. Yes or No overrides the global Flexible Payments setting for this product.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                            ) );
-                            ?>
-                            <div id="apd-product-flexible-section" class="apd-conditional-settings apd-conditional-settings--flexible">
-                            <?php
-                            woocommerce_wp_text_input( array(
-                                'id'          => '_apd_flexible_min_payment',
-                                'label'       => __( 'Smallest payment allowed', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                'type'        => 'number',
-                                'value'       => get_post_meta( $product_id, '_apd_flexible_min_payment', true ),
-                                'placeholder' => __( 'Use global', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                'desc_tip'    => true,
-                                'description' => __( 'Smallest amount a customer may put towards this balance. If less than this is left, they can still clear it in full.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                'custom_attributes' => array( 'step' => '0.01', 'min' => '0' ),
-                            ) );
-                            woocommerce_wp_select( array(
-                                // Deliberately not called "Type": a second Type dropdown offering
-                                // the same option labels as Deposit Type reads as a duplicate of
-                                // it, when it only ever describes the minimum directly above.
-                                'id'          => '_apd_flexible_min_payment_type',
-                                'label'       => __( 'The minimum above is', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                'options'     => array(
-                                    ''           => __( 'Use the global minimum', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                    'fixed'      => __( 'A flat amount of money', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                    'percentage' => __( 'A percentage of the booking total', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                                ),
-                                'value'       => get_post_meta( $product_id, '_apd_flexible_min_payment_type', true ),
-                                'desc_tip'    => true,
-                                'description' => __( 'This only describes the Minimum Per Payment field above it. It does not change the Deposit Type.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                            ) );
-                            ?>
-                            </div>
-                            <p id="apd-product-flexible-plan-note" class="apd-product-flexible-card__note">
-                                <span class="dashicons dashicons-warning"></span>
-                                <?php esc_html_e( 'Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <p class="form-field">
+                    <?php
+                    woocommerce_wp_select( array(
+                        'id'          => '_apd_flexible_payments',
+                        'label'       => __( 'Flexible Payments (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'options'     => array(
+                            ''    => __( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'yes' => __( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'no'  => __( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        ),
+                        'value'       => get_post_meta( $product_id, '_apd_flexible_payments', true ),
+                        'desc_tip'    => true,
+                        'description' => __( 'Let the customer pay off the remaining balance in any amount they choose, over as many payments as they like, until this booking is paid in full. Yes or No overrides the global Flexible Payments setting for this product. No extra fields to fill in — the deposit above still decides the first payment; this only decides whether the rest can be paid freely.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                    ) );
+                    ?>
+                </p>
+                <p id="apd-product-flexible-plan-note" class="apd-product-flexible-card__note" style="display:none;">
+                    <span class="dashicons dashicons-warning"></span>
+                    <?php esc_html_e( 'Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+                </p>
                 <?php endif; ?>
 
                 <div class="form-field apd-product-deposit-insight-wrap" style="padding:12px;">
@@ -482,15 +443,22 @@ class APD_Product_Meta {
             return;
         }
 
+        // The per-product minimum fields were removed; clear any value saved while
+        // they briefly existed so a stale product-level minimum can't outlive its UI.
+        delete_post_meta( $product_id, '_apd_flexible_min_payment' );
+        delete_post_meta( $product_id, '_apd_flexible_min_payment_type' );
+
         $fields = array( '_apd_enable_deposit', '_apd_force_deposit', '_apd_deposit_type', '_apd_deposit_value' );
 
         // Pro: min/max deposit and flexible payment fields
         if ( defined( 'APD_PRO_VERSION' ) ) {
             $fields[] = '_apd_min_deposit';
             $fields[] = '_apd_max_deposit';
+            // Only the on/off override is a product-level setting now. A minimum-per-
+            // payment amount was never part of the requirement ("any desired amount"),
+            // and having Deposit Value plus a second amount+type pair for the balance
+            // read as asking the shop to configure the same thing twice.
             $fields[] = '_apd_flexible_payments';
-            $fields[] = '_apd_flexible_min_payment';
-            $fields[] = '_apd_flexible_min_payment_type';
         }
 
         foreach ( $fields as $field ) {
