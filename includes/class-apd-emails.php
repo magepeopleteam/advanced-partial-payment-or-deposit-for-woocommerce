@@ -319,7 +319,13 @@ class APD_Emails {
 
         $config = self::get_email_template_config( $template_id );
         $label  = $config['button_label'] ?: __( 'Pay Balance Now', 'advanced-partial-payment-or-deposit-for-woocommerce' );
-        $url    = $order->get_checkout_payment_url();
+
+        // Route through the balance flow, not straight to order-pay. Going direct left
+        // the order total at the deposit amount and never marked a balance payment as
+        // pending, so the customer was charged the wrong figure and credited nothing.
+        $url = class_exists( 'APD_Pay_Balance' )
+            ? APD_Pay_Balance::get_email_pay_balance_url( $order )
+            : $order->get_checkout_payment_url();
 
         if ( $plain_text ) {
             /* translators: 1: call to action label, 2: payment URL. */
