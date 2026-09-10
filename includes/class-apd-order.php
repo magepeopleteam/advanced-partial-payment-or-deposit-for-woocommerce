@@ -438,6 +438,79 @@ class APD_Order {
     }
 
     /**
+     * Resolve a per-product / per-category minimum for a single balance payment.
+     *
+     * Percentages are resolved against the full booking total here rather than the
+     * remaining balance, so the floor does not creep downwards as the customer pays.
+     * Where a basket carries several overrides the lowest wins, matching the
+     * most-permissive rule used for the on/off override.
+     *
+     * @param WC_Order|int|null $order Order object or ID.
+     * @return float|null Amount, or null to fall back to the global setting.
+     */
+    public static function get_flexible_minimum_override( $order ) {
+        if ( is_numeric( $order ) ) {
+            $order = wc_get_order( $order );
+        }
+
+        if ( ! $order || ! method_exists( $order, 'get_items' ) ) {
+            return null;
+        }
+
+        $total  = floatval( $order->get_meta( '_apd_total_amount' ) );
+        $lowest = null;
+
+        foreach ( $order->get_items() as $item ) {
+            $product_id = $item->get_product_id();
+            if ( ! $product_id ) {
+                continue;
+            }
+
+            $value = get_post_meta( $product_id, '_apd_flexible_min_payment', true );
+            $type  = get_post_meta( $product_id, '_apd_flexible_min_payment_type', true );
+
+            // Fall back to the product's categories when the product sets nothing.
+            if ( '' === $value || null === $value || false === $value ) {
+                $product = wc_get_product( $product_id );
+
+                if ( $product ) {
+                    foreach ( $product->get_category_ids() as $cat_id ) {
+                        $cat_value = get_term_meta( $cat_id, '_apd_flexible_min_payment', true );
+
+                        if ( '' !== $cat_value && null !== $cat_value && false !== $cat_value ) {
+                            $value = $cat_value;
+                            $type  = get_term_meta( $cat_id, '_apd_flexible_min_payment_type', true );
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if ( '' === $value || null === $value || false === $value ) {
+                continue;
+            }
+
+            $amount = floatval( $value );
+
+            if ( $amount <= 0 ) {
+                continue;
+            }
+
+            if ( 'percentage' === $type && $total > 0 ) {
+                $amount = ( $total * min( $amount, 100 ) ) / 100;
+            }
+
+            $amount = round( $amount, wc_get_price_decimals() );
+
+            if ( null === $lowest || $amount < $lowest ) {
+                $lowest = $amount;
+            }
+        }
+
+        return $lowest;
+    }
+
+    /**
      * Smallest and largest amount a customer may put towards a balance right now.
      *
      * @param WC_Order|int $order Order object or ID.
