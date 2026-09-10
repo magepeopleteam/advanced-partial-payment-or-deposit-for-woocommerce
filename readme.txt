@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.2
+Stable tag: 4.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,15 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.3 =
+* Security: The "Pay Balance Now" button in the balance reminder email now routes through the balance payment flow. It previously linked straight to the order payment page, which charged the customer the deposit amount again and credited the payment to nothing, leaving the balance still owed.
+* Security: Paying a balance no longer reinstates a cancelled order. Cancelling is a shop decision and a customer payment must not silently reverse it (filter `apd_allow_payment_on_cancelled_order` restores the old behaviour).
+* Security: Hardened the balance payment permission check. Guest orders have no owner, so a logged-out visitor now has to present the order key rather than passing an owner comparison of 0 against 0.
+* Security: A recorded payment is now capped at the amount still outstanding, so the total paid can never exceed the order total.
+* Feature: Support for paying a balance in freely chosen amounts, over as many payments as the customer likes, until the booking is paid in full. Off by default; enable it under Deposits > Flexible Payments with the Pro addon.
+* Fix: The cart payment-type toggle now rejects products that have no deposit enabled, matching the bulk toggle.
+* Dev: New filters `apd_allow_partial_balance_payments`, `apd_min_balance_payment` and `apd_allow_payment_on_cancelled_order`.
 
 = 4.0.2 =
 * Security: Offline payment gateways (Cash on delivery, Direct bank transfer, Check payments) no longer close out a deposit balance. Previously an order moving to on-hold or processing was treated as a successful remaining-balance payment, so a customer could mark an order fully paid without any money being captured.

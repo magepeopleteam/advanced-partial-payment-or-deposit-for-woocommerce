@@ -312,3 +312,23 @@
         padding: 8px;
     }
 }
+
+/* Flexible balance payments (My Account > Deposits) */
+.apd-pay-balance-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+.apd-pay-balance-form .apd-pay-balance-amount {
+    width: 8em;
+    max-width: 100%;
+    padding: 6px 8px;
+}
+.apd-pay-balance-form .apd-pay-balance-hint {
+    flex-basis: 100%;
+    display: block;
+    font-size: 11px;
+    opacity: 0.75;
+}
