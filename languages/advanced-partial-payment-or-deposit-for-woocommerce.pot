@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-10T03:17:42+00:00\n"
+"POT-Creation-Date: 2026-09-10T03:19:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
@@ -294,7 +294,7 @@ msgid "License"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:24
-#: admin/class-apd-category-meta.php:67
+#: admin/class-apd-category-meta.php:69
 #: admin/class-apd-product-meta.php:52
 msgid "Enable Deposit"
 msgstr ""
@@ -302,10 +302,11 @@ msgstr ""
 #: admin/class-apd-category-meta.php:26
 #: admin/class-apd-category-meta.php:34
 #: admin/class-apd-category-meta.php:43
-#: admin/class-apd-category-meta.php:70
-#: admin/class-apd-category-meta.php:80
-#: admin/class-apd-category-meta.php:92
-#: admin/class-apd-category-meta.php:104
+#: admin/class-apd-category-meta.php:72
+#: admin/class-apd-category-meta.php:82
+#: admin/class-apd-category-meta.php:94
+#: admin/class-apd-category-meta.php:108
+#: admin/class-apd-category-meta.php:120
 #: admin/class-apd-product-meta.php:54
 #: admin/class-apd-product-meta.php:67
 #: admin/class-apd-product-meta.php:81
@@ -316,9 +317,9 @@ msgstr ""
 
 #: admin/class-apd-category-meta.php:27
 #: admin/class-apd-category-meta.php:35
-#: admin/class-apd-category-meta.php:71
-#: admin/class-apd-category-meta.php:81
-#: admin/class-apd-category-meta.php:93
+#: admin/class-apd-category-meta.php:73
+#: admin/class-apd-category-meta.php:83
+#: admin/class-apd-category-meta.php:95
 #: admin/class-apd-product-meta.php:55
 #: admin/class-apd-product-meta.php:68
 #: admin/class-apd-product-meta.php:82
@@ -328,9 +329,9 @@ msgstr ""
 
 #: admin/class-apd-category-meta.php:28
 #: admin/class-apd-category-meta.php:36
-#: admin/class-apd-category-meta.php:72
-#: admin/class-apd-category-meta.php:82
-#: admin/class-apd-category-meta.php:94
+#: admin/class-apd-category-meta.php:74
+#: admin/class-apd-category-meta.php:84
+#: admin/class-apd-category-meta.php:96
 #: admin/class-apd-product-meta.php:56
 #: admin/class-apd-product-meta.php:69
 #: admin/class-apd-product-meta.php:83
@@ -339,26 +340,27 @@ msgid "No"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:32
-#: admin/class-apd-category-meta.php:77
+#: admin/class-apd-category-meta.php:79
 #: admin/class-apd-product-meta.php:65
 #: admin/class-apd-product-meta.php:309
 msgid "Force Deposit Only"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:38
-#: admin/class-apd-category-meta.php:84
+#: admin/class-apd-category-meta.php:86
 msgid "Force products in this category to show only the deposit/partial payment option."
 msgstr ""
 
 #: admin/class-apd-category-meta.php:41
-#: admin/class-apd-category-meta.php:101
+#: admin/class-apd-category-meta.php:117
 #: admin/class-apd-product-meta.php:137
 #: admin/views/tabs/products.php:80
 msgid "Deposit Type"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:44
-#: admin/class-apd-category-meta.php:105
+#: admin/class-apd-category-meta.php:109
+#: admin/class-apd-category-meta.php:121
 #: admin/class-apd-product-meta.php:114
 #: admin/class-apd-product-meta.php:128
 #: admin/views/tabs/general.php:43
@@ -367,7 +369,7 @@ msgid "Fixed Amount"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:45
-#: admin/class-apd-category-meta.php:106
+#: admin/class-apd-category-meta.php:122
 #: admin/class-apd-product-meta.php:129
 #: admin/views/tabs/categories.php:42
 #: admin/js/apd-admin.js:710
@@ -375,7 +377,7 @@ msgid "Percentage"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:49
-#: admin/class-apd-category-meta.php:111
+#: admin/class-apd-category-meta.php:127
 #: admin/class-apd-product-meta.php:147
 msgid "Deposit Value"
 msgstr ""
@@ -385,36 +387,57 @@ msgstr ""
 msgid "e.g. 50"
 msgstr ""
 
-#: admin/class-apd-category-meta.php:89
+#: admin/class-apd-category-meta.php:91
 #: admin/class-apd-product-meta.php:79
 msgid "Flexible Payments (Pro)"
 msgstr ""
 
-#: admin/class-apd-category-meta.php:96
+#: admin/class-apd-category-meta.php:98
 msgid "Let customers pay the remaining balance in any amount, over as many payments as they like. Overrides the global Flexible Payments setting for products in this category."
 msgstr ""
 
-#: admin/class-apd-category-meta.php:160
-#: admin/class-apd-category-meta.php:202
+#: admin/class-apd-category-meta.php:102
+#: admin/class-apd-product-meta.php:101
+msgid "Minimum Per Payment"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:106
+#: admin/class-apd-product-meta.php:104
+#: admin/class-apd-product-meta.php:179
+#: admin/class-apd-product-meta.php:189
+msgid "Use global"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:110
+#: admin/class-apd-product-meta.php:115
+msgid "Percentage of Booking Total"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:112
+msgid "Smallest amount a customer may put towards a balance for products in this category. Leave empty to use the global minimum. If less than this is left, the customer can still clear the balance."
+msgstr ""
+
+#: admin/class-apd-category-meta.php:178
+#: admin/class-apd-category-meta.php:220
 msgid "Assigned Payment Plans"
 msgstr ""
 
-#: admin/class-apd-category-meta.php:173
-#: admin/class-apd-category-meta.php:221
+#: admin/class-apd-category-meta.php:191
+#: admin/class-apd-category-meta.php:239
 #: admin/class-apd-product-meta.php:406
 msgid "installments"
 msgstr ""
 
-#: admin/class-apd-category-meta.php:180
-#: admin/class-apd-category-meta.php:228
+#: admin/class-apd-category-meta.php:198
+#: admin/class-apd-category-meta.php:246
 msgid "No payment plans found yet. Create plans from Deposits > Payment Plans."
 msgstr ""
 
-#: admin/class-apd-category-meta.php:183
+#: admin/class-apd-category-meta.php:201
 msgid "Optional Pro override. If no product-level plans are assigned, these category plans will be used for products in this category."
 msgstr ""
 
-#: admin/class-apd-category-meta.php:231
+#: admin/class-apd-category-meta.php:249
 msgid "Optional Pro override. Product-specific plan assignments take priority over category plan assignments."
 msgstr ""
 
@@ -502,26 +525,12 @@ msgstr ""
 msgid "Smallest amount a customer may put towards the balance of this booking. Leave empty to use the global Flexible Payments minimum."
 msgstr ""
 
-#: admin/class-apd-product-meta.php:101
-msgid "Minimum Per Payment"
-msgstr ""
-
-#: admin/class-apd-product-meta.php:104
-#: admin/class-apd-product-meta.php:179
-#: admin/class-apd-product-meta.php:189
-msgid "Use global"
-msgstr ""
-
 #: admin/class-apd-product-meta.php:106
 msgid "If the balance left is smaller than this, the customer can still pay it off in full."
 msgstr ""
 
 #: admin/class-apd-product-meta.php:111
 msgid "Minimum Type"
-msgstr ""
-
-#: admin/class-apd-product-meta.php:115
-msgid "Percentage of Booking Total"
 msgstr ""
 
 #: admin/class-apd-product-meta.php:119

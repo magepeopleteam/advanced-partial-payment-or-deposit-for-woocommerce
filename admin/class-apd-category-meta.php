@@ -62,6 +62,8 @@ class APD_Category_Meta {
         $type   = get_term_meta( $term->term_id, '_apd_deposit_type', true );
         $value  = get_term_meta( $term->term_id, '_apd_deposit_value', true );
         $flex   = get_term_meta( $term->term_id, '_apd_flexible_payments', true );
+        $fmin   = get_term_meta( $term->term_id, '_apd_flexible_min_payment', true );
+        $fmtype = get_term_meta( $term->term_id, '_apd_flexible_min_payment_type', true );
         ?>
         <tr class="form-field">
             <th><label><?php esc_html_e( 'Enable Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
@@ -94,6 +96,20 @@ class APD_Category_Meta {
                     <option value="no" <?php selected( $flex, 'no' ); ?>><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                 </select>
                 <p class="description"><?php esc_html_e( 'Let customers pay the remaining balance in any amount, over as many payments as they like. Overrides the global Flexible Payments setting for products in this category.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
+            </td>
+        </tr>
+        <tr class="form-field">
+            <th><label><?php esc_html_e( 'Minimum Per Payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
+            <td>
+                <input type="number" step="0.01" min="0" name="_apd_flexible_min_payment"
+                       value="<?php echo esc_attr( $fmin ); ?>"
+                       placeholder="<?php esc_attr_e( 'Use global', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>" />
+                <select name="_apd_flexible_min_payment_type">
+                    <option value="" <?php selected( $fmtype, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="fixed" <?php selected( $fmtype, 'fixed' ); ?>><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="percentage" <?php selected( $fmtype, 'percentage' ); ?>><?php esc_html_e( 'Percentage of Booking Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                </select>
+                <p class="description"><?php esc_html_e( 'Smallest amount a customer may put towards a balance for products in this category. Leave empty to use the global minimum. If less than this is left, the customer can still clear the balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
             </td>
         </tr>
         <?php endif; ?>
@@ -129,6 +145,8 @@ class APD_Category_Meta {
 
         if ( defined( 'APD_PRO_VERSION' ) ) {
             $fields[] = '_apd_flexible_payments';
+            $fields[] = '_apd_flexible_min_payment';
+            $fields[] = '_apd_flexible_min_payment_type';
         }
 
         foreach ( $fields as $field ) {
