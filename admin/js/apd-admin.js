@@ -260,7 +260,7 @@
                 var preview = self.getDepositPreview(effectiveEnable.value, effectiveForce.value, effectiveType.value, effectiveValue.value, productPrice, context, effectiveMinMax, effectivePlans);
 
                 self.toggleProductTypePanels(productType, effectiveType.value);
-                self.toggleFlexiblePanel();
+                self.toggleFlexiblePanel(effectiveType.value);
 
                 var effectiveScopeLabel = self.formatScopeLabel(effectiveScope);
                 var enabledLabel = effectiveEnable.value === 'yes'
@@ -315,10 +315,20 @@
             });
         },
 
-        toggleFlexiblePanel: function () {
+        toggleFlexiblePanel: function (effectiveType) {
+            // A Payment Plan already schedules the remaining balance, so Flexible
+            // Payments has nothing left to govern. Showing both reads as two competing
+            // systems, so swap the whole block for a one-line explanation instead.
+            var isPlan = effectiveType === 'payment_plan';
+
+            $('#apd-product-flexible-wrap').toggle(!isPlan);
+            $('#apd-product-flexible-plan-note').toggle(isPlan);
+
             // The per-product minimum only means something when this product explicitly
             // opts in. On "Use Global Setting" the global Flexible Payments rules apply.
-            $('#apd-product-flexible-section').toggle($('#_apd_flexible_payments').val() === 'yes');
+            $('#apd-product-flexible-section').toggle(
+                !isPlan && $('#_apd_flexible_payments').val() === 'yes'
+            );
         },
 
         toggleProductTypePanels: function (selectedType, effectiveType) {
