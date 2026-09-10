@@ -1350,3 +1350,70 @@
     margin-right: 4px;
     vertical-align: text-bottom;
 }
+
+/* ---------------------------------------------------------------------------
+   Collapsible group inside a WooCommerce product panel.
+   Flexible Payments governs the balance after the deposit, so it is its own
+   group rather than loose fields trailing the deposit-type settings.
+   --------------------------------------------------------------------------- */
+.woocommerce_options_panel .apd-collapsible {
+    margin: 14px 12px 10px;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.woocommerce_options_panel .apd-collapsible__toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    margin: 0;
+    padding: 12px 14px;
+    border: 0;
+    background: #f6f7f7;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.woocommerce_options_panel .apd-collapsible__toggle:hover {
+    background: #eef0f1;
+}
+
+.woocommerce_options_panel .apd-collapsible.is-open .apd-collapsible__toggle {
+    border-bottom: 1px solid #dcdcde;
+}
+
+.woocommerce_options_panel .apd-collapsible__icon {
+    color: #10b981;
+}
+
+.woocommerce_options_panel .apd-collapsible__hint {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 400;
+    color: #646970;
+}
+
+.woocommerce_options_panel .apd-collapsible__arrow {
+    transition: transform 0.15s ease;
+    color: #646970;
+}
+
+.woocommerce_options_panel .apd-collapsible.is-open .apd-collapsible__arrow {
+    transform: rotate(180deg);
+}
+
+.woocommerce_options_panel .apd-collapsible__body {
+    padding: 8px 0 10px;
+}
+
+@media (max-width: 782px) {
+    .woocommerce_options_panel .apd-collapsible__hint {
+        display: none;
+    }
+}

@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.10
+Stable tag: 4.0.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.11 =
+* Improvement: Flexible Payments is now a collapsible "Flexible Payments (Pro)" group on the Deposit tab. Click the header and its fields appear. It is a closed group by default, so it no longer reads as a trailing part of the selected deposit type, and the short-lived separate Remaining Balance tab has been removed.
 
 = 4.0.10 =
 * Improvement: Flexible Payments now has its own "Remaining Balance" tab on the product screen, beside Deposit. It previously sat underneath the deposit fields, where it read as part of the selected deposit type instead of as the separate setting it is.

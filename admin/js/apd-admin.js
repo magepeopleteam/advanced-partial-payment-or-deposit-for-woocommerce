@@ -306,6 +306,17 @@
 
             renderSummary();
 
+            // Flexible Payments is its own collapsible group inside the Deposit tab:
+            // click the header and its fields appear.
+            $(document).on('click', '.apd-collapsible__toggle', function () {
+                var $toggle = $(this);
+                var open = $toggle.attr('aria-expanded') === 'true';
+
+                $toggle.attr('aria-expanded', open ? 'false' : 'true')
+                       .closest('.apd-collapsible').toggleClass('is-open', !open);
+                $('#' + $toggle.attr('aria-controls')).slideToggle(150);
+            });
+
             $(document).on('change input', '#_apd_enable_deposit, #_apd_force_deposit, #_apd_deposit_type, #_apd_deposit_value, #_apd_min_deposit, #_apd_max_deposit, #_apd_flexible_payments, #_price, #_regular_price, #_sale_price, input[name="_apd_assigned_plans[]"]', renderSummary);
             $(document).on('change', '#apd-product-plans-section input[name="_apd_assigned_plans[]"], #apd_payment_plans_data input[name="_apd_assigned_plans[]"]', function () {
                 var value = $(this).val();
