@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.8\n"
+"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.9\n"
 "Report-Msgid-Bugs-To: https://www.mage-people.com/\n"
 "Last-Translator: MagePeople Team <support@mage-people.com>\n"
 "Language-Team: MagePeople Team <support@mage-people.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-10T03:34:17+00:00\n"
+"POT-Creation-Date: 2026-09-10T03:37:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
@@ -264,7 +264,7 @@ msgid "Flexible Payments"
 msgstr ""
 
 #: admin/class-apd-admin.php:161
-#: admin/class-apd-product-meta.php:391
+#: admin/class-apd-product-meta.php:394
 msgid "Payment Plans"
 msgstr ""
 
@@ -305,13 +305,11 @@ msgstr ""
 #: admin/class-apd-category-meta.php:72
 #: admin/class-apd-category-meta.php:82
 #: admin/class-apd-category-meta.php:94
-#: admin/class-apd-category-meta.php:108
 #: admin/class-apd-category-meta.php:120
 #: admin/class-apd-product-meta.php:54
 #: admin/class-apd-product-meta.php:67
 #: admin/class-apd-product-meta.php:77
 #: admin/class-apd-product-meta.php:239
-#: admin/class-apd-product-meta.php:264
 msgid "Use Global Setting"
 msgstr ""
 
@@ -342,7 +340,7 @@ msgstr ""
 #: admin/class-apd-category-meta.php:32
 #: admin/class-apd-category-meta.php:79
 #: admin/class-apd-product-meta.php:65
-#: admin/class-apd-product-meta.php:316
+#: admin/class-apd-product-meta.php:319
 msgid "Force Deposit Only"
 msgstr ""
 
@@ -359,10 +357,8 @@ msgid "Deposit Type"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:44
-#: admin/class-apd-category-meta.php:109
 #: admin/class-apd-category-meta.php:121
 #: admin/class-apd-product-meta.php:78
-#: admin/class-apd-product-meta.php:265
 #: admin/views/tabs/general.php:43
 #: admin/js/apd-admin.js:720
 msgid "Fixed Amount"
@@ -398,7 +394,7 @@ msgstr ""
 
 #: admin/class-apd-category-meta.php:102
 #: admin/class-apd-product-meta.php:252
-msgid "Minimum Per Payment"
+msgid "Smallest payment allowed"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:106
@@ -408,9 +404,19 @@ msgstr ""
 msgid "Use global"
 msgstr ""
 
+#: admin/class-apd-category-meta.php:108
+#: admin/class-apd-product-meta.php:267
+msgid "Use the global minimum"
+msgstr ""
+
+#: admin/class-apd-category-meta.php:109
+#: admin/class-apd-product-meta.php:268
+msgid "A flat amount of money"
+msgstr ""
+
 #: admin/class-apd-category-meta.php:110
-#: admin/class-apd-product-meta.php:266
-msgid "Percentage of Booking Total"
+#: admin/class-apd-product-meta.php:269
+msgid "A percentage of the booking total"
 msgstr ""
 
 #: admin/class-apd-category-meta.php:112
@@ -424,7 +430,7 @@ msgstr ""
 
 #: admin/class-apd-category-meta.php:191
 #: admin/class-apd-category-meta.php:239
-#: admin/class-apd-product-meta.php:413
+#: admin/class-apd-product-meta.php:416
 msgid "installments"
 msgstr ""
 
@@ -613,31 +619,31 @@ msgstr ""
 msgid "Smallest amount a customer may put towards this balance. If less than this is left, they can still clear it in full."
 msgstr ""
 
-#: admin/class-apd-product-meta.php:262
-msgid "Minimum Type"
+#: admin/class-apd-product-meta.php:265
+msgid "The minimum above is"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:270
-msgid "Treat the minimum above as a flat amount or a percentage of the full booking total."
+#: admin/class-apd-product-meta.php:273
+msgid "This only describes the Minimum Per Payment field above it. It does not change the Deposit Type."
 msgstr ""
 
-#: admin/class-apd-product-meta.php:276
+#: admin/class-apd-product-meta.php:279
 msgid "Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan."
 msgstr ""
 
-#: admin/class-apd-product-meta.php:289
+#: admin/class-apd-product-meta.php:292
 msgid "Effective Deposit Configuration"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:290
+#: admin/class-apd-product-meta.php:293
 msgid "Rule Summary"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:291
+#: admin/class-apd-product-meta.php:294
 msgid "See whether this product uses its own deposit rule or falls back to category/global settings."
 msgstr ""
 
-#: admin/class-apd-product-meta.php:294
+#: admin/class-apd-product-meta.php:297
 #: admin/js/apd-admin.js:267
 #: admin/js/apd-admin.js:778
 #: admin/js/apd-admin.js:798
@@ -645,102 +651,102 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:295
+#: admin/class-apd-product-meta.php:298
 #: admin/js/apd-admin.js:599
 msgid "Product Override"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:301
+#: admin/class-apd-product-meta.php:304
 msgid "Deposit Availability"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:306
+#: admin/class-apd-product-meta.php:309
 msgid "Effective Deposit Type"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:311
+#: admin/class-apd-product-meta.php:314
 msgid "Effective Deposit Value"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:321
+#: admin/class-apd-product-meta.php:324
 msgid "Active Rule Scope"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:340
+#: admin/class-apd-product-meta.php:343
 msgid "Min Deposit"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:345
-#: admin/class-apd-product-meta.php:360
+#: admin/class-apd-product-meta.php:348
+#: admin/class-apd-product-meta.php:363
 msgid "Source: Product override"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:347
-#: admin/class-apd-product-meta.php:362
+#: admin/class-apd-product-meta.php:350
+#: admin/class-apd-product-meta.php:365
 msgid "Source: Global settings"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:349
+#: admin/class-apd-product-meta.php:352
 msgid "No minimum set"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:355
+#: admin/class-apd-product-meta.php:358
 msgid "Max Deposit"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:364
+#: admin/class-apd-product-meta.php:367
 msgid "No maximum set"
 msgstr ""
 
 #. translators: %d: number of payment plans assigned to the product.
-#: admin/class-apd-product-meta.php:397
+#: admin/class-apd-product-meta.php:400
 #, php-format
 msgid "%d plan(s) assigned to this product"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:399
+#: admin/class-apd-product-meta.php:402
 msgid "Using all active plans"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:428
+#: admin/class-apd-product-meta.php:431
 msgid "No payment plans available. Create plans in Deposits → Payment Plans."
 msgstr ""
 
-#: admin/class-apd-product-meta.php:436
+#: admin/class-apd-product-meta.php:439
 msgid "Product Setting"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:440
+#: admin/class-apd-product-meta.php:443
 #: admin/js/apd-admin.js:602
 msgid "Category Fallback"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:444
+#: admin/class-apd-product-meta.php:447
 #: admin/js/apd-admin.js:604
 msgid "Global Default"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:451
+#: admin/class-apd-product-meta.php:454
 msgid "Current Product Price"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:456
+#: admin/class-apd-product-meta.php:459
 msgid "Pay Now"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:460
+#: admin/class-apd-product-meta.php:463
 #: includes/class-apd-deposit.php:419
 #: public/class-apd-blocks.php:93
 #: public/class-apd-blocks.php:267
 msgid "Pay Later"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:519
+#: admin/class-apd-product-meta.php:522
 #: admin/js/apd-admin.js:797
 msgid "No category override"
 msgstr ""
 
-#: admin/class-apd-product-meta.php:525
+#: admin/class-apd-product-meta.php:528
 msgid "Category rule"
 msgstr ""
 

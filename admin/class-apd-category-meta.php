@@ -99,15 +99,15 @@ class APD_Category_Meta {
             </td>
         </tr>
         <tr class="form-field">
-            <th><label><?php esc_html_e( 'Minimum Per Payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
+            <th><label><?php esc_html_e( 'Smallest payment allowed', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
                 <input type="number" step="0.01" min="0" name="_apd_flexible_min_payment"
                        value="<?php echo esc_attr( $fmin ); ?>"
                        placeholder="<?php esc_attr_e( 'Use global', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>" />
                 <select name="_apd_flexible_min_payment_type">
-                    <option value="" <?php selected( $fmtype, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
-                    <option value="fixed" <?php selected( $fmtype, 'fixed' ); ?>><?php esc_html_e( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
-                    <option value="percentage" <?php selected( $fmtype, 'percentage' ); ?>><?php esc_html_e( 'Percentage of Booking Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="" <?php selected( $fmtype, '' ); ?>><?php esc_html_e( 'Use the global minimum', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="fixed" <?php selected( $fmtype, 'fixed' ); ?>><?php esc_html_e( 'A flat amount of money', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="percentage" <?php selected( $fmtype, 'percentage' ); ?>><?php esc_html_e( 'A percentage of the booking total', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
                 </select>
                 <p class="description"><?php esc_html_e( 'Smallest amount a customer may put towards a balance for products in this category. Leave empty to use the global minimum. If less than this is left, the customer can still clear the balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
             </td>

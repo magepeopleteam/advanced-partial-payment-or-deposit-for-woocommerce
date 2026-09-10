@@ -249,7 +249,7 @@ class APD_Product_Meta {
                     <?php
                     woocommerce_wp_text_input( array(
                         'id'          => '_apd_flexible_min_payment',
-                        'label'       => __( 'Minimum Per Payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'label'       => __( 'Smallest payment allowed', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         'type'        => 'number',
                         'value'       => get_post_meta( $product_id, '_apd_flexible_min_payment', true ),
                         'placeholder' => __( 'Use global', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
@@ -258,16 +258,19 @@ class APD_Product_Meta {
                         'custom_attributes' => array( 'step' => '0.01', 'min' => '0' ),
                     ) );
                     woocommerce_wp_select( array(
+                        // Deliberately not called "Type": a second Type dropdown offering
+                        // the same option labels as Deposit Type reads as a duplicate of
+                        // it, when it only ever describes the minimum directly above.
                         'id'          => '_apd_flexible_min_payment_type',
-                        'label'       => __( 'Minimum Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'label'       => __( 'The minimum above is', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         'options'     => array(
-                            ''           => __( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                            'fixed'      => __( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                            'percentage' => __( 'Percentage of Booking Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            ''           => __( 'Use the global minimum', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'fixed'      => __( 'A flat amount of money', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'percentage' => __( 'A percentage of the booking total', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                         ),
                         'value'       => get_post_meta( $product_id, '_apd_flexible_min_payment_type', true ),
                         'desc_tip'    => true,
-                        'description' => __( 'Treat the minimum above as a flat amount or a percentage of the full booking total.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'description' => __( 'This only describes the Minimum Per Payment field above it. It does not change the Deposit Type.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     ) );
                     ?>
                     </div>
