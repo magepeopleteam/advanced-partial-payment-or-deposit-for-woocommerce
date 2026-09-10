@@ -167,7 +167,12 @@ class APD_Cart {
         if ( isset( $cart[ $cart_item_key ] ) ) {
             $product_id      = intval( $cart[ $cart_item_key ]['product_id'] ?? 0 );
             $deposit_engine  = APD_Deposit::instance();
-            $forced_deposit  = $product_id ? $deposit_engine->is_force_deposit_enabled( $product_id ) : false;
+
+            if ( ! $product_id || ! $deposit_engine->is_deposit_enabled( $product_id ) ) {
+                wp_send_json_error( __( 'Deposits are not available for this item.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
+            }
+
+            $forced_deposit  = $deposit_engine->is_force_deposit_enabled( $product_id );
 
             WC()->cart->cart_contents[ $cart_item_key ]['apd_pay_deposit'] = ( $forced_deposit || $payment_type === 'deposit' ) ? 'yes' : 'no';
             WC()->cart->set_session();
