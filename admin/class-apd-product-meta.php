@@ -223,14 +223,14 @@ class APD_Product_Meta {
                 <?php
                 if ( defined( 'APD_PRO_VERSION' ) ) :
                 ?>
-                <div id="apd-product-flexible-wrap">
-                    <p class="form-field" style="padding:10px 12px;margin-top:8px;border-top:1px solid #f0f0f1;">
-                        <span class="dashicons dashicons-money-alt" style="color:#10b981;margin-right:5px;"></span>
-                        <strong><?php esc_html_e( 'Remaining Balance (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></strong>
-                        <span style="color:#999;font-size:12px;display:block;margin-top:4px;">
-                            <?php esc_html_e( 'How the customer pays off what is left after the deposit.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+                <div id="apd-product-flexible-wrap" class="apd-product-flexible-card">
+                    <div class="apd-product-flexible-card__head">
+                        <span class="dashicons dashicons-money-alt"></span>
+                        <span class="apd-product-flexible-card__title"><?php esc_html_e( 'Remaining Balance (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
+                        <span class="apd-product-flexible-card__desc">
+                            <?php esc_html_e( 'A separate setting from the deposit above: this is how the customer pays off whatever is left afterwards.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                         </span>
-                    </p>
+                    </div>
                     <?php
                     woocommerce_wp_select( array(
                         'id'          => '_apd_flexible_payments',
@@ -271,11 +271,11 @@ class APD_Product_Meta {
                     ) );
                     ?>
                     </div>
+                    <p id="apd-product-flexible-plan-note" class="apd-product-flexible-card__note">
+                        <span class="dashicons dashicons-warning"></span>
+                        <?php esc_html_e( 'Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+                    </p>
                 </div>
-                <p id="apd-product-flexible-plan-note" class="form-field" style="padding:10px 12px;margin-top:8px;border-top:1px solid #f0f0f1;color:#8a6d3b;background:#fcf8e3;">
-                    <span class="dashicons dashicons-warning" style="color:#f59e0b;margin-right:5px;"></span>
-                    <?php esc_html_e( 'Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
-                </p>
                 <?php endif; ?>
 
                 <div class="form-field apd-product-deposit-insight-wrap" style="padding:12px;">

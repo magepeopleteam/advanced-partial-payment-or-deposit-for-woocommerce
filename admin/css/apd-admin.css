@@ -1286,3 +1286,67 @@
         justify-content: flex-start;
     }
 }
+
+/* ---------------------------------------------------------------------------
+   Remaining Balance card (product Deposit tab)
+   Flexible Payments governs the balance after the deposit, not the deposit
+   itself, so it gets its own boxed panel instead of reading as a continuation
+   of whichever deposit-type fields happen to sit above it.
+   --------------------------------------------------------------------------- */
+.woocommerce_options_panel .apd-product-flexible-card {
+    margin: 18px 12px 10px;
+    border: 1px solid #dcdcde;
+    border-left: 4px solid #10b981;
+    border-radius: 6px;
+    background: #f7fdfa;
+    padding-bottom: 8px;
+    overflow: hidden;
+}
+
+.woocommerce_options_panel .apd-product-flexible-card__head {
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid #e6eeea;
+    background: #eefaf4;
+}
+
+.woocommerce_options_panel .apd-product-flexible-card__head .dashicons {
+    color: #10b981;
+    margin-right: 4px;
+    vertical-align: text-bottom;
+}
+
+.woocommerce_options_panel .apd-product-flexible-card__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.woocommerce_options_panel .apd-product-flexible-card__desc {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #646970;
+}
+
+/* First field needs breathing room under the header bar. */
+.woocommerce_options_panel .apd-product-flexible-card > p.form-field:first-of-type {
+    margin-top: 10px;
+}
+
+.woocommerce_options_panel p.apd-product-flexible-card__note {
+    margin: 8px 14px 4px;
+    padding: 10px 12px;
+    border: 1px solid #f0e0b6;
+    border-radius: 4px;
+    background: #fcf8e3;
+    color: #8a6d3b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.woocommerce_options_panel p.apd-product-flexible-card__note .dashicons {
+    color: #f59e0b;
+    margin-right: 4px;
+    vertical-align: text-bottom;
+}
