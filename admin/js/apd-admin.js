@@ -316,19 +316,27 @@
         },
 
         toggleFlexiblePanel: function (effectiveType) {
-            // A Payment Plan already schedules the remaining balance, so Flexible
-            // Payments has nothing left to govern. Showing both reads as two competing
-            // systems, so swap the whole block for a one-line explanation instead.
+            var flexible = $('#_apd_flexible_payments').val() === 'yes';
             var isPlan = effectiveType === 'payment_plan';
 
-            $('#apd-product-flexible-wrap').toggle(!isPlan);
-            $('#apd-product-flexible-plan-note').toggle(isPlan);
+            // Flexible Payments is always reachable: it decides how the balance is
+            // paid, so hiding it would leave no way to turn it back off.
+            $('#apd-product-flexible-wrap').show();
 
             // The per-product minimum only means something when this product explicitly
             // opts in. On "Use Global Setting" the global Flexible Payments rules apply.
-            $('#apd-product-flexible-section').toggle(
-                !isPlan && $('#_apd_flexible_payments').val() === 'yes'
-            );
+            $('#apd-product-flexible-section').toggle(flexible);
+
+            // A Payment Plan schedules the balance into fixed instalments, which is the
+            // opposite of paying any amount whenever. When Flexible Payments is on it is
+            // the plan that stands down, not the other way round.
+            $('#_apd_deposit_type option[value="payment_plan"]').prop('disabled', flexible);
+
+            if (flexible) {
+                $('#apd-product-plans-section').hide();
+            }
+
+            $('#apd-product-flexible-plan-note').toggle(flexible && isPlan);
         },
 
         toggleProductTypePanels: function (selectedType, effectiveType) {

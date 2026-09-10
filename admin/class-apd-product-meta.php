@@ -272,9 +272,9 @@ class APD_Product_Meta {
                     ?>
                     </div>
                 </div>
-                <p id="apd-product-flexible-plan-note" class="form-field" style="padding:10px 12px;margin-top:8px;border-top:1px solid #f0f0f1;color:#666;">
-                    <span class="dashicons dashicons-info-outline" style="color:#2271b1;margin-right:5px;"></span>
-                    <?php esc_html_e( 'This product uses a Payment Plan, which already schedules the remaining balance. Flexible Payments does not apply here.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+                <p id="apd-product-flexible-plan-note" class="form-field" style="padding:10px 12px;margin-top:8px;border-top:1px solid #f0f0f1;color:#8a6d3b;background:#fcf8e3;">
+                    <span class="dashicons dashicons-warning" style="color:#f59e0b;margin-right:5px;"></span>
+                    <?php esc_html_e( 'Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
                 </p>
                 <?php endif; ?>
 

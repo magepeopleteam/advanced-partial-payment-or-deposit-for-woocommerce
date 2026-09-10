@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.6\n"
+"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.7\n"
 "Report-Msgid-Bugs-To: https://www.mage-people.com/\n"
 "Last-Translator: MagePeople Team <support@mage-people.com>\n"
 "Language-Team: MagePeople Team <support@mage-people.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-10T03:24:28+00:00\n"
+"POT-Creation-Date: 2026-09-10T03:29:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
@@ -269,7 +269,7 @@ msgid "Payment Plans"
 msgstr ""
 
 #: admin/class-apd-admin.php:166
-#: admin/js/apd-admin.js:715
+#: admin/js/apd-admin.js:723
 msgid "Min / Max"
 msgstr ""
 
@@ -364,7 +364,7 @@ msgstr ""
 #: admin/class-apd-product-meta.php:78
 #: admin/class-apd-product-meta.php:265
 #: admin/views/tabs/general.php:43
-#: admin/js/apd-admin.js:712
+#: admin/js/apd-admin.js:720
 msgid "Fixed Amount"
 msgstr ""
 
@@ -372,7 +372,7 @@ msgstr ""
 #: admin/class-apd-category-meta.php:122
 #: admin/class-apd-product-meta.php:79
 #: admin/views/tabs/categories.php:42
-#: admin/js/apd-admin.js:720
+#: admin/js/apd-admin.js:728
 msgid "Percentage"
 msgstr ""
 
@@ -622,7 +622,7 @@ msgid "Treat the minimum above as a flat amount or a percentage of the full book
 msgstr ""
 
 #: admin/class-apd-product-meta.php:277
-msgid "This product uses a Payment Plan, which already schedules the remaining balance. Flexible Payments does not apply here."
+msgid "Flexible Payments is on, so the Payment Plan deposit type is unavailable for this product: a plan fixes the balance into scheduled instalments, which is the opposite of letting the customer pay any amount whenever they like. Choose another deposit type, or set Flexible Payments back to No to use a plan."
 msgstr ""
 
 #: admin/class-apd-product-meta.php:289
@@ -639,14 +639,14 @@ msgstr ""
 
 #: admin/class-apd-product-meta.php:294
 #: admin/js/apd-admin.js:267
-#: admin/js/apd-admin.js:770
-#: admin/js/apd-admin.js:790
-#: admin/js/apd-admin.js:811
+#: admin/js/apd-admin.js:778
+#: admin/js/apd-admin.js:798
+#: admin/js/apd-admin.js:819
 msgid "Enabled"
 msgstr ""
 
 #: admin/class-apd-product-meta.php:295
-#: admin/js/apd-admin.js:591
+#: admin/js/apd-admin.js:599
 msgid "Product Override"
 msgstr ""
 
@@ -711,12 +711,12 @@ msgid "Product Setting"
 msgstr ""
 
 #: admin/class-apd-product-meta.php:440
-#: admin/js/apd-admin.js:594
+#: admin/js/apd-admin.js:602
 msgid "Category Fallback"
 msgstr ""
 
 #: admin/class-apd-product-meta.php:444
-#: admin/js/apd-admin.js:596
+#: admin/js/apd-admin.js:604
 msgid "Global Default"
 msgstr ""
 
@@ -736,7 +736,7 @@ msgid "Pay Later"
 msgstr ""
 
 #: admin/class-apd-product-meta.php:519
-#: admin/js/apd-admin.js:789
+#: admin/js/apd-admin.js:797
 msgid "No category override"
 msgstr ""
 
@@ -1621,163 +1621,163 @@ msgid "Recording..."
 msgstr ""
 
 #: admin/js/apd-admin.js:268
-#: admin/js/apd-admin.js:620
-#: admin/js/apd-admin.js:770
-#: admin/js/apd-admin.js:790
-#: admin/js/apd-admin.js:811
+#: admin/js/apd-admin.js:628
+#: admin/js/apd-admin.js:778
+#: admin/js/apd-admin.js:798
+#: admin/js/apd-admin.js:819
 msgid "Disabled"
 msgstr ""
 
 #: admin/js/apd-admin.js:290
-#: admin/js/apd-admin.js:771
-#: admin/js/apd-admin.js:791
-#: admin/js/apd-admin.js:812
+#: admin/js/apd-admin.js:779
+#: admin/js/apd-admin.js:799
+#: admin/js/apd-admin.js:820
 msgid "Forced"
 msgstr ""
 
 #: admin/js/apd-admin.js:291
-#: admin/js/apd-admin.js:771
-#: admin/js/apd-admin.js:791
-#: admin/js/apd-admin.js:812
+#: admin/js/apd-admin.js:779
+#: admin/js/apd-admin.js:799
+#: admin/js/apd-admin.js:820
 msgid "Not forced"
 msgstr ""
 
-#: admin/js/apd-admin.js:571
+#: admin/js/apd-admin.js:579
 msgid "Product override"
 msgstr ""
 
 #. translators: %s: product category name.
-#: admin/js/apd-admin.js:574
+#: admin/js/apd-admin.js:582
 #, js-format
 msgid "Category: %s"
 msgstr ""
 
-#: admin/js/apd-admin.js:576
+#: admin/js/apd-admin.js:584
 msgid "Available plans"
 msgstr ""
 
-#: admin/js/apd-admin.js:578
+#: admin/js/apd-admin.js:586
 msgid "All active plans"
 msgstr ""
 
-#: admin/js/apd-admin.js:580
+#: admin/js/apd-admin.js:588
 msgid "Global settings"
 msgstr ""
 
 #. translators: %s: where the effective setting comes from.
-#: admin/js/apd-admin.js:586
+#: admin/js/apd-admin.js:594
 #, js-format
 msgid "Source: %s"
 msgstr ""
 
-#: admin/js/apd-admin.js:613
+#: admin/js/apd-admin.js:621
 msgid "N/A"
 msgstr ""
 
-#: admin/js/apd-admin.js:615
+#: admin/js/apd-admin.js:623
 msgid "Full payment is hidden."
 msgstr ""
 
-#: admin/js/apd-admin.js:616
+#: admin/js/apd-admin.js:624
 msgid "Full payment is still allowed."
 msgstr ""
 
-#: admin/js/apd-admin.js:622
+#: admin/js/apd-admin.js:630
 msgid "Deposit is currently disabled for this product."
 msgstr ""
 
-#: admin/js/apd-admin.js:630
+#: admin/js/apd-admin.js:638
 msgid "Save a product price to preview the payable deposit and due balance."
 msgstr ""
 
-#: admin/js/apd-admin.js:637
+#: admin/js/apd-admin.js:645
 msgid "No plans"
 msgstr ""
 
-#: admin/js/apd-admin.js:639
+#: admin/js/apd-admin.js:647
 msgid "Create or assign at least one active plan to preview the first installment."
 msgstr ""
 
 #. translators: %s: payment plan name.
-#: admin/js/apd-admin.js:651
+#: admin/js/apd-admin.js:659
 #, js-format
 msgid "Preview based on the first installment of \"%s\"."
 msgstr ""
 
-#: admin/js/apd-admin.js:651
+#: admin/js/apd-admin.js:659
 msgid "the selected plan"
 msgstr ""
 
-#: admin/js/apd-admin.js:661
-#: admin/js/apd-admin.js:741
+#: admin/js/apd-admin.js:669
+#: admin/js/apd-admin.js:749
 msgid "Range not set"
 msgstr ""
 
-#: admin/js/apd-admin.js:663
+#: admin/js/apd-admin.js:671
 msgid "Set product or global min/max values to preview the customer-selectable range."
 msgstr ""
 
-#: admin/js/apd-admin.js:673
+#: admin/js/apd-admin.js:681
 msgid "Preview based on the current min/max range customers can choose."
 msgstr ""
 
-#: admin/js/apd-admin.js:691
+#: admin/js/apd-admin.js:699
 msgid "Preview based on the current product price."
 msgstr ""
 
-#: admin/js/apd-admin.js:718
+#: admin/js/apd-admin.js:726
 msgid "Payment Plan"
 msgstr ""
 
-#: admin/js/apd-admin.js:727
+#: admin/js/apd-admin.js:735
 msgid "No active plans"
 msgstr ""
 
-#: admin/js/apd-admin.js:730
+#: admin/js/apd-admin.js:738
 msgid "1 plan selected"
 msgstr ""
 
 #. translators: %d: number of payment plans available.
-#: admin/js/apd-admin.js:733
+#: admin/js/apd-admin.js:741
 #, js-format
 msgid "%d plans available"
 msgstr ""
 
-#: admin/js/apd-admin.js:759
+#: admin/js/apd-admin.js:767
 msgid "This product is using its own deposit configuration."
 msgstr ""
 
 #. translators: %s: source the setting falls back to, e.g. a category name.
-#: admin/js/apd-admin.js:763
+#: admin/js/apd-admin.js:771
 #, js-format
 msgid "Using fallback from %s."
 msgstr ""
 
-#: admin/js/apd-admin.js:765
+#: admin/js/apd-admin.js:773
 msgid "Using the global deposit configuration."
 msgstr ""
 
-#: admin/js/apd-admin.js:769
+#: admin/js/apd-admin.js:777
 msgid "Uses fallback"
 msgstr ""
 
 #. translators: 1: availability label, 2: force-deposit label, 3: deposit type label, 4: deposit value label.
-#: admin/js/apd-admin.js:784
-#: admin/js/apd-admin.js:828
+#: admin/js/apd-admin.js:792
+#: admin/js/apd-admin.js:836
 #, js-format
 msgid "Availability: %1$s | Force only: %2$s | Type: %3$s | Value: %4$s"
 msgstr ""
 
-#: admin/js/apd-admin.js:788
+#: admin/js/apd-admin.js:796
 msgid "Not set"
 msgstr ""
 
-#: admin/js/apd-admin.js:796
+#: admin/js/apd-admin.js:804
 msgid "Uses available payment plans"
 msgstr ""
 
 #. translators: 1: category name, 2: availability label, 3: force-deposit label, 4: deposit type label, 5: deposit value label.
-#: admin/js/apd-admin.js:807
+#: admin/js/apd-admin.js:815
 #, js-format
 msgid "%1$s | Availability: %2$s | Force only: %3$s | Type: %4$s | Value: %5$s"
 msgstr ""
