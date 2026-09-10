@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.4
+Stable tag: 4.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,10 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.5 =
+* Feature: Choosing "Yes" for Flexible Payments on a product or category now reveals a Minimum Per Payment and Minimum Type of its own, so each booking can have its own floor instead of sharing the global one. The section shows and hides as you change the dropdown.
+* Percentage minimums are measured against the full booking total, so the floor does not creep downwards as the customer pays. If less than the minimum is left, the customer can still clear the balance.
 
 = 4.0.4 =
 * Feature: Flexible Payments can now be set per product and per category, not just globally. Each has a "Use Global Setting / Yes / No" control, and an explicit Yes or No overrides the global toggle in both directions.

@@ -260,6 +260,7 @@
                 var preview = self.getDepositPreview(effectiveEnable.value, effectiveForce.value, effectiveType.value, effectiveValue.value, productPrice, context, effectiveMinMax, effectivePlans);
 
                 self.toggleProductTypePanels(productType, effectiveType.value);
+                self.toggleFlexiblePanel();
 
                 var effectiveScopeLabel = self.formatScopeLabel(effectiveScope);
                 var enabledLabel = effectiveEnable.value === 'yes'
@@ -305,13 +306,19 @@
 
             renderSummary();
 
-            $(document).on('change input', '#_apd_enable_deposit, #_apd_force_deposit, #_apd_deposit_type, #_apd_deposit_value, #_apd_min_deposit, #_apd_max_deposit, #_price, #_regular_price, #_sale_price, input[name="_apd_assigned_plans[]"]', renderSummary);
+            $(document).on('change input', '#_apd_enable_deposit, #_apd_force_deposit, #_apd_deposit_type, #_apd_deposit_value, #_apd_min_deposit, #_apd_max_deposit, #_apd_flexible_payments, #_price, #_regular_price, #_sale_price, input[name="_apd_assigned_plans[]"]', renderSummary);
             $(document).on('change', '#apd-product-plans-section input[name="_apd_assigned_plans[]"], #apd_payment_plans_data input[name="_apd_assigned_plans[]"]', function () {
                 var value = $(this).val();
                 var isChecked = $(this).is(':checked');
 
                 $('input[name="_apd_assigned_plans[]"][value="' + value + '"]').not(this).prop('checked', isChecked);
             });
+        },
+
+        toggleFlexiblePanel: function () {
+            // The per-product minimum only means something when this product explicitly
+            // opts in. On "Use Global Setting" the global Flexible Payments rules apply.
+            $('#apd-product-flexible-section').toggle($('#_apd_flexible_payments').val() === 'yes');
         },
 
         toggleProductTypePanels: function (selectedType, effectiveType) {
