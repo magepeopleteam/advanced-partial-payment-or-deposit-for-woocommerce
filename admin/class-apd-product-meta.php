@@ -73,6 +73,21 @@ class APD_Product_Meta {
                     'description' => __( 'Force this product to show only the deposit/partial payment option and hide full payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 ) );
 
+                if ( defined( 'APD_PRO_VERSION' ) ) {
+                    woocommerce_wp_select( array(
+                        'id'          => '_apd_flexible_payments',
+                        'label'       => __( 'Flexible Payments (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'options'     => array(
+                            ''    => __( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'yes' => __( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'no'  => __( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        ),
+                        'value'       => get_post_meta( $product_id, '_apd_flexible_payments', true ),
+                        'desc_tip'    => true,
+                        'description' => __( 'Let customers pay the remaining balance in any amount, over as many payments as they like, until this booking is paid in full. Yes or No overrides the global Flexible Payments setting for this product.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                    ) );
+                }
+
                 $deposit_type_options = array(
                     'global'     => __( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     'fixed'      => __( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
@@ -423,10 +438,11 @@ class APD_Product_Meta {
 
         $fields = array( '_apd_enable_deposit', '_apd_force_deposit', '_apd_deposit_type', '_apd_deposit_value' );
 
-        // Pro: min/max deposit fields
+        // Pro: min/max deposit and flexible payment fields
         if ( defined( 'APD_PRO_VERSION' ) ) {
             $fields[] = '_apd_min_deposit';
             $fields[] = '_apd_max_deposit';
+            $fields[] = '_apd_flexible_payments';
         }
 
         foreach ( $fields as $field ) {
