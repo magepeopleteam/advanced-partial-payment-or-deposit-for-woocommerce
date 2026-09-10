@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-07T07:44:51+00:00\n"
+"POT-Creation-Date: 2026-09-10T02:09:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
@@ -1213,27 +1213,32 @@ msgstr ""
 msgid "Balance payment completed on thank-you page."
 msgstr ""
 
-#: includes/class-apd-order.php:130
-#: includes/class-apd-order.php:159
-msgid "Deposit payment received. Balance is still due."
-msgstr ""
-
-#: includes/class-apd-order.php:151
+#: includes/class-apd-order.php:142
 msgid "Balance payment recorded after order status update."
 msgstr ""
 
-#: includes/class-apd-order.php:250
+#: includes/class-apd-order.php:178
+msgid "Deposit payment received. Balance is still due."
+msgstr ""
+
+#: includes/class-apd-order.php:274
 msgid "Balance payment recorded"
 msgstr ""
 
-#: includes/class-apd-order.php:258
+#: includes/class-apd-order.php:282
 msgid "Full balance paid."
 msgstr ""
 
 #. translators: 1: payment amount, 2: balance due
-#: includes/class-apd-order.php:264
+#: includes/class-apd-order.php:288
 #, php-format
 msgid "Balance payment of %1$s recorded. Remaining balance: %2$s"
+msgstr ""
+
+#. translators: 1: payment method title, 2: outstanding balance amount.
+#: includes/class-apd-order.php:470
+#, php-format
+msgid "Remaining balance payment was started with %1$s, which does not capture funds. %2$s is still outstanding and must be recorded manually once the money is received."
 msgstr ""
 
 #: includes/class-apd-woo-installer.php:120

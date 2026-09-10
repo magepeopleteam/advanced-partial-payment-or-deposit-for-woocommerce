@@ -116,20 +116,11 @@ class APD_Order {
             return;
         }
 
-        if ( self::has_pending_balance_payment( $order ) && in_array( $order->get_status(), array( 'processing', 'completed', 'on-hold' ), true ) ) {
-            $this->finalize_pending_balance_payment(
-                $order,
-                __( 'Balance payment completed on thank-you page.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
-            );
-            return;
-        }
-
-        if ( self::order_has_outstanding_balance( $order ) && in_array( $order->get_status(), array( 'processing', 'completed', 'on-hold' ), true ) ) {
-            $this->normalize_outstanding_deposit_status(
-                $order,
-                __( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
-            );
-        }
+        $this->reconcile_deposit_order(
+            $order,
+            $order->get_status(),
+            __( 'Balance payment completed on thank-you page.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+        );
     }
 
     /**
@@ -145,15 +136,43 @@ class APD_Order {
             return;
         }
 
-        if ( self::has_pending_balance_payment( $order ) && in_array( $to_status, array( 'processing', 'completed', 'on-hold' ), true ) ) {
-            $this->finalize_pending_balance_payment(
-                $order,
-                __( 'Balance payment recorded after order status update.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
-            );
+        $this->reconcile_deposit_order(
+            $order,
+            $to_status,
+            __( 'Balance payment recorded after order status update.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+        );
+    }
+
+    /**
+     * Reconcile a deposit order against the status it just landed on.
+     *
+     * These are fallbacks for gateways that never call payment_complete(). A status on
+     * its own is not proof of payment, so a pending balance is only written off when
+     * self::is_balance_payment_captured() confirms funds were actually taken.
+     *
+     * @param WC_Order $order         Order object.
+     * @param string   $status        Status being evaluated.
+     * @param string   $finalize_note Note stored against a captured balance payment.
+     */
+    private function reconcile_deposit_order( $order, $status, $finalize_note ) {
+        if ( ! in_array( $status, array( 'processing', 'completed', 'on-hold' ), true ) ) {
             return;
         }
 
-        if ( self::order_has_outstanding_balance( $order ) && in_array( $to_status, array( 'processing', 'completed', 'on-hold' ), true ) ) {
+        if ( self::has_pending_balance_payment( $order ) ) {
+            if ( self::is_balance_payment_captured( $order, $status ) ) {
+                $this->finalize_pending_balance_payment( $order, $finalize_note );
+                return;
+            }
+
+            // No funds captured: keep the balance owed instead of closing the order out.
+            if ( self::is_offline_payment_method( $order ) ) {
+                $this->hold_uncaptured_balance_payment( $order, $status );
+            }
+            return;
+        }
+
+        if ( self::order_has_outstanding_balance( $order ) ) {
             $this->normalize_outstanding_deposit_status(
                 $order,
                 __( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
@@ -224,6 +243,11 @@ class APD_Order {
 
         $amount_paid = floatval( $order->get_meta( '_apd_amount_paid' ) );
         $total       = floatval( $order->get_meta( '_apd_total_amount' ) );
+
+        // Any recorded payment supersedes an in-flight attempt, so drop the markers to
+        // stop a stale pending amount from being banked a second time later on.
+        $order->delete_meta_data( '_apd_balance_payment_pending' );
+        $order->delete_meta_data( '_apd_balance_payment_awaiting_offline' );
 
         $new_paid    = $amount_paid + $amount;
         $new_balance = max( 0, $total - $new_paid );
@@ -327,6 +351,61 @@ class APD_Order {
     }
 
     /**
+     * Payment methods that confirm an order without capturing any money.
+     *
+     * Offline gateways move an order to on-hold or processing as a promise to pay
+     * later, so they can never be treated as a settled balance payment on their own.
+     *
+     * @return string[]
+     */
+    public static function get_offline_payment_methods() {
+        return array_filter( (array) apply_filters(
+            'apd_offline_payment_methods',
+            array( 'cod', 'bacs', 'cheque' )
+        ) );
+    }
+
+    /**
+     * Check whether the payment method on an order captures funds.
+     *
+     * @param WC_Order|int|null $order Order object or ID.
+     * @return bool
+     */
+    public static function is_offline_payment_method( $order ) {
+        if ( is_numeric( $order ) ) {
+            $order = wc_get_order( $order );
+        }
+
+        if ( ! $order ) {
+            return false;
+        }
+
+        $payment_method = $order->get_payment_method();
+
+        return $payment_method && in_array( $payment_method, self::get_offline_payment_methods(), true );
+    }
+
+    /**
+     * Check whether a status transition really represents money collected for the balance.
+     *
+     * @param WC_Order $order  Order object.
+     * @param string   $status Status being evaluated.
+     * @return bool
+     */
+    public static function is_balance_payment_captured( $order, $status ) {
+        // on-hold is WooCommerce's "awaiting payment" state, never a settled payment.
+        if ( ! in_array( $status, array( 'processing', 'completed' ), true ) ) {
+            return false;
+        }
+
+        if ( self::is_offline_payment_method( $order ) ) {
+            return false;
+        }
+
+        return (bool) apply_filters( 'apd_is_balance_payment_captured', true, $order, $status );
+    }
+
+    /**
      * Get deposit details for an order.
      */
     public static function get_deposit_details( $order ) {
@@ -362,9 +441,49 @@ class APD_Order {
         }
 
         $order->delete_meta_data( '_apd_balance_payment_pending' );
+        $order->delete_meta_data( '_apd_balance_payment_awaiting_offline' );
         $order->save();
 
         self::record_payment( $order->get_id(), $pending_balance_payment, $note );
+    }
+
+    /**
+     * Keep an uncaptured balance payment owed instead of writing it off as paid.
+     *
+     * The customer picked an offline gateway, which only records an intent to pay, so
+     * the balance stays due and the order stays payable until the shop records the
+     * money manually from the order screen.
+     *
+     * @param WC_Order $order  Order object.
+     * @param string   $status Status the order just landed on.
+     */
+    private function hold_uncaptured_balance_payment( $order, $status ) {
+        $payment_method = $order->get_payment_method();
+        $dirty          = false;
+
+        // Flag per gateway so the note is written once, not on every thank-you page hit.
+        if ( $order->get_meta( '_apd_balance_payment_awaiting_offline' ) !== $payment_method ) {
+            $order->update_meta_data( '_apd_balance_payment_awaiting_offline', $payment_method );
+            $order->add_order_note(
+                sprintf(
+                    /* translators: 1: payment method title, 2: outstanding balance amount. */
+                    __( 'Remaining balance payment was started with %1$s, which does not capture funds. %2$s is still outstanding and must be recorded manually once the money is received.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                    $order->get_payment_method_title() ? $order->get_payment_method_title() : $payment_method,
+                    wc_price( floatval( $order->get_meta( '_apd_balance_payment_pending' ) ) )
+                )
+            );
+            $dirty = true;
+        }
+
+        // A paid-looking status would hide the outstanding balance from the shop.
+        if ( in_array( $status, array( 'processing', 'completed' ), true ) && self::order_has_outstanding_balance( $order ) ) {
+            $order->set_status( 'partially-paid' );
+            $dirty = true;
+        }
+
+        if ( $dirty ) {
+            $order->save();
+        }
     }
 
     /**
