@@ -210,7 +210,14 @@ class APD_Order {
             $statuses[] = 'processing';
             $statuses[] = 'completed';
             $statuses[] = 'on-hold';
-            $statuses[] = 'cancelled';
+
+            /**
+             * A cancelled order is a decision the shop made, so paying a balance must not
+             * silently reinstate it. Opt back in only if a shop really wants that.
+             */
+            if ( apply_filters( 'apd_allow_payment_on_cancelled_order', false, $order ) ) {
+                $statuses[] = 'cancelled';
+            }
         }
 
         return array_values( array_unique( $statuses ) );
@@ -248,6 +255,15 @@ class APD_Order {
         // stop a stale pending amount from being banked a second time later on.
         $order->delete_meta_data( '_apd_balance_payment_pending' );
         $order->delete_meta_data( '_apd_balance_payment_awaiting_offline' );
+
+        // Never bank more than is actually owed. The admin box already caps its input
+        // client-side; this makes the server agree, so "paid" can't exceed the total.
+        $outstanding = max( 0, $total - $amount_paid );
+        $amount      = min( round( floatval( $amount ), wc_get_price_decimals() ), $outstanding );
+
+        if ( $amount <= 0 ) {
+            return false;
+        }
 
         $new_paid    = $amount_paid + $amount;
         $new_balance = max( 0, $total - $new_paid );
@@ -348,6 +364,90 @@ class APD_Order {
         }
 
         return floatval( $order->get_meta( '_apd_balance_payment_pending' ) ) > 0;
+    }
+
+    /**
+     * Whether the shop allows a customer to pay a balance off in freely chosen amounts.
+     *
+     * Off by default: the free plugin always charges the whole outstanding balance.
+     * The Pro "Flexible Payments" setting turns this on.
+     *
+     * @param WC_Order|null $order Order object.
+     * @return bool
+     */
+    public static function are_partial_balance_payments_enabled( $order = null ) {
+        return (bool) apply_filters( 'apd_allow_partial_balance_payments', false, $order );
+    }
+
+    /**
+     * Smallest and largest amount a customer may put towards a balance right now.
+     *
+     * @param WC_Order|int $order Order object or ID.
+     * @return array{min:float,max:float}
+     */
+    public static function get_balance_payment_bounds( $order ) {
+        if ( is_numeric( $order ) ) {
+            $order = wc_get_order( $order );
+        }
+
+        $decimals = wc_get_price_decimals();
+        $max      = $order ? round( floatval( $order->get_meta( '_apd_balance_due' ) ), $decimals ) : 0;
+        $min      = $max;
+
+        if ( $max > 0 && self::are_partial_balance_payments_enabled( $order ) ) {
+            $min = round( floatval( apply_filters( 'apd_min_balance_payment', 0, $order, $max ) ), $decimals );
+
+            // Fall back to the smallest unit the currency can express.
+            if ( $min <= 0 ) {
+                $min = 1 / pow( 10, $decimals );
+            }
+
+            // A minimum larger than what is left just means "pay it off".
+            if ( $min > $max ) {
+                $min = $max;
+            }
+        }
+
+        return array( 'min' => $min, 'max' => $max );
+    }
+
+    /**
+     * Resolve how much a customer is actually allowed to pay towards a balance.
+     *
+     * Always returns the full outstanding balance while flexible payments are off, so
+     * the amount can never be steered from the request in the default configuration.
+     *
+     * @param WC_Order|int $order     Order object or ID.
+     * @param mixed        $requested Amount asked for, from the request.
+     * @return float
+     */
+    public static function sanitize_balance_payment_amount( $order, $requested ) {
+        if ( is_numeric( $order ) ) {
+            $order = wc_get_order( $order );
+        }
+
+        $bounds = self::get_balance_payment_bounds( $order );
+
+        if ( ! self::are_partial_balance_payments_enabled( $order ) ) {
+            return $bounds['max'];
+        }
+
+        $amount = round( floatval( $requested ), wc_get_price_decimals() );
+
+        // No amount asked for means "settle the whole thing".
+        if ( $amount <= 0 ) {
+            return $bounds['max'];
+        }
+
+        if ( $amount < $bounds['min'] ) {
+            $amount = $bounds['min'];
+        }
+
+        if ( $amount > $bounds['max'] ) {
+            $amount = $bounds['max'];
+        }
+
+        return $amount;
     }
 
     /**

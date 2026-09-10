@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.1\n"
+"Project-Id-Version: Advanced Partial Payment or Deposit for WooCommerce 4.0.3\n"
 "Report-Msgid-Bugs-To: https://www.mage-people.com/\n"
 "Last-Translator: MagePeople Team <support@mage-people.com>\n"
 "Language-Team: MagePeople Team <support@mage-people.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-10T02:09:47+00:00\n"
+"POT-Creation-Date: 2026-09-10T02:29:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
@@ -169,7 +169,7 @@ msgstr ""
 #: admin/class-apd-admin-settings.php:78
 #: admin/class-apd-admin-settings.php:106
 #: admin/class-apd-migration.php:132
-#: public/class-apd-pay-balance.php:106
+#: public/class-apd-pay-balance.php:177
 msgid "Permission denied."
 msgstr ""
 
@@ -260,32 +260,36 @@ msgid "Emails"
 msgstr ""
 
 #: admin/class-apd-admin.php:156
+msgid "Flexible Payments"
+msgstr ""
+
+#: admin/class-apd-admin.php:161
 #: admin/class-apd-product-meta.php:334
 msgid "Payment Plans"
 msgstr ""
 
-#: admin/class-apd-admin.php:161
+#: admin/class-apd-admin.php:166
 #: admin/js/apd-admin.js:698
 msgid "Min / Max"
 msgstr ""
 
-#: admin/class-apd-admin.php:166
+#: admin/class-apd-admin.php:171
 msgid "Gateway Rules"
 msgstr ""
 
-#: admin/class-apd-admin.php:171
+#: admin/class-apd-admin.php:176
 msgid "Reminders"
 msgstr ""
 
-#: admin/class-apd-admin.php:176
+#: admin/class-apd-admin.php:181
 msgid "Reports"
 msgstr ""
 
-#: admin/class-apd-admin.php:181
+#: admin/class-apd-admin.php:186
 msgid "Conditional Rules"
 msgstr ""
 
-#: admin/class-apd-admin.php:186
+#: admin/class-apd-admin.php:191
 msgid "License"
 msgstr ""
 
@@ -1192,7 +1196,7 @@ msgid "Deposit Paid"
 msgstr ""
 
 #. translators: 1: call to action label, 2: payment URL.
-#: includes/class-apd-emails.php:326
+#: includes/class-apd-emails.php:332
 #, php-format
 msgid "%1$s: %2$s"
 msgstr ""
@@ -1221,22 +1225,22 @@ msgstr ""
 msgid "Deposit payment received. Balance is still due."
 msgstr ""
 
-#: includes/class-apd-order.php:274
+#: includes/class-apd-order.php:290
 msgid "Balance payment recorded"
 msgstr ""
 
-#: includes/class-apd-order.php:282
+#: includes/class-apd-order.php:298
 msgid "Full balance paid."
 msgstr ""
 
 #. translators: 1: payment amount, 2: balance due
-#: includes/class-apd-order.php:288
+#: includes/class-apd-order.php:304
 #, php-format
 msgid "Balance payment of %1$s recorded. Remaining balance: %2$s"
 msgstr ""
 
 #. translators: 1: payment method title, 2: outstanding balance amount.
-#: includes/class-apd-order.php:470
+#: includes/class-apd-order.php:570
 #, php-format
 msgid "Remaining balance payment was started with %1$s, which does not capture funds. %2$s is still outstanding and must be recorded manually once the money is received."
 msgstr ""
@@ -1408,7 +1412,11 @@ msgstr ""
 msgid "Invalid item."
 msgstr ""
 
-#: public/class-apd-cart.php:177
+#: public/class-apd-cart.php:172
+msgid "Deposits are not available for this item."
+msgstr ""
+
+#: public/class-apd-cart.php:182
 msgid "Item not found."
 msgstr ""
 
@@ -1429,32 +1437,33 @@ msgid "Deposit Information"
 msgstr ""
 
 #: public/class-apd-pay-balance.php:40
-msgid "Invalid request."
-msgstr ""
-
-#: public/class-apd-pay-balance.php:47
-#: public/class-apd-pay-balance.php:101
+#: public/class-apd-pay-balance.php:172
 msgid "Invalid order."
 msgstr ""
 
-#: public/class-apd-pay-balance.php:54
+#: public/class-apd-pay-balance.php:44
 msgid "You do not have permission to pay this balance."
 msgstr ""
 
-#: public/class-apd-pay-balance.php:61
-#: public/class-apd-pay-balance.php:115
+#: public/class-apd-pay-balance.php:49
+#: public/class-apd-pay-balance.php:186
 msgid "This order has no outstanding balance."
 msgstr ""
 
-#: public/class-apd-pay-balance.php:70
+#: public/class-apd-pay-balance.php:59
+#: public/class-apd-pay-balance.php:195
+msgid "Please enter a valid payment amount."
+msgstr ""
+
+#: public/class-apd-pay-balance.php:66
 msgid "Customer started a remaining balance payment."
 msgstr ""
 
-#: public/class-apd-pay-balance.php:96
+#: public/class-apd-pay-balance.php:167
 msgid "Please log in to pay the balance."
 msgstr ""
 
-#: public/class-apd-pay-balance.php:110
+#: public/class-apd-pay-balance.php:181
 msgid "This order is not a deposit order."
 msgstr ""
 
@@ -1504,7 +1513,17 @@ msgstr ""
 msgid "Fully Paid"
 msgstr ""
 
-#: public/views/myaccount-deposits.php:62
+#: public/views/myaccount-deposits.php:59
+msgid "Amount to pay"
+msgstr ""
+
+#. translators: 1: minimum payment amount, 2: outstanding balance.
+#: public/views/myaccount-deposits.php:76
+#, php-format
+msgid "Pay any amount from %1$s up to %2$s."
+msgstr ""
+
+#: public/views/myaccount-deposits.php:100
 msgid "No deposit orders found."
 msgstr ""
 
