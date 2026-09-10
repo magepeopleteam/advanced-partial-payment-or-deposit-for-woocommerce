@@ -86,6 +86,41 @@ class APD_Product_Meta {
                         'desc_tip'    => true,
                         'description' => __( 'Let customers pay the remaining balance in any amount, over as many payments as they like, until this booking is paid in full. Yes or No overrides the global Flexible Payments setting for this product.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                     ) );
+                    ?>
+                    <div id="apd-product-flexible-section" class="apd-conditional-settings apd-conditional-settings--flexible">
+                    <p class="form-field" style="padding:10px 12px;margin-top:8px;border-top:1px solid #f0f0f1;">
+                        <span class="dashicons dashicons-money-alt" style="color:#10b981;margin-right:5px;"></span>
+                        <strong><?php esc_html_e( 'Flexible Payment Rules (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></strong>
+                        <span style="color:#999;font-size:12px;display:block;margin-top:4px;">
+                            <?php esc_html_e( 'Smallest amount a customer may put towards the balance of this booking. Leave empty to use the global Flexible Payments minimum.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+                        </span>
+                    </p>
+                    <?php
+                    woocommerce_wp_text_input( array(
+                        'id'          => '_apd_flexible_min_payment',
+                        'label'       => __( 'Minimum Per Payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'type'        => 'number',
+                        'value'       => get_post_meta( $product_id, '_apd_flexible_min_payment', true ),
+                        'placeholder' => __( 'Use global', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'desc_tip'    => true,
+                        'description' => __( 'If the balance left is smaller than this, the customer can still pay it off in full.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'custom_attributes' => array( 'step' => '0.01', 'min' => '0' ),
+                    ) );
+                    woocommerce_wp_select( array(
+                        'id'          => '_apd_flexible_min_payment_type',
+                        'label'       => __( 'Minimum Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        'options'     => array(
+                            ''           => __( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'fixed'      => __( 'Fixed Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                            'percentage' => __( 'Percentage of Booking Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                        ),
+                        'value'       => get_post_meta( $product_id, '_apd_flexible_min_payment_type', true ),
+                        'desc_tip'    => true,
+                        'description' => __( 'Treat the minimum above as a flat amount or a percentage of the full booking total.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                    ) );
+                    ?>
+                    </div>
+                    <?php
                 }
 
                 $deposit_type_options = array(
@@ -443,6 +478,8 @@ class APD_Product_Meta {
             $fields[] = '_apd_min_deposit';
             $fields[] = '_apd_max_deposit';
             $fields[] = '_apd_flexible_payments';
+            $fields[] = '_apd_flexible_min_payment';
+            $fields[] = '_apd_flexible_min_payment_type';
         }
 
         foreach ( $fields as $field ) {
