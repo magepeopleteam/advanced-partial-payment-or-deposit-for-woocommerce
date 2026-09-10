@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.3
+Stable tag: 4.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,10 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.4 =
+* Feature: Flexible Payments can now be set per product and per category, not just globally. Each has a "Use Global Setting / Yes / No" control, and an explicit Yes or No overrides the global toggle in both directions.
+* Fix: A minimum payment amount is now applied when Flexible Payments is switched on by a product or category override, instead of only when the global toggle is on.
 
 = 4.0.3 =
 * Security: The "Pay Balance Now" button in the balance reminder email now routes through the balance payment flow. It previously linked straight to the order payment page, which charged the customer the deposit amount again and credited the payment to nothing, leaving the balance still owed.
