@@ -3,7 +3,7 @@
  * Plugin Name:       Advanced Partial Payment or Deposit for WooCommerce
  * Plugin URI:        https://www.mage-people.com
  * Description:       Accept partial payments, deposits, and installments on your WooCommerce store. Supports fixed, percentage, category-wise deposits with a professional admin dashboard.
- * Version:           4.0.3
+ * Version:           4.0.4
  * Author:            MagePeople Team
  * Author URI:        https://www.mage-people.com
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin constants
  */
-define( 'APD_VERSION', '4.0.3' );
+define( 'APD_VERSION', '4.0.4' );
 define( 'APD_PLUGIN_FILE', __FILE__ );
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

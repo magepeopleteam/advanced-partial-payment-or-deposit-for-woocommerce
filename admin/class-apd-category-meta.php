@@ -61,6 +61,7 @@ class APD_Category_Meta {
         $force  = get_term_meta( $term->term_id, '_apd_force_deposit', true );
         $type   = get_term_meta( $term->term_id, '_apd_deposit_type', true );
         $value  = get_term_meta( $term->term_id, '_apd_deposit_value', true );
+        $flex   = get_term_meta( $term->term_id, '_apd_flexible_payments', true );
         ?>
         <tr class="form-field">
             <th><label><?php esc_html_e( 'Enable Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
@@ -83,6 +84,19 @@ class APD_Category_Meta {
                 <p class="description"><?php esc_html_e( 'Force products in this category to show only the deposit/partial payment option.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
             </td>
         </tr>
+        <?php if ( defined( 'APD_PRO_VERSION' ) ) : ?>
+        <tr class="form-field">
+            <th><label><?php esc_html_e( 'Flexible Payments (Pro)', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
+            <td>
+                <select name="_apd_flexible_payments">
+                    <option value="" <?php selected( $flex, '' ); ?>><?php esc_html_e( 'Use Global Setting', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="yes" <?php selected( $flex, 'yes' ); ?>><?php esc_html_e( 'Yes', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                    <option value="no" <?php selected( $flex, 'no' ); ?>><?php esc_html_e( 'No', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+                </select>
+                <p class="description"><?php esc_html_e( 'Let customers pay the remaining balance in any amount, over as many payments as they like. Overrides the global Flexible Payments setting for products in this category.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
+            </td>
+        </tr>
+        <?php endif; ?>
         <tr class="form-field">
             <th><label><?php esc_html_e( 'Deposit Type', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label></th>
             <td>
@@ -112,6 +126,11 @@ class APD_Category_Meta {
         }
 
         $fields = array( '_apd_enable_deposit', '_apd_force_deposit', '_apd_deposit_type', '_apd_deposit_value' );
+
+        if ( defined( 'APD_PRO_VERSION' ) ) {
+            $fields[] = '_apd_flexible_payments';
+        }
+
         foreach ( $fields as $field ) {
             if ( isset( $_POST[ $field ] ) ) {
                 update_term_meta( $term_id, $field, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
