@@ -58,6 +58,33 @@ class APD_Admin {
             wp_enqueue_script( 'apd-admin-product', APD_PLUGIN_URL . 'admin/js/apd-admin.js', array( 'jquery', 'wp-i18n' ), APD_VERSION, true );
             $this->localize_admin_script( 'apd-admin-product' );
         }
+
+        // Order edit page, where the Deposit Payment Record metabox lives. Without this the
+        // Record Payment button has no handler and no nonce, so it silently does nothing.
+        if ( $screen && in_array( $screen->id, $this->get_order_screen_ids(), true ) ) {
+            wp_enqueue_style( 'apd-admin-order', APD_PLUGIN_URL . 'admin/css/apd-admin.css', array(), APD_VERSION );
+            wp_enqueue_script( 'apd-admin-order', APD_PLUGIN_URL . 'admin/js/apd-admin.js', array( 'jquery', 'wp-i18n' ), APD_VERSION, true );
+            $this->localize_admin_script( 'apd-admin-order' );
+        }
+    }
+
+    /**
+     * Screen ids the order edit page can appear under.
+     *
+     * HPOS moves orders to their own admin page, so the screen id differs per store, and a
+     * store can switch between the two. Both are listed rather than resolved, so the assets
+     * follow the metabox wherever WooCommerce puts it.
+     *
+     * @return string[]
+     */
+    private function get_order_screen_ids() {
+        $ids = array( 'shop_order' );
+
+        if ( function_exists( 'wc_get_page_screen_id' ) ) {
+            $ids[] = wc_get_page_screen_id( 'shop-order' );
+        }
+
+        return array_filter( array_unique( $ids ) );
     }
 
     /**

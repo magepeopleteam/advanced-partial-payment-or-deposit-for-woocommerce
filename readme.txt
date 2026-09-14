@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.13
+Stable tag: 4.0.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.14 =
+* Fix: The Record Payment button on the order screen now works. Its script and nonce were only loaded on the Deposits dashboard and the product screen, never on the order screen where the Deposit Payment Record box lives, so the button did nothing when clicked and a shop had no way to record a balance payment by hand.
 
 = 4.0.13 =
 * Fix: A remaining balance payment is now actually charged. The deposit payment leaves the gateway's own reference to that charge on the order; on the balance leg WooPayments compared it against the new order total, found the amounts differ, and stopped processing the payment while still returning the customer to the "Order received" page. No money was taken, the balance never changed, and the customer was told the payment had gone through. The gateway reference is now released before the customer is sent to the pay page, and archived on the order with a note so the earlier charge can still be traced. Affects every balance payment, whether for the full balance or a freely chosen amount.
