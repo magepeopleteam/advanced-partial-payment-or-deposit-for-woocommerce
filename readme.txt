@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.14
+Stable tag: 4.0.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,10 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.15 =
+* Fix: The pay button on My Account > Deposits now names the amount in the box — "Pay $150.00" — and follows it as the customer changes it. The button was always the form's submit, but it read "Pay Remaining Balance", which describes paying the balance off in full; next to a box for choosing an amount it looked like that amount had no submit of its own, and customers reported there being no button at all. Rows where only the full balance can be paid keep the label set in Deposits > Labels.
+* Dev: New filter `apd_pay_balance_button_label_template`; return an empty string to keep the configured label everywhere.
 
 = 4.0.14 =
 * Fix: The Record Payment button on the order screen now works. Its script and nonce were only loaded on the Deposits dashboard and the product screen, never on the order screen where the Deposit Payment Record box lives, so the button did nothing when clicked and a shop had no way to record a balance payment by hand.

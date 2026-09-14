@@ -65,8 +65,48 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
                                        min="<?php echo esc_attr( $apd_bounds['min'] ); ?>"
                                        max="<?php echo esc_attr( $apd_bounds['max'] ); ?>"
                                        value="<?php echo esc_attr( $apd_bounds['max'] ); ?>" required />
-                                <button type="submit" class="woocommerce-button button apd-pay-balance-btn">
-                                    <?php echo esc_html( $pay_btn_label ); ?>
+                                <?php
+                                /*
+                                 * The shop's own label is kept whenever the whole balance is the only
+                                 * thing payable. Once an amount can be chosen it stops describing the
+                                 * button: "Pay Remaining Balance" reads as "pay it all off", so the
+                                 * amount box looks like it has no submit of its own. Name the amount
+                                 * instead, and let the script keep it in step with the box.
+                                 */
+                                $apd_pay_template = $apd_bounds['min'] < $apd_bounds['max']
+                                    ? __( 'Pay %s', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+                                    : '';
+
+                                /**
+                                 * Filter the label a chosen-amount pay button carries.
+                                 *
+                                 * %s is replaced with the formatted amount. Return an empty
+                                 * string to fall back to the label set in Deposits > Labels.
+                                 *
+                                 * @param string   $apd_pay_template Label template, or ''.
+                                 * @param WC_Order $order            Order being paid.
+                                 */
+                                $apd_pay_template = (string) apply_filters(
+                                    'apd_pay_balance_button_label_template',
+                                    $apd_pay_template,
+                                    $order
+                                );
+                                ?>
+                                <button type="submit" class="woocommerce-button button apd-pay-balance-btn"
+                                    <?php if ( $apd_pay_template ) : ?>
+                                        data-apd-pay-template="<?php echo esc_attr( $apd_pay_template ); ?>"
+                                    <?php endif; ?>
+                                    >
+                                    <?php
+                                    if ( $apd_pay_template ) {
+                                        printf(
+                                            esc_html( $apd_pay_template ),
+                                            esc_html( apd_plain_price( $apd_bounds['max'] ) )
+                                        );
+                                    } else {
+                                        echo esc_html( $pay_btn_label );
+                                    }
+                                    ?>
                                 </button>
                                 <?php if ( $apd_bounds['min'] < $apd_bounds['max'] ) : ?>
                                     <small class="apd-pay-balance-hint">

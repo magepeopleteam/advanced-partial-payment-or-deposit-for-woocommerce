@@ -3,7 +3,7 @@
  * Plugin Name:       Advanced Partial Payment or Deposit for WooCommerce
  * Plugin URI:        https://www.mage-people.com
  * Description:       Accept partial payments, deposits, and installments on your WooCommerce store. Supports fixed, percentage, category-wise deposits with a professional admin dashboard.
- * Version:           4.0.14
+ * Version:           4.0.15
  * Author:            MagePeople Team
  * Author URI:        https://www.mage-people.com
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin constants
  */
-define( 'APD_VERSION', '4.0.14' );
+define( 'APD_VERSION', '4.0.15' );
 define( 'APD_PLUGIN_FILE', __FILE__ );
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -180,4 +180,22 @@ function apd_get_option( $key, $default = '' ) {
  */
 function apd_is_pro_active() {
     return defined( 'APD_PRO_VERSION' );
+}
+
+/**
+ * Helper: a formatted price as plain text.
+ *
+ * wc_price() returns markup with HTML-encoded entities, which is right for a table cell
+ * and wrong anywhere the value has to be escaped as text — a button label, an attribute.
+ * Strip the markup and decode the entities so the caller gets "$270.00", not "&#036;270.00".
+ *
+ * @param float $amount Amount to format.
+ * @return string
+ */
+function apd_plain_price( $amount ) {
+    return html_entity_decode(
+        wp_strip_all_tags( wc_price( $amount ) ),
+        ENT_QUOTES,
+        get_bloginfo( 'charset' )
+    );
 }

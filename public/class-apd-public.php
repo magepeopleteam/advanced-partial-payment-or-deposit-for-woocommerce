@@ -41,6 +41,15 @@ class APD_Public {
             'ajax_url'    => admin_url( 'admin-ajax.php' ),
             'nonce'       => wp_create_nonce( 'apd_public_nonce' ),
             'currency'    => get_woocommerce_currency_symbol(),
+            // Enough of WooCommerce's price formatting for the script to render an amount
+            // the same way wc_price() would, so a label it rewrites still matches the page.
+            'price'       => array(
+                'format'       => get_woocommerce_price_format(),
+                'symbol'       => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, get_bloginfo( 'charset' ) ),
+                'decimals'     => wc_get_price_decimals(),
+                'decimal_sep'  => wc_get_price_decimal_separator(),
+                'thousand_sep' => wc_get_price_thousand_separator(),
+            ),
         ) );
     }
 
