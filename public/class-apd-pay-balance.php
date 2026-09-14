@@ -59,6 +59,11 @@ class APD_Pay_Balance {
             $this->reject( __( 'Please enter a valid payment amount.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
+        // The deposit payment left the gateway's own "already paid" markers on this order.
+        // Left in place they make the gateway treat the balance leg as a duplicate of the
+        // deposit and skip it while still reporting success, so stand them down first.
+        APD_Order::release_gateway_payment_fingerprint( $order );
+
         // Charge exactly what was authorised and remember it for finalization.
         $order->update_meta_data( '_apd_balance_payment_pending', $amount );
         $order->set_total( $amount );

@@ -582,6 +582,111 @@ class APD_Order {
     }
 
     /**
+     * Meta keys a gateway reads back to decide it has already been paid for this order.
+     *
+     * Only the keys that actually gate a second payment belong here. Descriptive leftovers
+     * of the previous charge — the charge id, the payment method, the balance transaction —
+     * are deliberately left alone: they gate nothing, the next payment overwrites them, and
+     * keeping them means an abandoned attempt does not cost the order its deposit reference.
+     *
+     * @param WC_Order|null $order Order the fingerprint belongs to.
+     * @return string[]
+     */
+    public static function get_gateway_payment_meta_keys( $order = null ) {
+        return array_filter( (array) apply_filters(
+            'apd_gateway_payment_meta_keys',
+            array(
+                // WooPayments: the stored intent is fetched and its amount compared with the
+                // order total, and the succeeded status suppresses the failure that follows.
+                '_intent_id',
+                '_intention_status',
+                // The equivalent markers on the other gateways that reuse a stored intent.
+                '_stripe_intent_id',
+                '_ppcp_paypal_order_id',
+            ),
+            $order
+        ) );
+    }
+
+    /**
+     * Stand down the gateway's "this order is already paid" fingerprint before a balance payment.
+     *
+     * A gateway records the intent and charge of the last successful payment against the order
+     * and reads them back to refuse a second one. WooPayments compares the stored intent's amount
+     * with the current order total, and on a deposit order those can never match: the deposit was
+     * charged, and the total is now the balance being collected. It throws, and because the *old*
+     * intent is still marked succeeded it then treats the throw as a post-payment hiccup, reports
+     * success to the customer and returns them to the thank-you page. No new payment is created,
+     * nothing is captured, and the balance is left untouched.
+     *
+     * A deposit order is paid more than once by design, so the fingerprint has to be released
+     * before each new leg. It is archived under our own meta and named in an order note first, so
+     * the reference to the earlier charge survives for reconciliation and refunds.
+     *
+     * @param WC_Order|int $order Order about to be sent to the pay page.
+     * @return void
+     */
+    public static function release_gateway_payment_fingerprint( $order ) {
+        if ( is_numeric( $order ) ) {
+            $order = wc_get_order( $order );
+        }
+
+        if ( ! $order ) {
+            return;
+        }
+
+        $archived = array();
+
+        foreach ( self::get_gateway_payment_meta_keys( $order ) as $key ) {
+            $value = $order->get_meta( $key );
+
+            if ( '' === $value || null === $value || false === $value ) {
+                continue;
+            }
+
+            $archived[ $key ] = $value;
+            $order->delete_meta_data( $key );
+        }
+
+        if ( empty( $archived ) ) {
+            return;
+        }
+
+        $log = $order->get_meta( '_apd_released_gateway_payments' );
+
+        if ( ! is_array( $log ) ) {
+            $log = array();
+        }
+
+        $log[] = array(
+            'date'    => current_time( 'mysql' ),
+            'gateway' => $order->get_payment_method(),
+            'meta'    => $archived,
+        );
+
+        $order->update_meta_data( '_apd_released_gateway_payments', $log );
+        $order->save();
+
+        // Name the reference we released so the note stays useful on any gateway.
+        $reference = '';
+
+        foreach ( array( '_intent_id', '_stripe_intent_id', '_ppcp_paypal_order_id' ) as $ref_key ) {
+            if ( ! $reference && ! empty( $archived[ $ref_key ] ) ) {
+                $reference = $archived[ $ref_key ];
+            }
+        }
+
+        $order->add_order_note(
+            sprintf(
+                /* translators: 1: payment gateway title, 2: transaction reference of the previous payment. */
+                __( 'Released the %1$s payment reference (%2$s) held against this order so the remaining balance can be taken as a new payment. The reference is kept on the order for reconciliation.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                $order->get_payment_method_title() ? $order->get_payment_method_title() : $order->get_payment_method(),
+                $reference ? $reference : __( 'no reference stored', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+            )
+        );
+    }
+
+    /**
      * Payment methods that confirm an order without capturing any money.
      *
      * Offline gateways move an order to on-hold or processing as a promise to pay
