@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.15
+Stable tag: 4.0.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,7 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 = Pro Features =
 
 * Payment Plans / Installments
+* Checkout Mode — ask for the deposit choice on the cart or checkout page
 * Minimum & Maximum Deposit Amounts
 * Payment Gateway Restrictions
 * Auto Payment Reminders
@@ -47,6 +48,9 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.16 =
+* New: Checkout Mode is listed with the other Pro features in the Deposits dashboard. The feature itself lives entirely in the Pro addon; this release only adds the entry so the tab is there to unlock.
 
 = 4.0.15 =
 * Fix: The pay button on My Account > Deposits now names the amount in the box — "Pay $150.00" — and follows it as the customer changes it. The button was always the form's submit, but it read "Pay Remaining Balance", which describes paying the balance off in full; next to a box for choosing an amount it looked like that amount had no submit of its own, and customers reported there being no button at all. Rows where only the full balance can be paid keep the label set in Deposits > Labels.

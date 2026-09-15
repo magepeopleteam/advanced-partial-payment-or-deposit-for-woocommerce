@@ -179,6 +179,11 @@ body.toplevel_page_apd-deposits .apd-dashboard {
 
         // Pro tabs (shown as locked if pro not active)
         $pro_tabs = array(
+            'checkout-mode' => array(
+                'label' => __( 'Checkout Mode', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'icon'  => 'dashicons-cart',
+                'pro'   => true,
+            ),
             'partial-payments' => array(
                 'label' => __( 'Flexible Payments', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'icon'  => 'dashicons-money-alt',
