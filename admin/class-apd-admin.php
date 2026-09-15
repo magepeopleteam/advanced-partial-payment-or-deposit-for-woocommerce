@@ -189,6 +189,11 @@ body.toplevel_page_apd-deposits .apd-dashboard {
                 'icon'  => 'dashicons-chart-pie',
                 'pro'   => true,
             ),
+            'auto-charge' => array(
+                'label' => __( 'Auto Charge', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'icon'  => 'dashicons-update',
+                'pro'   => true,
+            ),
             'partial-payments' => array(
                 'label' => __( 'Flexible Payments', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'icon'  => 'dashicons-money-alt',

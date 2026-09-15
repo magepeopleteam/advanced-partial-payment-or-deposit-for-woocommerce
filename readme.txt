@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.17
+Stable tag: 4.0.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,7 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 * Payment Plans / Installments
 * Checkout Mode — ask for the deposit choice on the cart or checkout page
 * Per-variation deposits, balance due dates, and deposit/balance allocation of shipping, tax and discounts
+* Automatic balance charging on the due date using the customer's saved payment method
 * Minimum & Maximum Deposit Amounts
 * Payment Gateway Restrictions
 * Auto Payment Reminders
@@ -49,6 +50,9 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.18 =
+* New: Auto Charge is listed with the other Pro features in the Deposits dashboard. The feature itself lives entirely in the Pro addon; this release only adds the entry so the tab is there to unlock.
 
 = 4.0.17 =
 * New: Allocation is listed with the other Pro features in the Deposits dashboard. The feature itself lives entirely in the Pro addon; this release only adds the entry so the tab is there to unlock.
