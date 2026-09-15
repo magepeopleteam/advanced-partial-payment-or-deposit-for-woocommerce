@@ -147,7 +147,11 @@ class APD_Public {
      */
     public function add_cart_item_data( $cart_item_data, $product_id ) {
         $deposit_engine = APD_Deposit::instance();
-        $payment_type   = isset( $_POST['apd_payment_type'] ) ? sanitize_text_field( wp_unslash( $_POST['apd_payment_type'] ) ) : '';
+        // $_REQUEST rather than $_POST: WooCommerce's own add-to-cart form handler also
+        // answers GET links (?add-to-cart=ID), which is how the Pro addon's catalog-page
+        // deposit buttons submit. The value is compared against a fixed list below, so
+        // widening the source does not widen what gets stored.
+        $payment_type   = isset( $_REQUEST['apd_payment_type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['apd_payment_type'] ) ) : '';
 
         if ( $deposit_engine->is_force_deposit_enabled( $product_id ) ) {
             $cart_item_data['apd_pay_deposit'] = 'yes';

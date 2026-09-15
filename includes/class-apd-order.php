@@ -271,6 +271,12 @@ class APD_Order {
         $order->update_meta_data( '_apd_amount_paid', round( $new_paid, wc_get_price_decimals() ) );
         $order->update_meta_data( '_apd_balance_due', round( $new_balance, wc_get_price_decimals() ) );
 
+        // Persist the new balance BEFORE the status transition fires. The stock
+        // deferral (Order Workflow "reduce on full payment") re-reads the order
+        // during the completing transition; with the old balance still stored it
+        // would keep holding the stock forever.
+        $order->save();
+
         if ( $new_balance > 0 ) {
             $order->set_total( round( $new_balance, wc_get_price_decimals() ) );
             $order->set_status( 'partially-paid' );
@@ -295,7 +301,18 @@ class APD_Order {
 
         // If fully paid, update status
         if ( $is_fully_paid ) {
-            $order->set_status( 'completed', __( 'Full balance paid.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
+            /**
+             * Status a deposit order lands on once the balance reaches zero.
+             *
+             * Shops with a fulfilment step after payment can land fully-paid orders on
+             * "processing" instead of "completed" — the Pro addon exposes this as a
+             * setting under Order Workflow.
+             *
+             * @param string   $status Order status without the wc- prefix.
+             * @param WC_Order $order  Order that was just paid off.
+             */
+            $fully_paid_status = apply_filters( 'apd_fully_paid_status', 'completed', $order );
+            $order->set_status( $fully_paid_status, __( 'Full balance paid.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
         }
 
         $order->add_order_note(

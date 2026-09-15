@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.18
+Stable tag: 4.0.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,10 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.19 =
+* Dev: New filter `apd_fully_paid_status` — the status a deposit order lands on once the balance reaches zero (default `completed`). The Pro addon exposes this as a setting under Order Workflow.
+* Dev: The product-page payment-type field is now read from `$_REQUEST` instead of `$_POST`, so WooCommerce's GET add-to-cart links (`?add-to-cart=ID`) can carry the deposit/full choice — used by the Pro addon's catalog deposit buttons.
 
 = 4.0.18 =
 * New: Auto Charge is listed with the other Pro features in the Deposits dashboard. The feature itself lives entirely in the Pro addon; this release only adds the entry so the tab is there to unlock.
