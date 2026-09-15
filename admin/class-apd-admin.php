@@ -184,6 +184,11 @@ body.toplevel_page_apd-deposits .apd-dashboard {
                 'icon'  => 'dashicons-cart',
                 'pro'   => true,
             ),
+            'allocation' => array(
+                'label' => __( 'Allocation', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+                'icon'  => 'dashicons-chart-pie',
+                'pro'   => true,
+            ),
             'partial-payments' => array(
                 'label' => __( 'Flexible Payments', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
                 'icon'  => 'dashicons-money-alt',
