@@ -1,6 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -8,177 +8,189 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class APD_Public {
 
-    public function __construct() {
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-        // Show deposit selector on product page
-        add_action( 'woocommerce_before_add_to_cart_button', array( $this, 'render_product_deposit_form' ), 25 );
-        // Add deposit choice to cart item data
-        add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 10, 2 );
-    }
+	public function __construct() {
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		// Show deposit selector on product page
+		add_action( 'woocommerce_before_add_to_cart_button', array( $this, 'render_product_deposit_form' ), 25 );
+		// Add deposit choice to cart item data
+		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 10, 2 );
+	}
 
-    /**
-     * Enqueue frontend assets.
-     */
-    public function enqueue_assets() {
-        if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() && ! is_account_page() ) {
-            return;
-        }
+	/**
+	 * Enqueue frontend assets.
+	 */
+	public function enqueue_assets() {
+		if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() && ! is_account_page() ) {
+			return;
+		}
 
-        wp_enqueue_style(
-            'apd-public',
-            APD_PLUGIN_URL . 'public/css/apd-public.css',
-            array(),
-            APD_VERSION
-        );
-        wp_enqueue_script(
-            'apd-public',
-            APD_PLUGIN_URL . 'public/js/apd-public.js',
-            array( 'jquery' ),
-            APD_VERSION,
-            true
-        );
-        wp_localize_script( 'apd-public', 'apd_public', array(
-            'ajax_url'    => admin_url( 'admin-ajax.php' ),
-            'nonce'       => wp_create_nonce( 'apd_public_nonce' ),
-            'currency'    => get_woocommerce_currency_symbol(),
-            // Enough of WooCommerce's price formatting for the script to render an amount
-            // the same way wc_price() would, so a label it rewrites still matches the page.
-            'price'       => array(
-                'format'       => get_woocommerce_price_format(),
-                'symbol'       => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, get_bloginfo( 'charset' ) ),
-                'decimals'     => wc_get_price_decimals(),
-                'decimal_sep'  => wc_get_price_decimal_separator(),
-                'thousand_sep' => wc_get_price_thousand_separator(),
-            ),
-        ) );
-    }
+		wp_enqueue_style(
+			'apd-public',
+			APD_PLUGIN_URL . 'public/css/apd-public.css',
+			array(),
+			APD_VERSION
+		);
+		wp_enqueue_script(
+			'apd-public',
+			APD_PLUGIN_URL . 'public/js/apd-public.js',
+			array( 'jquery' ),
+			APD_VERSION,
+			true
+		);
+		wp_localize_script(
+			'apd-public',
+			'apd_public',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'apd_public_nonce' ),
+				'currency' => get_woocommerce_currency_symbol(),
+				// Enough of WooCommerce's price formatting for the script to render an amount
+				// the same way wc_price() would, so a label it rewrites still matches the page.
+				'price'    => array(
+					'format'       => get_woocommerce_price_format(),
+					'symbol'       => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, get_bloginfo( 'charset' ) ),
+					'decimals'     => wc_get_price_decimals(),
+					'decimal_sep'  => wc_get_price_decimal_separator(),
+					'thousand_sep' => wc_get_price_thousand_separator(),
+				),
+			)
+		);
+	}
 
-    /**
-     * Show deposit/full-payment radio selector on single product page.
-     */
-    public function render_product_deposit_form() {
-        global $product;
-        if ( ! $product ) return;
+	/**
+	 * Show deposit/full-payment radio selector on single product page.
+	 */
+	public function render_product_deposit_form() {
+		global $product;
+		if ( ! $product ) {
+			return;
+		}
 
-        $deposit_engine = APD_Deposit::instance();
-        $deposit_type   = $deposit_engine->get_deposit_type( $product->get_id() );
+		$deposit_engine = APD_Deposit::instance();
+		$deposit_type   = $deposit_engine->get_deposit_type( $product->get_id() );
 
-        // Allow pro addons to suppress this form entirely
-        if ( apply_filters( 'apd_suppress_deposit_form', false, $product->get_id() ) ) {
-            return;
-        }
+		// Allow pro addons to suppress this form entirely
+		if ( apply_filters( 'apd_suppress_deposit_form', false, $product->get_id() ) ) {
+			return;
+		}
 
-        // Payment plans from the pro addon replace the free deposit form only when the
-        // effective deposit type is set to payment plans.
-        if ( $deposit_type === 'payment_plan' && class_exists( 'APD_Payment_Plans' ) ) {
-            $plans = APD_Payment_Plans::get_plans_for_product( $product->get_id() );
+		// Payment plans from the pro addon replace the free deposit form only when the
+		// effective deposit type is set to payment plans.
+		if ( $deposit_type === 'payment_plan' && class_exists( 'APD_Payment_Plans' ) ) {
+			$plans = APD_Payment_Plans::get_plans_for_product( $product->get_id() );
 
-            if ( ! empty( $plans ) ) {
-                return;
-            }
-        }
+			if ( ! empty( $plans ) ) {
+				return;
+			}
+		}
 
-        if ( ! $deposit_engine->is_deposit_enabled( $product->get_id() ) ) {
-            return;
-        }
+		if ( ! $deposit_engine->is_deposit_enabled( $product->get_id() ) ) {
+			return;
+		}
 
-        // Payment Plan type: the pro plan selector will handle it
-        if ( $deposit_type === 'payment_plan' ) {
-            return;
-        }
+		// Payment Plan type: the pro plan selector will handle it
+		if ( $deposit_type === 'payment_plan' ) {
+			return;
+		}
 
-        $price          = floatval( $product->get_price() );
-        $allow_full     = $deposit_engine->is_full_payment_allowed( $product->get_id() );
+		$price      = floatval( $product->get_price() );
+		$allow_full = $deposit_engine->is_full_payment_allowed( $product->get_id() );
 
-        $settings       = get_option( 'apd_settings', array() );
-        $deposit_label  = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
-        $balance_label  = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
-        $deposit_text   = $settings['deposit_text'] ?? __( 'Pay a deposit of {deposit_amount}', 'advanced-partial-payment-or-deposit-for-woocommerce' );
-        $full_text      = $settings['full_payment_text'] ?? __( 'Pay full amount of {full_amount}', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$settings      = get_option( 'apd_settings', array() );
+		$deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$deposit_text  = $settings['deposit_text'] ?? __( 'Pay a deposit of {deposit_amount}', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$full_text     = $settings['full_payment_text'] ?? __( 'Pay full amount of {full_amount}', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 
-        // Min/Max type: show a range input so customer chooses their deposit
-        if ( $deposit_type === 'min_max' && defined( 'APD_PRO_VERSION' ) ) {
-            $global_min = floatval( apd_get_option( 'min_deposit_amount', 0 ) );
-            $global_max = floatval( apd_get_option( 'max_deposit_amount', 0 ) );
-            $prod_min   = get_post_meta( $product->get_id(), '_apd_min_deposit', true );
-            $prod_max   = get_post_meta( $product->get_id(), '_apd_max_deposit', true );
-            $min_deposit = ( $prod_min !== '' && $prod_min !== false ) ? floatval( $prod_min ) : $global_min;
-            $max_deposit = ( $prod_max !== '' && $prod_max !== false ) ? floatval( $prod_max ) : $global_max;
+		// Min/Max type: show a range input so customer chooses their deposit
+		if ( $deposit_type === 'min_max' && defined( 'APD_PRO_VERSION' ) ) {
+			$global_min  = floatval( apd_get_option( 'min_deposit_amount', 0 ) );
+			$global_max  = floatval( apd_get_option( 'max_deposit_amount', 0 ) );
+			$prod_min    = get_post_meta( $product->get_id(), '_apd_min_deposit', true );
+			$prod_max    = get_post_meta( $product->get_id(), '_apd_max_deposit', true );
+			$min_deposit = ( $prod_min !== '' && $prod_min !== false ) ? floatval( $prod_min ) : $global_min;
+			$max_deposit = ( $prod_max !== '' && $prod_max !== false ) ? floatval( $prod_max ) : $global_max;
 
-            // Sensible defaults
-            if ( $min_deposit <= 0 ) $min_deposit = round( $price * 0.10, 2 ); // 10% floor
-            if ( $max_deposit <= 0 || $max_deposit > $price ) $max_deposit = $price;
-            if ( $min_deposit > $max_deposit ) $min_deposit = $max_deposit;
+			// Sensible defaults
+			if ( $min_deposit <= 0 ) {
+				$min_deposit = round( $price * 0.10, 2 ); // 10% floor
+			}
+			if ( $max_deposit <= 0 || $max_deposit > $price ) {
+				$max_deposit = $price;
+			}
+			if ( $min_deposit > $max_deposit ) {
+				$min_deposit = $max_deposit;
+			}
 
-            $default_deposit = $min_deposit;
+			$default_deposit = $min_deposit;
 
-            include APD_PLUGIN_DIR . 'public/views/product-deposit-form-minmax.php';
-            return;
-        }
+			include APD_PLUGIN_DIR . 'public/views/product-deposit-form-minmax.php';
+			return;
+		}
 
-        $deposit_amount = $deposit_engine->get_deposit_amount( $product->get_id(), $price );
-        $due_balance    = $price - $deposit_amount;
-        $deposit_value  = $deposit_engine->get_deposit_value( $product->get_id() );
+		$deposit_amount = $deposit_engine->get_deposit_amount( $product->get_id(), $price );
+		$due_balance    = $price - $deposit_amount;
+		$deposit_value  = $deposit_engine->get_deposit_value( $product->get_id() );
 
-        if ( 'percentage' === $deposit_type ) {
-            $deposit_text = sprintf(
-                /* translators: 1: deposit percentage, 2: formatted deposit amount. */
-                __( 'Pay %1$s%% deposit now (%2$s)', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                wc_format_localized_decimal( $deposit_value ),
-                wc_price( $deposit_amount )
-            );
-        } elseif ( 'fixed' === $deposit_type ) {
-            $deposit_text = sprintf(
-                /* translators: %s: formatted deposit amount. */
-                __( 'Pay fixed deposit of %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-                wc_price( $deposit_amount )
-            );
-        } else {
-            $deposit_text = str_replace( '{deposit_amount}', wc_price( $deposit_amount ), $deposit_text );
-        }
+		if ( 'percentage' === $deposit_type ) {
+			$deposit_text = sprintf(
+				/* translators: 1: deposit percentage, 2: formatted deposit amount. */
+				__( 'Pay %1$s%% deposit now (%2$s)', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				wc_format_localized_decimal( $deposit_value ),
+				wc_price( $deposit_amount )
+			);
+		} elseif ( 'fixed' === $deposit_type ) {
+			$deposit_text = sprintf(
+				/* translators: %s: formatted deposit amount. */
+				__( 'Pay fixed deposit of %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				wc_price( $deposit_amount )
+			);
+		} else {
+			$deposit_text = str_replace( '{deposit_amount}', wc_price( $deposit_amount ), $deposit_text );
+		}
 
-        $full_text    = str_replace( '{full_amount}', wc_price( $price ), $full_text );
+		$full_text = str_replace( '{full_amount}', wc_price( $price ), $full_text );
 
-        include APD_PLUGIN_DIR . 'public/views/product-deposit-form.php';
-    }
+		include APD_PLUGIN_DIR . 'public/views/product-deposit-form.php';
+	}
 
-    /**
-     * Add deposit choice to cart item data.
-     */
-    public function add_cart_item_data( $cart_item_data, $product_id ) {
-        $deposit_engine = APD_Deposit::instance();
-        // $_REQUEST rather than $_POST: WooCommerce's own add-to-cart form handler also
-        // answers GET links (?add-to-cart=ID), which is how the Pro addon's catalog-page
-        // deposit buttons submit. The value is compared against a fixed list below, so
-        // widening the source does not widen what gets stored.
-        $payment_type   = isset( $_REQUEST['apd_payment_type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['apd_payment_type'] ) ) : '';
+	/**
+	 * Add deposit choice to cart item data.
+	 */
+	public function add_cart_item_data( $cart_item_data, $product_id ) {
+		$deposit_engine = APD_Deposit::instance();
+		// $_REQUEST rather than $_POST: WooCommerce's own add-to-cart form handler also
+		// answers GET links (?add-to-cart=ID), which is how the Pro addon's catalog-page
+		// deposit buttons submit. The value is compared against a fixed list below, so
+		// widening the source does not widen what gets stored.
+		$payment_type = isset( $_REQUEST['apd_payment_type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['apd_payment_type'] ) ) : '';
 
-        if ( $deposit_engine->is_force_deposit_enabled( $product_id ) ) {
-            $cart_item_data['apd_pay_deposit'] = 'yes';
-        } elseif ( $payment_type ) {
-            $cart_item_data['apd_pay_deposit'] = 'deposit' === $payment_type ? 'yes' : 'no';
-        } else {
-            // Default: pay deposit if enabled
-            if ( $deposit_engine->is_deposit_enabled( $product_id ) ) {
-                $cart_item_data['apd_pay_deposit'] = 'yes';
-            }
-        }
+		if ( $deposit_engine->is_force_deposit_enabled( $product_id ) ) {
+			$cart_item_data['apd_pay_deposit'] = 'yes';
+		} elseif ( $payment_type ) {
+			$cart_item_data['apd_pay_deposit'] = 'deposit' === $payment_type ? 'yes' : 'no';
+		} else {
+			// Default: pay deposit if enabled
+			if ( $deposit_engine->is_deposit_enabled( $product_id ) ) {
+				$cart_item_data['apd_pay_deposit'] = 'yes';
+			}
+		}
 
-        if (
-            'yes' === ( $cart_item_data['apd_pay_deposit'] ?? 'no' ) &&
-            'min_max' === $deposit_engine->get_deposit_type( $product_id ) &&
-            isset( $_POST['apd_custom_deposit'] )
-        ) {
-            $product = wc_get_product( $product_id );
-            $price   = $product ? floatval( $product->get_price() ) : 0;
+		if (
+			'yes' === ( $cart_item_data['apd_pay_deposit'] ?? 'no' ) &&
+			'min_max' === $deposit_engine->get_deposit_type( $product_id ) &&
+			isset( $_POST['apd_custom_deposit'] )
+		) {
+			$product = wc_get_product( $product_id );
+			$price   = $product ? floatval( $product->get_price() ) : 0;
 
-            $cart_item_data['apd_custom_deposit'] = $deposit_engine->sanitize_custom_deposit(
-                $product_id,
-                floatval( wp_unslash( $_POST['apd_custom_deposit'] ) ),
-                $price
-            );
-        }
+			$cart_item_data['apd_custom_deposit'] = $deposit_engine->sanitize_custom_deposit(
+				$product_id,
+				floatval( wp_unslash( $_POST['apd_custom_deposit'] ) ),
+				$price
+			);
+		}
 
-        return $cart_item_data;
-    }
+		return $cart_item_data;
+	}
 }

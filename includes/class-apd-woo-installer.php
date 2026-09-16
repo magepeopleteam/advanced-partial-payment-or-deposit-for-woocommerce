@@ -110,22 +110,26 @@ if ( ! class_exists( 'APD_Woo_Installer' ) ) {
 				true
 			);
 
-			wp_localize_script( 'apd-woo-installer', 'apd_woo_installer', array(
-				'ajax_url'       => admin_url( 'admin-ajax.php' ),
-				'install_nonce'  => wp_create_nonce( 'apd_install_woo' ),
-				'activate_nonce' => wp_create_nonce( 'apd_activate_woo' ),
-				'redirect_url'   => admin_url( 'admin.php?page=apd-deposits' ),
-				'woo_installed'  => $this->is_woo_installed() ? 'yes' : 'no',
-				'i18n'           => array(
-					'installing'     => __( 'Installing WooCommerce...', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					'activating'     => __( 'Activating WooCommerce...', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					'success'        => __( 'WooCommerce activated successfully!', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					'redirecting'    => __( 'Redirecting...', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					'error'          => __( 'Something went wrong. Please try again.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					'install_error'  => __( 'Installation failed. Please install WooCommerce manually.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					'activate_error' => __( 'Activation failed. Please activate WooCommerce manually.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-				),
-			) );
+			wp_localize_script(
+				'apd-woo-installer',
+				'apd_woo_installer',
+				array(
+					'ajax_url'       => admin_url( 'admin-ajax.php' ),
+					'install_nonce'  => wp_create_nonce( 'apd_install_woo' ),
+					'activate_nonce' => wp_create_nonce( 'apd_activate_woo' ),
+					'redirect_url'   => admin_url( 'admin.php?page=apd-deposits' ),
+					'woo_installed'  => $this->is_woo_installed() ? 'yes' : 'no',
+					'i18n'           => array(
+						'installing'     => __( 'Installing WooCommerce...', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						'activating'     => __( 'Activating WooCommerce...', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						'success'        => __( 'WooCommerce activated successfully!', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						'redirecting'    => __( 'Redirecting...', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						'error'          => __( 'Something went wrong. Please try again.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						'install_error'  => __( 'Installation failed. Please install WooCommerce manually.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						'activate_error' => __( 'Activation failed. Please activate WooCommerce manually.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+					),
+				)
+			);
 		}
 
 		/**
@@ -245,23 +249,26 @@ if ( ! class_exists( 'APD_Woo_Installer' ) ) {
 			include_once ABSPATH . 'wp-admin/includes/misc.php';
 			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
-			$api = plugins_api( 'plugin_information', array(
-				'slug'   => 'woocommerce',
-				'fields' => array(
-					'short_description' => false,
-					'sections'          => false,
-					'requires'          => false,
-					'rating'            => false,
-					'ratings'           => false,
-					'downloaded'        => false,
-					'last_updated'      => false,
-					'added'             => false,
-					'tags'              => false,
-					'compatibility'     => false,
-					'homepage'          => false,
-					'donate_link'       => false,
-				),
-			) );
+			$api = plugins_api(
+				'plugin_information',
+				array(
+					'slug'   => 'woocommerce',
+					'fields' => array(
+						'short_description' => false,
+						'sections'          => false,
+						'requires'          => false,
+						'rating'            => false,
+						'ratings'           => false,
+						'downloaded'        => false,
+						'last_updated'      => false,
+						'added'             => false,
+						'tags'              => false,
+						'compatibility'     => false,
+						'homepage'          => false,
+						'donate_link'       => false,
+					),
+				)
+			);
 
 			if ( is_wp_error( $api ) ) {
 				wp_send_json_error( array( 'message' => $api->get_error_message() ) );

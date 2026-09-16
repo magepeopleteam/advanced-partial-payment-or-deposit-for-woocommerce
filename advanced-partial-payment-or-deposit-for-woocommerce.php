@@ -17,7 +17,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -34,10 +34,10 @@ define( 'APD_REWRITE_VERSION', '1.0.0-account-endpoints-1' );
  * Check if WooCommerce is active
  */
 function apd_check_woocommerce() {
-    if ( ! class_exists( 'WooCommerce' ) ) {
-        return false;
-    }
-    return true;
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -45,9 +45,9 @@ function apd_check_woocommerce() {
  * WooCommerce check / redirect on next admin page load.
  */
 function apd_activate() {
-    set_transient( 'apd_plugin_activated', true, 60 );
-    require_once APD_PLUGIN_DIR . 'includes/class-apd-activator.php';
-    APD_Activator::activate();
+	set_transient( 'apd_plugin_activated', true, 60 );
+	require_once APD_PLUGIN_DIR . 'includes/class-apd-activator.php';
+	APD_Activator::activate();
 }
 register_activation_hook( __FILE__, 'apd_activate' );
 
@@ -57,8 +57,8 @@ register_activation_hook( __FILE__, 'apd_activate' );
  * and shows the beautiful popup when WooCommerce is NOT active.
  */
 if ( is_admin() ) {
-    include_once ABSPATH . 'wp-admin/includes/plugin.php';
-    require_once APD_PLUGIN_DIR . 'includes/class-apd-woo-installer.php';
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	require_once APD_PLUGIN_DIR . 'includes/class-apd-woo-installer.php';
 }
 
 /**
@@ -66,8 +66,8 @@ if ( is_admin() ) {
  * Only register when WooCommerce is active.
  */
 function apd_register_rewrite_endpoints() {
-    add_rewrite_endpoint( 'deposits', EP_ROOT | EP_PAGES );
-    add_rewrite_endpoint( 'pay-deposit-balance', EP_ROOT | EP_PAGES );
+	add_rewrite_endpoint( 'deposits', EP_ROOT | EP_PAGES );
+	add_rewrite_endpoint( 'pay-deposit-balance', EP_ROOT | EP_PAGES );
 }
 add_action( 'init', 'apd_register_rewrite_endpoints', 5 );
 
@@ -75,15 +75,15 @@ add_action( 'init', 'apd_register_rewrite_endpoints', 5 );
  * Flush rewrites once when endpoint definitions change.
  */
 function apd_maybe_flush_rewrite_rules() {
-    $stored_version = get_option( 'apd_rewrite_version', '' );
+	$stored_version = get_option( 'apd_rewrite_version', '' );
 
-    if ( APD_REWRITE_VERSION === $stored_version ) {
-        return;
-    }
+	if ( APD_REWRITE_VERSION === $stored_version ) {
+		return;
+	}
 
-    apd_register_rewrite_endpoints();
-    flush_rewrite_rules( false );
-    update_option( 'apd_rewrite_version', APD_REWRITE_VERSION );
+	apd_register_rewrite_endpoints();
+	flush_rewrite_rules( false );
+	update_option( 'apd_rewrite_version', APD_REWRITE_VERSION );
 }
 add_action( 'init', 'apd_maybe_flush_rewrite_rules', 99 );
 
@@ -91,79 +91,82 @@ add_action( 'init', 'apd_maybe_flush_rewrite_rules', 99 );
  * Deactivation hook
  */
 function apd_deactivate() {
-    require_once APD_PLUGIN_DIR . 'includes/class-apd-deactivator.php';
-    APD_Deactivator::deactivate();
+	require_once APD_PLUGIN_DIR . 'includes/class-apd-deactivator.php';
+	APD_Deactivator::deactivate();
 }
 register_deactivation_hook( __FILE__, 'apd_deactivate' );
 
 /**
  * HPOS compatibility declaration
  */
-add_action( 'before_woocommerce_init', function () {
-    if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
-    }
-});
+add_action(
+	'before_woocommerce_init',
+	function () {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+		}
+	}
+);
 
 /**
  * Initialize the plugin
  */
 function apd_init() {
-    if ( ! apd_check_woocommerce() ) {
-        return;
-    }
+	if ( ! apd_check_woocommerce() ) {
+		return;
+	}
 
-    // Load text domain
-    load_plugin_textdomain( 'advanced-partial-payment-or-deposit-for-woocommerce', false, dirname( APD_PLUGIN_BASENAME ) . '/languages' );
+	// Load text domain
+	load_plugin_textdomain( 'advanced-partial-payment-or-deposit-for-woocommerce', false, dirname( APD_PLUGIN_BASENAME ) . '/languages' );
 
-    // Include core files
-    require_once APD_PLUGIN_DIR . 'includes/class-apd-deposit.php';
-    require_once APD_PLUGIN_DIR . 'includes/class-apd-order.php';
-    require_once APD_PLUGIN_DIR . 'includes/class-apd-emails.php';
+	// Include core files
+	require_once APD_PLUGIN_DIR . 'includes/class-apd-deposit.php';
+	require_once APD_PLUGIN_DIR . 'includes/class-apd-order.php';
+	require_once APD_PLUGIN_DIR . 'includes/class-apd-emails.php';
 
-    // Admin
-    if ( is_admin() ) {
-        require_once APD_PLUGIN_DIR . 'admin/class-apd-admin.php';
-        require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-settings.php';
-        require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-order.php';
-        require_once APD_PLUGIN_DIR . 'admin/class-apd-product-meta.php';
-        require_once APD_PLUGIN_DIR . 'admin/class-apd-category-meta.php';
-        require_once APD_PLUGIN_DIR . 'admin/class-apd-migration.php';
+	// Admin
+	if ( is_admin() ) {
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-settings.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-order.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-product-meta.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-category-meta.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-migration.php';
 
-        new APD_Admin();
-        new APD_Admin_Settings();
-        new APD_Admin_Order();
-        new APD_Product_Meta();
-        new APD_Category_Meta();
-        new APD_Migration();
-    }
+		new APD_Admin();
+		new APD_Admin_Settings();
+		new APD_Admin_Order();
+		new APD_Product_Meta();
+		new APD_Category_Meta();
+		new APD_Migration();
+	}
 
-    // Frontend
-    if ( ! is_admin() || wp_doing_ajax() ) {
-        require_once APD_PLUGIN_DIR . 'public/class-apd-public.php';
-        require_once APD_PLUGIN_DIR . 'public/class-apd-cart.php';
-        require_once APD_PLUGIN_DIR . 'public/class-apd-blocks.php';
-        require_once APD_PLUGIN_DIR . 'public/class-apd-checkout.php';
-        require_once APD_PLUGIN_DIR . 'public/class-apd-myaccount.php';
-        require_once APD_PLUGIN_DIR . 'public/class-apd-pay-balance.php';
+	// Frontend
+	if ( ! is_admin() || wp_doing_ajax() ) {
+		require_once APD_PLUGIN_DIR . 'public/class-apd-public.php';
+		require_once APD_PLUGIN_DIR . 'public/class-apd-cart.php';
+		require_once APD_PLUGIN_DIR . 'public/class-apd-blocks.php';
+		require_once APD_PLUGIN_DIR . 'public/class-apd-checkout.php';
+		require_once APD_PLUGIN_DIR . 'public/class-apd-myaccount.php';
+		require_once APD_PLUGIN_DIR . 'public/class-apd-pay-balance.php';
 
-        new APD_Public();
-        new APD_Cart();
-        new APD_Blocks();
-        new APD_Checkout();
-        new APD_MyAccount();
-        new APD_Pay_Balance();
-    }
+		new APD_Public();
+		new APD_Cart();
+		new APD_Blocks();
+		new APD_Checkout();
+		new APD_MyAccount();
+		new APD_Pay_Balance();
+	}
 
-    // Initialize deposit engine (global)
-    APD_Deposit::instance();
-    APD_Order::instance();
+	// Initialize deposit engine (global)
+	APD_Deposit::instance();
+	APD_Order::instance();
 
-    /**
-     * Fires after the plugin is fully loaded.
-     */
-    do_action( 'apd_loaded' );
+	/**
+	 * Fires after the plugin is fully loaded.
+	 */
+	do_action( 'apd_loaded' );
 }
 add_action( 'plugins_loaded', 'apd_init', 20 );
 
@@ -171,15 +174,15 @@ add_action( 'plugins_loaded', 'apd_init', 20 );
  * Helper: Get plugin option
  */
 function apd_get_option( $key, $default = '' ) {
-    $options = get_option( 'apd_settings', array() );
-    return isset( $options[ $key ] ) ? $options[ $key ] : $default;
+	$options = get_option( 'apd_settings', array() );
+	return isset( $options[ $key ] ) ? $options[ $key ] : $default;
 }
 
 /**
  * Helper: Check if pro addon is active
  */
 function apd_is_pro_active() {
-    return defined( 'APD_PRO_VERSION' );
+	return defined( 'APD_PRO_VERSION' );
 }
 
 /**
@@ -193,9 +196,9 @@ function apd_is_pro_active() {
  * @return string
  */
 function apd_plain_price( $amount ) {
-    return html_entity_decode(
-        wp_strip_all_tags( wc_price( $amount ) ),
-        ENT_QUOTES,
-        get_bloginfo( 'charset' )
-    );
+	return html_entity_decode(
+		wp_strip_all_tags( wc_price( $amount ) ),
+		ENT_QUOTES,
+		get_bloginfo( 'charset' )
+	);
 }
