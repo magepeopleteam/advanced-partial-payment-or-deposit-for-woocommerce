@@ -8,6 +8,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class APD_Admin_Order {
 
+    /**
+     * Label for the "Order Total" row of the order currently being rendered, or ''.
+     *
+     * @var string
+     */
+    private $order_total_suffix = '';
+
     public function __construct() {
         // Metabox on order edit page
         add_action( 'add_meta_boxes', array( $this, 'add_deposit_metabox' ) );
@@ -21,6 +28,89 @@ class APD_Admin_Order {
         add_action( 'wp_ajax_apd_record_payment', array( $this, 'ajax_record_payment' ) );
         // Order status styling
         add_action( 'admin_head', array( $this, 'order_status_styles' ) );
+        // Order items totals: say what "Order Total" is, then show the full split beneath it.
+        add_action( 'woocommerce_admin_order_totals_after_tax', array( $this, 'start_order_total_label' ), 10, 1 );
+        add_action( 'woocommerce_admin_order_totals_after_total', array( $this, 'render_order_totals_deposit_rows' ), 10, 1 );
+    }
+
+    /**
+     * Qualify the order items "Order Total" label on deposit orders.
+     *
+     * On a deposit order that total is the amount charged in the current payment, not the
+     * order value, and WooCommerce prints the row with no hook of its own. The gettext
+     * filter is added right before that row and removed right after the table, so it can
+     * only ever touch this one label.
+     *
+     * @param int $order_id Order ID.
+     */
+    public function start_order_total_label( $order_id ) {
+        $order = wc_get_order( $order_id );
+
+        if ( ! $order || ! APD_Order::is_deposit_order( $order ) ) {
+            return;
+        }
+
+        $full_total = floatval( $order->get_meta( '_apd_total_amount' ) );
+
+        if ( $full_total <= 0 || 0.0 === round( $full_total - (float) $order->get_total(), wc_get_price_decimals() ) ) {
+            return;
+        }
+
+        $this->order_total_suffix = APD_Order::has_pending_balance_payment( $order )
+            ? __( 'Balance payment', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+            : __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+
+        add_filter( 'gettext_woocommerce', array( $this, 'filter_order_total_label' ), 10, 2 );
+    }
+
+    /**
+     * Append the deposit qualifier to WooCommerce's "Order Total" label.
+     *
+     * @param string $translation Translated text.
+     * @param string $text        Original text.
+     * @return string
+     */
+    public function filter_order_total_label( $translation, $text ) {
+        if ( 'Order Total' !== $text || '' === $this->order_total_suffix ) {
+            return $translation;
+        }
+
+        return sprintf( '%s (%s)', $translation, $this->order_total_suffix );
+    }
+
+    /**
+     * Show the full order value, paid amount and balance under the order items totals.
+     *
+     * @param int $order_id Order ID.
+     */
+    public function render_order_totals_deposit_rows( $order_id ) {
+        remove_filter( 'gettext_woocommerce', array( $this, 'filter_order_total_label' ), 10 );
+        $this->order_total_suffix = '';
+
+        $order   = wc_get_order( $order_id );
+        $details = $order ? APD_Order::get_deposit_details( $order ) : false;
+
+        if ( ! $details ) {
+            return;
+        }
+
+        $currency = array( 'currency' => $order->get_currency() );
+        $rows     = array(
+            array( __( 'Full Order Total', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $details['total_amount'], 'label label-highlight' ),
+            array( __( 'Deposit Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $details['deposit_amount'], 'label' ),
+            array( __( 'Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $details['amount_paid'], 'label' ),
+            array( __( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $details['balance_due'], 'label' ),
+        );
+
+        foreach ( $rows as $row ) {
+            ?>
+            <tr>
+                <td class="<?php echo esc_attr( $row[2] ); ?>"><?php echo esc_html( $row[0] ); ?>:</td>
+                <td width="1%"></td>
+                <td class="total"><?php echo wp_kses_post( wc_price( $row[1], $currency ) ); ?></td>
+            </tr>
+            <?php
+        }
     }
 
     /**

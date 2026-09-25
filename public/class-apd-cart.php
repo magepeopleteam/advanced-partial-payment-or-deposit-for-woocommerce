@@ -18,6 +18,8 @@ class APD_Cart {
         // cart, the classic checkout, the Cart/Checkout blocks, the Store API and order
         // creation all agree on the same payable figure.
         add_filter( 'woocommerce_calculated_total', array( $this, 'apply_deposit_total_adjustment' ), 20, 2 );
+        // The payable total above is the deposit; the Total row still shows the full order value.
+        add_filter( 'woocommerce_cart_totals_order_total_html', array( $this, 'display_full_cart_total' ), 20 );
         // Persist cart data
         add_filter( 'woocommerce_get_cart_item_from_session', array( $this, 'get_cart_item_from_session' ), 10, 2 );
         // AJAX update payment type
@@ -148,6 +150,44 @@ class APD_Cart {
         }
 
         return round( $deposit, wc_get_price_decimals() );
+    }
+
+    /**
+     * Show the full order value in the classic cart / checkout Total row.
+     *
+     * The cart total is reduced to the deposit so every gateway charges the right amount,
+     * which left the Total row showing the same figure as the "To Pay Now" row beneath it.
+     * Only the displayed amount changes here; what the customer is charged does not.
+     *
+     * @param string $value Total cell HTML.
+     * @return string
+     */
+    public function display_full_cart_total( $value ) {
+        /**
+         * Whether cart, checkout, order and email totals show the full order value
+         * instead of the amount charged now.
+         *
+         * @param bool $show Default true.
+         */
+        if ( ! apply_filters( 'apd_display_full_order_total', true ) || ! WC()->cart ) {
+            return $value;
+        }
+
+        $summary = APD_Deposit::instance()->get_cart_payment_summary();
+
+        if ( empty( $summary['has_deposit'] ) || $summary['balance_due'] <= 0 ) {
+            return $value;
+        }
+
+        // Keep WooCommerce's "(includes ... tax)" note; it is already worked out on the full cart.
+        $tax_note = '';
+        $note_at  = strpos( $value, '<small class="includes_tax"' );
+
+        if ( false !== $note_at ) {
+            $tax_note = substr( $value, $note_at );
+        }
+
+        return '<strong>' . wc_price( $summary['full_total'] ) . '</strong> ' . $tax_note;
     }
 
     /**
