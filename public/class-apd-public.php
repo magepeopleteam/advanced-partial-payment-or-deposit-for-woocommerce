@@ -30,31 +30,33 @@ class APD_Public {
 			array(),
 			APD_VERSION
 		);
-		wp_enqueue_script(
-			'apd-public',
-			APD_PLUGIN_URL . 'public/js/apd-public.js',
-			array( 'jquery' ),
-			APD_VERSION,
-			true
-		);
-		wp_localize_script(
-			'apd-public',
-			'apd_public',
-			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'apd_public_nonce' ),
-				'currency' => get_woocommerce_currency_symbol(),
-				// Enough of WooCommerce's price formatting for the script to render an amount
-				// the same way wc_price() would, so a label it rewrites still matches the page.
-				'price'    => array(
-					'format'       => get_woocommerce_price_format(),
-					'symbol'       => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, get_bloginfo( 'charset' ) ),
-					'decimals'     => wc_get_price_decimals(),
-					'decimal_sep'  => wc_get_price_decimal_separator(),
-					'thousand_sep' => wc_get_price_thousand_separator(),
-				),
-			)
-		);
+
+		// Product option styling is CSS-only. JavaScript is needed only by the editable
+		// balance form on My Account, and that helper has no external dependencies.
+		if ( is_account_page() ) {
+			wp_enqueue_script(
+				'apd-public',
+				APD_PLUGIN_URL . 'public/js/apd-public.js',
+				array(),
+				APD_VERSION,
+				true
+			);
+			wp_localize_script(
+				'apd-public',
+				'apd_public',
+				array(
+					// Enough of WooCommerce's price formatting for the script to render an
+					// amount the same way wc_price() would.
+					'price' => array(
+						'format'       => get_woocommerce_price_format(),
+						'symbol'       => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, get_bloginfo( 'charset' ) ),
+						'decimals'     => wc_get_price_decimals(),
+						'decimal_sep'  => wc_get_price_decimal_separator(),
+						'thousand_sep' => wc_get_price_thousand_separator(),
+					),
+				)
+			);
+		}
 	}
 
 	/**

@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.19
+Stable tag: 4.0.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,13 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 3. Go to **Deposits** in the admin sidebar to configure settings
 
 == Changelog ==
+
+= 4.0.20 =
+* Fix: The cart and checkout "Total" row showed only the deposit, the same figure as "To Pay Now". It now shows the full order value; the amount charged is unchanged.
+* Fix: Order emails, the thank-you page and My Account showed the deposit as the order total. The Total row now shows the full order value, followed by the deposit and the remaining balance (also picked up by email designer and PDF invoice plugins that use the order totals table).
+* Fix: The admin order items table labelled the deposit as "Order Total". The row is now marked "(Deposit)" / "(Balance payment)" and the full total, deposit, amount paid and balance are listed beneath it.
+* Fix: Changing a deposit order's status by hand (e.g. Partially Paid to Processing) was reverted to Partially Paid straight away, after the status email had already gone to the customer. Manual status changes now stick; the balance stays owed.
+* Dev: New filter `apd_display_full_order_total` (default `true`) to keep showing the amount charged now instead of the full order value.
 
 = 4.0.19 =
 * Dev: New filter `apd_fully_paid_status` — the status a deposit order lands on once the balance reaches zero (default `completed`). The Pro addon exposes this as a setting under Order Workflow.
