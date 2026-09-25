@@ -51,11 +51,16 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 
 == Changelog ==
 
-= 4.0.20 =
+= 4.0.20 - 2026-09-25 =
 * Fix: The cart and checkout "Total" row showed only the deposit, the same figure as "To Pay Now". It now shows the full order value; the amount charged is unchanged.
 * Fix: Order emails, the thank-you page and My Account showed the deposit as the order total. The Total row now shows the full order value, followed by the deposit and the remaining balance (also picked up by email designer and PDF invoice plugins that use the order totals table).
 * Fix: The admin order items table labelled the deposit as "Order Total". The row is now marked "(Deposit)" / "(Balance payment)" and the full total, deposit, amount paid and balance are listed beneath it.
 * Fix: Changing a deposit order's status by hand (e.g. Partially Paid to Processing) was reverted to Partially Paid straight away, after the status email had already gone to the customer. Manual status changes now stick; the balance stays owed.
+* Performance: Deposit/full-payment option styling now relies on the existing CSS instead of loading JavaScript, jQuery and jQuery Migrate for the same visual state.
+* Performance: The My Account balance label and Min/Max deposit controls now use native JavaScript. APD no longer introduces jQuery on product, cart, account or Block Checkout pages solely for these interactions.
+* Security: Added missing `wp_unslash()` calls before sanitizing settings and migration inputs, escaped price/status output for its HTML context, and escaped the migration nonce embedded in JavaScript.
+* New: Added an opt-in "Delete Data on Uninstall" setting. It is disabled by default; when explicitly enabled, deleting APD removes its settings and deposit metadata from products, categories and both legacy/HPOS orders.
+* Dev: Reformatted the PHP codebase toward WordPress Coding Standards and verified compatibility with the declared PHP 7.4 minimum for WordPress.org submission readiness.
 * Dev: New filter `apd_display_full_order_total` (default `true`) to keep showing the amount charged now instead of the full order value.
 
 = 4.0.19 =
