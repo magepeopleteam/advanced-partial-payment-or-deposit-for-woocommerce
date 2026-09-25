@@ -1,12 +1,11 @@
 /**
  * Advanced Partial Payment - Frontend Public JavaScript
  */
-(function ($) {
+(function () {
     'use strict';
 
     var APD_Public = {
         init: function () {
-            this.bindDepositToggle();
             this.bindBalanceAmount();
         },
 
@@ -14,7 +13,7 @@
          * Format an amount the way wc_price() would, from the settings PHP handed over.
          */
         formatPrice: function (amount) {
-            var cfg = (window.apd_public && apd_public.price) || {},
+            var cfg = (window.apd_public && window.apd_public.price) || {},
                 decimals = typeof cfg.decimals === 'undefined' ? 2 : parseInt(cfg.decimals, 10),
                 fixed = Math.abs(amount).toFixed(decimals),
                 parts = fixed.split('.'),
@@ -39,16 +38,27 @@
         bindBalanceAmount: function () {
             var self = this;
 
-            $(document).on('input change', '.apd-pay-balance-amount', function () {
-                var $input = $(this),
-                    $button = $input.closest('form').find('.apd-pay-balance-btn[data-apd-pay-template]');
+            function updateButton(event) {
+                var input = event.target.closest('.apd-pay-balance-amount'),
+                    form,
+                    button,
+                    amount,
+                    max,
+                    template;
 
-                if (!$button.length) {
+                if (!input) {
                     return;
                 }
 
-                var amount = parseFloat($input.val()),
-                    max = parseFloat($input.attr('max'));
+                form = input.closest('form');
+                button = form ? form.querySelector('.apd-pay-balance-btn[data-apd-pay-template]') : null;
+
+                if (!button) {
+                    return;
+                }
+
+                amount = parseFloat(input.value);
+                max = parseFloat(input.getAttribute('max'));
 
                 // Mid-edit the box can be empty or out of range. Leave the last good
                 // label alone rather than flashing a nonsense amount at the customer.
@@ -60,34 +70,15 @@
                     amount = max;
                 }
 
-                $button.text(
-                    String($button.data('apdPayTemplate')).replace('%s', self.formatPrice(amount))
-                );
-            });
-        },
+                template = button.getAttribute('data-apd-pay-template');
+                button.textContent = String(template).replace('%s', self.formatPrice(amount));
+            }
 
-        /**
-         * Handle deposit/full payment toggle on product page.
-         */
-        bindDepositToggle: function () {
-            $(document).on('change', '.apd-deposit-option input[type="radio"]', function () {
-                var $option = $(this).closest('.apd-deposit-option');
-
-                // Update active state
-                $('.apd-deposit-option .apd-option-content').css({
-                    'border-color': '#e5e7eb',
-                    'background': '#fff',
-                });
-                $option.find('.apd-option-content').css({
-                    'border-color': '#6366f1',
-                    'background': '#eef2ff',
-                });
-            });
+            document.addEventListener('input', updateButton);
+            document.addEventListener('change', updateButton);
         },
     };
 
-    $(document).ready(function () {
-        APD_Public.init();
-    });
+    APD_Public.init();
 
-})(jQuery);
+})();

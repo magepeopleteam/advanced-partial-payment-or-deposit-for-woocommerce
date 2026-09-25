@@ -73,56 +73,77 @@ $currency = html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, '
 </div>
 
 <script>
-(function($){
+(function(){
+    var script   = document.currentScript;
+    var form     = script ? script.previousElementSibling : null;
     var price    = <?php echo esc_js( $price ); ?>;
     var currency = <?php echo wp_json_encode( $currency ); ?>;
     var min      = <?php echo esc_js( $min_deposit ); ?>;
     var max      = <?php echo esc_js( $max_deposit ); ?>;
     var lastDeposit = <?php echo esc_js( $default_deposit ); ?>;
+    var range;
+    var input;
+    var balance;
+    var fullToggle;
+
+    if (!form || !form.classList.contains('apd-product-deposit-form')) {
+        return;
+    }
+
+    range = form.querySelector('#apd-deposit-range');
+    input = form.querySelector('#apd-deposit-input');
+    balance = form.querySelector('#apd-balance-display');
+    fullToggle = form.querySelector('#apd-pay-full-toggle');
 
     function updateBalance( deposit ) {
-        var balance = Math.max( 0, price - deposit );
-        $('#apd-balance-display').text( currency + balance.toFixed(2) );
+        var amount = Math.max( 0, price - deposit );
+        balance.textContent = currency + amount.toFixed(2);
     }
 
     // Sync slider → input
-    $('#apd-deposit-range').on('input', function(){
-        var val = parseFloat($(this).val());
+    range.addEventListener('input', function(){
+        var val = parseFloat(range.value);
         lastDeposit = val;
-        $('#apd-deposit-input').val(val.toFixed(2));
+        input.value = val.toFixed(2);
         updateBalance(val);
     });
 
     // Sync input → slider
-    $('#apd-deposit-input').on('input', function(){
-        var val = parseFloat($(this).val()) || 0;
+    input.addEventListener('input', function(){
+        var val = parseFloat(input.value) || 0;
         if (val < min) val = min;
         if (val > max) val = max;
         lastDeposit = val;
-        $('#apd-deposit-range').val(val);
+        range.value = val;
         updateBalance(val);
     });
 
     // Full payment toggle
-    $('#apd-pay-full-toggle').on('change', function(){
-        if ($(this).is(':checked')) {
-            var current = parseFloat($('#apd-deposit-input').val()) || min;
-            if (current >= min && current <= max) {
-                lastDeposit = current;
+    if (fullToggle) {
+        fullToggle.addEventListener('change', function(){
+            if (fullToggle.checked) {
+                var current = parseFloat(input.value) || min;
+                if (current >= min && current <= max) {
+                    lastDeposit = current;
+                }
+                form.querySelector('input[name="apd_payment_type"]').value = 'full';
+                input.value = price.toFixed(2);
+                input.disabled = true;
+                range.value = price;
+                range.disabled = true;
+                updateBalance(price);
+            } else {
+                form.querySelector('input[name="apd_payment_type"]').value = 'deposit';
+                var prev = lastDeposit;
+                if (prev < min) prev = min;
+                if (prev > max) prev = max;
+                input.value = prev.toFixed(2);
+                input.disabled = false;
+                range.value = prev;
+                range.disabled = false;
+                updateBalance(prev);
             }
-            $('input[name="apd_payment_type"]').val('full');
-            $('#apd-deposit-input').val(price.toFixed(2)).prop('disabled', true);
-            $('#apd-deposit-range').val(price).prop('disabled', true);
-            updateBalance(price);
-        } else {
-            $('input[name="apd_payment_type"]').val('deposit');
-            var prev = lastDeposit;
-            if (prev < min) prev = min;
-            if (prev > max) prev = max;
-            $('#apd-deposit-input').val(prev.toFixed(2)).prop('disabled', false);
-            $('#apd-deposit-range').val(prev).prop('disabled', false);
-            updateBalance(prev);
-        }
-    });
-})(jQuery);
+        });
+    }
+})();
 </script>
