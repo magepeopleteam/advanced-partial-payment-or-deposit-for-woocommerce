@@ -19,7 +19,7 @@ $tabs = APD_Admin::get_tabs();
 				</div>
 				<div class="apd-header-right">
 					<?php if ( ! apd_is_pro_active() ) : ?>
-					<a href="#" class="apd-upgrade-btn">
+					<a href="<?php echo esc_url( APD_PRO_PRODUCT_URL ); ?>" class="apd-upgrade-btn" target="_blank" rel="noopener noreferrer">
 						<span class="dashicons dashicons-star-filled"></span>
 						<?php esc_html_e( 'Upgrade to Pro', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
 					</a>
@@ -88,7 +88,7 @@ $tabs = APD_Admin::get_tabs();
 								<h2><?php echo esc_html( $tab['label'] ); ?></h2>
 								<p><?php esc_html_e( 'This feature is available in the Pro version.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
 								<p><?php esc_html_e( 'Unlock payment plans, min/max deposits, gateway rules, auto reminders, reports, and more!', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
-								<a href="#" class="button button-primary button-hero apd-upgrade-btn-large">
+								<a href="<?php echo esc_url( APD_PRO_PRODUCT_URL ); ?>" class="button button-primary button-hero apd-upgrade-btn-large" target="_blank" rel="noopener noreferrer">
 									<span class="dashicons dashicons-star-filled"></span>
 									<?php esc_html_e( 'Upgrade to Pro', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
 								</a>
