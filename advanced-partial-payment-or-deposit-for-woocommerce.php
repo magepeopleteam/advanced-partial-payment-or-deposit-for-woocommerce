@@ -29,6 +29,7 @@ define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'APD_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'APD_REWRITE_VERSION', '1.0.0-account-endpoints-1' );
+define( 'APD_PRO_PRODUCT_URL', 'https://mage-people.com/product/advanced-deposit-partial-payment-for-woocommerce-pro/' );
 
 /**
  * Check if WooCommerce is active
@@ -133,6 +134,7 @@ function apd_init() {
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-product-meta.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-category-meta.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-migration.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-pro-version-notice.php';
 
 		new APD_Admin();
 		new APD_Admin_Settings();
@@ -140,6 +142,7 @@ function apd_init() {
 		new APD_Product_Meta();
 		new APD_Category_Meta();
 		new APD_Migration();
+		new APD_Pro_Version_Notice();
 	}
 
 	// Frontend
@@ -162,6 +165,10 @@ function apd_init() {
 	// Initialize deposit engine (global)
 	APD_Deposit::instance();
 	APD_Order::instance();
+
+	// Customer deposit emails. Loaded on every request because they are also sent
+	// from admin status changes, manual payments and cron reminders.
+	new APD_Emails();
 
 	/**
 	 * Fires after the plugin is fully loaded.
