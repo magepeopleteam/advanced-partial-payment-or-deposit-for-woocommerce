@@ -419,11 +419,22 @@ class APD_Admin_Order {
 		}
 
 		if ( $details['balance_due'] > 0 ) {
+			// Until the deposit is confirmed, what the customer owes now is the deposit, not the whole balance.
+			if ( $details['deposit_paid'] ) {
+				$due   = $details['balance_due'];
+				$title = __( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+			} else {
+				$settings = get_option( 'apd_settings', array() );
+				$due      = min( $details['deposit_amount'], $details['balance_due'] );
+				/* translators: %s: configured deposit label. */
+				$title    = sprintf( __( '%s Due Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
+			}
+
 			printf(
 				'<span style="color:#d63638;font-weight:600;" title="%s">%s %s</span>',
-				esc_attr__( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				esc_attr( $title ),
 				esc_html__( 'Due:', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-				wp_kses_post( wc_price( $details['balance_due'] ) )
+				wp_kses_post( wc_price( $due, array( 'currency' => $order->get_currency() ) ) )
 			);
 		} else {
 			echo '<span style="color:#00a32a;font-weight:600;">✓ ' . esc_html__( 'Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ) . '</span>';
