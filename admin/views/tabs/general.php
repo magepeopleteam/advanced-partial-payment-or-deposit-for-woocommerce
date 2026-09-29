@@ -103,6 +103,27 @@ $settings = get_option( 'apd_settings', array() );
 
 	<div class="apd-card">
 		<div class="apd-card-header">
+			<h3><?php esc_html_e( 'Backend Orders', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
+		</div>
+		<div class="apd-card-body">
+			<div class="apd-field-row">
+				<div class="apd-field-label">
+					<label for="apd-admin-order-deposit"><?php esc_html_e( 'Deposits on Admin Orders', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+					<p class="apd-field-desc"><?php esc_html_e( 'Let administrators set a deposit (fixed amount or percentage) on orders created or edited in the WooCommerce admin, including orders added by booking plugins. The controls appear in the Deposit Details box of an unpaid order.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
+				</div>
+				<div class="apd-field-input">
+					<label class="apd-toggle">
+						<input type="checkbox" name="admin_order_deposit" id="apd-admin-order-deposit"
+								value="yes" <?php checked( $settings['admin_order_deposit'] ?? 'yes', 'yes' ); ?> />
+						<span class="apd-toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="apd-card">
+		<div class="apd-card-header">
 			<h3><?php esc_html_e( 'Uninstall', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
 		</div>
 		<div class="apd-card-body">

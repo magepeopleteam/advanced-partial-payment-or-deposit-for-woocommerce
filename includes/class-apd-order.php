@@ -33,7 +33,7 @@ class APD_Order {
 		add_action( 'woocommerce_thankyou', array( $this, 'maybe_finalize_pending_balance_payment' ), 1, 1 );
 		// woocommerce_order_status_{to} fires just before woocommerce_order_status_changed and
 		// is the only transition hook that says whether a person made the change.
-		foreach ( array( 'processing', 'completed', 'on-hold' ) as $watched_status ) {
+		foreach ( array( 'processing', 'completed', 'on-hold', 'partially-paid' ) as $watched_status ) {
 			add_action( 'woocommerce_order_status_' . $watched_status, array( $this, 'remember_manual_transition' ), 1, 3 );
 		}
 		add_action( 'woocommerce_order_status_changed', array( $this, 'maybe_finalize_pending_balance_payment_on_status_change' ), 10, 4 );
@@ -68,7 +68,21 @@ class APD_Order {
 			return;
 		}
 
-		// Save meta
+		self::apply_deposit_meta( $order, $full_total, $deposit_amount );
+		$order->save();
+	}
+
+	/**
+	 * Turn an order into an unpaid deposit order.
+	 *
+	 * Shared by checkout and the admin order screen, so both write the same meta. The
+	 * caller saves the order.
+	 *
+	 * @param WC_Order $order          Order object.
+	 * @param float    $full_total     Full order value.
+	 * @param float    $deposit_amount Amount due first.
+	 */
+	public static function apply_deposit_meta( $order, $full_total, $deposit_amount ) {
 		$order->update_meta_data( '_apd_is_deposit', 'yes' );
 		$order->update_meta_data( '_apd_deposit_amount', $deposit_amount );
 		$order->update_meta_data( '_apd_total_amount', $full_total );
@@ -82,7 +96,6 @@ class APD_Order {
 
 		// Set the order total to deposit amount
 		$order->set_total( $deposit_amount );
-		$order->save();
 	}
 
 	/**
@@ -171,6 +184,13 @@ class APD_Order {
 			$order->save_meta_data();
 		}
 
+		if ( 'partially-paid' === $to_status ) {
+			if ( $is_manual ) {
+				$this->confirm_deposit_on_manual_partial_status( $order );
+			}
+			return;
+		}
+
 		$this->reconcile_deposit_order(
 			$order,
 			$to_status,
@@ -196,6 +216,41 @@ class APD_Order {
 		} else {
 			unset( $this->manual_transitions[ $order_id ] );
 		}
+	}
+
+	/**
+	 * Record the initial deposit when a person sets an unpaid deposit order to Partially Paid.
+	 *
+	 * Choosing "Partially Paid" by hand is the shop saying the deposit has been taken (the
+	 * usual flow for bookings made at the counter). Without this the order would show that
+	 * status with nothing paid and the full value still owed.
+	 *
+	 * @param WC_Order $order Order object.
+	 */
+	private function confirm_deposit_on_manual_partial_status( $order ) {
+		if ( self::is_initial_deposit_paid( $order ) || self::has_pending_balance_payment( $order ) ) {
+			return;
+		}
+
+		$confirmed = self::confirm_initial_deposit(
+			$order,
+			__( 'Deposit received (order set to Partially Paid by an administrator).', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+		);
+
+		if ( ! $confirmed ) {
+			return;
+		}
+
+		$order->add_order_note(
+			sprintf(
+				/* translators: 1: deposit amount, 2: balance due */
+				__( 'Payment of %1$s recorded. Remaining balance: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				wc_price( floatval( $order->get_meta( '_apd_deposit_amount' ) ), array( 'currency' => $order->get_currency() ) ),
+				wc_price( floatval( $order->get_meta( '_apd_balance_due' ) ), array( 'currency' => $order->get_currency() ) )
+			)
+		);
+
+		do_action( 'apd_deposit_payment_complete', $order->get_id(), $order );
 	}
 
 	/**

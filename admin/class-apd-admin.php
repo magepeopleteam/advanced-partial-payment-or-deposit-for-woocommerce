@@ -63,7 +63,10 @@ class APD_Admin {
 		// Record Payment button has no handler and no nonce, so it silently does nothing.
 		if ( $screen && in_array( $screen->id, $this->get_order_screen_ids(), true ) ) {
 			wp_enqueue_style( 'apd-admin-order', APD_PLUGIN_URL . 'admin/css/apd-admin.css', array(), APD_VERSION );
-			wp_enqueue_script( 'apd-admin-order', APD_PLUGIN_URL . 'admin/js/apd-admin.js', array( 'jquery', 'wp-i18n' ), APD_VERSION, true );
+			// Versioned by file time too: the order controls change within a release, and a
+			// cached copy under the same ?ver= would leave their buttons without a handler.
+			$script_version = APD_VERSION . '.' . (int) filemtime( APD_PLUGIN_DIR . 'admin/js/apd-admin.js' );
+			wp_enqueue_script( 'apd-admin-order', APD_PLUGIN_URL . 'admin/js/apd-admin.js', array( 'jquery', 'wp-i18n' ), $script_version, true );
 			$this->localize_admin_script( 'apd-admin-order' );
 		}
 	}

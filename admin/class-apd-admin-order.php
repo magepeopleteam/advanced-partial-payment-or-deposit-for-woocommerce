@@ -148,6 +148,10 @@ class APD_Admin_Order {
 
 		if ( ! $order || ! APD_Order::is_deposit_order( $order ) ) {
 			echo '<p style="color:#999;">' . esc_html__( 'This is not a deposit order.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) . '</p>';
+
+			if ( APD_Admin_Order_Deposit::is_enabled() && APD_Admin_Order_Deposit::can_add_deposit( $order ) ) {
+				APD_Admin_Order_Deposit::render_form( $order );
+			}
 			return;
 		}
 
@@ -156,6 +160,7 @@ class APD_Admin_Order {
 			return;
 		}
 
+		$can_edit_deposit  = APD_Admin_Order_Deposit::is_enabled() && APD_Admin_Order_Deposit::can_edit_deposit( $order );
 		$paid_color        = $details['amount_paid'] > 0 ? '#00a32a' : '#646970';
 		$manual_amount_due = ! empty( $details['deposit_paid'] )
 			? $details['balance_due']
@@ -200,6 +205,12 @@ class APD_Admin_Order {
 				</div>
 			</div>
 			<?php endif; ?>
+
+			<?php
+			if ( $can_edit_deposit ) {
+				APD_Admin_Order_Deposit::render_form( $order );
+			}
+			?>
 
 			<?php if ( ! empty( $details['history'] ) ) : ?>
 			<div style="margin-top:12px;padding-top:12px;border-top:1px solid #e2e4e7;">

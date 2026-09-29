@@ -52,6 +52,9 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 == Changelog ==
 
 = 4.0.20 - 2026-09-25 =
+* New: Deposits on admin orders. Orders created or edited in wp-admin (including orders added by booking plugins such as RnB Backend Booking) can now be given a fixed or percentage deposit from the Deposit Details box, optionally recorded as received straight away. An unpaid deposit can be changed or removed. Toggle: Deposits > General > Backend Orders (on by default).
+* Fix: Saving the order screen, "Recalculate" or adding items reset a deposit order's total to the full value, so a payment link for an unpaid deposit charged the full amount. The deposit (or balance) total is now kept, and an unpaid deposit follows item changes.
+* Fix: Setting an unpaid deposit order to Partially Paid by hand now records the deposit as received instead of leaving the order with nothing paid.
 * Fix: New deposit orders no longer count the initial deposit as paid before the gateway confirms it. BACS, cheque and cash-on-delivery orders now start with zero paid and an empty payment record; the deposit is recorded only after payment completion or an administrator confirms/records the money.
 * Fix: Unpaid offline deposit orders remain on hold, allowing WooCommerce's Customer on-hold order email to include the order details, deposit split and gateway bank-payment instructions. The thank-you page and My Account now label the initial amount as due rather than paid until confirmation.
 * Fix: The cart and checkout "Total" row showed only the deposit, the same figure as "To Pay Now". It now shows the full order value; the amount charged is unchanged.

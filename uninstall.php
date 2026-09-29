@@ -48,6 +48,7 @@ function apd_uninstall_order_meta_keys() {
 		'_apd_balance_payment_pending',
 		'_apd_balance_payment_awaiting_offline',
 		'_apd_released_gateway_payments',
+		'_apd_deposit_rule',
 		'_apd_due_balance',
 		'_apd_due_date',
 	);
