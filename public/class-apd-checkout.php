@@ -67,6 +67,10 @@ class APD_Checkout {
 		$settings      = get_option( 'apd_settings', array() );
 		$deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 		$balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$deposit_paid  = ! empty( $details['deposit_paid'] );
+		$balance_due   = $deposit_paid
+			? $details['balance_due']
+			: max( 0, $details['total_amount'] - $details['deposit_amount'] );
 		?>
 		<div class="apd-thankyou-deposit">
 			<h3><?php esc_html_e( 'Deposit Payment Summary', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
@@ -76,17 +80,24 @@ class APD_Checkout {
 					<td><?php echo wp_kses_post( wc_price( $details['total_amount'] ) ); ?></td>
 				</tr>
 				<tr>
-					<td><?php echo esc_html( $deposit_label ); ?> <?php esc_html_e( 'Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
-					<td class="apd-text-success"><?php echo wp_kses_post( wc_price( $details['deposit_amount'] ) ); ?></td>
+					<td>
+						<?php echo esc_html( $deposit_label ); ?>
+						<?php if ( $deposit_paid ) : ?>
+							<?php esc_html_e( 'Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+						<?php else : ?>
+							<?php esc_html_e( 'Due Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
+						<?php endif; ?>
+					</td>
+					<td class="<?php echo esc_attr( $deposit_paid ? 'apd-text-success' : 'apd-text-danger' ); ?>"><?php echo wp_kses_post( wc_price( $details['deposit_amount'] ) ); ?></td>
 				</tr>
-				<?php if ( $details['balance_due'] > 0 ) : ?>
+				<?php if ( $balance_due > 0 ) : ?>
 				<tr class="apd-balance-row">
-					<td><strong><?php echo esc_html( $balance_label ); ?></strong></td>
-					<td class="apd-text-danger"><strong><?php echo wp_kses_post( wc_price( $details['balance_due'] ) ); ?></strong></td>
+					<td><strong><?php echo esc_html( $deposit_paid ? $balance_label : __( 'Remaining Balance After Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ) ); ?></strong></td>
+					<td class="apd-text-danger"><strong><?php echo wp_kses_post( wc_price( $balance_due ) ); ?></strong></td>
 				</tr>
 				<?php endif; ?>
 			</table>
-			<?php if ( $details['balance_due'] > 0 ) : ?>
+			<?php if ( $deposit_paid && $details['balance_due'] > 0 ) : ?>
 			<p class="apd-thankyou-note">
 				<?php esc_html_e( 'You can pay the remaining balance from your account page.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>
 			</p>
@@ -111,6 +122,15 @@ class APD_Checkout {
 		$settings      = get_option( 'apd_settings', array() );
 		$deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 		$balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$deposit_paid  = ! empty( $details['deposit_paid'] );
+		$balance_due   = $deposit_paid
+			? $details['balance_due']
+			: max( 0, $details['total_amount'] - $details['deposit_amount'] );
+		$paid_class    = $details['amount_paid'] > 0 ? 'apd-text-success' : '';
+
+		if ( ! $deposit_paid ) {
+			$balance_label = __( 'Remaining Balance After Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		}
 		?>
 		<div class="apd-order-deposit-details">
 			<h3><?php esc_html_e( 'Deposit Information', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></h3>
@@ -120,17 +140,17 @@ class APD_Checkout {
 					<td><?php echo wp_kses_post( wc_price( $details['total_amount'] ) ); ?></td>
 				</tr>
 				<tr>
-					<td><?php echo esc_html( $deposit_label ); ?></td>
+					<td><?php echo esc_html( $deposit_paid ? $deposit_label : sprintf( /* translators: %s: configured deposit label. */ __( '%s Due Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $deposit_label ) ); ?></td>
 					<td><?php echo wp_kses_post( wc_price( $details['deposit_amount'] ) ); ?></td>
 				</tr>
 				<tr>
 					<td><?php esc_html_e( 'Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
-					<td class="apd-text-success"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></td>
+					<td class="<?php echo esc_attr( $paid_class ); ?>"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></td>
 				</tr>
 				<tr class="apd-balance-row">
 					<td><strong><?php echo esc_html( $balance_label ); ?></strong></td>
-					<td class="<?php echo esc_attr( $details['balance_due'] > 0 ? 'apd-text-danger' : 'apd-text-success' ); ?>">
-						<strong><?php echo wp_kses_post( wc_price( $details['balance_due'] ) ); ?></strong>
+					<td class="<?php echo esc_attr( $balance_due > 0 ? 'apd-text-danger' : 'apd-text-success' ); ?>">
+						<strong><?php echo wp_kses_post( wc_price( $balance_due ) ); ?></strong>
 					</td>
 				</tr>
 			</table>

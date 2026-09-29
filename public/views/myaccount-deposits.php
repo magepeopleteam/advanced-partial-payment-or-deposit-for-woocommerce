@@ -36,19 +36,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<td><a href="<?php echo esc_url( $order->get_view_order_url() ); ?>">#<?php echo esc_html( $order->get_order_number() ); ?></a></td>
 				<td><?php echo esc_html( wc_format_datetime( $order->get_date_created() ) ); ?></td>
 				<td><?php echo wp_kses_post( wc_price( $details['total_amount'] ) ); ?></td>
-				<td class="apd-text-success"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></td>
+				<td class="<?php echo esc_attr( $details['amount_paid'] > 0 ? 'apd-text-success' : '' ); ?>"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></td>
 				<td class="<?php echo esc_attr( $details['balance_due'] > 0 ? 'apd-text-danger' : 'apd-text-success' ); ?>">
 					<strong><?php echo wp_kses_post( wc_price( $details['balance_due'] ) ); ?></strong>
 				</td>
 				<td>
-					<?php if ( $details['balance_due'] > 0 ) : ?>
+					<?php if ( empty( $details['deposit_paid'] ) ) : ?>
+						<span class="apd-status-badge apd-status-pending"><?php esc_html_e( 'Awaiting Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
+					<?php elseif ( $details['balance_due'] > 0 ) : ?>
 						<span class="apd-status-badge apd-status-pending"><?php esc_html_e( 'Partially Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
 					<?php else : ?>
 						<span class="apd-status-badge apd-status-complete"><?php esc_html_e( 'Fully Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
 					<?php endif; ?>
 				</td>
 				<td>
-					<?php if ( $details['balance_due'] > 0 ) : ?>
+					<?php if ( empty( $details['deposit_paid'] ) ) : ?>
+						<span aria-hidden="true">—</span>
+					<?php elseif ( $details['balance_due'] > 0 ) : ?>
 						<?php if ( APD_Order::are_partial_balance_payments_enabled( $order ) ) : ?>
 							<?php
 							$apd_bounds = APD_Order::get_balance_payment_bounds( $order );

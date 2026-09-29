@@ -42,6 +42,7 @@ function apd_uninstall_order_meta_keys() {
 		'_apd_deposit_amount',
 		'_apd_total_amount',
 		'_apd_amount_paid',
+		'_apd_deposit_paid',
 		'_apd_balance_due',
 		'_apd_payment_history',
 		'_apd_balance_payment_pending',

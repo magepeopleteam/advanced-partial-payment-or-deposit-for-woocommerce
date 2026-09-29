@@ -45,6 +45,10 @@ class APD_Pay_Balance {
 		}
 
 		$details = APD_Order::get_deposit_details( $order );
+		if ( $details && empty( $details['deposit_paid'] ) ) {
+			$this->reject( __( 'The initial deposit has not been confirmed yet.', 'advanced-partial-payment-or-deposit-for-woocommerce' ), 'notice' );
+		}
+
 		if ( ! $details || $details['balance_due'] <= 0 ) {
 			$this->reject( __( 'This order has no outstanding balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ), 'notice' );
 		}
@@ -187,6 +191,10 @@ class APD_Pay_Balance {
 		}
 
 		$details = APD_Order::get_deposit_details( $order );
+		if ( $details && empty( $details['deposit_paid'] ) ) {
+			wp_send_json_error( __( 'The initial deposit has not been confirmed yet.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
+		}
+
 		if ( ! $details || $details['balance_due'] <= 0 ) {
 			wp_send_json_error( __( 'This order has no outstanding balance.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
 		}

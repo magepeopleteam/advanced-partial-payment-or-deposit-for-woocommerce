@@ -155,6 +155,11 @@ class APD_Admin_Order {
 		if ( ! $details ) {
 			return;
 		}
+
+		$paid_color        = $details['amount_paid'] > 0 ? '#00a32a' : '#646970';
+		$manual_amount_due = ! empty( $details['deposit_paid'] )
+			? $details['balance_due']
+			: min( $details['deposit_amount'], $details['balance_due'] );
 		?>
 		<div class="apd-metabox-content">
 			<table class="apd-metabox-table" style="width:100%;border-collapse:collapse;">
@@ -168,7 +173,7 @@ class APD_Admin_Order {
 				</tr>
 				<tr>
 					<td style="padding:8px 0;color:#666;"><?php esc_html_e( 'Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
-					<td style="padding:8px 0;text-align:right;color:#00a32a;font-weight:600;"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></td>
+					<td style="padding:8px 0;text-align:right;color:<?php echo esc_attr( $paid_color ); ?>;font-weight:600;"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></td>
 				</tr>
 				<tr style="border-top:2px solid #e2e4e7;">
 					<td style="padding:10px 0;font-weight:700;color:#333;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></td>
@@ -186,7 +191,7 @@ class APD_Admin_Order {
 				<div style="display:flex;gap:6px;">
 					<input type="number" id="apd-manual-amount" step="0.01" min="0.01"
 							max="<?php echo esc_attr( $details['balance_due'] ); ?>"
-							value="<?php echo esc_attr( $details['balance_due'] ); ?>"
+							value="<?php echo esc_attr( $manual_amount_due ); ?>"
 							style="flex:1;min-width:0;" placeholder="<?php esc_attr_e( 'Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?>" />
 					<button type="button" class="button button-primary" id="apd-record-payment"
 							data-order-id="<?php echo esc_attr( $order->get_id() ); ?>">
@@ -243,6 +248,7 @@ class APD_Admin_Order {
 
 		$history       = is_array( $details['history'] ) ? $details['history'] : array();
 		$running_total = 0;
+		$paid_color    = $details['amount_paid'] > 0 ? '#00a32a' : '#646970';
 		?>
 		<div class="apd-admin-payment-record">
 			<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;">
@@ -256,7 +262,7 @@ class APD_Admin_Order {
 				</div>
 				<div style="padding:12px 14px;border:1px solid #e2e4e7;border-radius:8px;background:#fff;">
 					<div style="font-size:11px;font-weight:600;color:#646970;text-transform:uppercase;"><?php esc_html_e( 'Total Paid', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></div>
-					<div style="margin-top:6px;font-size:18px;font-weight:700;color:#00a32a;"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></div>
+					<div style="margin-top:6px;font-size:18px;font-weight:700;color:<?php echo esc_attr( $paid_color ); ?>;"><?php echo wp_kses_post( wc_price( $details['amount_paid'] ) ); ?></div>
 				</div>
 				<div style="padding:12px 14px;border:1px solid #e2e4e7;border-radius:8px;background:#fff;">
 					<div style="font-size:11px;font-weight:600;color:#646970;text-transform:uppercase;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></div>

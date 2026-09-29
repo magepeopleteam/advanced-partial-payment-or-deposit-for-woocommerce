@@ -52,6 +52,8 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 == Changelog ==
 
 = 4.0.20 - 2026-09-25 =
+* Fix: New deposit orders no longer count the initial deposit as paid before the gateway confirms it. BACS, cheque and cash-on-delivery orders now start with zero paid and an empty payment record; the deposit is recorded only after payment completion or an administrator confirms/records the money.
+* Fix: Unpaid offline deposit orders remain on hold, allowing WooCommerce's Customer on-hold order email to include the order details, deposit split and gateway bank-payment instructions. The thank-you page and My Account now label the initial amount as due rather than paid until confirmation.
 * Fix: The cart and checkout "Total" row showed only the deposit, the same figure as "To Pay Now". It now shows the full order value; the amount charged is unchanged.
 * Fix: Order emails, the thank-you page and My Account showed the deposit as the order total. The Total row now shows the full order value, followed by the deposit and the remaining balance (also picked up by email designer and PDF invoice plugins that use the order totals table).
 * Fix: The admin order items table labelled the deposit as "Order Total". The row is now marked "(Deposit)" / "(Balance payment)" and the full total, deposit, amount paid and balance are listed beneath it.
