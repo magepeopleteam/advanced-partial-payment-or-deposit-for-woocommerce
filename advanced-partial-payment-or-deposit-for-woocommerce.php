@@ -131,6 +131,7 @@ function apd_init() {
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-settings.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-order.php';
+		require_once APD_PLUGIN_DIR . 'admin/class-apd-admin-order-deposit.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-product-meta.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-category-meta.php';
 		require_once APD_PLUGIN_DIR . 'admin/class-apd-migration.php';
@@ -139,6 +140,7 @@ function apd_init() {
 		new APD_Admin();
 		new APD_Admin_Settings();
 		new APD_Admin_Order();
+		new APD_Admin_Order_Deposit();
 		new APD_Product_Meta();
 		new APD_Category_Meta();
 		new APD_Migration();

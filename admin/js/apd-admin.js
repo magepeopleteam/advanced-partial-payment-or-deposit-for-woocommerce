@@ -23,6 +23,7 @@
             this.bindCategoryForm();
             this.bindDeleteCategoryRule();
             this.bindManualPayment();
+            this.bindOrderDeposit();
             this.bindDepositTypeSuffix();
             this.bindProductDepositSummary();
         },
@@ -200,6 +201,110 @@
                         self.showToast(apd_admin.strings.error, 'error');
                         $btn.prop('disabled', false).text(__('Record', 'advanced-partial-payment-or-deposit-for-woocommerce'));
                     });
+            });
+        },
+
+        // =============================================
+        // Set / Change / Remove Deposit (Order Page)
+        // =============================================
+        bindOrderDeposit: function () {
+            var self  = this;
+            var $form = $('.apd-order-deposit-form');
+
+            if (!$form.length) {
+                return;
+            }
+
+            var total    = parseFloat($form.data('total')) || 0;
+            var decimals = parseInt($form.data('decimals'), 10);
+            var currency = String($form.data('currency') || '');
+
+            if (isNaN(decimals)) {
+                decimals = 2;
+            }
+
+            var money = function (value) {
+                return currency + Number(value).toFixed(decimals);
+            };
+
+            var computeDeposit = function () {
+                var type  = $('#apd-order-deposit-type').val();
+                var value = parseFloat($('#apd-order-deposit-value').val()) || 0;
+                var deposit = 'percentage' === type ? (total * value) / 100 : value;
+                var factor  = Math.pow(10, decimals);
+
+                return Math.round(deposit * factor) / factor;
+            };
+
+            var updatePreview = function () {
+                var $preview = $form.find('.apd-order-deposit-preview');
+                var deposit  = computeDeposit();
+
+                if (deposit <= 0 || deposit >= total) {
+                    $preview.css('color', '#d63638').text(
+                        __('The deposit must be more than zero and less than the order total.', 'advanced-partial-payment-or-deposit-for-woocommerce')
+                    );
+                    return;
+                }
+
+                $preview.css('color', '#50575e').text(
+                    /* translators: 1: deposit amount, 2: balance due after the deposit. */
+                    sprintf(__('Deposit: %1$s · Balance after deposit: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce'), money(deposit), money(total - deposit))
+                );
+            };
+
+            $(document).on('change input', '#apd-order-deposit-type, #apd-order-deposit-value', updatePreview);
+            updatePreview();
+
+            var send = function ($btn, data, busyText) {
+                var originalText = $btn.text();
+
+                $('#apd-set-order-deposit, #apd-remove-order-deposit').prop('disabled', true);
+                $btn.text(busyText);
+
+                $.post(apd_admin.ajax_url, $.extend({ nonce: apd_admin.nonce, order_id: $btn.data('order-id') }, data))
+                    .done(function (response) {
+                        if (response.success) {
+                            self.showToast(response.data, 'success');
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                            return;
+                        }
+
+                        self.showToast(response.data || apd_admin.strings.error, 'error');
+                        $('#apd-set-order-deposit, #apd-remove-order-deposit').prop('disabled', false);
+                        $btn.text(originalText);
+                    })
+                    .fail(function () {
+                        self.showToast(apd_admin.strings.error, 'error');
+                        $('#apd-set-order-deposit, #apd-remove-order-deposit').prop('disabled', false);
+                        $btn.text(originalText);
+                    });
+            };
+
+            $(document).on('click', '#apd-set-order-deposit', function () {
+                var deposit = computeDeposit();
+
+                if (deposit <= 0 || deposit >= total) {
+                    self.showToast(__('The deposit must be more than zero and less than the order total.', 'advanced-partial-payment-or-deposit-for-woocommerce'), 'error');
+                    return;
+                }
+
+                send($(this), {
+                    action: 'apd_set_order_deposit',
+                    deposit_type: $('#apd-order-deposit-type').val(),
+                    deposit_value: $('#apd-order-deposit-value').val(),
+                    mark_received: $('#apd-order-deposit-received').is(':checked') ? 'yes' : ''
+                }, __('Saving...', 'advanced-partial-payment-or-deposit-for-woocommerce'));
+            });
+
+            $(document).on('click', '#apd-remove-order-deposit', function () {
+                if (!window.confirm(__('Remove the deposit? The customer will owe the full order total.', 'advanced-partial-payment-or-deposit-for-woocommerce'))) {
+                    return;
+                }
+
+                send($(this), { action: 'apd_remove_order_deposit' }, __('Removing...', 'advanced-partial-payment-or-deposit-for-woocommerce'));
             });
         },
 

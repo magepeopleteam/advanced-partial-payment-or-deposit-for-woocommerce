@@ -35,6 +35,7 @@ class APD_Admin_Settings {
 				$settings['deposit_value']            = floatval( $_POST['deposit_value'] ?? 50 );
 				$settings['allow_full_payment']       = isset( $_POST['allow_full_payment'] ) ? 'yes' : 'no';
 				$settings['force_deposit']            = isset( $_POST['force_deposit'] ) ? 'yes' : 'no';
+				$settings['admin_order_deposit']      = isset( $_POST['admin_order_deposit'] ) ? 'yes' : 'no';
 				$settings['delete_data_on_uninstall'] = isset( $_POST['delete_data_on_uninstall'] ) ? 'yes' : 'no';
 				break;
 

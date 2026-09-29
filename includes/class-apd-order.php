@@ -33,7 +33,7 @@ class APD_Order {
 		add_action( 'woocommerce_thankyou', array( $this, 'maybe_finalize_pending_balance_payment' ), 1, 1 );
 		// woocommerce_order_status_{to} fires just before woocommerce_order_status_changed and
 		// is the only transition hook that says whether a person made the change.
-		foreach ( array( 'processing', 'completed', 'on-hold' ) as $watched_status ) {
+		foreach ( array( 'processing', 'completed', 'on-hold', 'partially-paid' ) as $watched_status ) {
 			add_action( 'woocommerce_order_status_' . $watched_status, array( $this, 'remember_manual_transition' ), 1, 3 );
 		}
 		add_action( 'woocommerce_order_status_changed', array( $this, 'maybe_finalize_pending_balance_payment_on_status_change' ), 10, 4 );
@@ -68,27 +68,34 @@ class APD_Order {
 			return;
 		}
 
-		// Save meta
+		self::apply_deposit_meta( $order, $full_total, $deposit_amount );
+		$order->save();
+	}
+
+	/**
+	 * Turn an order into an unpaid deposit order.
+	 *
+	 * Shared by checkout and the admin order screen, so both write the same meta. The
+	 * caller saves the order.
+	 *
+	 * @param WC_Order $order          Order object.
+	 * @param float    $full_total     Full order value.
+	 * @param float    $deposit_amount Amount due first.
+	 */
+	public static function apply_deposit_meta( $order, $full_total, $deposit_amount ) {
 		$order->update_meta_data( '_apd_is_deposit', 'yes' );
 		$order->update_meta_data( '_apd_deposit_amount', $deposit_amount );
 		$order->update_meta_data( '_apd_total_amount', $full_total );
-		$order->update_meta_data( '_apd_amount_paid', $deposit_amount );
-		$order->update_meta_data( '_apd_balance_due', $balance_due );
-		$order->update_meta_data(
-			'_apd_payment_history',
-			array(
-				array(
-					'type'   => 'deposit',
-					'amount' => $deposit_amount,
-					'date'   => current_time( 'mysql' ),
-					'note'   => __( 'Initial deposit payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-				),
-			)
-		);
+		// Creating an order only establishes what is due. A gateway confirms when
+		// money has actually been received (payment_complete for online gateways,
+		// or a manual payment/status update for offline gateways such as BACS).
+		$order->update_meta_data( '_apd_deposit_paid', 'no' );
+		$order->update_meta_data( '_apd_amount_paid', 0 );
+		$order->update_meta_data( '_apd_balance_due', $full_total );
+		$order->update_meta_data( '_apd_payment_history', array() );
 
 		// Set the order total to deposit amount
 		$order->set_total( $deposit_amount );
-		$order->save();
 	}
 
 	/**
@@ -114,12 +121,22 @@ class APD_Order {
 			return;
 		}
 
+		$deposit_just_paid = false;
+		if ( ! self::is_initial_deposit_paid( $order ) ) {
+			$deposit_just_paid = self::confirm_initial_deposit(
+				$order,
+				__( 'Initial deposit payment received.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+			);
+		}
+
 		$balance_due = floatval( $order->get_meta( '_apd_balance_due' ) );
 		if ( $balance_due > 0 ) {
 			$order->set_status( 'partially-paid', __( 'Deposit payment received. Balance due: ', 'advanced-partial-payment-or-deposit-for-woocommerce' ) . wc_price( $balance_due ) );
 			$order->save();
 
-			do_action( 'apd_deposit_payment_complete', $order_id, $order );
+			if ( $deposit_just_paid ) {
+				do_action( 'apd_deposit_payment_complete', $order_id, $order );
+			}
 		}
 	}
 
@@ -167,6 +184,13 @@ class APD_Order {
 			$order->save_meta_data();
 		}
 
+		if ( 'partially-paid' === $to_status ) {
+			if ( $is_manual ) {
+				$this->confirm_deposit_on_manual_partial_status( $order );
+			}
+			return;
+		}
+
 		$this->reconcile_deposit_order(
 			$order,
 			$to_status,
@@ -195,6 +219,41 @@ class APD_Order {
 	}
 
 	/**
+	 * Record the initial deposit when a person sets an unpaid deposit order to Partially Paid.
+	 *
+	 * Choosing "Partially Paid" by hand is the shop saying the deposit has been taken (the
+	 * usual flow for bookings made at the counter). Without this the order would show that
+	 * status with nothing paid and the full value still owed.
+	 *
+	 * @param WC_Order $order Order object.
+	 */
+	private function confirm_deposit_on_manual_partial_status( $order ) {
+		if ( self::is_initial_deposit_paid( $order ) || self::has_pending_balance_payment( $order ) ) {
+			return;
+		}
+
+		$confirmed = self::confirm_initial_deposit(
+			$order,
+			__( 'Deposit received (order set to Partially Paid by an administrator).', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+		);
+
+		if ( ! $confirmed ) {
+			return;
+		}
+
+		$order->add_order_note(
+			sprintf(
+				/* translators: 1: deposit amount, 2: balance due */
+				__( 'Payment of %1$s recorded. Remaining balance: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				wc_price( floatval( $order->get_meta( '_apd_deposit_amount' ) ), array( 'currency' => $order->get_currency() ) ),
+				wc_price( floatval( $order->get_meta( '_apd_balance_due' ) ), array( 'currency' => $order->get_currency() ) )
+			)
+		);
+
+		do_action( 'apd_deposit_payment_complete', $order->get_id(), $order );
+	}
+
+	/**
 	 * Reconcile a deposit order against the status it just landed on.
 	 *
 	 * These are fallbacks for gateways that never call payment_complete(). A status on
@@ -217,6 +276,38 @@ class APD_Order {
 
 		if ( ! $is_manual && $status === $order->get_meta( '_apd_manual_status' ) ) {
 			$is_manual = true;
+		}
+
+		if ( ! self::is_initial_deposit_paid( $order ) ) {
+			// On-hold is WooCommerce's normal awaiting-payment state for BACS and
+			// other offline gateways. Preserve it so the customer on-hold email,
+			// including the gateway's payment instructions, can be sent normally.
+			if ( 'on-hold' === $status ) {
+				return;
+			}
+
+			$deposit_captured = in_array( $status, array( 'processing', 'completed' ), true )
+				&& ( ! self::is_offline_payment_method( $order ) || $is_manual );
+
+			if ( ! $deposit_captured ) {
+				return;
+			}
+
+			self::confirm_initial_deposit(
+				$order,
+				__( 'Initial deposit payment confirmed after order status update.', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+			);
+
+			do_action( 'apd_deposit_payment_complete', $order->get_id(), $order );
+
+			if ( ! $is_manual ) {
+				$this->normalize_outstanding_deposit_status(
+					$order,
+					__( 'Deposit payment received. Balance is still due.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+					false
+				);
+			}
+			return;
 		}
 
 		if ( self::has_pending_balance_payment( $order ) ) {
@@ -311,6 +402,13 @@ class APD_Order {
 		$settings      = get_option( 'apd_settings', array() );
 		$deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
 		$balance_label = $settings['due_balance_label'] ?? __( 'Due Balance', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		$deposit_paid  = ! empty( $details['deposit_paid'] );
+
+		if ( ! $deposit_paid ) {
+			/* translators: %s: configured deposit label. */
+			$deposit_label = sprintf( __( '%s Due Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ), $deposit_label );
+			$balance_label = __( 'Remaining Balance After Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
+		}
 
 		$deposit_rows = array(
 			'apd_deposit' => array(
@@ -327,10 +425,14 @@ class APD_Order {
 			);
 		}
 
-		if ( $details['balance_due'] > 0 ) {
+		$display_balance = $deposit_paid
+			? $details['balance_due']
+			: max( 0, $details['total_amount'] - $details['deposit_amount'] );
+
+		if ( $display_balance > 0 ) {
 			$deposit_rows['apd_balance_due'] = array(
 				'label' => $balance_label . ':',
-				'value' => wc_price( $details['balance_due'], $currency ),
+				'value' => wc_price( $display_balance, $currency ),
 			);
 		}
 
@@ -380,7 +482,7 @@ class APD_Order {
 	}
 
 	/**
-	 * Record a balance payment.
+	 * Record a confirmed payment, applying it to the initial deposit first.
 	 */
 	public static function record_payment( $order_id, $amount, $note = '' ) {
 		$order = wc_get_order( $order_id );
@@ -388,8 +490,12 @@ class APD_Order {
 			return false;
 		}
 
-		$amount_paid = floatval( $order->get_meta( '_apd_amount_paid' ) );
-		$total       = floatval( $order->get_meta( '_apd_total_amount' ) );
+		$amount_paid        = floatval( $order->get_meta( '_apd_amount_paid' ) );
+		$total              = floatval( $order->get_meta( '_apd_total_amount' ) );
+		$deposit_amount     = floatval( $order->get_meta( '_apd_deposit_amount' ) );
+		$deposit_was_paid   = self::is_initial_deposit_paid( $order );
+		$deposit_is_paid    = $deposit_was_paid;
+		$deposit_just_paid  = false;
 
 		// Any recorded payment supersedes an in-flight attempt, so drop the markers to
 		// stop a stale pending amount from being banked a second time later on.
@@ -408,8 +514,46 @@ class APD_Order {
 		$new_paid    = $amount_paid + $amount;
 		$new_balance = max( 0, $total - $new_paid );
 
+		$history = $order->get_meta( '_apd_payment_history' );
+		if ( ! is_array( $history ) ) {
+			$history = array();
+		}
+
+		$remaining_payment = $amount;
+
+		if ( ! $deposit_was_paid ) {
+			$initial_due     = max( 0, $deposit_amount - $amount_paid );
+			$initial_payment = min( $remaining_payment, $initial_due );
+
+			if ( $initial_payment > 0 ) {
+				$history[] = array(
+					'type'   => 'deposit',
+					'amount' => $initial_payment,
+					'date'   => current_time( 'mysql' ),
+					'note'   => $note ? $note : __( 'Initial deposit payment recorded', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				);
+				$remaining_payment -= $initial_payment;
+			}
+
+			$deposit_is_paid = round( $new_paid - $deposit_amount, wc_get_price_decimals() ) >= 0;
+			if ( $deposit_is_paid ) {
+				$order->update_meta_data( '_apd_deposit_paid', 'yes' );
+				$deposit_just_paid = true;
+			}
+		}
+
+		if ( $remaining_payment > 0 ) {
+			$history[] = array(
+				'type'   => 'balance_payment',
+				'amount' => $remaining_payment,
+				'date'   => current_time( 'mysql' ),
+				'note'   => $note ? $note : __( 'Balance payment recorded', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+			);
+		}
+
 		$order->update_meta_data( '_apd_amount_paid', round( $new_paid, wc_get_price_decimals() ) );
 		$order->update_meta_data( '_apd_balance_due', round( $new_balance, wc_get_price_decimals() ) );
+		$order->update_meta_data( '_apd_payment_history', $history );
 
 		// Persist the new balance BEFORE the status transition fires. The stock
 		// deferral (Order Workflow "reduce on full payment") re-reads the order
@@ -417,25 +561,17 @@ class APD_Order {
 		// would keep holding the stock forever.
 		$order->save();
 
-		if ( $new_balance > 0 ) {
-			$order->set_total( round( $new_balance, wc_get_price_decimals() ) );
+		if ( $new_balance > 0 && $deposit_is_paid ) {
+			$order->set_total(
+				round(
+					$deposit_just_paid && $remaining_payment <= 0 ? $deposit_amount : $new_balance,
+					wc_get_price_decimals()
+				)
+			);
 			$order->set_status( 'partially-paid' );
 		} else {
-			$order->set_total( round( $total, wc_get_price_decimals() ) );
+			$order->set_total( round( $new_balance > 0 ? $deposit_amount : $total, wc_get_price_decimals() ) );
 		}
-
-		// Add to payment history
-		$history = $order->get_meta( '_apd_payment_history' );
-		if ( ! is_array( $history ) ) {
-			$history = array();
-		}
-		$history[] = array(
-			'type'   => 'balance_payment',
-			'amount' => $amount,
-			'date'   => current_time( 'mysql' ),
-			'note'   => $note ? $note : __( 'Balance payment recorded', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-		);
-		$order->update_meta_data( '_apd_payment_history', $history );
 
 		$is_fully_paid = $new_balance <= 0;
 
@@ -458,13 +594,21 @@ class APD_Order {
 		$order->add_order_note(
 			sprintf(
 				/* translators: 1: payment amount, 2: balance due */
-				__( 'Balance payment of %1$s recorded. Remaining balance: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+				__( 'Payment of %1$s recorded. Remaining balance: %2$s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
 				wc_price( $amount ),
 				wc_price( $new_balance )
 			)
 		);
 
 		$order->save();
+
+		if ( $deposit_just_paid ) {
+			try {
+				do_action( 'apd_deposit_payment_complete', $order_id, $order );
+			} catch ( \Throwable $e ) {
+				wc_caught_exception( $e );
+			}
+		}
 
 		if ( $is_fully_paid ) {
 			try {
@@ -488,6 +632,36 @@ class APD_Order {
 	}
 
 	/**
+	 * Check whether the initial deposit has actually been received.
+	 *
+	 * Orders created before this marker existed retain their historical paid
+	 * state when their recorded amount already covers the deposit.
+	 *
+	 * @param WC_Order|int|null $order Order object or ID.
+	 * @return bool
+	 */
+	public static function is_initial_deposit_paid( $order ) {
+		if ( is_numeric( $order ) ) {
+			$order = wc_get_order( $order );
+		}
+
+		if ( ! $order || ! self::is_deposit_order( $order ) ) {
+			return false;
+		}
+
+		$paid_marker = $order->get_meta( '_apd_deposit_paid' );
+		if ( 'yes' === $paid_marker || 'no' === $paid_marker ) {
+			return 'yes' === $paid_marker;
+		}
+
+		$deposit_amount = floatval( $order->get_meta( '_apd_deposit_amount' ) );
+		$amount_paid    = floatval( $order->get_meta( '_apd_amount_paid' ) );
+
+		return $deposit_amount > 0
+			&& round( $amount_paid - $deposit_amount, wc_get_price_decimals() ) >= 0;
+	}
+
+	/**
 	 * Check whether a deposit order still has balance due.
 	 *
 	 * @param WC_Order|int|null $order Order object or ID.
@@ -502,7 +676,8 @@ class APD_Order {
 			return false;
 		}
 
-		return floatval( $order->get_meta( '_apd_balance_due' ) ) > 0;
+		return self::is_initial_deposit_paid( $order )
+			&& floatval( $order->get_meta( '_apd_balance_due' ) ) > 0;
 	}
 
 	/**
@@ -679,7 +854,9 @@ class APD_Order {
 		}
 
 		$decimals = wc_get_price_decimals();
-		$max      = $order ? round( floatval( $order->get_meta( '_apd_balance_due' ) ), $decimals ) : 0;
+		$max      = $order && self::is_initial_deposit_paid( $order )
+			? round( floatval( $order->get_meta( '_apd_balance_due' ) ), $decimals )
+			: 0;
 		$min      = $max;
 
 		if ( $max > 0 && self::are_partial_balance_payments_enabled( $order ) ) {
@@ -919,12 +1096,60 @@ class APD_Order {
 
 		return array(
 			'is_deposit'     => true,
+			'deposit_paid'   => self::is_initial_deposit_paid( $order ),
 			'deposit_amount' => floatval( $order->get_meta( '_apd_deposit_amount' ) ),
 			'total_amount'   => floatval( $order->get_meta( '_apd_total_amount' ) ),
 			'amount_paid'    => floatval( $order->get_meta( '_apd_amount_paid' ) ),
 			'balance_due'    => floatval( $order->get_meta( '_apd_balance_due' ) ),
 			'history'        => $order->get_meta( '_apd_payment_history' ),
 		);
+	}
+
+	/**
+	 * Record the initial deposit after a gateway or store administrator confirms it.
+	 *
+	 * @param WC_Order $order Order object.
+	 * @param string   $note  Payment history note.
+	 * @return bool Whether a deposit payment was recorded.
+	 */
+	private static function confirm_initial_deposit( $order, $note ) {
+		if ( ! $order || self::is_initial_deposit_paid( $order ) ) {
+			return false;
+		}
+
+		$decimals      = wc_get_price_decimals();
+		$total         = floatval( $order->get_meta( '_apd_total_amount' ) );
+		$deposit       = min( floatval( $order->get_meta( '_apd_deposit_amount' ) ), $total );
+		$amount_paid   = floatval( $order->get_meta( '_apd_amount_paid' ) );
+		$amount        = max( 0, $deposit - $amount_paid );
+		$new_paid      = min( $total, $amount_paid + $amount );
+		$new_balance   = max( 0, $total - $new_paid );
+		$payment_log   = $order->get_meta( '_apd_payment_history' );
+
+		if ( $deposit <= 0 ) {
+			return false;
+		}
+
+		if ( ! is_array( $payment_log ) ) {
+			$payment_log = array();
+		}
+
+		if ( $amount > 0 ) {
+			$payment_log[] = array(
+				'type'   => 'deposit',
+				'amount' => round( $amount, $decimals ),
+				'date'   => current_time( 'mysql' ),
+				'note'   => $note,
+			);
+		}
+
+		$order->update_meta_data( '_apd_deposit_paid', 'yes' );
+		$order->update_meta_data( '_apd_amount_paid', round( $new_paid, $decimals ) );
+		$order->update_meta_data( '_apd_balance_due', round( $new_balance, $decimals ) );
+		$order->update_meta_data( '_apd_payment_history', $payment_log );
+		$order->save();
+
+		return true;
 	}
 
 	/**
@@ -991,9 +1216,10 @@ class APD_Order {
 	 * Force deposit orders with an outstanding balance into the partially-paid status.
 	 *
 	 * @param WC_Order $order Order object.
-	 * @param string   $note  Status note.
+	 * @param string   $note              Status note.
+	 * @param bool     $send_notification Whether to fire the deposit-received action.
 	 */
-	private function normalize_outstanding_deposit_status( $order, $note ) {
+	private function normalize_outstanding_deposit_status( $order, $note, $send_notification = true ) {
 		if ( 'partially-paid' === $order->get_status() || ! self::order_has_outstanding_balance( $order ) ) {
 			return;
 		}
@@ -1001,6 +1227,8 @@ class APD_Order {
 		$order->set_status( 'partially-paid', $note );
 		$order->save();
 
-		do_action( 'apd_deposit_payment_complete', $order->get_id(), $order );
+		if ( $send_notification ) {
+			do_action( 'apd_deposit_payment_complete', $order->get_id(), $order );
+		}
 	}
 }
