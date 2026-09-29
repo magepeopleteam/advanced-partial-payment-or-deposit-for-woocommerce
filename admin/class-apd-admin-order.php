@@ -31,6 +31,55 @@ class APD_Admin_Order {
 		// Order items totals: say what "Order Total" is, then show the full split beneath it.
 		add_action( 'woocommerce_admin_order_totals_after_tax', array( $this, 'start_order_total_label' ), 10, 1 );
 		add_action( 'woocommerce_admin_order_totals_after_total', array( $this, 'render_order_totals_deposit_rows' ), 10, 1 );
+		// Orders list: the Total column shows the full order value, the Deposit column what is due.
+		add_action( 'current_screen', array( $this, 'maybe_show_full_total_in_orders_list' ) );
+	}
+
+	/**
+	 * Show the full order value in the orders list Total column.
+	 *
+	 * @param WP_Screen $screen Current screen.
+	 */
+	public function maybe_show_full_total_in_orders_list( $screen ) {
+		if ( ! $screen || ! in_array( $screen->id, array( 'edit-shop_order', 'woocommerce_page_wc-orders' ), true ) ) {
+			return;
+		}
+
+		// The HPOS order edit screen shares the list's screen id.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only screen routing.
+		if ( isset( $_GET['action'] ) && in_array( sanitize_key( wp_unslash( $_GET['action'] ) ), array( 'edit', 'new' ), true ) ) {
+			return;
+		}
+
+		add_filter( 'woocommerce_get_formatted_order_total', array( $this, 'orders_list_full_total' ), 10, 4 );
+	}
+
+	/**
+	 * Swap the deposit for the full order value while the list table is rendered.
+	 *
+	 * @param string   $formatted_total  Formatted total HTML.
+	 * @param WC_Order $order            Order object.
+	 * @param string   $tax_display      Tax display mode.
+	 * @param bool     $display_refunded Whether refunds are shown.
+	 * @return string
+	 */
+	public function orders_list_full_total( $formatted_total, $order, $tax_display = '', $display_refunded = true ) {
+		// Bulk actions run before the page header and may send emails; leave those alone.
+		if ( ! did_action( 'in_admin_header' ) || ! $order instanceof WC_Order || $order->get_total_refunded() ) {
+			return $formatted_total;
+		}
+
+		if ( ! apply_filters( 'apd_display_full_order_total', true, $order ) || ! APD_Order::is_deposit_order( $order ) ) {
+			return $formatted_total;
+		}
+
+		$total_amount = floatval( $order->get_meta( '_apd_total_amount' ) );
+
+		if ( $total_amount <= 0 ) {
+			return $formatted_total;
+		}
+
+		return APD_Order::swap_in_full_total( (string) $formatted_total, $order, $total_amount );
 	}
 
 	/**

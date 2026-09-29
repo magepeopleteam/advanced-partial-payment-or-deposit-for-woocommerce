@@ -45,6 +45,9 @@ class APD_Order {
 		// Full order value + deposit / balance rows in order totals. Registered here, not in
 		// the frontend classes, because order emails are also sent from admin and cron requests.
 		add_filter( 'woocommerce_get_order_item_totals', array( $this, 'order_item_totals_deposit_rows' ), 10, 3 );
+		// The Total value is swapped late: shops often rewrite that row (CHF 0.05 rounding
+		// snippets, for one) from $order->get_total(), which would put the deposit back.
+		add_filter( 'woocommerce_get_order_item_totals', array( $this, 'order_item_totals_full_total' ), 999, 3 );
 	}
 
 	/**
@@ -365,39 +368,14 @@ class APD_Order {
 	 * @return array
 	 */
 	public function order_item_totals_deposit_rows( $rows, $order = null, $tax_display = '' ) {
-		if ( ! is_array( $rows ) || ! $order instanceof WC_Order || ! isset( $rows['order_total'] ) ) {
-			return $rows;
-		}
+		$details = self::get_totals_display_details( $rows, $order );
 
-		if ( ! apply_filters( 'apd_display_full_order_total', true, $order ) || ! self::is_deposit_order( $order ) ) {
-			return $rows;
-		}
-
-		// On the pay page the total is exactly what the customer is about to pay.
-		if ( function_exists( 'is_checkout_pay_page' ) && is_checkout_pay_page() ) {
-			return $rows;
-		}
-
-		$details = self::get_deposit_details( $order );
-
-		if ( ! $details || $details['total_amount'] <= 0 ) {
+		if ( ! $details ) {
 			return $rows;
 		}
 
 		$currency = array( 'currency' => $order->get_currency() );
 		$decimals = wc_get_price_decimals();
-
-		// Swap the charged amount for the full value, keeping WooCommerce's tax note.
-		// A refunded order keeps WooCommerce's own struck-through net total untouched.
-		if ( ! $order->get_total_refunded() && 0.0 !== round( $details['total_amount'] - (float) $order->get_total(), $decimals ) ) {
-			$charged = wc_price( $order->get_total(), $currency );
-			$value   = $rows['order_total']['value'];
-			$at      = strpos( $value, $charged );
-
-			if ( false !== $at ) {
-				$rows['order_total']['value'] = substr_replace( $value, wc_price( $details['total_amount'], $currency ), $at, strlen( $charged ) );
-			}
-		}
 
 		$settings      = get_option( 'apd_settings', array() );
 		$deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
@@ -440,6 +418,90 @@ class APD_Order {
 		$position = array_search( 'order_total', array_keys( $rows ), true );
 
 		return array_slice( $rows, 0, $position + 1, true ) + $deposit_rows + array_slice( $rows, $position + 1, null, true );
+	}
+
+	/**
+	 * Show the full order value in the Total row of a deposit order.
+	 *
+	 * Runs after other filters on purpose. A snippet or plugin that rebuilds the Total
+	 * value from $order->get_total() would otherwise show the deposit as the order total.
+	 *
+	 * @param array    $rows        Totals rows.
+	 * @param WC_Order $order       Order object.
+	 * @param string   $tax_display Tax display mode.
+	 * @return array
+	 */
+	public function order_item_totals_full_total( $rows, $order = null, $tax_display = '' ) {
+		$details = self::get_totals_display_details( $rows, $order );
+
+		// A refunded order keeps WooCommerce's own struck-through net total untouched.
+		if ( ! $details || $order->get_total_refunded() ) {
+			return $rows;
+		}
+
+		$rows['order_total']['value'] = self::swap_in_full_total( (string) $rows['order_total']['value'], $order, $details['total_amount'] );
+
+		return $rows;
+	}
+
+	/**
+	 * Replace the amount charged now with the full order value in a formatted total.
+	 *
+	 * Anything around the amount, such as WooCommerce's tax note, is kept.
+	 *
+	 * @param string   $html         Formatted total HTML.
+	 * @param WC_Order $order        Deposit order.
+	 * @param float    $total_amount Full order value.
+	 * @return string
+	 */
+	public static function swap_in_full_total( $html, $order, $total_amount ) {
+		if ( 0.0 === round( $total_amount - (float) $order->get_total(), wc_get_price_decimals() ) ) {
+			return $html;
+		}
+
+		$currency = array( 'currency' => $order->get_currency() );
+		$full     = wc_price( $total_amount, $currency );
+		$charged  = wc_price( $order->get_total(), $currency );
+		$at       = strpos( $html, $charged );
+
+		if ( false !== $at ) {
+			return substr_replace( $html, $full, $at, strlen( $charged ) );
+		}
+
+		// Rewritten by someone else (a rounded amount, say): replace the first price shown.
+		$swapped = preg_replace( '#<span class="woocommerce-Price-amount amount">.*?</bdi>\s*</span>#s', $full, $html, 1, $count );
+
+		return ( $count && is_string( $swapped ) ) ? $swapped : $html;
+	}
+
+	/**
+	 * Deposit details for a totals table that should show the full order value.
+	 *
+	 * @param array    $rows  Totals rows.
+	 * @param WC_Order $order Order object.
+	 * @return array|false Deposit details, or false when the table is left alone.
+	 */
+	private static function get_totals_display_details( $rows, $order ) {
+		if ( ! is_array( $rows ) || ! $order instanceof WC_Order || ! isset( $rows['order_total'] ) ) {
+			return false;
+		}
+
+		if ( ! apply_filters( 'apd_display_full_order_total', true, $order ) || ! self::is_deposit_order( $order ) ) {
+			return false;
+		}
+
+		// On the pay page the total is exactly what the customer is about to pay.
+		if ( function_exists( 'is_checkout_pay_page' ) && is_checkout_pay_page() ) {
+			return false;
+		}
+
+		$details = self::get_deposit_details( $order );
+
+		if ( ! $details || $details['total_amount'] <= 0 ) {
+			return false;
+		}
+
+		return $details;
 	}
 
 	/**
