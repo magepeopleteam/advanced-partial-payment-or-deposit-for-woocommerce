@@ -31,14 +31,16 @@ class APD_Public {
 			APD_VERSION
 		);
 
-		// Product option styling is CSS-only. JavaScript is needed only by the editable
-		// balance form on My Account, and that helper has no external dependencies.
-		if ( is_account_page() ) {
+		// Product option styling is CSS-only. JavaScript is needed by the editable balance
+		// form on My Account, and on product pages so a price calculator can update the
+		// deposit figures (apd_product_price_changed). The helper has no dependencies.
+		if ( is_account_page() || is_product() ) {
 			wp_enqueue_script(
 				'apd-public',
 				APD_PLUGIN_URL . 'public/js/apd-public.js',
 				array(),
-				APD_VERSION,
+				// File time too, so a cached copy can't outlive a script fix within one release.
+				APD_VERSION . '.' . (int) filemtime( APD_PLUGIN_DIR . 'public/js/apd-public.js' ),
 				true
 			);
 			wp_localize_script(

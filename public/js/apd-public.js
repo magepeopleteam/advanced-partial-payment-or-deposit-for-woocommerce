@@ -7,6 +7,96 @@
     var APD_Public = {
         init: function () {
             this.bindBalanceAmount();
+            this.bindProductPrice();
+        },
+
+        /**
+         * Let a price calculator update the deposit figures on the product page.
+         *
+         * The product form is rendered once from the product's base price. A configurator
+         * that changes the price in the browser can report the new unit price with either
+         *   jQuery(document.body).trigger('apd_product_price_changed', [price]);
+         * or
+         *   window.apdUpdateProductPrice(price);
+         * A price of 0 or less puts the server-rendered figures back.
+         */
+        bindProductPrice: function () {
+            var self = this;
+
+            window.apdUpdateProductPrice = function (price) {
+                self.updateProductPrice(price);
+            };
+
+            if (window.jQuery) {
+                window.jQuery(document.body).on('apd_product_price_changed', function (event, price) {
+                    self.updateProductPrice(price);
+                });
+            }
+        },
+
+        updateProductPrice: function (price) {
+            var self = this,
+                cfg = (window.apd_public && window.apd_public.price) || {},
+                decimals = typeof cfg.decimals === 'undefined' ? 2 : parseInt(cfg.decimals, 10),
+                factor = Math.pow(10, decimals);
+
+            price = parseFloat(price);
+
+            document.querySelectorAll('.apd-product-deposit-form[data-apd-deposit-type]').forEach(function (form) {
+                var type = form.getAttribute('data-apd-deposit-type'),
+                    value = parseFloat(form.getAttribute('data-apd-deposit-value')),
+                    depositInput = form.querySelector('input[name="apd_payment_type"][value="deposit"]'),
+                    fullInput = form.querySelector('input[name="apd_payment_type"][value="full"]'),
+                    depositOption = depositInput ? depositInput.closest('.apd-deposit-option') : null,
+                    fullOption = fullInput ? fullInput.closest('.apd-deposit-option') : null,
+                    targets = {
+                        deposit: depositOption ? depositOption.querySelector('.apd-option-label') : null,
+                        balance: depositOption ? depositOption.querySelector('.apd-option-detail') : null,
+                        full: fullOption ? fullOption.querySelector('.apd-option-label') : null
+                    },
+                    deposit,
+                    amounts;
+
+                // Remember the server-rendered figures once, so they can be put back.
+                if (!form.apdOriginal) {
+                    form.apdOriginal = {};
+                    Object.keys(targets).forEach(function (key) {
+                        if (targets[key]) {
+                            form.apdOriginal[key] = targets[key].innerHTML;
+                        }
+                    });
+                }
+
+                if (isNaN(price) || price <= 0 || isNaN(value) || ('percentage' !== type && 'fixed' !== type)) {
+                    Object.keys(targets).forEach(function (key) {
+                        if (targets[key] && typeof form.apdOriginal[key] !== 'undefined') {
+                            targets[key].innerHTML = form.apdOriginal[key];
+                        }
+                    });
+                    return;
+                }
+
+                deposit = 'fixed' === type ? Math.min(value, price) : price * Math.min(value, 100) / 100;
+                deposit = Math.round(deposit * factor) / factor;
+
+                amounts = {
+                    deposit: deposit,
+                    balance: Math.round((price - deposit) * factor) / factor,
+                    full: price
+                };
+
+                Object.keys(targets).forEach(function (key) {
+                    var amount = targets[key] ? targets[key].querySelector('.woocommerce-Price-amount') : null,
+                        holder;
+
+                    if (!amount) {
+                        return;
+                    }
+
+                    holder = amount.querySelector('bdi') || amount;
+                    holder.textContent = self.formatPrice(amounts[key]).replace(/&nbsp;/g, ' ');
+                });
+            });
         },
 
         /**

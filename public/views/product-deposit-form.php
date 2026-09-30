@@ -9,12 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var float  $due_balance
  * @var bool   $allow_full
  * @var bool   $default_full Whether full payment is preselected.
+ * @var string $deposit_type  Resolved deposit type, for the live price update in apd-public.js.
+ * @var float  $deposit_value Deposit value (percentage or fixed amount).
  * @var string $deposit_text
  * @var string $full_text
  */
 $default_full = ! empty( $default_full ) && $allow_full;
 ?>
-<div class="apd-product-deposit-form">
+<div class="apd-product-deposit-form" data-apd-deposit-type="<?php echo esc_attr( $deposit_type ); ?>" data-apd-deposit-value="<?php echo esc_attr( $deposit_value ); ?>">
 	<div class="apd-deposit-header">
 		<span class="apd-deposit-icon">💰</span>
 		<span class="apd-deposit-title"><?php esc_html_e( 'Payment Options', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></span>
