@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.20
+Stable tag: 4.0.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,7 +49,18 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to **Deposits** in the admin sidebar to configure settings
 
+== External Services ==
+
+= Appneck =
+
+This Plugin uses [Appneck](https://appneck.com) SDK to collect some telemetry data upon the user's confirmation to troubleshoot problems faster & make product improvements.
+Appneck SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. Integrating Appneck SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+Learn more about how [Appneck collects and uses this data](https://appneck.com/privacy-policy/).
+
 == Changelog ==
+
+= 4.0.21 - 2026-09-30 =
+* New: added the Appneck SDK for opt-in telemetry and update tracking. It does not collect any data by default; it only starts after you confirm via the admin notice. See External Services in this readme.
 
 = 4.0.20 - 2026-09-25 =
 * New: Deposits on admin orders. Orders created or edited in wp-admin (including orders added by booking plugins such as RnB Backend Booking) can now be given a fixed or percentage deposit from the Deposit Details box, optionally recorded as received straight away. An unpaid deposit can be changed or removed. Toggle: Deposits > General > Backend Orders (on by default).

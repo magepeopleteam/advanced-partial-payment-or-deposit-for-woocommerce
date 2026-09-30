@@ -3,7 +3,7 @@
  * Plugin Name:       Advanced Partial Payment or Deposit for WooCommerce
  * Plugin URI:        https://www.mage-people.com
  * Description:       Accept partial payments, deposits, and installments on your WooCommerce store. Supports fixed, percentage, category-wise deposits with a professional admin dashboard.
- * Version:           4.0.20
+ * Version:           4.0.21
  * Author:            MagePeople Team
  * Author URI:        https://www.mage-people.com
  * License:           GPL-2.0+
@@ -20,10 +20,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/lib/appneck/wordpress-sdk/appneck-wordpress-sdk/appneck-sdk.php';
+appneck_sdk_load_latest();
+
+$GLOBALS['my_plugin_sdk'] = \Appneck\Sdk\Sdk::bootstrap(
+	'pk_sFR20YlYRONVcOI64GakALeYAfvE92sG',  // your API key
+	'sk_2Mlyzj0ePOTa3cVx9prlWCUGgYwsboFeG5tWGdmDoiDrFA0B', // your product secret
+	'https://appneck.com',                  // the Appneck server URL
+	__FILE__                                // so the SDK can hook activation/deactivation
+);
+
 /**
  * Plugin constants
  */
-define( 'APD_VERSION', '4.0.20' );
+define( 'APD_VERSION', '4.0.21' );
 define( 'APD_PLUGIN_FILE', __FILE__ );
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
