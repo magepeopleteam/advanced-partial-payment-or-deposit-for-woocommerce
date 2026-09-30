@@ -87,6 +87,19 @@ $settings = get_option( 'apd_settings', array() );
 
 			<div class="apd-field-row">
 				<div class="apd-field-label">
+					<label for="apd-default-payment-type"><?php esc_html_e( 'Default Payment Option', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
+					<p class="apd-field-desc"><?php esc_html_e( 'Which option is selected first when customers can choose between deposit and full payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
+				</div>
+				<div class="apd-field-input">
+					<select name="default_payment_type" id="apd-default-payment-type" class="apd-select">
+						<option value="deposit" <?php selected( $settings['default_payment_type'] ?? 'deposit', 'deposit' ); ?>><?php esc_html_e( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+						<option value="full" <?php selected( $settings['default_payment_type'] ?? 'deposit', 'full' ); ?>><?php esc_html_e( 'Full payment', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="apd-field-row">
+				<div class="apd-field-label">
 					<label for="apd-force-deposit"><?php esc_html_e( 'Force Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></label>
 					<p class="apd-field-desc"><?php esc_html_e( 'Force customers to pay only the deposit amount (no full payment option).', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></p>
 				</div>

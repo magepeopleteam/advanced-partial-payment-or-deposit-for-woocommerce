@@ -63,7 +63,7 @@ $currency = html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, '
 		<?php if ( $allow_full ) : ?>
 		<div style="margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9;">
 			<label class="apd-deposit-option" style="margin:0;">
-				<input type="checkbox" id="apd-pay-full-toggle" value="1" style="margin-right:8px;" />
+				<input type="checkbox" id="apd-pay-full-toggle" value="1" style="margin-right:8px;" <?php checked( ! empty( $default_full ) ); ?> />
 				<span style="font-size:13px;color:#334155;">
 					<?php /* translators: %s: formatted full product price. */ printf( esc_html__( 'Pay full amount of %s instead', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wp_kses_post( wc_price( $price ) ) ); ?>
 				</span>
@@ -145,6 +145,11 @@ $currency = html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, '
 				updateBalance(prev);
 			}
 		});
+
+		// Full payment preselected in the settings: start in that state.
+		if (fullToggle.checked) {
+			fullToggle.dispatchEvent(new Event('change'));
+		}
 	}
 })();
 </script>

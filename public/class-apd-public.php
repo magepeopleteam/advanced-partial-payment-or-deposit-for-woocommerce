@@ -95,8 +95,9 @@ class APD_Public {
 			return;
 		}
 
-		$price      = floatval( $product->get_price() );
-		$allow_full = $deposit_engine->is_full_payment_allowed( $product->get_id() );
+		$price        = floatval( $product->get_price() );
+		$allow_full   = $deposit_engine->is_full_payment_allowed( $product->get_id() );
+		$default_full = 'full' === $deposit_engine->get_default_payment_type( $product->get_id() );
 
 		$settings      = get_option( 'apd_settings', array() );
 		$deposit_label = $settings['deposit_label'] ?? __( 'Deposit', 'advanced-partial-payment-or-deposit-for-woocommerce' );
@@ -171,11 +172,10 @@ class APD_Public {
 			$cart_item_data['apd_pay_deposit'] = 'yes';
 		} elseif ( $payment_type ) {
 			$cart_item_data['apd_pay_deposit'] = 'deposit' === $payment_type ? 'yes' : 'no';
-		} else {
-			// Default: pay deposit if enabled
-			if ( $deposit_engine->is_deposit_enabled( $product_id ) ) {
-				$cart_item_data['apd_pay_deposit'] = 'yes';
-			}
+		} elseif ( $deposit_engine->is_deposit_enabled( $product_id ) ) {
+			// No choice posted (catalog add-to-cart, Store API, choice moved to cart/checkout):
+			// use the shop's default payment option.
+			$cart_item_data['apd_pay_deposit'] = 'full' === $deposit_engine->get_default_payment_type( $product_id ) ? 'no' : 'yes';
 		}
 
 		if (

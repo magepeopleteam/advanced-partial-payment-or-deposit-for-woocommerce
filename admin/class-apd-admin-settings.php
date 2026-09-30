@@ -34,6 +34,7 @@ class APD_Admin_Settings {
 				$settings['deposit_type']             = sanitize_text_field( wp_unslash( $_POST['deposit_type'] ?? 'percentage' ) );
 				$settings['deposit_value']            = floatval( $_POST['deposit_value'] ?? 50 );
 				$settings['allow_full_payment']       = isset( $_POST['allow_full_payment'] ) ? 'yes' : 'no';
+				$settings['default_payment_type']     = 'full' === sanitize_key( wp_unslash( $_POST['default_payment_type'] ?? '' ) ) ? 'full' : 'deposit';
 				$settings['force_deposit']            = isset( $_POST['force_deposit'] ) ? 'yes' : 'no';
 				$settings['admin_order_deposit']      = isset( $_POST['admin_order_deposit'] ) ? 'yes' : 'no';
 				$settings['delete_data_on_uninstall'] = isset( $_POST['delete_data_on_uninstall'] ) ? 'yes' : 'no';

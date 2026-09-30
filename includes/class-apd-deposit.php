@@ -580,4 +580,28 @@ class APD_Deposit {
 
 		return apd_get_option( 'allow_full_payment', 'yes' ) === 'yes';
 	}
+
+	/**
+	 * The payment option preselected for a product: 'deposit' or 'full'.
+	 *
+	 * Falls back to 'deposit' whenever full payment is not offered for the product.
+	 *
+	 * @param int $product_id Optional product ID.
+	 * @return string
+	 */
+	public function get_default_payment_type( $product_id = 0 ) {
+		$default = 'full' === apd_get_option( 'default_payment_type', 'deposit' ) && $this->is_full_payment_allowed( $product_id )
+			? 'full'
+			: 'deposit';
+
+		/**
+		 * Filter the preselected payment option for a product.
+		 *
+		 * @param string $default    'deposit' or 'full'.
+		 * @param int    $product_id Product ID.
+		 */
+		$default = apply_filters( 'apd_default_payment_type', $default, $product_id );
+
+		return 'full' === $default && $this->is_full_payment_allowed( $product_id ) ? 'full' : 'deposit';
+	}
 }
