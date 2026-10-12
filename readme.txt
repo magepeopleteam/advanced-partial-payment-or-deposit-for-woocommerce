@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 4.0.23
 License: GPLv2 or later
@@ -25,11 +25,16 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 * **Pay Balance** — Customers can pay balance from My Account
 * **Email Notifications** — Deposit received, balance due, payment complete
 * **Admin Management** — Deposit metabox on orders, manual payment recording
+* **Deposits on Admin Orders** — Add a fixed or percentage deposit to orders created or edited in wp-admin, including orders added by booking plugins
+* **Default Payment Option** — Choose whether deposit or full payment is preselected for customers
+* **Price Calculator Support** — Product-page deposit and balance figures update when a price calculator or configurator changes the price
+* **Clean Uninstall (opt-in)** — Optionally remove all settings and deposit data when the plugin is deleted
 * **Professional Dashboard** — Tabbed settings page with sidebar navigation
 
 = Pro Features =
 
 * Payment Plans / Installments
+* Flexible Payments — customers pay off the balance in any amounts they choose
 * Checkout Mode — ask for the deposit choice on the cart or checkout page
 * Per-variation deposits, balance due dates, and deposit/balance allocation of shipping, tax and discounts
 * Automatic balance charging on the due date using the customer's saved payment method
@@ -42,6 +47,9 @@ Accept partial payments, deposits, and installments on your WooCommerce store.
 * Bulk Product Settings
 * User Role-Based Deposits
 * Conditional Deposit Rules
+* Order Workflow — choose the status an order moves to once fully paid
+* Catalog Deposit Buttons — "Pay deposit" buttons on shop and archive pages
+* Admin Email Notifications — deposit received, fully paid, overdue and auto-charge alerts
 
 == Installation ==
 
@@ -67,6 +75,11 @@ Learn more about how [Appneck collects and uses this data](https://appneck.com/p
 
 = 4.0.21 - 2026-09-30 =
 * New: added the Appneck SDK for opt-in telemetry and update tracking. It does not collect any data by default; it only starts after you confirm via the admin notice. See External Services in this readme.
+* New: "Default Payment Option" setting (Deposits > General > Payment Options) to preselect Deposit (default, unchanged) or Full payment. It also applies to cart lines added without a posted choice, such as shop-page Add to Cart and the Store API. Falls back to deposit when full payment is not offered.
+* New: A price calculator or product configurator can now update the deposit, balance and full amounts on the product page, which were previously always calculated from the base price. Trigger `jQuery(document.body).trigger('apd_product_price_changed', [price])` or call `window.apdUpdateProductPrice(price)`.
+* Fix: The admin orders list Deposit column showed the whole balance as due on a new deposit order. Until the deposit is confirmed it now shows the deposit amount due; once paid it shows the remaining balance as before.
+* Fix: Customer emails, My Account and the admin orders list showed the deposit as the order total when another plugin or snippet (for example price rounding) rebuilt the Total row. APD now applies the full order value after other filters have run.
+* Dev: New filter `apd_default_payment_type`.
 
 = 4.0.20 - 2026-09-25 =
 * New: Deposits on admin orders. Orders created or edited in wp-admin (including orders added by booking plugins such as RnB Backend Booking) can now be given a fixed or percentage deposit from the Deposit Details box, optionally recorded as received straight away. An unpaid deposit can be changed or removed. Toggle: Deposits > General > Backend Orders (on by default).
