@@ -1,5 +1,5 @@
 === Advanced Partial Payment or Deposit for WooCommerce ===
-Contributors: magepeopleteam, aamahin
+Contributors: magepeopleteam, aamahin, raselsha
 Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 7.1
