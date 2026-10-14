@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.0.23
+Stable tag: 4.0.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,10 @@ Appneck SDK **does not gather any data by default.** The SDK only starts gatheri
 Learn more about how [Appneck collects and uses this data](https://appneck.com/privacy-policy/).
 
 == Changelog ==
+
+= 4.0.30 - 2026-10-15 =
+* Updated the bundled Appneck SDK to the latest version.
+* Version housekeeping: a prior out-of-band release had set the public version number lower than an already-shipped one, which stopped update notifications from reaching sites on the older version; this release corrects it.
 
 = 4.0.23 - 2026-10-06 =
 * Fix: Updated the bundled Appneck SDK to the latest version.
