@@ -229,6 +229,14 @@ class APD_Emails {
 			return '';
 		}
 
+		// Part of the balance, such as a payment plan's next instalment, when that is all
+		// the pay button collects. 0 when the whole balance is due.
+		$due_now = 0;
+		if ( $deposit && 'balance_due' === $template_id ) {
+			$due_now = APD_Order::get_balance_amount_due_now( $order );
+			$due_now = round( floatval( $deposit['balance_due'] ?? 0 ) - $due_now, wc_get_price_decimals() ) > 0 ? $due_now : 0;
+		}
+
 		if ( $plain_text ) {
 			$lines = array();
 			/* translators: %s: order number. */
@@ -245,6 +253,10 @@ class APD_Emails {
 					$lines[] = sprintf( __( 'Amount Paid: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['amount_paid'] ?? 0 ) );
 					/* translators: %s: formatted balance still due. */
 					$lines[] = sprintf( __( 'Balance Due: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['balance_due'] ?? 0 ) );
+					if ( $due_now > 0 ) {
+						/* translators: %s: formatted amount the next payment collects. */
+						$lines[] = sprintf( __( 'Amount Due Now: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $due_now ) );
+					}
 				} else {
 					/* translators: %s: formatted order total. */
 					$lines[] = sprintf( __( 'Total Amount: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ), wc_price( $deposit['total_amount'] ?? 0 ) );
@@ -284,6 +296,12 @@ class APD_Emails {
 						<th style="text-align:left;padding:12px;color:#e74c3c;font-weight:bold;"><?php esc_html_e( 'Balance Due', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
 						<td style="padding:12px;color:#e74c3c;font-weight:bold;"><?php echo wp_kses_post( wc_price( $deposit['balance_due'] ?? 0 ) ); ?></td>
 					</tr>
+					<?php if ( $due_now > 0 ) : ?>
+					<tr>
+						<th style="text-align:left;padding:12px;font-weight:bold;"><?php esc_html_e( 'Amount Due Now', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>
+						<td style="padding:12px;font-weight:bold;"><?php echo wp_kses_post( wc_price( $due_now ) ); ?></td>
+					</tr>
+					<?php endif; ?>
 				<?php else : ?>
 					<tr>
 						<th style="text-align:left;padding:12px;"><?php esc_html_e( 'Total Amount', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></th>

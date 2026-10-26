@@ -942,10 +942,52 @@ class APD_Order {
 	}
 
 	/**
+	 * How much of the outstanding balance is due with the next payment.
+	 *
+	 * The whole balance unless an addon says otherwise: a Pro payment plan collects its
+	 * balance one instalment at a time, so only the next instalment is due.
+	 *
+	 * @param WC_Order|int $order Order object or ID.
+	 * @return float 0 while the initial deposit is still unpaid.
+	 */
+	public static function get_balance_amount_due_now( $order ) {
+		if ( is_numeric( $order ) ) {
+			$order = wc_get_order( $order );
+		}
+
+		$decimals = wc_get_price_decimals();
+		$balance  = $order && self::is_initial_deposit_paid( $order )
+			? round( floatval( $order->get_meta( '_apd_balance_due' ) ), $decimals )
+			: 0;
+
+		if ( $balance <= 0 ) {
+			return 0;
+		}
+
+		/**
+		 * Filter the part of the outstanding balance that the next payment collects.
+		 *
+		 * Values outside (0, balance] fall back to the whole balance.
+		 *
+		 * @param float    $amount  Amount due now. Defaults to the whole balance.
+		 * @param WC_Order $order   Order being paid.
+		 * @param float    $balance Outstanding balance.
+		 */
+		$due = round( floatval( apply_filters( 'apd_balance_amount_due_now', $balance, $order, $balance ) ), $decimals );
+
+		if ( $due <= 0 || $due > $balance ) {
+			return $balance;
+		}
+
+		return $due;
+	}
+
+	/**
 	 * Resolve how much a customer is actually allowed to pay towards a balance.
 	 *
-	 * Always returns the full outstanding balance while flexible payments are off, so
-	 * the amount can never be steered from the request in the default configuration.
+	 * Always returns the amount due now while flexible payments are off — the full
+	 * outstanding balance, or the next instalment of a payment plan — so the amount can
+	 * never be steered from the request in the default configuration.
 	 *
 	 * @param WC_Order|int $order     Order object or ID.
 	 * @param mixed        $requested Amount asked for, from the request.
@@ -959,7 +1001,7 @@ class APD_Order {
 		$bounds = self::get_balance_payment_bounds( $order );
 
 		if ( ! self::are_partial_balance_payments_enabled( $order ) ) {
-			return $bounds['max'];
+			return self::get_balance_amount_due_now( $order );
 		}
 
 		$amount = round( floatval( $requested ), wc_get_price_decimals() );

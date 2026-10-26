@@ -6,10 +6,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class APD_Migration {
 
+	/**
+	 * Option recording that imported plans were checked for the 4.0.x import bug.
+	 */
+	const PLAN_REPAIR_OPTION = 'apd_plan_import_repair';
+
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'show_migration_notice' ) );
+		add_action( 'admin_notices', array( $this, 'show_plan_repair_notice' ) );
 		add_action( 'wp_ajax_apd_sync_old_data', array( $this, 'ajax_sync_old_data' ) );
 		add_action( 'admin_footer', array( $this, 'migration_script' ) );
+		add_action( 'admin_init', array( $this, 'maybe_repair_imported_plans' ) );
 	}
 
 	public function show_migration_notice() {
@@ -337,22 +344,14 @@ class APD_Migration {
 	}
 
 	private function migrate_payment_plans() {
-		if ( ! taxonomy_exists( 'mepp_payment_plan' ) ) {
-			register_taxonomy( 'mepp_payment_plan', 'product' );
-		}
+		$terms = self::get_legacy_plan_terms();
 
-		$terms = get_terms(
-			array(
-				'taxonomy'   => 'mepp_payment_plan',
-				'hide_empty' => false,
-			)
-		);
-
-		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		if ( empty( $terms ) ) {
 			return;
 		}
 
 		$new_plans = get_option( 'apd_payment_plans', array() );
+		$new_plans = is_array( $new_plans ) ? $new_plans : array();
 
 		foreach ( $terms as $term ) {
 			$plan_id = 'plan_' . $term->term_id;
@@ -362,67 +361,394 @@ class APD_Migration {
 			}
 
 			$amount_type = get_term_meta( $term->term_id, 'amount_type', true );
-			if ( empty( $amount_type ) ) {
-				$amount_type = 'percentage';
-			}
-
-			$deposit_percentage   = get_term_meta( $term->term_id, 'deposit_percentage', true );
-			$payment_details_json = get_term_meta( $term->term_id, 'payment_details', true );
-
-			// Payment details could be a JSON string or an array depending on how WP handled it.
-			$payment_details = is_string( $payment_details_json ) ? json_decode( $payment_details_json, true ) : $payment_details_json;
-
-			$installments = array();
-
-			// First installment (immediate deposit)
-			$installments[] = array(
-				'amount'          => floatval( $deposit_percentage ),
-				'due_type'        => 'immediately',
-				'due_after_value' => 0,
-				'due_after_unit'  => 'day',
-				'due_fixed_date'  => '',
-			);
-
-			// Subsequent installments
-			if ( is_array( $payment_details ) ) {
-				foreach ( $payment_details as $detail ) {
-					$due_type = ( isset( $detail['date_checkbox'] ) && $detail['date_checkbox'] === 'on' ) ? 'fixed_date' : 'after_purchase';
-
-					// Map old terms (day, week, month, year) to new (day, week, month)
-					$unit = 'day';
-					if ( isset( $detail['after-term'] ) ) {
-						$old_unit = strtolower( rtrim( $detail['after-term'], 's' ) );
-						if ( in_array( $old_unit, array( 'day', 'week', 'month' ) ) ) {
-							$unit = $old_unit;
-						} elseif ( $old_unit === 'year' ) {
-							$unit            = 'month';
-							$detail['after'] = intval( $detail['after'] ?? 1 ) * 12;
-						}
-					}
-
-					$installments[] = array(
-						'amount'          => floatval( $detail['percentage'] ?? 0 ),
-						'due_type'        => $due_type,
-						'due_after_value' => intval( $detail['after'] ?? 0 ),
-						'due_after_unit'  => $unit,
-						'due_fixed_date'  => $detail['date'] ?? '',
-					);
-				}
-			}
 
 			$new_plans[ $plan_id ] = array(
 				'id'           => $plan_id,
 				'name'         => $term->name,
 				'description'  => $term->description,
-				'price_type'   => $amount_type,
+				'price_type'   => 'fixed' === $amount_type ? 'fixed' : 'percentage',
 				'status'       => 'active',
-				'installments' => $installments,
+				'installments' => self::convert_legacy_plan( $term->term_id ),
 				'created'      => current_time( 'mysql' ),
 				'updated'      => current_time( 'mysql' ),
 			);
 		}
 
 		update_option( 'apd_payment_plans', $new_plans );
+	}
+
+	/**
+	 * Payment plan terms left behind by the 3.x plugin.
+	 *
+	 * @return WP_Term[]
+	 */
+	private static function get_legacy_plan_terms() {
+		if ( ! taxonomy_exists( 'mepp_payment_plan' ) ) {
+			register_taxonomy(
+				'mepp_payment_plan',
+				'product',
+				array(
+					'public'    => false,
+					'rewrite'   => false,
+					'query_var' => false,
+				)
+			);
+		}
+
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'mepp_payment_plan',
+				'hide_empty' => false,
+			)
+		);
+
+		return is_wp_error( $terms ) || ! is_array( $terms ) ? array() : $terms;
+	}
+
+	/**
+	 * Schedule rows of a 3.x payment plan.
+	 *
+	 * The 3.x plan editor posted its jQuery Repeater value as JSON, which wraps the rows
+	 * in the repeater list name: {"payment-plan":[{...},{...}]}. Reading the wrapper as
+	 * the row list is what turned every imported plan into a deposit plus one empty row.
+	 *
+	 * @param int $term_id Legacy plan term ID.
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function get_legacy_plan_rows( $term_id ) {
+		$details = get_term_meta( $term_id, 'payment_details', true );
+
+		if ( is_string( $details ) ) {
+			$decoded = json_decode( $details, true );
+
+			if ( ! is_array( $decoded ) ) {
+				$decoded = json_decode( wp_unslash( $details ), true );
+			}
+
+			$details = $decoded;
+		}
+
+		if ( ! is_array( $details ) ) {
+			return array();
+		}
+
+		if ( isset( $details['payment-plan'] ) ) {
+			$details = $details['payment-plan'];
+		}
+
+		return is_array( $details ) ? array_values( array_filter( $details, 'is_array' ) ) : array();
+	}
+
+	/**
+	 * Convert a 3.x payment plan into installment rules.
+	 *
+	 * The 3.x plugin counted every "after" offset from the previous payment, and a row with
+	 * a set date restarted that chain from the date. The new rules count "after" from the
+	 * purchase, so the offsets are added up here. A row that follows a set date can only be
+	 * expressed as a date of its own, so it becomes one.
+	 *
+	 * @param int $term_id Legacy plan term ID.
+	 * @return array<int,array<string,mixed>>
+	 */
+	public static function convert_legacy_plan( $term_id ) {
+		$installments = array(
+			array(
+				'amount'          => floatval( get_term_meta( $term_id, 'deposit_percentage', true ) ),
+				'due_type'        => 'immediately',
+				'due_after_value' => 0,
+				'due_after_unit'  => 'day',
+				'due_fixed_date'  => '',
+			),
+		);
+
+		$offset = array(
+			'day'   => 0,
+			'week'  => 0,
+			'month' => 0,
+		);
+		$anchor = null;
+
+		foreach ( self::get_legacy_plan_rows( $term_id ) as $row ) {
+			$installment = array(
+				'amount'          => floatval( $row['percentage'] ?? 0 ),
+				'due_type'        => 'after_purchase',
+				'due_after_value' => 0,
+				'due_after_unit'  => 'day',
+				'due_fixed_date'  => '',
+			);
+
+			// 3.x decided "set date" by the date being filled in, not by the checkbox.
+			$date = isset( $row['date'] ) && is_scalar( $row['date'] ) ? trim( (string) $row['date'] ) : '';
+			$date = '' !== $date ? date_create_immutable( $date, new DateTimeZone( 'UTC' ) ) : false;
+
+			if ( $date ) {
+				$anchor = $date;
+			} else {
+				list( $value, $unit ) = self::get_legacy_row_offset( $row );
+
+				if ( $anchor ) {
+					$anchor = $anchor->modify( "+{$value} {$unit}" );
+				} else {
+					$offset[ $unit ] += $value;
+					list( $installment['due_after_value'], $installment['due_after_unit'] ) = self::collapse_offset( $offset );
+				}
+			}
+
+			if ( $anchor ) {
+				$installment['due_type']       = 'fixed_date';
+				$installment['due_fixed_date'] = $anchor->format( 'Y-m-d' );
+			}
+
+			$installments[] = $installment;
+		}
+
+		return $installments;
+	}
+
+	/**
+	 * A 3.x row's "after" offset in a unit the new rules support.
+	 *
+	 * @param array<string,mixed> $row Legacy schedule row.
+	 * @return array{0:int,1:string} Value and unit (day, week or month).
+	 */
+	private static function get_legacy_row_offset( $row ) {
+		$value = max( 0, intval( $row['after'] ?? 0 ) );
+		$unit  = isset( $row['after-term'] ) && is_scalar( $row['after-term'] ) ? strtolower( rtrim( trim( (string) $row['after-term'] ), 's' ) ) : 'day';
+
+		if ( 'year' === $unit ) {
+			return array( $value * 12, 'month' );
+		}
+
+		return array( $value, in_array( $unit, array( 'day', 'week', 'month' ), true ) ? $unit : 'day' );
+	}
+
+	/**
+	 * Express an accumulated offset as one value and unit.
+	 *
+	 * @param array<string,int> $offset Days, weeks and months since the purchase.
+	 * @return array{0:int,1:string}
+	 */
+	private static function collapse_offset( $offset ) {
+		$used = array_filter( $offset );
+
+		if ( empty( $used ) ) {
+			return array( 0, 'day' );
+		}
+
+		if ( 1 === count( $used ) ) {
+			$unit = (string) key( $used );
+
+			return array( (int) $used[ $unit ], $unit );
+		}
+
+		// Mixed units only have an exact single-unit form when no months are involved.
+		// With months the closest is a 30-day month.
+		return array( (int) ( $offset['month'] * 30 + $offset['week'] * 7 + $offset['day'] ), 'day' );
+	}
+
+	/**
+	 * The installments the 4.0.x import produced for a 3.x plan.
+	 *
+	 * Kept only so the repair can recognise a plan that is still exactly as that import
+	 * left it. Do not use it to import anything.
+	 *
+	 * @param int $term_id Legacy plan term ID.
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function convert_legacy_plan_as_imported_by_4_0( $term_id ) {
+		$payment_details = get_term_meta( $term_id, 'payment_details', true );
+		$payment_details = is_string( $payment_details ) ? json_decode( $payment_details, true ) : $payment_details;
+
+		$installments = array(
+			array(
+				'amount'          => floatval( get_term_meta( $term_id, 'deposit_percentage', true ) ),
+				'due_type'        => 'immediately',
+				'due_after_value' => 0,
+				'due_after_unit'  => 'day',
+				'due_fixed_date'  => '',
+			),
+		);
+
+		if ( ! is_array( $payment_details ) ) {
+			return $installments;
+		}
+
+		foreach ( $payment_details as $detail ) {
+			$detail   = is_array( $detail ) ? $detail : array();
+			$due_type = ( isset( $detail['date_checkbox'] ) && 'on' === $detail['date_checkbox'] ) ? 'fixed_date' : 'after_purchase';
+			$unit     = 'day';
+
+			if ( isset( $detail['after-term'] ) && is_string( $detail['after-term'] ) ) {
+				$old_unit = strtolower( rtrim( $detail['after-term'], 's' ) );
+				if ( in_array( $old_unit, array( 'day', 'week', 'month' ), true ) ) {
+					$unit = $old_unit;
+				} elseif ( 'year' === $old_unit ) {
+					$unit            = 'month';
+					$detail['after'] = intval( $detail['after'] ?? 1 ) * 12;
+				}
+			}
+
+			$installments[] = array(
+				'amount'          => floatval( $detail['percentage'] ?? 0 ),
+				'due_type'        => $due_type,
+				'due_after_value' => intval( $detail['after'] ?? 0 ),
+				'due_after_unit'  => $unit,
+				'due_fixed_date'  => $detail['date'] ?? '',
+			);
+		}
+
+		return $installments;
+	}
+
+	/**
+	 * Whether two installment lists describe the same schedule.
+	 *
+	 * @param mixed $a Installments.
+	 * @param mixed $b Installments.
+	 * @return bool
+	 */
+	private static function same_installments( $a, $b ) {
+		$normalize = static function ( $installments ) {
+			if ( ! is_array( $installments ) ) {
+				return array();
+			}
+
+			return array_map(
+				static function ( $inst ) {
+					$inst = is_array( $inst ) ? $inst : array();
+
+					return array(
+						round( floatval( $inst['amount'] ?? 0 ), 6 ),
+						(string) ( $inst['due_type'] ?? '' ),
+						intval( $inst['due_after_value'] ?? 0 ),
+						(string) ( $inst['due_after_unit'] ?? '' ),
+						is_scalar( $inst['due_fixed_date'] ?? '' ) ? (string) ( $inst['due_fixed_date'] ?? '' ) : '',
+					);
+				},
+				array_values( $installments )
+			);
+		};
+
+		return $normalize( $a ) === $normalize( $b );
+	}
+
+	/**
+	 * Rebuild imported plans that the 4.0.x import broke.
+	 *
+	 * Only a plan whose installments are still exactly what that import produced is
+	 * rebuilt. A plan the shop has edited since is left alone and reported instead.
+	 *
+	 * @return array{repaired:string[],skipped:string[]}
+	 */
+	public static function repair_imported_plans() {
+		$result = array(
+			'repaired' => array(),
+			'skipped'  => array(),
+		);
+
+		$plans = get_option( 'apd_payment_plans', array() );
+
+		if ( ! is_array( $plans ) || empty( $plans ) ) {
+			return $result;
+		}
+
+		$changed = false;
+
+		foreach ( self::get_legacy_plan_terms() as $term ) {
+			$plan_id = 'plan_' . $term->term_id;
+
+			if ( empty( $plans[ $plan_id ]['installments'] ) ) {
+				continue;
+			}
+
+			$current = $plans[ $plan_id ]['installments'];
+			$correct = self::convert_legacy_plan( $term->term_id );
+
+			if ( self::same_installments( $current, $correct ) ) {
+				continue;
+			}
+
+			$name = (string) ( $plans[ $plan_id ]['name'] ?? $term->name );
+
+			if ( ! self::same_installments( $current, self::convert_legacy_plan_as_imported_by_4_0( $term->term_id ) ) ) {
+				$result['skipped'][] = $name;
+				continue;
+			}
+
+			$plans[ $plan_id ]['installments'] = $correct;
+			$plans[ $plan_id ]['updated']      = current_time( 'mysql' );
+			$result['repaired'][]              = $name;
+			$changed                           = true;
+		}
+
+		if ( $changed ) {
+			update_option( 'apd_payment_plans', $plans );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Run the imported-plan repair once, in an administrator's request.
+	 */
+	public function maybe_repair_imported_plans() {
+		if ( false !== get_option( self::PLAN_REPAIR_OPTION, false ) || ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+
+		$result           = self::repair_imported_plans();
+		$result['notice'] = ( $result['repaired'] || $result['skipped'] ) ? 'pending' : 'none';
+		$result['time']   = current_time( 'mysql' );
+
+		update_option( self::PLAN_REPAIR_OPTION, $result, false );
+	}
+
+	/**
+	 * Report the imported-plan repair once, on the Deposits screen.
+	 */
+	public function show_plan_repair_notice() {
+		if ( ! isset( $_GET['page'] ) || 'apd-deposits' !== sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only screen check.
+			return;
+		}
+
+		$result = get_option( self::PLAN_REPAIR_OPTION, false );
+
+		if ( ! is_array( $result ) || 'pending' !== ( $result['notice'] ?? '' ) ) {
+			return;
+		}
+
+		$result['notice'] = 'shown';
+		update_option( self::PLAN_REPAIR_OPTION, $result, false );
+
+		$repaired = array_map( 'strval', (array) ( $result['repaired'] ?? array() ) );
+		$skipped  = array_map( 'strval', (array) ( $result['skipped'] ?? array() ) );
+		?>
+		<div class="notice notice-success is-dismissible">
+			<?php if ( $repaired ) : ?>
+				<p>
+					<strong><?php esc_html_e( 'Imported payment plans repaired', 'advanced-partial-payment-or-deposit-for-woocommerce' ); ?></strong><br>
+					<?php
+					printf(
+						/* translators: %s: comma-separated plan names. */
+						esc_html__( 'These plans were imported from the old plugin with their installments missing and have been rebuilt from the original schedule: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						esc_html( implode( ', ', $repaired ) )
+					);
+					?>
+				</p>
+			<?php endif; ?>
+			<?php if ( $skipped ) : ?>
+				<p>
+					<?php
+					printf(
+						/* translators: %s: comma-separated plan names. */
+						esc_html__( 'These imported plans were changed after the import and were left as they are. Please check their installments under Payment Plans: %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						esc_html( implode( ', ', $skipped ) )
+					);
+					?>
+				</p>
+			<?php endif; ?>
+		</div>
+		<?php
 	}
 
 	private function migrate_product_meta( $post_id ) {

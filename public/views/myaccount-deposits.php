@@ -130,9 +130,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<?php endif; ?>
 							</form>
 						<?php else : ?>
+							<?php $apd_due_now = APD_Order::get_balance_amount_due_now( $order ); ?>
 							<a href="<?php echo esc_url( APD_Pay_Balance::get_pay_balance_url( $order->get_id() ) ); ?>"
 								class="woocommerce-button button apd-pay-balance-btn">
-								<?php echo esc_html( $pay_btn_label ); ?>
+								<?php
+								// "Pay Remaining Balance" would be wrong when only part of it is
+								// due, such as the next instalment of a payment plan.
+								if ( $apd_due_now > 0 && round( $details['balance_due'] - $apd_due_now, wc_get_price_decimals() ) > 0 ) {
+									printf(
+										/* translators: %s: amount due now, e.g. the next payment plan installment. */
+										esc_html__( 'Pay %s', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+										esc_html( apd_plain_price( $apd_due_now ) )
+									);
+								} else {
+									echo esc_html( $pay_btn_label );
+								}
+								?>
 							</a>
 						<?php endif; ?>
 					<?php else : ?>
@@ -140,6 +153,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php endif; ?>
 				</td>
 			</tr>
+				<?php
+				/**
+				 * Fires after an order's row in the My Account deposits table.
+				 *
+				 * @param WC_Order $order   Order shown in the row.
+				 * @param array    $details Deposit details for the order.
+				 * @param int      $columns Number of table columns, for a full-width row.
+				 */
+				do_action( 'apd_myaccount_deposits_after_row', $order, $details, 7 );
+				?>
 			<?php endforeach; ?>
 		</tbody>
 	</table>

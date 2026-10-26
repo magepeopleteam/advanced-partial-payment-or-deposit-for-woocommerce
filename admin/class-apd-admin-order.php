@@ -211,8 +211,9 @@ class APD_Admin_Order {
 
 		$can_edit_deposit  = APD_Admin_Order_Deposit::is_enabled() && APD_Admin_Order_Deposit::can_edit_deposit( $order );
 		$paid_color        = $details['amount_paid'] > 0 ? '#00a32a' : '#646970';
+		// Suggest what is actually due next: the balance, or a payment plan's next instalment.
 		$manual_amount_due = ! empty( $details['deposit_paid'] )
-			? $details['balance_due']
+			? APD_Order::get_balance_amount_due_now( $order )
 			: min( $details['deposit_amount'], $details['balance_due'] );
 		?>
 		<div class="apd-metabox-content">

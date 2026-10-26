@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.0.30
+Stable tag: 4.0.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,13 @@ Appneck SDK **does not gather any data by default.** The SDK only starts gatheri
 Learn more about how [Appneck collects and uses this data](https://appneck.com/privacy-policy/).
 
 == Changelog ==
+
+= 4.0.31 - 2026-10-26 =
+* Fix: payment plans imported from the old Mage Partial Payment plugin came across as a deposit plus one empty installment, because the old schedule rows were read from the wrong place. The import now reads every row, and as in the old plugin, each "after" offset counts from the previous payment.
+* Fix: plans already damaged by that import are rebuilt automatically from the original schedule the first time an administrator opens the dashboard. Plans changed by hand since the import are left as they are and listed in a notice on the Deposits screen.
+* New: `apd_balance_amount_due_now` filter and `APD_Order::get_balance_amount_due_now()`, so an addon can collect the balance in parts. The Pro payment plans use them to charge one installment at a time.
+* New: `apd_myaccount_deposits_after_row` action, after each order in the My Account deposits list.
+* Tweak: the deposits list pay button, the balance-due email and the admin "Record Manual Payment" box show the amount actually due next when that is less than the whole balance.
 
 = 4.0.30 - 2026-10-15 =
 * Updated the bundled Appneck SDK to the latest version.
