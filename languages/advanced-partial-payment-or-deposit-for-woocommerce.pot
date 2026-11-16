@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26T02:57:49+00:00\n"
+"POT-Creation-Date: 2026-11-16T01:38:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advanced-partial-payment-or-deposit-for-woocommerce\n"
@@ -77,7 +77,7 @@ msgstr ""
 #: admin/views/tabs/general.php:95
 #: admin/views/tabs/labels.php:26
 #: includes/class-apd-activator.php:34
-#: includes/class-apd-order.php:381
+#: includes/class-apd-order.php:379
 #: public/class-apd-blocks.php:90
 #: public/class-apd-blocks.php:237
 #: public/class-apd-blocks.php:254
@@ -218,7 +218,7 @@ msgstr ""
 #: admin/class-apd-admin-order.php:230
 #: admin/class-apd-admin-order.php:325
 #: includes/class-apd-emails.php:283
-#: includes/class-apd-order.php:401
+#: includes/class-apd-order.php:399
 #: public/class-apd-checkout.php:147
 msgid "Total Paid"
 msgstr ""
@@ -310,7 +310,7 @@ msgstr ""
 
 #. translators: %s: configured deposit label.
 #: admin/class-apd-admin-order.php:431
-#: includes/class-apd-order.php:387
+#: includes/class-apd-order.php:385
 #: public/class-apd-checkout.php:143
 #, php-format
 msgid "%s Due Now"
@@ -1175,7 +1175,7 @@ msgstr ""
 #: admin/views/tabs/labels.php:38
 #: includes/class-apd-activator.php:35
 #: includes/class-apd-deposit.php:418
-#: includes/class-apd-order.php:382
+#: includes/class-apd-order.php:380
 #: public/class-apd-blocks.php:91
 #: public/class-apd-blocks.php:268
 #: public/class-apd-cart.php:46
@@ -1498,7 +1498,7 @@ msgstr ""
 #. translators: 1: deposit amount, 2: balance due
 #. translators: 1: payment amount, 2: balance due
 #: includes/class-apd-order.php:250
-#: includes/class-apd-order.php:659
+#: includes/class-apd-order.php:656
 #, php-format
 msgid "Payment of %1$s recorded. Remaining balance: %2$s"
 msgstr ""
@@ -1508,42 +1508,52 @@ msgid "Initial deposit payment confirmed after order status update."
 msgstr ""
 
 #: includes/class-apd-order.php:309
-#: includes/class-apd-order.php:332
+#: includes/class-apd-order.php:330
 msgid "Deposit payment received. Balance is still due."
 msgstr ""
 
-#: includes/class-apd-order.php:388
+#: includes/class-apd-order.php:386
 #: public/class-apd-checkout.php:95
 #: public/class-apd-checkout.php:132
 msgid "Remaining Balance After Deposit"
 msgstr ""
 
-#: includes/class-apd-order.php:595
+#: includes/class-apd-order.php:592
 msgid "Initial deposit payment recorded"
 msgstr ""
 
-#: includes/class-apd-order.php:612
+#: includes/class-apd-order.php:609
 msgid "Balance payment recorded"
 msgstr ""
 
-#: includes/class-apd-order.php:653
+#: includes/class-apd-order.php:650
 msgid "Full balance paid."
 msgstr ""
 
 #. translators: 1: payment gateway title, 2: transaction reference of the previous payment.
-#: includes/class-apd-order.php:1125
+#: includes/class-apd-order.php:1122
 #, php-format
 msgid "Released the %1$s payment reference (%2$s) held against this order so the remaining balance can be taken as a new payment. The reference is kept on the order for reconciliation."
 msgstr ""
 
-#: includes/class-apd-order.php:1127
+#: includes/class-apd-order.php:1124
 msgid "no reference stored"
 msgstr ""
 
 #. translators: 1: payment method title, 2: outstanding balance amount.
-#: includes/class-apd-order.php:1300
+#: includes/class-apd-order.php:1385
 #, php-format
 msgid "Remaining balance payment was started with %1$s, which does not capture funds. %2$s is still outstanding and must be recorded manually once the money is received."
+msgstr ""
+
+#. translators: 1: balance payment amount, 2: payment method title.
+#: includes/class-apd-order.php:1391
+#, php-format
+msgid "A remaining balance payment of %1$s was started with %2$s, but the payment gateway has not confirmed it, so it was not recorded and the balance is still outstanding. If you received this money, record it with Record Manual Payment."
+msgstr ""
+
+#: includes/class-apd-order.php:1393
+msgid "an online payment method"
 msgstr ""
 
 #: includes/class-apd-woo-installer.php:123

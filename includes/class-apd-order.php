@@ -314,15 +314,13 @@ class APD_Order {
 		}
 
 		if ( self::has_pending_balance_payment( $order ) ) {
-			if ( self::is_balance_payment_captured( $order, $status ) ) {
+			if ( self::is_balance_payment_captured( $order, $status, $is_manual ) ) {
 				$this->finalize_pending_balance_payment( $order, $finalize_note );
 				return;
 			}
 
 			// No funds captured: keep the balance owed instead of closing the order out.
-			if ( self::is_offline_payment_method( $order ) ) {
-				$this->hold_uncaptured_balance_payment( $order, $status, $is_manual );
-			}
+			$this->hold_uncaptured_balance_payment( $order, $status, $is_manual );
 			return;
 		}
 
@@ -561,8 +559,7 @@ class APD_Order {
 
 		// Any recorded payment supersedes an in-flight attempt, so drop the markers to
 		// stop a stale pending amount from being banked a second time later on.
-		$order->delete_meta_data( '_apd_balance_payment_pending' );
-		$order->delete_meta_data( '_apd_balance_payment_awaiting_offline' );
+		self::clear_balance_payment_markers( $order );
 
 		// Never bank more than is actually owed. The admin box already caps its input
 		// client-side; this makes the server agree, so "paid" can't exceed the total.
@@ -1169,11 +1166,22 @@ class APD_Order {
 	/**
 	 * Check whether a status transition really represents money collected for the balance.
 	 *
-	 * @param WC_Order $order  Order object.
-	 * @param string   $status Status being evaluated.
+	 * A gateway that takes the balance calls payment_complete(), which settles it directly
+	 * in maybe_set_partially_paid(). This is only the fallback for gateways that move the
+	 * status themselves, so it needs the gateway's own evidence: a transaction id recorded
+	 * after the balance payment started.
+	 *
+	 * The status alone proves nothing. The pending marker is written as soon as someone
+	 * opens the pay-balance link, before any charge, and a person changing the status is
+	 * fulfilling the order, not reporting a payment; money received outside the gateway
+	 * goes through Record Manual Payment.
+	 *
+	 * @param WC_Order $order     Order object.
+	 * @param string   $status    Status being evaluated.
+	 * @param bool     $is_manual Whether a person made this status change.
 	 * @return bool
 	 */
-	public static function is_balance_payment_captured( $order, $status ) {
+	public static function is_balance_payment_captured( $order, $status, $is_manual = false ) {
 		// on-hold is WooCommerce's "awaiting payment" state, never a settled payment.
 		if ( ! in_array( $status, array( 'processing', 'completed' ), true ) ) {
 			return false;
@@ -1183,7 +1191,70 @@ class APD_Order {
 			return false;
 		}
 
-		return (bool) apply_filters( 'apd_is_balance_payment_captured', true, $order, $status );
+		$captured = ! $is_manual && self::has_new_balance_payment_transaction( $order );
+
+		/**
+		 * Whether a status change settles the balance payment in progress.
+		 *
+		 * Return true only for a gateway that really captures the money without calling
+		 * payment_complete(), and only once that gateway's own records show the capture.
+		 *
+		 * @param bool     $captured  Whether the balance payment counts as captured.
+		 * @param WC_Order $order     Order object.
+		 * @param string   $status    Status the order moved to.
+		 * @param bool     $is_manual Whether a person made the status change.
+		 */
+		return (bool) apply_filters( 'apd_is_balance_payment_captured', $captured, $order, $status, $is_manual );
+	}
+
+	/**
+	 * Record that a balance payment is starting for the given amount.
+	 *
+	 * Also stores the gateway transaction id the order already carries (the deposit's
+	 * charge), so a later status change can tell a charge taken for this payment from the
+	 * earlier one. The caller saves the order.
+	 *
+	 * @param WC_Order $order  Order object.
+	 * @param float    $amount Amount being collected.
+	 */
+	public static function start_balance_payment( $order, $amount ) {
+		$order->update_meta_data( '_apd_balance_payment_pending', $amount );
+		$order->update_meta_data( '_apd_balance_payment_prior_txn', (string) $order->get_transaction_id() );
+		$order->delete_meta_data( '_apd_balance_payment_unconfirmed' );
+		$order->set_total( $amount );
+	}
+
+	/**
+	 * Check whether the gateway recorded a new charge since the balance payment started.
+	 *
+	 * A payment started without a stored baseline (before this check existed, or by code
+	 * that sets the pending marker itself) cannot be told apart from the deposit, so it
+	 * never counts; payment_complete() still settles it.
+	 *
+	 * @param WC_Order $order Order object.
+	 * @return bool
+	 */
+	public static function has_new_balance_payment_transaction( $order ) {
+		if ( ! $order || ! $order->meta_exists( '_apd_balance_payment_prior_txn' ) ) {
+			return false;
+		}
+
+		$transaction_id = (string) $order->get_transaction_id();
+
+		return '' !== $transaction_id
+			&& (string) $order->get_meta( '_apd_balance_payment_prior_txn' ) !== $transaction_id;
+	}
+
+	/**
+	 * Drop the bookkeeping of a balance payment in progress.
+	 *
+	 * @param WC_Order $order Order object. The caller saves it.
+	 */
+	private static function clear_balance_payment_markers( $order ) {
+		$order->delete_meta_data( '_apd_balance_payment_pending' );
+		$order->delete_meta_data( '_apd_balance_payment_awaiting_offline' );
+		$order->delete_meta_data( '_apd_balance_payment_unconfirmed' );
+		$order->delete_meta_data( '_apd_balance_payment_prior_txn' );
 	}
 
 	/**
@@ -1269,8 +1340,7 @@ class APD_Order {
 			return;
 		}
 
-		$order->delete_meta_data( '_apd_balance_payment_pending' );
-		$order->delete_meta_data( '_apd_balance_payment_awaiting_offline' );
+		self::clear_balance_payment_markers( $order );
 		$order->save();
 
 		self::record_payment( $order->get_id(), $pending_balance_payment, $note );
@@ -1279,28 +1349,49 @@ class APD_Order {
 	/**
 	 * Keep an uncaptured balance payment owed instead of writing it off as paid.
 	 *
-	 * The customer picked an offline gateway, which only records an intent to pay, so
-	 * the balance stays due and the order stays payable until the shop records the
-	 * money manually from the order screen.
+	 * Either the customer picked an offline gateway, which only records an intent to pay,
+	 * or nothing confirmed the online payment (the customer opened the payment link and
+	 * left, or the shop changed the status). The balance stays due and the order stays
+	 * payable until the gateway confirms or the shop records the money from the order
+	 * screen. The pending marker is kept, so a gateway confirming later still lands.
 	 *
 	 * @param WC_Order $order     Order object.
 	 * @param string   $status    Status the order just landed on.
 	 * @param bool     $is_manual Whether a person chose that status.
 	 */
 	private function hold_uncaptured_balance_payment( $order, $status, $is_manual = false ) {
+		$is_offline = self::is_offline_payment_method( $order );
+
+		// An online gateway parks the order on-hold while it is still confirming (a bank
+		// debit clearing, an authorisation awaiting capture). Its own confirmation settles it.
+		if ( ! $is_offline && 'on-hold' === $status ) {
+			return;
+		}
+
 		$payment_method = $order->get_payment_method();
+		$method_title   = $order->get_payment_method_title() ? $order->get_payment_method_title() : $payment_method;
+		$pending_amount = wc_price( floatval( $order->get_meta( '_apd_balance_payment_pending' ) ), array( 'currency' => $order->get_currency() ) );
+		$flag_key       = $is_offline ? '_apd_balance_payment_awaiting_offline' : '_apd_balance_payment_unconfirmed';
+		$flag_value     = $payment_method ? $payment_method : 'yes';
 		$dirty          = false;
 
 		// Flag per gateway so the note is written once, not on every thank-you page hit.
-		if ( $order->get_meta( '_apd_balance_payment_awaiting_offline' ) !== $payment_method ) {
-			$order->update_meta_data( '_apd_balance_payment_awaiting_offline', $payment_method );
+		if ( $order->get_meta( $flag_key ) !== $flag_value ) {
+			$order->update_meta_data( $flag_key, $flag_value );
 			$order->add_order_note(
-				sprintf(
-					/* translators: 1: payment method title, 2: outstanding balance amount. */
-					__( 'Remaining balance payment was started with %1$s, which does not capture funds. %2$s is still outstanding and must be recorded manually once the money is received.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
-					$order->get_payment_method_title() ? $order->get_payment_method_title() : $payment_method,
-					wc_price( floatval( $order->get_meta( '_apd_balance_payment_pending' ) ) )
-				)
+				$is_offline
+					? sprintf(
+						/* translators: 1: payment method title, 2: outstanding balance amount. */
+						__( 'Remaining balance payment was started with %1$s, which does not capture funds. %2$s is still outstanding and must be recorded manually once the money is received.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						$method_title,
+						$pending_amount
+					)
+					: sprintf(
+						/* translators: 1: balance payment amount, 2: payment method title. */
+						__( 'A remaining balance payment of %1$s was started with %2$s, but the payment gateway has not confirmed it, so it was not recorded and the balance is still outstanding. If you received this money, record it with Record Manual Payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ),
+						$pending_amount,
+						$method_title ? $method_title : __( 'an online payment method', 'advanced-partial-payment-or-deposit-for-woocommerce' )
+					)
 			);
 			$dirty = true;
 		}

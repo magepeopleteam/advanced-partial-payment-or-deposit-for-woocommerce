@@ -34,11 +34,12 @@ booking-plugin integrations).
 3. The customer returns to **My Account → Deposits** and pays the remaining balance when ready.
 4. Once the balance reaches zero the order moves to `Completed` and a payment-complete email is sent.
 
-Balance finalization only happens on an actual payment-capture event
-(`woocommerce_payment_complete`, or a `processing`/`completed` status transition from a gateway that
-*captures* funds) — an offline gateway like Cash on Delivery or Bank Transfer never closes out a
-balance on its own. See [`includes/class-apd-order.php`](includes/class-apd-order.php) for the
-guard.
+Balance finalization only happens on an actual payment-capture event: `woocommerce_payment_complete`,
+or an automatic `processing`/`completed` transition from an online gateway that recorded a new
+transaction id after the balance payment started. A status change made by a person never records
+the balance (money taken outside the gateway goes through **Record Manual Payment**), and an offline
+gateway like Cash on Delivery or Bank Transfer never closes out a balance on its own. See
+[`includes/class-apd-order.php`](includes/class-apd-order.php) for the guard.
 
 ## Installation
 
@@ -66,6 +67,7 @@ templates/   Email HTML/plain-text templates
 | `apd_min_balance_payment` | Minimum for a single balance payment when flexible payments are on (Pro) |
 | `apd_allow_payment_on_cancelled_order` | Allow paying a balance on a cancelled order (off by default) |
 | `apd_offline_payment_methods` | Payment gateways treated as non-capturing (`cod`, `bacs`, `cheque` by default) |
+| `apd_is_balance_payment_captured` | Whether a status change settles the balance payment in progress (`$captured, $order, $status, $is_manual`) |
 
 ## Support
 

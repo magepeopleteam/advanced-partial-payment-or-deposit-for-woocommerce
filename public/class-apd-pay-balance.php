@@ -68,9 +68,9 @@ class APD_Pay_Balance {
 		// deposit and skip it while still reporting success, so stand them down first.
 		APD_Order::release_gateway_payment_fingerprint( $order );
 
-		// Charge exactly what was authorised and remember it for finalization.
-		$order->update_meta_data( '_apd_balance_payment_pending', $amount );
-		$order->set_total( $amount );
+		// Charge exactly what was authorised and remember it for finalization. Nothing is
+		// paid yet: only the gateway's confirmation turns this into a recorded payment.
+		APD_Order::start_balance_payment( $order, $amount );
 		if ( $order->get_status() !== 'partially-paid' ) {
 			$order->set_status( 'partially-paid', __( 'Customer started a remaining balance payment.', 'advanced-partial-payment-or-deposit-for-woocommerce' ) );
 		}

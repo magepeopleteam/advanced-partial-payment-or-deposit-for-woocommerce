@@ -442,6 +442,8 @@ class APD_Admin_Order_Deposit {
 			'_apd_manual_status',
 			'_apd_balance_payment_pending',
 			'_apd_balance_payment_awaiting_offline',
+			'_apd_balance_payment_unconfirmed',
+			'_apd_balance_payment_prior_txn',
 		);
 	}
 }
