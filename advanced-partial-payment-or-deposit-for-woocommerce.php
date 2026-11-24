@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/lib/appneck/wordpress-sdk/appneck-wordpress-sdk/appneck-sdk.php';
 appneck_sdk_load_latest();
 
-$GLOBALS['my_plugin_sdk'] = \Appneck\Sdk\Sdk::bootstrap(
+$GLOBALS['advanced_partial_payment_or_deposit_for_woocommerce_appneck_sdk'] = \Appneck\Sdk\Sdk::bootstrap(
 	'pk_sFR20YlYRONVcOI64GakALeYAfvE92sG',  // your API key
 	'sk_2Mlyzj0ePOTa3cVx9prlWCUGgYwsboFeG5tWGdmDoiDrFA0B', // your product secret
 	'https://appneck.com',                  // the Appneck server URL
