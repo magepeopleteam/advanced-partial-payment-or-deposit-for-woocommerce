@@ -4,7 +4,7 @@ Tags: woocommerce, deposit, partial payment, installment, payment plan
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.0.31
+Stable tag: 4.0.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,11 @@ Appneck SDK **does not gather any data by default.** The SDK only starts gatheri
 Learn more about how [Appneck collects and uses this data](https://appneck.com/privacy-policy/).
 
 == Changelog ==
+
+= 4.0.32 - 2026-11-26 =
+* Improvement: Record a balance payment only when the gateway confirms it.
+* Fix: Give the AppNeck SDK instance its own variable name.
+* Fix: Store API pay-for-order deposit overwrite and payment reset (Patchstack #41441).
 
 = 4.0.31 - 2026-10-26 =
 * Fix: payment plans imported from the old Mage Partial Payment plugin came across as a deposit plus one empty installment, because the old schedule rows were read from the wrong place. The import now reads every row, and as in the old plugin, each "after" offset counts from the previous payment.
