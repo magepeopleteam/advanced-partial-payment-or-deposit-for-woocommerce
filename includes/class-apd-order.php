@@ -17,6 +17,18 @@ class APD_Order {
 	 */
 	private $manual_transitions = array();
 
+	/**
+	 * Order IDs updated from the current Store API cart checkout request.
+	 *
+	 * Used to distinguish `POST /wc/store/v1/checkout` (cart checkout) from
+	 * `POST /wc/store/v1/checkout/<id>` (pay-for-order), which also fires
+	 * `woocommerce_store_api_checkout_order_processed` while `WC()->cart` holds
+	 * an unrelated session cart.
+	 *
+	 * @var array<int,bool>
+	 */
+	private $store_api_checkout_order_ids = array();
+
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
@@ -27,6 +39,7 @@ class APD_Order {
 	private function __construct() {
 		// Save deposit info when order is created
 		add_action( 'woocommerce_checkout_order_created', array( $this, 'save_deposit_data' ), 10, 1 );
+		add_action( 'woocommerce_store_api_checkout_update_order_from_request', array( $this, 'mark_store_api_checkout_order' ), 10, 2 );
 		add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'save_deposit_data' ), 10, 1 );
 		// After payment complete, check if partially paid
 		add_action( 'woocommerce_payment_complete', array( $this, 'maybe_set_partially_paid' ), 10, 1 );
@@ -51,9 +64,103 @@ class APD_Order {
 	}
 
 	/**
+	 * Record that an order was updated from the Store API cart checkout request.
+	 *
+	 * @param WC_Order        $order   Order being checked out from the cart.
+	 * @param WP_REST_Request $request Store API request (unused).
+	 */
+	public function mark_store_api_checkout_order( $order, $request = null ) {
+		unset( $request );
+		if ( $order instanceof WC_Order && $order->get_id() > 0 ) {
+			$this->store_api_checkout_order_ids[ $order->get_id() ] = true;
+		}
+	}
+
+	/**
+	 * Check whether an order has any recorded deposit or balance payments.
+	 *
+	 * @param WC_Order $order Order object.
+	 * @return bool
+	 */
+	public static function has_recorded_payments( $order ) {
+		if ( ! $order instanceof WC_Order ) {
+			return false;
+		}
+
+		if ( 'yes' === $order->get_meta( '_apd_deposit_paid' ) ) {
+			return true;
+		}
+
+		if ( floatval( $order->get_meta( '_apd_amount_paid' ) ) > 0 ) {
+			return true;
+		}
+
+		$history = $order->get_meta( '_apd_payment_history' );
+		return is_array( $history ) && ! empty( $history );
+	}
+
+	/**
+	 * Check whether an order processed by Store API was built from the current session cart.
+	 *
+	 * Rejects `POST /wc/store/v1/checkout/<id>` (pay-for-order) requests where
+	 * `WC()->cart` belongs to an unrelated session cart and the order was not
+	 * updated from the Store API checkout request.
+	 *
+	 * @param WC_Order $order Order object.
+	 * @return bool
+	 */
+	public function is_store_api_cart_checkout_order( $order ) {
+		if ( ! $order instanceof WC_Order ) {
+			return false;
+		}
+
+		if ( empty( $this->store_api_checkout_order_ids[ $order->get_id() ] ) ) {
+			return false;
+		}
+
+		if ( ! WC()->cart || WC()->cart->is_empty() ) {
+			return false;
+		}
+
+		$cart_hash = (string) WC()->cart->get_cart_hash();
+		if ( '' === $cart_hash || ! $order->has_cart_hash( $cart_hash ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Save deposit data to order meta.
 	 */
 	public function save_deposit_data( $order ) {
+		if ( ! $order instanceof WC_Order ) {
+			return;
+		}
+
+		// Never overwrite or reset an order that already has recorded payments.
+		if ( self::has_recorded_payments( $order ) ) {
+			return;
+		}
+
+		// Store API fires woocommerce_store_api_checkout_order_processed both for
+		// cart checkout (POST /wc/store/v1/checkout) and for paying an existing
+		// order (POST /wc/store/v1/checkout/<id>). Only act on cart checkouts.
+		if ( doing_action( 'woocommerce_store_api_checkout_order_processed' ) && ! $this->is_store_api_cart_checkout_order( $order ) ) {
+			return;
+		}
+
+		// Classic checkout also sets the cart hash on the newly created order.
+		if ( doing_action( 'woocommerce_checkout_order_created' ) ) {
+			if ( ! WC()->cart || WC()->cart->is_empty() ) {
+				return;
+			}
+			$cart_hash = (string) WC()->cart->get_cart_hash();
+			if ( '' !== $cart_hash && $order->get_cart_hash() && ! $order->has_cart_hash( $cart_hash ) ) {
+				return;
+			}
+		}
+
 		$deposit_engine = APD_Deposit::instance();
 		$summary        = $deposit_engine->get_cart_payment_summary();
 
@@ -86,6 +193,10 @@ class APD_Order {
 	 * @param float    $deposit_amount Amount due first.
 	 */
 	public static function apply_deposit_meta( $order, $full_total, $deposit_amount ) {
+		if ( ! $order instanceof WC_Order || self::has_recorded_payments( $order ) ) {
+			return;
+		}
+
 		$order->update_meta_data( '_apd_is_deposit', 'yes' );
 		$order->update_meta_data( '_apd_deposit_amount', $deposit_amount );
 		$order->update_meta_data( '_apd_total_amount', $full_total );
